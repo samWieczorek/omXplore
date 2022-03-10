@@ -85,7 +85,7 @@ mod_ds_heatmap_ui <- function(id){
 #' @rdname heatmaps
 #'
 mod_ds_heatmap_server <- function(id, 
-                                  se,
+                                  data,
                                   conds,
                                   width = 900){
 
@@ -93,8 +93,8 @@ mod_ds_heatmap_server <- function(id,
     ns <- session$ns
     
     observe({
-      req(se())
-      stopifnot (inherits(se(), "SummarizedExperiment"))
+      req(data())
+      stopifnot (inherits(data(), "matrix"))
     })
 
 
@@ -103,8 +103,8 @@ mod_ds_heatmap_server <- function(id,
     width <- paste0(width, "px")
 
     output$DS_PlotHeatmap <- renderUI({
-      req(se())
-      if (nrow(assay(se())) > limitHeatmap){
+      req(data())
+      if (nrow(data()) > limitHeatmap){
         tags$p("The dataset is too big to compute the heatmap in a reasonable time.")
       }else {
         tagList(
@@ -124,7 +124,7 @@ mod_ds_heatmap_server <- function(id,
       
       isolate({
         withProgress(message = 'Making plot', value = 100, {
-          heatmapD(data = assay(se()),
+          heatmapD(data = data(),
                    conds = conds,
                    distance = input$distance,
                    cluster = input$linkage)

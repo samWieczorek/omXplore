@@ -75,12 +75,14 @@ mod_ds_seExplorer_server <- function(id,
     observe({
       req(se())
       stopifnot (inherits(se(), "SummarizedExperiment"))
+      
+      tags <- unique(rowData(se())$qMetadata)
+      mod_colorLegend_server('legend', 
+                             tags, 
+                             ExtendPalette(length(tags), 'Dark2'))
     })
 
-    tags <- unique(rowData(se())$qMetadata)
-    mod_colorLegend_server('legend', 
-                           tags, 
-                           ExtendPalette(length(tags), 'Dark2'))
+    
 # 
 #     output$viewDesign <- DT::renderDT({
 #       req(se())

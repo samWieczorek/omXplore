@@ -280,30 +280,30 @@ mod_ds_server <- function(id, object){
     
     
     mod_ds_pca_server('mod_pca_large',
-                      object = reactive({current.se()}),
+                      data = reactive({current.se()}),
                       conds = reactive({colData(object()$Condition) })
                       )
     
     
     mod_ds_variance_server('mod_variance_large',
-                            object = reactive({current.se()}),
+                            data = reactive({current.se()}),
                             conds = reactive({colData(object()$Condition) })
                            )
     
     mod_ds_corrmatrix_server(id = 'mod_corrmatrix_large',
-                             object = reactive({current.se()})
+                             data = reactive({current.se()})
                              )
     
     
     
     mod_ds_heatmap_server("mod_heatmap_large",
-                             object = reactive({current.se()}),
+                          data = reactive({current.se()}),
                              conds = reactive({colData(object()$Condition) })
     )
     
     
     mod_ds_mv_server("mod_mv_large",
-                     object = reactive({current.se()}),
+                     data = reactive({current.se()}),
                      conds = reactive({colData(object()$Condition) })
     )
     
