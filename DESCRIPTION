@@ -1,0 +1,107 @@
+Package: ProteomicsExplorer
+Type: Package
+Title: Tools for the Differential Analysis of Proteins Abundance with R
+Version: 0.99.0
+Date: 2021-09-16
+Authors@R: c(person(given = "Samuel", family = "Wieczorek",
+            email = "samuel.wieczorek@cea.fr",
+            role = c("aut","cre")),
+            person(given = "Thomas", family ="Burger",
+            email = "thomas.burger@cea.fr",
+            role = c("aut")),
+		person(given = "Enora", family ="Fremy",
+            email = "enora.fremy@cea.fr",
+            role = c("ctb"))
+            )
+Description: This package contains a collection of functions for the
+    visualisation and the statistical analysis of proteomic data.
+    fsdfsd
+    fsd
+    sd sfsfs .
+License: Artistic-2.0
+Depends: R (>= 4.1.0)
+Imports:
+    Biobase,
+    base64enc,
+    DT,
+    grDevices,
+    S4Vectors,
+    BiocGenerics,
+    QFeatures,
+    RColorBrewer,
+    graph,
+    FactoMineR, 
+    factoextra,
+    dplyr,
+    gplots,
+    highcharter,
+    tibble,
+    tidyr,
+    visNetwork, 
+    vioplot,
+    forcats,
+    ggplot2,
+    reshape2,
+    shiny,
+    shinyBS,
+    shinyWidgets,
+    shinyjs,
+    sos,
+    grDevices,
+    graphics,
+    stats,
+    utils
+biocViews: 
+    Proteomics,
+    Normalization,
+    Preprocessing,
+    MassSpectrometry,
+    QualityControl,
+    GO,
+    DataImport
+NeedsCompilation: no
+Collate:
+    AllGenerics.R
+    palette.R
+    utils.R
+    example-data.R
+    mod_format_DT.R
+    adjacencyMatrixInfos.R
+    ConnectedComps.R
+    plots_compare_normalization_plots.R
+    global.R
+    mod_ds.R
+    mod_graph_pept_prot.R
+    mod_ds_corrmatrix.R
+    mod_ds_density.R
+    mod_ds_seExplorer.R
+    mod_ds_heatmap.R
+    mod_ds_intensity.R
+    mod_ds_mv.R
+    mod_plot_mvImputation.R
+    mod_ds_pca.R
+    mod_ds_cc.R
+    mod_ds_variance.R
+    mod_colorLegend.R
+    mod_seTracker.R
+    plot_boxplot.R
+    plot_corrmatrix.R
+    plot_variance.R
+    plot_density.R
+    plot_heatmap.R
+    plots_mv_for_impute.R
+    plot_pca.R
+    plot_violin.R
+    plot_mv.R
+RoxygenNote: 7.1.2
+Packaged: 2017-10-13 11:13:04 UTC; sw175264
+Encoding: UTF-8
+LazyData: false
+URL: https://github.com/samWieczorek/DaparToolshed
+BugReports: https://github.com/samWieczorek/DaparToolshed/issues
+Suggests: 
+    knitr,
+    rmarkdown,
+    BiocStyle,
+    testthat
+Roxygen: list(markdown = TRUE)
