@@ -4,7 +4,7 @@
 #' 
 #' This method plots a bar plot which represents the distribution of the 
 #' number of missing values (NA) per lines (ie proteins).
-#' @name pca-plots
+#' @name ds-pca
 #' 
 #' @return A plot
 #' 
@@ -18,8 +18,6 @@
 #' 
 #' heatmapD(assay(ft, 1), conds)
 #' 
-#' 
-#' library(QFeatures)
 #' data(ft)
 #' 
 #' 
@@ -53,7 +51,7 @@ NULL
 
 #' @param id xxx.
 #'
-#' @rdname pca-plots
+#' @rdname ds-pca
 #'
 #' @importFrom shiny NS tagList uiOutput
 #' 
@@ -74,7 +72,6 @@ mod_ds_pca_ui <- function(id){
 #' 
 #' @rdname ds-pca
 #'
-#' @importFrom factoextra fviz_pca_ind fviz_pca_var
 #' @importFrom RColorBrewer brewer.pal
 #' @importFrom highcharter renderHighchart
 #'
@@ -82,7 +79,12 @@ mod_ds_pca_ui <- function(id){
 mod_ds_pca_server <- function(id,
                            data,
                            conds) {
-
+  if (!requireNamespace("factoextra", quietly = TRUE)) {
+    stop(
+      "Package \"factoextra\" must be installed to use this function.",
+      call. = FALSE
+    )
+  }
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 

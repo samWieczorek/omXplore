@@ -71,14 +71,24 @@ mod_graph_pept_prot_ui <- function(id){
 }
 
 
+#' @param id xxx
 #' @param cc xxx
 #' @param matAdj xxx
-#' @param dataIn An object of class [QFeatures]
+#' @param dataIn An object of class `QFeatures`
+#' @param settings xxx
 #' 
 #' @rdname connected_components
 #' @export
-mod_graph_pept_prot_server <- function(id, cc, matAdj, dataIn){
-
+mod_graph_pept_prot_server <- function(id, 
+                                       cc, 
+                                       matAdj, 
+                                       dataIn, 
+                                       settings){
+  
+  if (! requireNamespace("SummarizedExperiment", quietly = TRUE)) {
+    stop("Please install SummarizedExperiment: BiocManager::install('SummarizedExperiment')")
+  }
+  
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 
@@ -103,12 +113,14 @@ mod_graph_pept_prot_server <- function(id, cc, matAdj, dataIn){
 
     output$pepInfoUI <- renderUI({
       dataIn()
-      selectInput(ns('pepInfo'), "PepInfo", choices=colnames(Biobase::fData(dataIn())),
-                  multiple=TRUE)
+      selectInput(ns('pepInfo'), 
+                  "PepInfo", 
+                  choices = colnames(SummarizedExperiment::rowData(dataIn())),
+                  multiple = TRUE)
     })
 
     observeEvent(req(input$searchCC), {
-      shinyjs::toggle('jiji', condition = input$searchCC=='graphical')
+      shinyjs::toggle('jiji', condition = input$searchCC == 'graphical')
       shinyjs::toggle('CCMultiMulti', condition = input$searchCC=='tabular')
     })
 
@@ -171,7 +183,8 @@ mod_graph_pept_prot_server <- function(id, cc, matAdj, dataIn){
                      index = 1:length(local))
 
         if (!is.null( tooltip)){
-          df <- cbind(df,Biobase::fData(dataIn())[ tooltip])
+          df <- cbind(df,
+                      SummarizedExperiment::rowData(dataIn())[ tooltip])
         }
 
         colnames(df) <- gsub(".", "_", colnames(df), fixed=TRUE)
@@ -183,7 +196,7 @@ mod_graph_pept_prot_server <- function(id, cc, matAdj, dataIn){
         clickFun <-
           JS(paste0("function(event) {Shiny.onInputChange('",ns("eventPointClicked"),"', [this.index]+'_'+ [this.series.name]);}"))
 
-        rv.core$tempplot$plotCC <-  DaparToolshed::plotJitter_rCharts(df, clickFunction=clickFun)
+        rv.core$tempplot$plotCC <-  plotJitter_hc(df, clickFunction=clickFun)
 
       })
       rv.core$tempplot$plotCC
@@ -206,7 +219,7 @@ mod_graph_pept_prot_server <- function(id, cc, matAdj, dataIn){
                            selection = 'single',
                            rownames=FALSE,
                            extensions = c('Scroller', 'Buttons'),
-                           options=list(initComplete = initComplete(),
+                           options=list(initComplete = .initComplete(),
                                         dom='Bfrtip',
                                         deferRender = TRUE,
                                         bLengthChange = FALSE,
@@ -273,7 +286,7 @@ mod_graph_pept_prot_server <- function(id, cc, matAdj, dataIn){
       )
       dt <- datatable( df,
                        extensions = c('Scroller'),
-                       options = list(initComplete = initComplete(),
+                       options = list(initComplete = .initComplete(),
                                       dom='rt',
                                       blengthChange = FALSE,
                                       ordering=FALSE,
@@ -298,21 +311,22 @@ mod_graph_pept_prot_server <- function(id, cc, matAdj, dataIn){
 
 
       ind <- 1:ncol(dataIn())
-      data <- getDataForExprs(dataIn())
+      data <- .getDataForExprs(dataIn())
       pepLine <- rv.cc$detailedselectedNode$sharedPepLabels
       indices <- unlist(lapply(pepLine, function(x){which(rownames(data)==x)}))
       data <- data[indices,c(ind, (ind + ncol(data)/2))]
 
       if(!is.null(input$pepInfo))
       {
-        data <- cbind(data, Biobase::fData(dataIn())[pepLine,input$pepInfo])
+        data <- cbind(data, 
+                      SummarizedExperiment::rowData(dataIn())[pepLine,input$pepInfo])
         colnames(data)[(1+ncol(data)-length(input$pepInfo)):ncol(data)] <- input$pepInfo
       }
 
       offset <- length(input$pepInfo)
       dt <- datatable( data,
                        extensions = c('Scroller'),
-                       options = list(initComplete = initComplete(),
+                       options = list(initComplete = .initComplete(),
                                       dom='rt',
                                       blengthChange = FALSE,
                                       ordering=FALSE,
@@ -327,7 +341,7 @@ mod_graph_pept_prot_server <- function(id, cc, matAdj, dataIn){
         DT::formatStyle(
           colnames(data)[1:((ncol(data)-offset)/2)],
           colnames(data)[(((ncol(data)-offset)/2)+1):(ncol(data)-offset)],
-          backgroundColor = DT::styleEqual(c("POV", "MEC"), c(rv.prostar$settings()$colorsTypeMV$POV, rv.prostar$settings()$colorsTypeMV$MEC)))
+          backgroundColor = DT::styleEqual(c("POV", "MEC"), c(settings()$colorsTypeMV$POV, settings()$colorsTypeMV$MEC)))
 
       dt
     })
@@ -343,14 +357,15 @@ mod_graph_pept_prot_server <- function(id, cc, matAdj, dataIn){
       if(is.null((rv.cc$detailedselectedNode$specPepLabels))){return(NULL)}
 
       ind <- 1:ncol(dataIn())
-      data <- getDataForExprs(dataIn())
+      data <- .getDataForExprs(dataIn())
       pepLine <-  rv.cc$detailedselectedNode$specPepLabels
       indices <- unlist(lapply(pepLine, function(x){which(rownames(data)==x)}))
       data <- data[indices,c(ind, (ind + ncol(data)/2))]
 
       if(!is.null(input$pepInfo))
       {
-        data <- cbind(data, Biobase::fData(dataIn())[pepLine,input$pepInfo])
+        data <- cbind(data, 
+                      SummarizedExperiment::rowData(dataIn())[pepLine,input$pepInfo])
         colnames(data)[(1+ncol(data)-length(input$pepInfo)):ncol(data)] <- input$pepInfo
       }
 
@@ -359,7 +374,7 @@ mod_graph_pept_prot_server <- function(id, cc, matAdj, dataIn){
 
       dt <- datatable( data,
                        extensions = c('Scroller'),
-                       options = list(initComplete = initComplete(),
+                       options = list(initComplete = .initComplete(),
                                       dom='rt',
                                       blengthChange = FALSE,
                                       ordering=FALSE,
@@ -374,7 +389,7 @@ mod_graph_pept_prot_server <- function(id, cc, matAdj, dataIn){
         DT::formatStyle(
           colnames(data)[1:((ncol(data)-offset)/2)],
           colnames(data)[(((ncol(data)-offset)/2)+1):(ncol(data)-offset)],
-          backgroundColor = DT::styleEqual(c("POV", "MEC"), c(rv.prostar$settings()$colorsTypeMV$POV, rv.prostar$settings()$colorsTypeMV$MEC)))
+          backgroundColor = DT::styleEqual(c("POV", "MEC"), c(settings()$colorsTypeMV$POV, settings()$colorsTypeMV$MEC)))
 
       dt
     })
@@ -443,7 +458,7 @@ mod_graph_pept_prot_server <- function(id, cc, matAdj, dataIn){
                            selection = 'single',
                            rownames=FALSE,
                            extensions = c('Scroller', 'Buttons'),
-                           options=list(initComplete = initComplete(),
+                           options=list(initComplete = .initComplete(),
                                         dom='Bfrtip',
                                         deferRender = TRUE,
                                         bLengthChange = TRUE,
@@ -469,7 +484,7 @@ mod_graph_pept_prot_server <- function(id, cc, matAdj, dataIn){
       line <- input$OneMultiDT_rows_selected
 
       ind <- 1:ncol(dataIn())
-      data <- getDataForExprs(dataIn())
+      data <- .getDataForExprs(dataIn())
       pepLine <- as.numeric(unlist(BuildOne2MultiTab()[line,"peptides"]))
 
       indices <- unlist(lapply(pepLine, function(x){which(rownames(data)==x)}))
@@ -478,7 +493,8 @@ mod_graph_pept_prot_server <- function(id, cc, matAdj, dataIn){
 
       if(!is.null(input$pepInfo))
       {
-        data <- cbind(data, Biobase::fData(dataIn())[pepLine,input$pepInfo])
+        data <- cbind(data, 
+                      SummarizedExperiment::rowData(dataIn())[pepLine,input$pepInfo])
         colnames(data)[(1+ncol(data)-length(input$pepInfo)):ncol(data)] <- input$pepInfo
       }
 
@@ -487,7 +503,7 @@ mod_graph_pept_prot_server <- function(id, cc, matAdj, dataIn){
 
       dt <- datatable( data,
                        extensions = c('Scroller', 'Buttons'),
-                       options = list(initComplete = initComplete(),
+                       options = list(initComplete = .initComplete(),
                                       dom='Bfrtip',
                                       pageLength = 10,
                                       blengthChange = FALSE,
@@ -500,7 +516,7 @@ mod_graph_pept_prot_server <- function(id, cc, matAdj, dataIn){
         DT::formatStyle(
           colnames(data)[1:((ncol(data)-offset)/2)],
           colnames(data)[(((ncol(data)-offset)/2)+1):(ncol(data)-offset)],
-          backgroundColor = DT::styleEqual(c("POV", "MEC"), c(rv.prostar$settings()$colorsTypeMV$POV, rv.prostar$settings()$colorsTypeMV$MEC)))
+          backgroundColor = DT::styleEqual(c("POV", "MEC"), c(settings()$colorsTypeMV$POV, settings()$colorsTypeMV$MEC)))
 
       dt
     })
@@ -515,7 +531,7 @@ mod_graph_pept_prot_server <- function(id, cc, matAdj, dataIn){
                            selection = 'single',
                            rownames=FALSE,
                            extensions = c('Scroller', 'Buttons'),
-                           options=list(initComplete = initComplete(),
+                           options=list(initComplete = .initComplete(),
                                         dom='Bfrtip',
                                         deferRender = TRUE,
                                         bLengthChange = FALSE,
@@ -541,14 +557,15 @@ mod_graph_pept_prot_server <- function(id, cc, matAdj, dataIn){
       line <- input$OneOneDT_rows_selected
 
       ind <- 1:ncol(dataIn())
-      data <- getDataForExprs(dataIn())
+      data <- .getDataForExprs(dataIn())
       pepLine <- as.numeric(BuildOne2OneTab()[line,2])
       indices <- unlist(lapply(pepLine, function(x){which(rownames(data)==x)}))
       data <- data[indices,c(ind, (ind + ncol(data)/2))]
 
       if(!is.null(input$pepInfo))
       {
-        data <- cbind(data, Biobase::fData(dataIn())[pepLine,input$pepInfo])
+        data <- cbind(data, 
+                      SummarizedExperiment::rowData(dataIn())[pepLine,input$pepInfo])
         colnames(data)[(1+ncol(data)-length(input$pepInfo)):ncol(data)] <- input$pepInfo
       }
 
@@ -556,7 +573,7 @@ mod_graph_pept_prot_server <- function(id, cc, matAdj, dataIn){
 
       dt <- datatable( data,
                        extensions = c('Scroller', 'Buttons'),
-                       options = list(initComplete = initComplete(),
+                       options = list(initComplete = .initComplete(),
                                       dom='Bfrtip',
                                       blengthChange = FALSE,
                                       pageLength = 10,
@@ -569,7 +586,7 @@ mod_graph_pept_prot_server <- function(id, cc, matAdj, dataIn){
         DT::formatStyle(
           colnames(data)[1:((ncol(data)-offset)/2)],
           colnames(data)[(((ncol(data)-offset)/2)+1):(ncol(data)-offset)],
-          backgroundColor = DT::styleEqual(c("POV", "MEC"), c(rv.prostar$settings()$colorsTypeMV$POV, rv.prostar$settings()$colorsTypeMV$MEC)))
+          backgroundColor = DT::styleEqual(c("POV", "MEC"), c(settings()$colorsTypeMV$POV, settings()$colorsTypeMV$MEC)))
 
       dt
     })

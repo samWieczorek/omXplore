@@ -44,8 +44,6 @@ NULL
 #' @importFrom shinyjs useShinyjs hidden
 #' 
 #' @rdname tracking
-#' 
-#' @return NA
 #'
 mod_seTracker_ui <- function(id){
   ns <- NS(id)
@@ -69,11 +67,10 @@ mod_seTracker_ui <- function(id){
 #'
 #' @importFrom shinyjs toggle hidden show hide
 #' @importFrom stats setNames
-#' 
-#' @return A `list()` of integers
-#'
 mod_seTracker_server <- function(id, se){
-
+  if (! requireNamespace("SummarizedExperiment", quietly = TRUE)) {
+    stop("Please install SummarizedExperiment: BiocManager::install('SummarizedExperiment')")
+  }
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 
@@ -100,7 +97,8 @@ mod_seTracker_server <- function(id, se){
     output$listSelect_ui <- renderUI({
       widget <- selectInput(ns("listSelect"),
                   "Select protein",
-                  choices = c('None', rowData(se())[, metadata(se())$idcol]),
+                  choices = c('None', 
+                              SummarizedExperiment::rowData(se())[, DaparToolshed::idcol(se())]),
                   multiple = TRUE,
                   selected = rv.track$listSelect,
                   width='200px',
@@ -117,7 +115,7 @@ mod_seTracker_server <- function(id, se){
     output$colSelect_ui <- renderUI({
       widget <- selectInput(ns("colSelect"),
                   "Column of rowData",
-                  choices = c('', colnames(rowData(se()))),
+                  choices = c('', colnames(SummarizedExperiment::rowData(se()))),
                   selected = rv.track$colSelect
                   )
       if (rv.track$typeSelect == 'Column')
@@ -160,7 +158,7 @@ mod_seTracker_server <- function(id, se){
         rv.track$indices <- NULL
       else
         rv.track$indices <-  match(rv.track$listSelect, 
-                                   rowData(se())[metadata(se())$idcol])
+                                   SummarizedExperiment::rowData(se())[,DaparToolshed::idcol(se())])
     })
 
 
@@ -188,7 +186,7 @@ mod_seTracker_server <- function(id, se){
       rv.track$randSelect <- ''
 
       if (rv.track$colSelect != '')
-        rv.track$indices <- which(rowData(se())[,rv.track$colSelect] == 1)
+        rv.track$indices <- which(SummarizedExperiment::rowData(se())[,rv.track$colSelect] == 1)
      })
 
     return(reactive({rv.track$indices}))
@@ -196,10 +194,4 @@ mod_seTracker_server <- function(id, se){
   })
 
 }
-
-## To be copied in the UI
-# mod_plots_tracking_ui("plots_tracking_ui_1")
-
-## To be copied in the server
-# callModule(mod_plots_tracking_server, "plots_tracking_ui_1")
 

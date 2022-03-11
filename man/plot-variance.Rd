@@ -20,7 +20,7 @@ CVDist(data, conds = NULL, pal.name = NULL)
 \item{data}{xxx}
 
 \item{conds}{A \code{character()} representings the condition for
-each sample of the \link{QFeatures} object.}
+each sample of the \code{QFeatures} object.}
 
 \item{pal.name}{xxx}
 }
@@ -28,7 +28,6 @@ each sample of the \link{QFeatures} object.}
 xxxx
 }
 \examples{
-library(QFeatures)
 data(ft)
 CVDist(assay(ft, 1), colData(ft)$Condition)
 

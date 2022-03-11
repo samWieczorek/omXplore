@@ -36,7 +36,7 @@ NULL
 #' 
 #' @export
 #' @importFrom shiny NS tagList
-#' @importfrom highcharter highchartOutput
+#' @importFrom highcharter highchartOutput
 #' @rdname density-plot
 mod_ds_density_ui <- function(id){
   ns <- NS(id)
@@ -54,7 +54,7 @@ mod_ds_density_ui <- function(id){
 #' @export
 #' @rdname density-plot
 #' 
-#' @importfrom highcharter renderHighchart
+#' @importFrom highcharter renderHighchart
 #' 
 mod_ds_density_server <- function(id,
                                data, 

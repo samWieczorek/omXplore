@@ -7,7 +7,6 @@
 #' @name corrmatrix
 #' 
 #' @examples
-#' library(QFeatures)
 #' data(ft)
 #' corrMatrix(assay(ft, 1))
 #' 
@@ -35,7 +34,6 @@ NULL
 #' @param id xxx
 #' @export
 #' @importFrom shiny NS tagList
-#' @importFrom shinyWidgets dropdownButton
 #' @rdname corrmatrix
 mod_ds_corrmatrix_ui <- function(id){
   ns <- NS(id)

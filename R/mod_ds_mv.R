@@ -7,7 +7,6 @@
 #' @name plot-mv
 #' 
 #' @examples
-#' library(QFeatures)
 #' data(ft_na)
 #' mvPerLinesHisto(assay(ft_na, 1))
 #' 

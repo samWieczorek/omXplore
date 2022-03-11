@@ -15,11 +15,6 @@ mod_seTracker_server(id, se)
 
 \item{se}{A instance of the class \code{SummarizedExperiment}}
 }
-\value{
-NA
-
-A \code{list()} of integers
-}
 \description{
 This shiny module offers a UI to select a subset of a dataset
 and superimpose quantitative values of this selection on the complete plot

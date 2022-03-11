@@ -47,8 +47,6 @@
 #' @author Samuel Wieczorek, Enora Fremy
 #' 
 #' @examples
-#' library(QFeatures)
-#' library(DaparToolshed)
 #' data(ft)
 #' data(ft_na)
 #' 
@@ -93,9 +91,6 @@
 #' # Plots a histogram of missing values
 #' #----------------------------------------
 #' 
-#' 
-#' 
-#' library(QFeatures)
 #' data(ft)
 #' mv.heatmap(assay(ft, 1))
 #' 
@@ -170,12 +165,15 @@ mod_ds_ui <- function(id){
 #'
 #' @importFrom base64enc dataURI
 #' @importFrom shinyjs show hide hidden
+#' @import shiny
 #'
 #' @rdname ds-plots
 #' @export
 #'
 mod_ds_server <- function(id, object){
-  
+  if (! requireNamespace("SummarizedExperiment", quietly = TRUE)) {
+    stop("Please install SummarizedExperiment: BiocManager::install('SummarizedExperiment')")
+  }
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
     
@@ -184,6 +182,7 @@ mod_ds_server <- function(id, object){
     ll.mods <- listPlotModules()
     
     current.se <- reactiveVal()
+    conds <- SummarizedExperiment::colData(object()$Condition)
     btns.history <- reactiveVal(rep(0, length(ll.mods)))
     
     observeEvent(GetVignettesBtns(), {
@@ -223,7 +222,7 @@ mod_ds_server <- function(id, object){
                        tags$img(src = base64enc::dataURI(
                              file = system.file('images',
                                                 paste0(gsub('mod_', '', x), '.png'),
-                                                package='DaparToolshed'),
+                                                package='ProteomicsExplorer'),
                              mime='image/png'),
                              height = "50px")
                        ),
@@ -268,19 +267,19 @@ mod_ds_server <- function(id, object){
     
     mod_ds_intensity_server('mod_intensity_large',
                             data = reactive({current.se()}),
-                            conds = reactive({colData(object()$Condition) })
+                            conds = conds
                             )
     
     
     mod_ds_pca_server('mod_pca_large',
                       data = reactive({current.se()}),
-                      conds = reactive({colData(object()$Condition) })
+                      conds = conds
                       )
     
     
     mod_ds_variance_server('mod_variance_large',
                             data = reactive({current.se()}),
-                            conds = reactive({colData(object()$Condition) })
+                            conds = conds
                            )
     
     mod_ds_corrmatrix_server(id = 'mod_corrmatrix_large',
@@ -291,14 +290,14 @@ mod_ds_server <- function(id, object){
     
     mod_ds_heatmap_server("mod_heatmap_large",
                           data = reactive({current.se()}),
-                             conds = reactive({colData(object()$Condition) })
-    )
+                             conds = conds
+                          )
     
     
     mod_ds_mv_server("mod_mv_large",
                      data = reactive({current.se()}),
-                     conds = reactive({colData(object()$Condition) })
-    )
+                     conds = conds
+                     )
     
   })
   

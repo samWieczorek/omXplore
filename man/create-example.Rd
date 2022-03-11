@@ -11,11 +11,11 @@ create_ft_example(with.na = FALSE)
 example dataset contains missing values or not. Default is FALSE.}
 }
 \value{
-An instance of class \link{QFeatures}
+An instance of class \code{QFeatures}
 }
 \description{
 This function builds a dataset which is an instance of
-the class \link{QFeatures}.
+the class \code{QFeatures}.
 }
 \examples{
 create_ft_example()

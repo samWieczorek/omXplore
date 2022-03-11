@@ -103,8 +103,8 @@ mvPerLinesHistoPerCondition <- function(data,
 
 #' @param data xxxx
 #' @param conds xxx
-#' @param pal.name xxx
 #' @param showValues xxx
+#' @param pal.name xxx
 #' @export
 #' @import highcharter
 #' @rdname plot-mv

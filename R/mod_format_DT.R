@@ -46,7 +46,6 @@ mod_format_DT_ui <- function(id){
 #' 
 #' @export
 #' 
-#' @importFrom htmlwidgets JS    
 #' @importFrom DT replaceData dataTableProxy renderDT datatable formatStyle styleEqual
 #' @rdname mod_format_DT
 mod_format_DT_server <- function(id,
@@ -74,7 +73,7 @@ mod_format_DT_server <- function(id,
                         extensions = c('Scroller', 'Buttons'),
                         escape = FALSE,
                         rownames = rownames,
-                        option = list(initComplete = initComplete(),
+                        option = list(initComplete = .initComplete(),
                                       dom = dom,
                                       server = FALSE,
                                       autoWidth = TRUE,
@@ -88,7 +87,7 @@ mod_format_DT_server <- function(id,
                         extensions = c('Scroller', 'Buttons'),
                         escape = FALSE,
                         rownames = rownames,
-                        option = list(initComplete = initComplete(),
+                        option = list(initComplete = .initComplete(),
                                       dom = dom,
                                       server = FALSE,
                                       autoWidth = TRUE,
@@ -106,16 +105,40 @@ mod_format_DT_server <- function(id,
       })
       
     })
-    
-    initComplete <- function(){
-      
-      return (htmlwidgets::JS(
-        "function(settings, json) {",
-        "$(this.api().table().header()).css({'background-color': 'darkgrey', 'color': 'black'});",
-        "}"))
-    }
+
     
     
   })
   
+}
+
+
+#' @title Enrich xxx to DT ui
+#' 
+#' @description 
+#' xxxx
+#' 
+#' @param se xxx
+#' @param xxx xxxx
+#' 
+#' @noRd
+#' 
+.getDataForExprs <- function(se){
+  
+  if (! requireNamespace("SummarizedExperiment", quietly = TRUE)) {
+    stop("Please install SummarizedExperiment: BiocManager::install('SummarizedExperiment')")
+  }
+  
+  req(se())
+  test.table <- round(SummarizedExperiment::assay(se()), digits=10)
+  test.table <- tibble::as_tibble(test.table)
+  
+  addon.table <- matrix(rep(NA,
+                            ncol(test.table) * nrow(test.table)), 
+                        nrow = nrow(test.table)
+  )
+  addon.table <- tibble::as_tibble(addon.table)
+  test.table <- cbind(test.table, addon.table)
+  
+  test.table
 }

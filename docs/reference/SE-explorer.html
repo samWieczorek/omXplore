@@ -44,7 +44,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Explore a <code>SummarizedExperiment</code> object</h1>
-    <small class="dont-index">Source: <a href="https://github.com/samWieczorek/DaparToolshed/blob/HEAD/R/mod_se_explorer.R" class="external-link"><code>R/mod_se_explorer.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/samWieczorek/DaparToolshed/blob/HEAD/R/mod_ds_seExplorer.R" class="external-link"><code>R/mod_ds_seExplorer.R</code></a></small>
     <div class="hidden name"><code>SE-explorer.Rd</code></div>
     </div>
 
@@ -53,37 +53,47 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">mod_seExplorer_ui</span><span class="op">(</span><span class="va">id</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">mod_ds_seExplorer_ui</span><span class="op">(</span><span class="va">id</span><span class="op">)</span>
+
+<span class="fu">mod_ds_seExplorer_server</span><span class="op">(</span><span class="va">id</span>, <span class="va">se</span>, digits <span class="op">=</span> <span class="fu">reactive</span><span class="op">(</span><span class="op">{</span>
+    <span class="fl">3</span>
+<span class="op">}</span><span class="op">)</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>id</dt>
 <dd><p>xxx</p></dd>
+<dt>se</dt>
+<dd><p>An instance of the class <code>SummarizedExperiment</code></p></dd>
+<dt>digits</dt>
+<dd><p>xxx</p></dd>
 </dl></div>
+    <div id="value">
+    <h2>Value</h2>
+    <p>NA</p>
+    </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RforMassSpectrometry/QFeatures" class="external-link">QFeatures</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">ft</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">ft</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="corrmatrix.html">corrMatrix</a></span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">ft</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in corrMatrix(assay(ft, 1)):</span> could not find function "corrMatrix"</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in assay(ft, 1):</span> could not find function "assay"</span>
 <span class="r-in"></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">#------------------------------------------</span></span>
 <span class="r-in"><span class="co"># Shiny module</span></span>
 <span class="r-in"><span class="co">#------------------------------------------</span></span>
 <span class="r-in"><span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/samWieczorek/DaparToolshed" class="external-link">DaparToolshed</a></span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">ft_na</span><span class="op">)</span></span>
-<span class="r-in"> <span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu">mod_seExplorer_ui</span><span class="op">(</span><span class="st">'plot'</span><span class="op">)</span></span>
+<span class="r-in"> <span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu">mod_ds_seExplorer_ui</span><span class="op">(</span><span class="st">'plot'</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"> <span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="fu">mod_seExplorer_server</span><span class="op">(</span><span class="st">'plot'</span>, </span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="op">{</span><span class="va">ft_na</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">}</span><span class="op">)</span></span>
+<span class="r-in">  <span class="fu">mod_ds_seExplorer_server</span><span class="op">(</span><span class="st">'plot'</span>, </span>
+<span class="r-in">  <span class="fu">reactive</span><span class="op">(</span><span class="op">{</span><span class="va">ft_na</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">}</span><span class="op">)</span></span>
 <span class="r-in">  <span class="op">)</span><span class="op">}</span></span>
 <span class="r-in"> </span>
-<span class="r-in"> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span>ui<span class="op">=</span><span class="va">ui</span>, server<span class="op">=</span><span class="va">server</span><span class="op">)</span></span>
+<span class="r-in"> <span class="fu">shinyApp</span><span class="op">(</span>ui<span class="op">=</span><span class="va">ui</span>, server<span class="op">=</span><span class="va">server</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">}</span></span>
 </code></pre></div>
     </div>

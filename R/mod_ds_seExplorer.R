@@ -6,7 +6,6 @@
 #' @name SE-explorer
 #' 
 #' @examples
-#' library(QFeatures)
 #' data(ft)
 #' corrMatrix(assay(ft, 1))
 #' 
@@ -15,7 +14,6 @@
 #' # Shiny module
 #' #------------------------------------------
 #' if(interactive()){
-#' library(DaparToolshed)
 #' data(ft_na)
 #'  ui <- mod_ds_seExplorer_ui('plot')
 #' 
@@ -68,6 +66,13 @@ mod_ds_seExplorer_server <- function(id,
                                      digits = reactive({3})
                                      ){ 
   
+  if (! requireNamespace("SummarizedExperiment", quietly = TRUE)) {
+    stop("Please install SummarizedExperiment: BiocManager::install('SummarizedExperiment')")
+  }
+  
+  if (! requireNamespace("DaparToolshed", quietly = TRUE)) {
+    stop("Please install DaparToolshed: BiocManager::install('DaparToolshed')")
+  }
   
   moduleServer(id, function(input, output, session){
     ns <- session$ns
@@ -76,7 +81,7 @@ mod_ds_seExplorer_server <- function(id,
       req(se())
       stopifnot (inherits(se(), "SummarizedExperiment"))
       
-      tags <- unique(rowData(se())$qMetadata)
+      tags <- unique(SummarizedExperiment::rowData(se())$qMetadata)
       mod_colorLegend_server('legend', 
                              tags, 
                              ExtendPalette(length(tags), 'Dark2'))
@@ -94,7 +99,7 @@ mod_ds_seExplorer_server <- function(id,
 #       dt <- DT::datatable(  data,
 #                             extensions = c('Scroller', 'Buttons'),
 #                             rownames=  FALSE,
-#                             options=list(initComplete = initComplete(),
+#                             options=list(initComplete = .initComplete(),
 #                                          dom = 'Brtip',
 #                                          pageLength=10,
 #                                          orderClasses = TRUE,
@@ -119,7 +124,7 @@ mod_ds_seExplorer_server <- function(id,
     output$metadata_ui <- DT::renderDT({
       req(se())
       
-      rdata <- rowData(se())
+      rdata <- SummarizedExperiment::rowData(se())
       # Delete columns that are not one-dimensional
       rdata <- rdata[, - which(colnames(rdata) == 'adjacencyMatrix')]
       rdata <- rdata[, - which(colnames(rdata) == 'qMetadata')]
@@ -162,11 +167,11 @@ mod_ds_seExplorer_server <- function(id,
     
     output$qdata_ui <- DT::renderDataTable(server=TRUE,{
       req(se())
-      df <- cbind(keyId = rowData(se())[, idcol(se())],
-                  round(assay(se()), digits = digits()), 
-                  qMetadata(se())
+      df <- cbind(keyId = SummarizedExperiment::rowData(se())[, DaparToolshed::idcol(se())],
+                  round(SummarizedExperiment::assay(se()), digits = digits()), 
+                  DaparToolshed::qMetadata(se())
                   )
-      mc <- qMetadata.def(typeDataset(se()))
+      mc <- DaparToolshed::qMetadata.def(DaparToolshed::typeDataset(se()))
       colors <- as.list(setNames(mc$color, mc$node))
       
       DT::datatable( df,
@@ -200,20 +205,20 @@ mod_ds_seExplorer_server <- function(id,
     })
     
 
-    getDataForExprs <- reactive({
-      req(se())
-      test.table <- round(assay(se()), digits=10)
-      test.table <- tibble::as_tibble(test.table)
-      
-      addon.table <- matrix(rep(NA,
-                                ncol(test.table) * nrow(test.table)), 
-                            nrow = nrow(test.table)
-                            )
-      addon.table <- tibble::as_tibble(addon.table)
-      test.table <- cbind(test.table, addon.table)
-
-      test.table
-    })
+    # getDataForExprs <- reactive({
+    #   req(se())
+    #   test.table <- round(SummarizedExperiment::assay(se()), digits=10)
+    #   test.table <- tibble::as_tibble(test.table)
+    #   
+    #   addon.table <- matrix(rep(NA,
+    #                             ncol(test.table) * nrow(test.table)), 
+    #                         nrow = nrow(test.table)
+    #                         )
+    #   addon.table <- tibble::as_tibble(addon.table)
+    #   test.table <- cbind(test.table, addon.table)
+    # 
+    #   test.table
+    # })
   
   })
   

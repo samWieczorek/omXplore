@@ -46,7 +46,6 @@ A violinplot
 xxxx
 }
 \examples{
-library(QFeatures)
 data(ft)
 conds <- colData(ft)$Condition
 violinPlot(assay(ft, 1), conds)

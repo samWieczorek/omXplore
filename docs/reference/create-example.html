@@ -51,7 +51,7 @@ the class QFeatures."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/
 
     <div class="ref-description">
     <p>This function builds a dataset which is an instance of
-the class <a href="https://rdrr.io/pkg/QFeatures/man/QFeatures-class.html" class="external-link">QFeatures</a>.</p>
+the class <code>QFeatures</code>.</p>
     </div>
 
     <div id="ref-usage">
@@ -66,7 +66,7 @@ example dataset contains missing values or not. Default is FALSE.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>An instance of class <a href="https://rdrr.io/pkg/QFeatures/man/QFeatures-class.html" class="external-link">QFeatures</a></p>
+    <p>An instance of class <code>QFeatures</code></p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -76,9 +76,14 @@ example dataset contains missing values or not. Default is FALSE.</p></dd>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">create_ft_example</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in createQFeatures(data = data, sample = sample, indQData = 2:7,     keyId = "ID", analysis = "test", indQMetadata = 9:14, typeDataset = "peptide",     parentProtId = "Proteins", force.na = TRUE, software = "maxquant"):</span> could not find function "createQFeatures"</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>replacing previous import 'DT::dataTableOutput' by 'shiny::dataTableOutput' when loading 'DaparToolshed'</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>replacing previous import 'DT::renderDataTable' by 'shiny::renderDataTable' when loading 'DaparToolshed'</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>replacing previous import 'shiny::dataTableOutput' by 'DT::dataTableOutput' when loading 'DaparToolshed'</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>replacing previous import 'shiny::renderDataTable' by 'DT::renderDataTable' when loading 'DaparToolshed'</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>replacing previous import 'QFeatures::show' by 'shinyjs::show' when loading 'DaparToolshed'</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in colData(object):</span> could not find function "colData"</span>
 <span class="r-in"><span class="fu">create_ft_example</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in createQFeatures(data = data, sample = sample, indQData = 2:7,     keyId = "ID", analysis = "test", indQMetadata = 9:14, typeDataset = "peptide",     parentProtId = "Proteins", force.na = TRUE, software = "maxquant"):</span> could not find function "createQFeatures"</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in colData(object):</span> could not find function "colData"</span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>

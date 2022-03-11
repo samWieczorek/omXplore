@@ -26,7 +26,6 @@ NA
 xxxx
 }
 \examples{
-library(QFeatures)
 data(ft)
 corrMatrix(assay(ft, 1))
 
@@ -35,7 +34,6 @@ corrMatrix(assay(ft, 1))
 # Shiny module
 #------------------------------------------
 if(interactive()){
-library(DaparToolshed)
 data(ft_na)
  ui <- mod_ds_seExplorer_ui('plot')
 

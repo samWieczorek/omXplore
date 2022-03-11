@@ -76,34 +76,29 @@ Three modes of selection are implemented:</p><ul><li><p>'Protein list': xxx,</p>
 <dt>se</dt>
 <dd><p>A instance of the class <code>SummarizedExperiment</code></p></dd>
 </dl></div>
-    <div id="value">
-    <h2>Value</h2>
-    <p>NA
-A <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code> of integers</p>
-    </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
 <span class="r-in"></span>
-<span class="r-in"><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/tagList.html" class="external-link">tagList</a></span><span class="op">(</span></span>
+<span class="r-in"><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu">tagList</span><span class="op">(</span></span>
 <span class="r-in">  <span class="fu">mod_seTracker_ui</span><span class="op">(</span><span class="st">'track'</span><span class="op">)</span>,</span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/htmlOutput.html" class="external-link">uiOutput</a></span><span class="op">(</span><span class="st">'show'</span><span class="op">)</span></span>
+<span class="r-in">  <span class="fu">uiOutput</span><span class="op">(</span><span class="st">'show'</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactiveVal.html" class="external-link">reactiveVal</a></span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in">  <span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">reactiveVal</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-in">  </span>
 <span class="r-in">  <span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">mod_seTracker_server</span><span class="op">(</span>id <span class="op">=</span> <span class="st">'track'</span>,</span>
-<span class="r-in">                              se <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="op">{</span><span class="va">ft</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">}</span><span class="op">)</span></span>
+<span class="r-in">                              se <span class="op">=</span> <span class="fu">reactive</span><span class="op">(</span><span class="op">{</span><span class="va">ft</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">}</span><span class="op">)</span></span>
 <span class="r-in">  <span class="op">)</span></span>
 <span class="r-in">  </span>
-<span class="r-in">  <span class="va">output</span><span class="op">$</span><span class="va">show</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderUI.html" class="external-link">renderUI</a></span><span class="op">(</span><span class="op">{</span></span>
-<span class="r-in">    <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html" class="external-link">p</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu">tmp</span><span class="op">(</span><span class="op">)</span>, collapse <span class="op">=</span> <span class="st">' '</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in">  <span class="va">output</span><span class="op">$</span><span class="va">show</span> <span class="op">&lt;-</span> <span class="fu">renderUI</span><span class="op">(</span><span class="op">{</span></span>
+<span class="r-in">    <span class="fu">p</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu">tmp</span><span class="op">(</span><span class="op">)</span>, collapse <span class="op">=</span> <span class="st">' '</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in">  <span class="op">}</span><span class="op">)</span></span>
 <span class="r-in">  </span>
 <span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span>ui<span class="op">=</span><span class="va">ui</span>, server<span class="op">=</span><span class="va">server</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu">shinyApp</span><span class="op">(</span>ui<span class="op">=</span><span class="va">ui</span>, server<span class="op">=</span><span class="va">server</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">}</span></span>
 </code></pre></div>
     </div>

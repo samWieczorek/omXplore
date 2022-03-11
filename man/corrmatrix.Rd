@@ -33,7 +33,6 @@ the gradient of colors}
 xxxx
 }
 \examples{
-library(QFeatures)
 data(ft)
 corrMatrix(assay(ft, 1))
 

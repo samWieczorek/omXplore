@@ -7,7 +7,6 @@
 #' @name plot-variance
 #' 
 #' @examples
-#' library(QFeatures)
 #' data(ft)
 #' CVDist(assay(ft, 1), colData(ft)$Condition)
 #' 
@@ -52,7 +51,7 @@ mod_ds_variance_ui <- function(id){
 #' @param id shiny id
 #' @param data xxx
 #' @param conds A `character()` representings the condition for 
-#' each sample of the [QFeatures] object.
+#' each sample of the `QFeatures` object.
 #' @param pal.name xxx
 #' 
 #' @importFrom shiny NS tagList

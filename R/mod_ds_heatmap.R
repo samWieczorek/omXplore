@@ -7,7 +7,6 @@
 #' @name heatmaps
 #' 
 #' @examples
-#' library(QFeatures)
 #' data(ft_na)
 #' heatmapD(assay(ft_na, 1), colData(ft_na)$Condition)
 #' mv.heatmap(assay(ft_na, 1))

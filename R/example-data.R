@@ -2,12 +2,12 @@
 #' 
 #' @description 
 #' This function builds a dataset which is an instance of
-#' the class [QFeatures].
+#' the class `QFeatures`.
 #' 
 #' @param with.na A `logical(1)` which indicates whether the
 #' example dataset contains missing values or not. Default is FALSE.
 #' 
-#' @return An instance of class [QFeatures]
+#' @return An instance of class `QFeatures`
 #' 
 #' @author Samuel Wieczorek
 #' 
@@ -22,11 +22,13 @@
 #' @importFrom utils read.table
 #' 
 create_ft_example <- function(with.na = FALSE){
-  
+  if (! requireNamespace("QFeatures", quietly = TRUE)) {
+    stop("Please install QFeatures: BiocManager::install('QFeatures')")
+  }
   filename <- if (with.na) "ft-data-na.txt" else "ft-data.txt"
   data.file <- system.file("extdata", 
                            filename, 
-                           package="DaparToolshed")
+                           package="ProteomicsExplorer")
   data <- read.table(data.file, 
                      header=TRUE, 
                      sep="\t", 
@@ -35,23 +37,23 @@ create_ft_example <- function(with.na = FALSE){
   
   sample.file <- system.file("extdata", 
                              "ft-samples.txt", 
-                             package="DaparToolshed")
+                             package="ProteomicsExplorer")
   sample <- read.table(sample.file, 
                        header=TRUE, 
                        sep="\t", 
                        as.is=TRUE, 
                        stringsAsFactors = FALSE)
 
-  tmp.qf <- createQFeatures(data = data,
-                            sample = sample,
-                            indQData = 2:7,
-                            keyId = 'ID',
-                            analysis = 'test',
-                            indQMetadata = 9:14,
-                            typeDataset = 'peptide',
-                            parentProtId = 'Proteins',
-                            force.na = TRUE,
-                            software = 'maxquant')
+  tmp.qf <- DaparToolshed::createQFeatures(data = data,
+                                           sample = sample,
+                                           indQData = 2:7,
+                                           keyId = 'ID',
+                                           analysis = 'test',
+                                           indQMetadata = 9:14,
+                                           typeDataset = 'peptide',
+                                           parentProtId = 'Proteins',
+                                           force.na = TRUE,
+                                           software = 'maxquant')
 
   
   if(with.na){

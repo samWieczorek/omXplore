@@ -94,10 +94,14 @@ mod_plots_cc_ui <- function(id) {
 #' @name mod_plots_cc_server
 #' @rdname connected-components
 mod_plots_cc_server <- function(input, output, session,
-                                cc, matAdj, obj){
+                                cc, 
+                                matAdj, 
+                                obj, settings){
   
   ns <- session$ns
-  
+  if (! requireNamespace("SummarizedExperiment", quietly = TRUE)) {
+    stop("Please install SummarizedExperiment: BiocManager::install('SummarizedExperiment')")
+  }
   rv.cc <- reactiveValues(
     ## selected CC in global CC list (tab or plot)
     selectedCC = NULL,
@@ -118,7 +122,8 @@ mod_plots_cc_server <- function(input, output, session,
   
   output$pepInfoUI <- renderUI({
     obj()
-    selectInput(ns('pepInfo'), "PepInfo", choices=colnames(rowData(obj())),
+    selectInput(ns('pepInfo'), "PepInfo", 
+                choices=colnames(SummarizedExperiment::rowData(obj())),
                 multiple=TRUE)
   })
   
@@ -186,7 +191,8 @@ mod_plots_cc_server <- function(input, output, session,
                            index = 1:length(local))
       
       if (!is.null( tooltip)){
-        df <- cbind(df,rowData(obj())[ tooltip])
+        df <- cbind(df,
+                    SummarizedExperiment::rowData(obj())[ tooltip])
       }
       
       colnames(df) <- gsub(".", "_", colnames(df), fixed=TRUE)
@@ -198,7 +204,7 @@ mod_plots_cc_server <- function(input, output, session,
       clickFun <-
         JS(paste0("function(event) {Shiny.onInputChange('",ns("eventPointClicked"),"', [this.index]+'_'+ [this.series.name]);}"))
       
-      pipeline$tempplot$plotCC <-  plotJitter_rCharts(df,clickFunction=clickFun)
+      pipeline$tempplot$plotCC <-  plotJitter_hc(df,clickFunction=clickFun)
       
     })
     pipeline$tempplot$plotCC
@@ -210,7 +216,6 @@ mod_plots_cc_server <- function(input, output, session,
   output$CCMultiMulti <- renderDT({
     Get_CC_Multi2Any()
     
-    print(Get_CC_Multi2Any())
     
     df <- do.call(rbind,lapply(cc()[Get_CC_Multi2Any()],
                                function(x){
@@ -224,7 +229,7 @@ mod_plots_cc_server <- function(input, output, session,
                          selection = 'single',
                          rownames=FALSE,
                          extensions = c('Scroller', 'Buttons'),
-                         options=list(initComplete = initComplete(),
+                         options=list(initComplete = .initComplete(),
                                       dom='Bfrtip',
                                       deferRender = TRUE,
                                       bLengthChange = FALSE,
@@ -292,7 +297,7 @@ mod_plots_cc_server <- function(input, output, session,
     )
     dt <- datatable( df,
                      extensions = c('Scroller'),
-                     options = list(initComplete = initComplete(),
+                     options = list(initComplete = .initComplete(),
                                     dom='rt',
                                     blengthChange = FALSE,
                                     ordering=FALSE,
@@ -317,21 +322,22 @@ mod_plots_cc_server <- function(input, output, session,
     
     
     ind <- 1:ncol(obj())
-    data <- getDataForExprs(obj())
+    data <- .getDataForExprs(obj())
     pepLine <- rv.cc$detailedselectedNode$sharedPepLabels
     indices <- unlist(lapply(pepLine, function(x){which(rownames(data)==x)}))
     data <- data[indices,c(ind, (ind + ncol(data)/2))]
     
     if(!is.null(input$pepInfo))
     {
-      data <- cbind(data, rowData(obj())[pepLine,input$pepInfo])
+      data <- cbind(data, 
+                    SummarizedExperiment::rowData(obj())[pepLine,input$pepInfo])
       colnames(data)[(1+ncol(data)-length(input$pepInfo)):ncol(data)] <- input$pepInfo
     }
     
     offset <- length(input$pepInfo)
     dt <- datatable( data,
                      extensions = c('Scroller'),
-                     options = list(initComplete = initComplete(),
+                     options = list(initComplete = .initComplete(),
                                     dom='rt',
                                     blengthChange = FALSE,
                                     ordering=FALSE,
@@ -346,7 +352,7 @@ mod_plots_cc_server <- function(input, output, session,
       DT::formatStyle(
         colnames(data)[1:((ncol(data)-offset)/2)],
         colnames(data)[(((ncol(data)-offset)/2)+1):(ncol(data)-offset)],
-        backgroundColor = DT::styleEqual(c("POV", "MEC"), c(rv.prostar$settings()$colorsTypeMV$POV, rv.prostar$settings()$colorsTypeMV$MEC)))
+        backgroundColor = DT::styleEqual(c("POV", "MEC"), c(settings()$colorsTypeMV$POV, settings()$colorsTypeMV$MEC)))
     
     dt
   })
@@ -362,14 +368,15 @@ mod_plots_cc_server <- function(input, output, session,
     if(is.null((rv.cc$detailedselectedNode$specPepLabels))){return(NULL)}
     
     ind <- 1:ncol(obj())
-    data <- getDataForExprs(obj())
+    data <- .getDataForExprs(obj())
     pepLine <-  rv.cc$detailedselectedNode$specPepLabels
     indices <- unlist(lapply(pepLine, function(x){which(rownames(data)==x)}))
     data <- data[indices,c(ind, (ind + ncol(data)/2))]
     
     if(!is.null(input$pepInfo))
     {
-      data <- cbind(data, rowData(obj())[pepLine,input$pepInfo])
+      data <- cbind(data, 
+                    SummarizedExperiment::rowData(obj())[pepLine,input$pepInfo])
       colnames(data)[(1+ncol(data)-length(input$pepInfo)):ncol(data)] <- input$pepInfo
     }
     
@@ -378,7 +385,7 @@ mod_plots_cc_server <- function(input, output, session,
     
     dt <- datatable( data,
                      extensions = c('Scroller'),
-                     options = list(initComplete = initComplete(),
+                     options = list(initComplete = .initComplete(),
                                     dom='rt',
                                     blengthChange = FALSE,
                                     ordering=FALSE,
@@ -393,7 +400,7 @@ mod_plots_cc_server <- function(input, output, session,
       DT::formatStyle(
         colnames(data)[1:((ncol(data)-offset)/2)],
         colnames(data)[(((ncol(data)-offset)/2)+1):(ncol(data)-offset)],
-        backgroundColor = DT::styleEqual(c("POV", "MEC"), c(rv.prostar$settings()$colorsTypeMV$POV, rv.prostar$settings()$colorsTypeMV$MEC)))
+        backgroundColor = DT::styleEqual(c("POV", "MEC"), c(settings()$colorsTypeMV$POV, settings()$colorsTypeMV$MEC)))
     
     dt
   })
@@ -462,7 +469,7 @@ mod_plots_cc_server <- function(input, output, session,
   #                        selection = 'single',
   #                        rownames=FALSE,
   #                        extensions = c('Scroller', 'Buttons'),
-  #                        options=list(initComplete = initComplete(),
+  #                        options=list(initComplete = .initComplete(),
   #                                     dom='Bfrtip',
   #                                     deferRender = TRUE,
   #                                     bLengthChange = TRUE,
@@ -508,7 +515,7 @@ mod_plots_cc_server <- function(input, output, session,
   #   
   #   dt <- datatable( data,
   #                    extensions = c('Scroller', 'Buttons'),
-  #                    options = list(initComplete = initComplete(),
+  #                    options = list(initComplete = .initComplete(),
   #                                   dom='Bfrtip',
   #                                   pageLength = 10,
   #                                   blengthChange = FALSE,
@@ -521,7 +528,7 @@ mod_plots_cc_server <- function(input, output, session,
   #     DT::formatStyle(
   #       colnames(data)[1:((ncol(data)-offset)/2)],
   #       colnames(data)[(((ncol(data)-offset)/2)+1):(ncol(data)-offset)],
-  #       backgroundColor = DT::styleEqual(c("POV", "MEC"), c(rv.prostar$settings()$colorsTypeMV$POV, rv.prostar$settings()$colorsTypeMV$MEC)))
+  #       backgroundColor = DT::styleEqual(c("POV", "MEC"), c(settings()$colorsTypeMV$POV, settings()$colorsTypeMV$MEC)))
   #   
   #   dt
   # })
@@ -533,7 +540,7 @@ mod_plots_cc_server <- function(input, output, session,
     line <- input$OneMultiDT_rows_selected
     
     ind <- 1:ncol(obj())
-    data <- getDataForExprs(obj())
+    data <- .getDataForExprs(obj())
     pepLine <- as.numeric(unlist(BuildOne2MultiTab()[line,"peptides"]))
     
     indices <- unlist(lapply(pepLine, function(x){which(rownames(data)==x)}))
@@ -542,7 +549,8 @@ mod_plots_cc_server <- function(input, output, session,
     
     if(!is.null(input$pepInfo))
     {
-      data <- cbind(data, rowData(obj())[pepLine,input$pepInfo])
+      data <- cbind(data, 
+                    SummarizedExperiment::rowData(obj())[pepLine,input$pepInfo])
       colnames(data)[(1+ncol(data)-length(input$pepInfo)):ncol(data)] <- input$pepInfo
     }
   })
@@ -559,7 +567,7 @@ mod_plots_cc_server <- function(input, output, session,
   #                        selection = 'single',
   #                        rownames=FALSE,
   #                        extensions = c('Scroller', 'Buttons'),
-  #                        options=list(initComplete = initComplete(),
+  #                        options=list(initComplete = .initComplete(),
   #                                     dom='Bfrtip',
   #                                     deferRender = TRUE,
   #                                     bLengthChange = FALSE,
@@ -604,7 +612,7 @@ mod_plots_cc_server <- function(input, output, session,
   #   
   #   dt <- datatable( data,
   #                    extensions = c('Scroller', 'Buttons'),
-  #                    options = list(initComplete = initComplete(),
+  #                    options = list(initComplete = .initComplete(),
   #                                   dom='Bfrtip',
   #                                   blengthChange = FALSE,
   #                                   pageLength = 10,
@@ -617,7 +625,7 @@ mod_plots_cc_server <- function(input, output, session,
   #     DT::formatStyle(
   #       colnames(data)[1:((ncol(data)-offset)/2)],
   #       colnames(data)[(((ncol(data)-offset)/2)+1):(ncol(data)-offset)],
-  #       backgroundColor = DT::styleEqual(c("POV", "MEC"), c(rv.prostar$settings()$colorsTypeMV$POV, rv.prostar$settings()$colorsTypeMV$MEC)))
+  #       backgroundColor = DT::styleEqual(c("POV", "MEC"), c(settings()$colorsTypeMV$POV, settings()$colorsTypeMV$MEC)))
   #   
   #   dt
   # })
@@ -631,14 +639,15 @@ mod_plots_cc_server <- function(input, output, session,
     line <- input$OneOneDT_rows_selected
     
     ind <- 1:ncol(obj())
-    data <- getDataForExprs(obj())
+    data <- .getDataForExprs(obj())
     pepLine <- as.numeric(BuildOne2OneTab()[line,2])
     indices <- unlist(lapply(pepLine, function(x){which(rownames(data)==x)}))
     data <- data[indices,c(ind, (ind + ncol(data)/2))]
     
     if(!is.null(input$pepInfo))
     {
-      data <- cbind(data, rowData(obj())[pepLine,input$pepInfo])
+      data <- cbind(data, 
+                    SummarizedExperiment::rowData(obj())[pepLine,input$pepInfo])
       colnames(data)[(1+ncol(data)-length(input$pepInfo)):ncol(data)] <- input$pepInfo
     }
     data

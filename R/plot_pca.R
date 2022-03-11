@@ -4,7 +4,6 @@
 #' @param var.scaling The dimensions to plot
 #' @param ncp A `integer(1)` which represents the umber of dimensions kept in the results.
 #' 
-#' @importFrom FactoMineR PCA
 #' @importFrom stats na.omit
 #' 
 #' @export
@@ -15,6 +14,13 @@ wrapper_pca <- function(data,
                         conds, 
                         var.scaling = TRUE, 
                         ncp = NULL){
+  
+  if (!requireNamespace("FactoMineR", quietly = TRUE)) {
+    stop(
+      "Package \"FactoMineR\" must be installed to use this function.",
+      call. = FALSE
+    )
+  }
   
   if(missing(data))
     stop("'data' is missing.")
@@ -42,7 +48,7 @@ wrapper_pca <- function(data,
     ncp <- min(n, nmax)
   }
   
-  res.pca <- FactoMineR::PCA(data, 
+  res.pca <- FactoMineR::PCA(data,
                              scale.unit = var.scaling, 
                              ncp = ncp, 
                              graph = FALSE
@@ -50,58 +56,6 @@ wrapper_pca <- function(data,
   
   return(res.pca)
 }
-
-
-
-#' #' @param res.pca Result of FactoMineR::PCA
-#' #' @param chosen.axes The dimensions to plot
-#' #' 
-#' #' @author Samuel Wieczorek, Enora Fremy
-#' #' 
-#' #' @importFrom factoextra fviz_pca_var
-#' #' 
-#' #' @export
-#' #' 
-#' #' @rdname ds-pca
-#' #' 
-#' plotPCA_Var <- function(res.pca = NULL, 
-#'                         chosen.axes = c(1, 2)){
-#'   if (is.null(res.pca))
-#'     return(NULL)
-#'   
-#'   fviz_pca_var(res.pca, 
-#'                axes = chosen.axes,
-#'                col.var = "cos2",
-#'                gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
-#'                repel = TRUE
-#'                )
-#' }
-
-
-
-#' #' @param res.pca Result of FactoMineR::PCA
-#' #' @param axes The dimensions to plot
-#' #' @param geom xxx
-#' #' 
-#' #' @author Samuel Wieczorek, Enora Fremy
-#' #' 
-#' #' @importFrom factoextra fviz_pca_ind
-#' #' 
-#' #' @export
-#' #' 
-#' #' @rdname ds-pca
-#' #' 
-#' plotPCA_Ind <- function(res.pca, chosen.axes = c(1,2)){
-#'   if (is.null(res.pca))
-#'     return(NULL)
-#'   
-#'   fviz_pca_ind(res.pca,
-#'                axes = chosen.axes,
-#'                geom  ="point")
-#'   
-#' }
-
-
 
 
 

@@ -187,6 +187,9 @@
     <loc>/reference/ds-pca.html</loc>
   </url>
   <url>
+    <loc>/reference/ds-plots.html</loc>
+  </url>
+  <url>
     <loc>/reference/Example_Palette.html</loc>
   </url>
   <url>
@@ -203,6 +206,12 @@
   </url>
   <url>
     <loc>/reference/formatPHResults.html</loc>
+  </url>
+  <url>
+    <loc>/reference/ft.html</loc>
+  </url>
+  <url>
+    <loc>/reference/ft_na.html</loc>
   </url>
   <url>
     <loc>/reference/fudge2LRT.html</loc>
@@ -565,6 +574,9 @@
     <loc>/reference/palette.html</loc>
   </url>
   <url>
+    <loc>/reference/pca-plots.html</loc>
+  </url>
+  <url>
     <loc>/reference/pca_plots.html</loc>
   </url>
   <url>
@@ -578,6 +590,12 @@
   </url>
   <url>
     <loc>/reference/Pipelines.html</loc>
+  </url>
+  <url>
+    <loc>/reference/plot-mv.html</loc>
+  </url>
+  <url>
+    <loc>/reference/plot-variance.html</loc>
   </url>
   <url>
     <loc>/reference/plotJitterCC.html</loc>

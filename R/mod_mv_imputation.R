@@ -5,7 +5,7 @@
 #' This method shows density plots which represents the repartition of
 #' Partial Observed Values for each replicate in the dataset.
 #' The colors correspond to the different conditions (Condition in colData of
-#' the object of class [QFeatures]).
+#' the object of class `QFeatures`).
 #' The x-axis represent the mean of intensity for one condition and one
 #' entity in the dataset (i. e. a protein) 
 #' whereas the y-axis count the number of observed values for this entity
@@ -31,8 +31,6 @@
 #' @author Samuel Wieczorek, Enora Fremy
 #' 
 #' @examples
-#' 
-#' library(QFeatures)
 #' data(ft_na)
 #' data <- assay(ft_na, 1)
 #' conds <- colData(ft_na)$Condition
@@ -41,8 +39,7 @@
 #' # xxx
 #' #-----------------------------
 #' 
-#' mv.pov.density(data, conds)
-#' 
+#' mv.density(ft_na[[1]], conds, pattern = 'missing MEC')
 #' 
 #' mv.mec.heatmap(ft_na[[1]], conds)
 #' 
@@ -101,7 +98,9 @@ mod_mv_imputation_server <- function(id,
                                      conds = NULL,
                                      pal.name = reactive({NULL})
                                      ){
-
+  if (! requireNamespace("SummarizedExperiment", quietly = TRUE)) {
+    stop("Please install SummarizedExperiment: BiocManager::install('SummarizedExperiment')")
+  }
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 
@@ -116,9 +115,10 @@ mod_mv_imputation_server <- function(id,
       req(se())
 
       withProgress(message = 'Making MV Intensity plot', value = 100, {
-        mv.pov.density(data = assay(se()),
-                       conds = conds,
-                       pal.name = pal.name())
+        mv.density(se = SummarizedExperiment::assay(se()),
+                   conds = conds,
+                   pal.name = pal.name(),
+                   pattern = 'missing POV')
         })
     })
 

@@ -47,7 +47,7 @@ numeric matrix. — intensity-plots"><meta property="og:description" content="xx
     <div class="page-header">
     <h1>Displays a correlation matrix of the quantitative data of a
 numeric matrix.</h1>
-    <small class="dont-index">Source: <a href="https://github.com/samWieczorek/DaparToolshed/blob/HEAD/R/mod_intensity.R" class="external-link"><code>R/mod_intensity.R</code></a>, <a href="https://github.com/samWieczorek/DaparToolshed/blob/HEAD/R/plot_boxplot.R" class="external-link"><code>R/plot_boxplot.R</code></a>, <a href="https://github.com/samWieczorek/DaparToolshed/blob/HEAD/R/plot_violin.R" class="external-link"><code>R/plot_violin.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/samWieczorek/DaparToolshed/blob/HEAD/R/mod_ds_intensity.R" class="external-link"><code>R/mod_ds_intensity.R</code></a>, <a href="https://github.com/samWieczorek/DaparToolshed/blob/HEAD/R/plot_boxplot.R" class="external-link"><code>R/plot_boxplot.R</code></a>, <a href="https://github.com/samWieczorek/DaparToolshed/blob/HEAD/R/plot_violin.R" class="external-link"><code>R/plot_violin.R</code></a></small>
     <div class="hidden name"><code>intensity-plots.Rd</code></div>
     </div>
 
@@ -56,9 +56,9 @@ numeric matrix.</h1>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">mod_intensity_ui</span><span class="op">(</span><span class="va">id</span><span class="op">)</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">mod_ds_intensity_ui</span><span class="op">(</span><span class="va">id</span><span class="op">)</span>
 
-<span class="fu">mod_intensity_server</span><span class="op">(</span><span class="va">id</span>, <span class="va">se</span>, <span class="va">conds</span>, <span class="va">...</span><span class="op">)</span>
+<span class="fu">mod_ds_intensity_server</span><span class="op">(</span><span class="va">id</span>, <span class="va">se</span>, <span class="va">conds</span>, <span class="va">...</span><span class="op">)</span>
 
 <span class="fu">boxPlot</span><span class="op">(</span><span class="va">data</span>, <span class="va">conds</span>, subset <span class="op">=</span> <span class="cn">NULL</span>, pal.name <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
 
@@ -96,18 +96,18 @@ A violinplot</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RforMassSpectrometry/QFeatures" class="external-link">QFeatures</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">ft</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">ft</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">conds</span> <span class="op">&lt;-</span> <span class="fu">colData</span><span class="op">(</span><span class="va">ft</span><span class="op">)</span><span class="op">$</span><span class="va">Condition</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in colData(ft):</span> could not find function "colData"</span>
 <span class="r-in"><span class="fu">violinPlot</span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">ft</span>, <span class="fl">1</span><span class="op">)</span>, <span class="va">conds</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in violinPlot(assay(ft, 1), conds):</span> could not find function "violinPlot"</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in assay(ft, 1):</span> could not find function "assay"</span>
 <span class="r-in"><span class="fu">violinPlot</span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">ft</span>, <span class="fl">1</span><span class="op">)</span>, <span class="va">conds</span>, subset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in violinPlot(assay(ft, 1), conds, subset = c(2, 4)):</span> could not find function "violinPlot"</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in assay(ft, 1):</span> could not find function "assay"</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu">boxPlot</span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">ft</span>, <span class="fl">1</span><span class="op">)</span>, <span class="va">conds</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in boxPlot(assay(ft, 1), conds):</span> could not find function "boxPlot"</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in assay(ft, 1):</span> could not find function "assay"</span>
 <span class="r-in"><span class="fu">boxPlot</span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">ft</span>, <span class="fl">1</span><span class="op">)</span>, <span class="va">conds</span>, subset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in boxPlot(assay(ft, 1), conds, subset = c(2, 4)):</span> could not find function "boxPlot"</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in assay(ft, 1):</span> could not find function "assay"</span>
 <span class="r-in"></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">#------------------------------------------</span></span>
@@ -115,15 +115,15 @@ A violinplot</p>
 <span class="r-in"><span class="co">#------------------------------------------</span></span>
 <span class="r-in"><span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">ft</span><span class="op">)</span></span>
-<span class="r-in"> <span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu">mod_intensity_ui</span><span class="op">(</span><span class="st">'iplot'</span><span class="op">)</span></span>
+<span class="r-in"> <span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu">mod_ds_intensity_ui</span><span class="op">(</span><span class="st">'iplot'</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"> <span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="fu">mod_intensity_server</span><span class="op">(</span><span class="st">'iplot'</span>, </span>
-<span class="r-in">                       <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="op">{</span><span class="va">ft</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">}</span><span class="op">)</span>,</span>
+<span class="r-in">  <span class="fu">mod_ds_intensity_server</span><span class="op">(</span><span class="st">'iplot'</span>, </span>
+<span class="r-in">                       <span class="fu">reactive</span><span class="op">(</span><span class="op">{</span><span class="va">ft</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">}</span><span class="op">)</span>,</span>
 <span class="r-in">                       <span class="fu">colData</span><span class="op">(</span><span class="va">ft</span><span class="op">)</span><span class="op">$</span><span class="va">Condition</span></span>
 <span class="r-in">                       <span class="op">)</span><span class="op">}</span></span>
 <span class="r-in"> </span>
-<span class="r-in"> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span>ui<span class="op">=</span><span class="va">ui</span>, server<span class="op">=</span><span class="va">server</span><span class="op">)</span></span>
+<span class="r-in"> <span class="fu">shinyApp</span><span class="op">(</span>ui<span class="op">=</span><span class="va">ui</span>, server<span class="op">=</span><span class="va">server</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">}</span></span>
 <span class="r-in"></span>
 <span class="r-in"></span>

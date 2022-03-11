@@ -7,7 +7,6 @@
 #' @name intensity-plots
 #' 
 #' @examples
-#' library(QFeatures)
 #' data(ft)
 #' conds <- colData(ft)$Condition
 #' violinPlot(assay(ft, 1), conds)
@@ -87,7 +86,10 @@ mod_ds_intensity_server <- function(id,
                                  se,
                                  conds,
                                  ...){
-
+  if (! requireNamespace("SummarizedExperiment", quietly = TRUE)) {
+    stop("Please install SummarizedExperiment: BiocManager::install('SummarizedExperiment')")
+  }
+  
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 
@@ -106,7 +108,7 @@ mod_ds_intensity_server <- function(id,
     
     output$box <- renderHighchart({
        withProgress(message = 'Making plot', value = 100, {
-        tmp <- boxPlot(data = assay(se()),
+        tmp <- boxPlot(data = SummarizedExperiment::assay(se()),
                         conds = conds,
                         subset = indices(),
                         ...)
@@ -131,7 +133,7 @@ mod_ds_intensity_server <- function(id,
       withProgress(message = 'Making plot', value = 100, {
         png(outfile)
         pattern <- paste0('test',".violinplot")
-        tmp <- violinPlot(assay(se()),
+        tmp <- violinPlot(SummarizedExperiment::assay(se()),
                            conds,
                            subset = indices(),
                            ...)

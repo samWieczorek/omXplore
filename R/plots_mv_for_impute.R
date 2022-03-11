@@ -1,91 +1,88 @@
 
-#' @param data An instance of a `matrix` containing numeric vales.
-#' @param conds A `character()` of the name of conditions (one condition per sample).
-#' @param title The title of the plot
+#' @param se xxx
+#' @param conds  A `character()` of the name of conditions (one condition per sample).
+#' 
 #' @param pal.name A `character(1)` which is the name of the palette (from
 #' the package [RColorBrewer] to use.
 #' 
+#' @param pattern xxx
+#' 
+#' @param typeofMV xxx
+#' 
+#' @param title The title of the plot
 #' @export
 #' 
-#' @import highcharter
-#' 
 #' @rdname plot-mv
-#' 
-mv.pov.density <- function(data,
-                           conds,
-                           pal.name = NULL){
+#'
+mv.density <- function(se,
+                       conds, 
+                       pal.name = NULL,
+                       pattern,
+                       typeofMV = NULL,
+                       title = NULL){
   
-  if(missing(data))
-    stop("'data' is required.")
+  stopifnot(inherits(se, 'SummarizedExperiment'))
   
-  stopifnot(inherits(data, 'matrix'))
-  
-  if(missing(conds))
-    stop("'conds' is required.")
-  
-  
-  myColors <- NULL
+  if (! requireNamespace("DaparToolshed", quietly = TRUE)) {
+    stop("Please install DaparToolshed: BiocManager::install('DaparToolshed')")
+  }
+  qData <- SummarizedExperiment::assay(se)
   uconds <- unique(conds)
   palette <- SampleColors(uconds, pal.name)
-  mTemp <- nbNA <- nbValues <- matrix(rep(0,nrow(data)*length(uconds)), 
-                                      nrow = nrow(data),
+  mTemp <- nbNA <- nbValues <- matrix(rep(0,nrow(qData)*length(uconds)), 
+                                      nrow = nrow(qData),
                                       dimnames = list(NULL, uconds)
-                                      )
+  )
+  
+  
   dataCond <- data.frame()
   ymax <- 0
   series <- list()
   myColors <- NULL
-  j <- 1
+  j <- 1 
+  
   for (iCond in uconds){
-    if (length(which(conds==iCond)) == 1){
-      
-      mTemp[,iCond] <- data[ ,which(conds==iCond)]
-      nbNA[,iCond] <- as.integer(is.OfType(data[,which(conds==iCond)]))
-      nbValues[,iCond] <- length(which(conds==iCond)) - nbNA[,iCond]
-    } else {
-      mTemp[,iCond] <- apply(data[,which(conds==iCond)], 1, mean, na.rm=TRUE)
-      nbNA[,iCond] <- apply(data[,which(conds==iCond)],1,function(x) length(which(is.na(x) == TRUE)))
-      nbValues[,iCond] <- length(which(conds==iCond)) - nbNA[,iCond]
-    }
-    
-    
-    for (i in 1:length(which(conds==iCond))){
-      data.tmp <- mTemp[which(nbValues[, iCond] == i), iCond]
-      tmp <- NULL    
-      if (length(data.tmp) >= 2)
-      {
-        tmp <- density(mTemp[which(nbValues[,iCond]==i),iCond])
-        tmp$y <- tmp$y + i
-        if (max(tmp$y) > ymax) { ymax <- max(tmp$y)}
+    ind.conds <- which(conds == iCond)
+    tags <- DaparToolshed::match.qMetadata(DaparToolshed::qMetadata(se)[, ind.conds], 
+                                           pattern = pattern, 
+                                           level = DaparToolshed::typeDataset(se))
+    for (l in 1:length(ind.conds)) {
+      browser()
+      ind <- which(rowSums(tags) == l)
+      tmp <- NULL
+      if (length(ind) > 0){
+        dat <- rowMeans(qData[ind, ind.conds], na.rm = TRUE)
+        tmp <- density(dat, na.rm = TRUE)
+        tmp$y <- tmp$y + l
       }
       series[[j]] <- tmp
-      myColors <- c(myColors, palette[which(unique(conds)==iCond)])
-      j <- j+1
+      myColors <- c(myColors, palette[which(uconds==iCond)])
+      j <- j + 1
     }
-    
   }
   
   axis.title <- list(x = "Mean of intensities",
-                     y = "Number of quantity values per condition")
+                     y = paste0("Number of '", pattern, "' per condition"))
   
-  hc <-  highchart() %>%
-    hc_title(text = "POV distribution") %>%
+  hc <-  highchart(type = "chart") %>%
+    hc_title(text = title) %>%
     customChart(chartType = "spline", zoomType="xy") %>%
     
-    hc_legend(align = "left", 
-              verticalAlign = "top",
+    hc_legend(align = "left", verticalAlign = "top",
               layout = "vertical") %>%
     hc_xAxis(title = list(text = axis.title$x)) %>%
     hc_yAxis(title = list(text = axis.title$y),
-             tickInterval= 1
-             ) %>%
+             tickInterval= 1) %>%
     hc_tooltip(headerFormat= '',
                pointFormat = "<b> {series.name} </b>: {point.y} ",
                valueDecimals = 2) %>%
-    customExportMenu(fname = "POV_distribution") %>%
+    customExportMenu(fname = paste0(pattern, "_distribution")) %>%
     hc_plotOptions(
       series=list(
         showInLegend = TRUE,
+        animation=list(
+          duration = 100
+        ),
         connectNulls= TRUE,
         marker=list(
           enabled = FALSE)
@@ -99,11 +96,11 @@ mv.pov.density <- function(data,
                                                            y = series[[i]]$y))), 
                         showInLegend=FALSE,
                         color = myColors[i],
-                        name=conds[i])
+                        name=  conds[i])
   }
   
   # add three empty series for the legend entries. Change color and marker symbol
-  for (c in 1:length(uconds)){
+  for (c in seq_len(length(uconds))){
     hc <-  hc_add_series(hc,data = data.frame(),
                          name = uconds[c],
                          color = palette[c],
@@ -111,19 +108,28 @@ mv.pov.density <- function(data,
                          type = "line")
   }
   
+  hc
   return(hc)
 }
 
 
 
-#' @param object An instance of a class `SummarizedExperiment`.
+
+
+
+
+#' @param se An instance of a class `SummarizedExperiment`.
 #' @param conds A `character()` of the name of conditions (one condition per sample).
 #' 
 #' @rdname plot-mv
 #' @export
 #' @importFrom stats setNames
+
 mv.mec.heatmap <- function(se, conds){
-  
+  if (! requireNamespace("SummarizedExperiment", quietly = TRUE)) {
+    stop("Please install SummarizedExperiment: BiocManager::install('SummarizedExperiment')")
+  }
+
   if(missing(se))
     stop("'se' is required.")
   stopifnot(inherits(se, "SummarizedExperiment"))
@@ -131,8 +137,8 @@ mv.mec.heatmap <- function(se, conds){
   if(missing(conds))
     stop("'conds' is required.")
 
-  stopifnot('qMetadata' %in% colnames(rowData(se)))
-  q.tmp <- rowData(se)[['qMetadata']]
+  stopifnot('qMetadata' %in% colnames(SummarizedExperiment::rowData(se)))
+  q.tmp <- SummarizedExperiment::rowData(se)[['qMetadata']]
   i_MEC <- which(apply(q.tmp == "missing MEC", 1, sum) >0)
   
   if (length(i_MEC)==0){
@@ -146,7 +152,7 @@ mv.mec.heatmap <- function(se, conds){
     return(NULL)
   }
   
-  data <- assay(se)[i_MEC,]
+  data <- SummarizedExperiment::assay(se)[i_MEC,]
   
   
   ### build indices of conditions

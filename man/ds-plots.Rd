@@ -56,8 +56,6 @@ number of missing values (NA) per lines (ie proteins) and per conditions,
 }
 
 \examples{
-library(QFeatures)
-library(DaparToolshed)
 data(ft)
 data(ft_na)
 
@@ -102,9 +100,6 @@ mvHisto(qData, conds, pal.name = pal)
 # Plots a histogram of missing values
 #----------------------------------------
 
-
-
-library(QFeatures)
 data(ft)
 mv.heatmap(assay(ft, 1))
 
