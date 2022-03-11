@@ -15,20 +15,16 @@ Authors@R: c(person(given = "Samuel", family = "Wieczorek",
             )
 Description: This package contains a collection of functions for the
     visualisation and the statistical analysis of proteomic data.
-    fsdfsd
-    fsd
-    sd sfsfs .
 License: Artistic-2.0
 Depends: R (>= 4.1.0)
 Imports:
-    Biobase,
     base64enc,
     DT,
-    grDevices,
     S4Vectors,
-    BiocGenerics,
     QFeatures,
     RColorBrewer,
+    htmlwidgets,
+    methods,
     graph,
     FactoMineR, 
     factoextra,
@@ -39,7 +35,6 @@ Imports:
     tidyr,
     visNetwork, 
     vioplot,
-    forcats,
     ggplot2,
     reshape2,
     shiny,

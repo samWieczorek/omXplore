@@ -25,7 +25,7 @@
 #' 
 #' #----------------------------------------
 #' # Launch a single shiny module
-#' The list of all plots module is avaiable
+#' # The list of all plots module is avaiable
 #' # with the function [listPlotModules()].
 #' # In the example, replace 'FOO' by the name of the module
 #' # and add the necessaray parameters

@@ -16,6 +16,10 @@ GraphPepProt_hc(X, type = "all")
 A histogram
 }
 \description{
+Method to plot the disrtibution (histogram) of peptides w.r.t the proteins with proteins and peptides
+in an adjacency matrix
+}
+\details{
 #' This function computes few values about the adjacency matrix such as the number of proteins that are only defined by
 #' specific peptides, shared peptides or a mixture of two.
 #'
@@ -73,10 +77,9 @@ protOnlyUniquePep =protOnlyUnique,
 protOnlySharedPep =protOnlyShared,
 protMixPep = protMix))
 }
-Method to plot the disrtibution (histogram) of peptides w.r.t the proteins with proteins and peptides
-in an adjacency matrix
 }
 \examples{
+require(QFeatures)
 data(ft)
 X <- adjacencyMatrix(ft[[1]])
 GraphPepProt_hc(X)

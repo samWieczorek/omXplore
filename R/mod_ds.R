@@ -5,14 +5,6 @@
 #' This method plots a bar plot which represents the distribution of the 
 #' number of missing values (NA) per lines (ie proteins).
 #' 
-#' @param qData A `data.frame` or `matrix` that contains the quantitative data.
-#' 
-#' @param conds A `character()` of condition name for each sample. The 
-#' length of 'conds' must be equal to the number of columns of 'qData'.
-#' 
-#' @param pal.name  A `character(1)` which is the name of the palette 
-#' (from the package [RColorBrewer]) to use.
-#' 
 #' 
 #' @details 
 #' 
@@ -48,7 +40,7 @@
 #' 
 #' - Histogram of missing values.
 #' 
-#' @name all-plots
+#' @name ds-plots
 #' 
 #' @return A plot
 #' 
@@ -130,7 +122,7 @@ NULL
 
 
 
-#' @rdname all-plots
+#' @rdname ds-plots
 #' @export
 listPlotModules <- function(){
   ll <- ls('package:ProteomicsExplorer')
@@ -149,7 +141,7 @@ listPlotModules <- function(){
 #'
 #' @importFrom shiny NS tagList
 #' @importFrom shinyjs useShinyjs
-#' @rdname all-plots
+#' @rdname ds-plots
 #' @export
 mod_ds_ui <- function(id){
   ns <- NS(id)
@@ -179,7 +171,7 @@ mod_ds_ui <- function(id){
 #' @importFrom base64enc dataURI
 #' @importFrom shinyjs show hide hidden
 #'
-#' @rdname descriptive-statistics
+#' @rdname ds-plots
 #' @export
 #'
 mod_ds_server <- function(id, object){
@@ -257,6 +249,7 @@ mod_ds_server <- function(id, object){
       } else {
         choices <- names(object())
       }
+      
       selectInput(ns('chooseDataset'), 'Dataset',
                   choices = choices,
                   selected = names(object())[length(object())],
@@ -269,7 +262,7 @@ mod_ds_server <- function(id, object){
     # Calls to server modules
     #
     mod_ds_seExplorer_server('mod_seExplorer_large',
-                             se = reactive({object()[[input$chooseDataset]]})
+                             se = reactive({current.se()})
                            )
     
     

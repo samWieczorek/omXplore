@@ -11,7 +11,7 @@ numeric matrix.}
 \usage{
 mod_ds_heatmap_ui(id)
 
-mod_ds_heatmap_server(id, se, conds, width = 900)
+mod_ds_heatmap_server(id, data, conds, width = 900)
 
 heatmapD(data, conds, distfun = "euclidean", hclustfun = "complete")
 
@@ -30,13 +30,11 @@ mv.heatmap(
 \arguments{
 \item{id}{xxx}
 
-\item{se}{xxx}
+\item{data}{A \code{matrix} or \code{array} quantitative values}
 
 \item{conds}{A \code{character()} of the conditions (one condition per sample).}
 
 \item{width}{xxx}
-
-\item{data}{A \code{matrix} or \code{array} quantitative values}
 
 \item{distfun}{A \code{character(1)} defining the distance used by the clustering
 algorithm to compute. Default value is 'euclidean'. See \code{help(heatmap.2)}}

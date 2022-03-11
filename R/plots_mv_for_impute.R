@@ -1,85 +1,5 @@
-#' @title Distribution of Observed values with respect to intensity values
-#' 
-#' @description 
-#' 
-#' This method shows density plots which represents the repartition of
-#' Partial Observed Values for each replicate in the dataset.
-#' The colors correspond to the different conditions (Condition in colData of
-#' the object of class [QFeatures]).
-#' The x-axis represent the mean of intensity for one condition and one
-#' entity in the dataset (i. e. a protein) 
-#' whereas the y-axis count the number of observed values for this entity
-#' and the considered condition.
-#' 
-#' @section xxx:
-#' 
-#' xxxx
-#' 
-#' @section missing value image:
-#' Plots a heatmap of the quantitative data. Each column represent one of
-#' the conditions in the object of class \code{MSnSet} and 
-#' the color is proportional to the mean of intensity for each line of
-#' the dataset.
-#' The lines have been sorted in order to visualize easily the different
-#' number of missing values. A white square is plotted for missing values.
-#' 
-#' 
-#' @name imputation
 
-#' @return A plot
-#' 
-#' @author Samuel Wieczorek, Enora Fremy
-#' 
-#' @examples
-#' 
-#' library(QFeatures)
-#' data(ft)
-#' qData <- assay(ft,1)
-#' conds <- design(ft)$Condition
-#' 
-#' #-----------------------------
-#' # xxx
-#' #-----------------------------
-#' 
-#' mvPlot.2(qData, conds)
-#' 
-#' mvPlot.2(Exp1_R25_pept, 2, title="POV distribution", palette=pal)
-#' 
-#' #-----------------------------
-#' # xxx
-#' #-----------------------------
-#' 
-#' data(ft_na)
-#' mvImage(ft_na[[1]], conds)
-#' 
-#' #-----------------------------
-#' # xxx
-#' #-----------------------------
-#' 
-#' if(interactive()){
-#'  library(QFeatures)
-#'  library(shiny)
-#'  library(DaparToolshed)
-#'  data(ft_na)
-#'  conds <- design(ft_na)$Condition
-#'  
-#'   
-#'  ui <- mod_imputation_plot_ui('plot')
-#' 
-#'  server <- function(input, output, session) {
-#'   mod_imputation_plot_server('plot',
-#'                           obj = reactive({ft_na[[1]]}),
-#'                           conds = reactive({conds}),
-#'                           pal.name = reactive({'Dark2'})
-#'                          )
-#'   }
-#'  
-#'  shinyApp(ui=ui, server=server)
-#' }
-NULL
-
-
-#' @param qData An instance of a `matrix` containing numeric vales.
+#' @param data An instance of a `matrix` containing numeric vales.
 #' @param conds A `character()` of the name of conditions (one condition per sample).
 #' @param title The title of the plot
 #' @param pal.name A `character(1)` which is the name of the palette (from
@@ -89,29 +9,26 @@ NULL
 #' 
 #' @import highcharter
 #' 
-#' @rdname imputation
+#' @rdname plot-mv
 #' 
-mvPlot.2 <- function(qData,
-                     conds,
-                     title = NULL,
-                     pal.name){
+mv.pov.density <- function(data,
+                           conds,
+                           pal.name = NULL){
   
-  if(missing(qData))
-    stop("'qData' is required.")
+  if(missing(data))
+    stop("'data' is required.")
   
-  stopifnot(inherits(qData, 'matrix'))
+  stopifnot(inherits(data, 'matrix'))
   
   if(missing(conds))
     stop("'conds' is required.")
   
-  if(missing(pal.name))
-    pal.name <- NULL
   
   myColors <- NULL
   uconds <- unique(conds)
   palette <- SampleColors(uconds, pal.name)
-  mTemp <- nbNA <- nbValues <- matrix(rep(0,nrow(qData)*length(uconds)), 
-                                      nrow = nrow(qData),
+  mTemp <- nbNA <- nbValues <- matrix(rep(0,nrow(data)*length(uconds)), 
+                                      nrow = nrow(data),
                                       dimnames = list(NULL, uconds)
                                       )
   dataCond <- data.frame()
@@ -119,24 +36,23 @@ mvPlot.2 <- function(qData,
   series <- list()
   myColors <- NULL
   j <- 1
-  
   for (iCond in uconds){
     if (length(which(conds==iCond)) == 1){
       
-      mTemp[,iCond] <- qData[,which(conds==iCond)]
-      nbNA[,iCond] <- as.integer(is.OfType(qData[,which(conds==iCond)]))
+      mTemp[,iCond] <- data[ ,which(conds==iCond)]
+      nbNA[,iCond] <- as.integer(is.OfType(data[,which(conds==iCond)]))
       nbValues[,iCond] <- length(which(conds==iCond)) - nbNA[,iCond]
     } else {
-      mTemp[,iCond] <- apply(qData[,which(conds==iCond)], 1, mean, na.rm=TRUE)
-      nbNA[,iCond] <- apply(qData[,which(conds==iCond)],1,function(x) length(which(is.na(x) == TRUE)))
+      mTemp[,iCond] <- apply(data[,which(conds==iCond)], 1, mean, na.rm=TRUE)
+      nbNA[,iCond] <- apply(data[,which(conds==iCond)],1,function(x) length(which(is.na(x) == TRUE)))
       nbValues[,iCond] <- length(which(conds==iCond)) - nbNA[,iCond]
     }
     
     
     for (i in 1:length(which(conds==iCond))){
-      data <- mTemp[which(nbValues[, iCond] == i), iCond]
+      data.tmp <- mTemp[which(nbValues[, iCond] == i), iCond]
       tmp <- NULL    
-      if (length(data) >= 2)
+      if (length(data.tmp) >= 2)
       {
         tmp <- density(mTemp[which(nbValues[,iCond]==i),iCond])
         tmp$y <- tmp$y + i
@@ -153,7 +69,7 @@ mvPlot.2 <- function(qData,
                      y = "Number of quantity values per condition")
   
   hc <-  highchart() %>%
-    hc_title(text = title) %>%
+    hc_title(text = "POV distribution") %>%
     customChart(chartType = "spline", zoomType="xy") %>%
     
     hc_legend(align = "left", 
@@ -203,23 +119,21 @@ mvPlot.2 <- function(qData,
 #' @param object An instance of a class `SummarizedExperiment`.
 #' @param conds A `character()` of the name of conditions (one condition per sample).
 #' 
-#' @rdname imputation
+#' @rdname plot-mv
 #' @export
 #' @importFrom stats setNames
-mvImage <- function(object,
-                    conds
-                    ){
+mv.mec.heatmap <- function(se, conds){
   
-  if(missing(object))
-    stop("'object' is required.")
-  stopifnot(inherits(object, "SummarizedExperiment"))
+  if(missing(se))
+    stop("'se' is required.")
+  stopifnot(inherits(se, "SummarizedExperiment"))
   
   if(missing(conds))
     stop("'conds' is required.")
 
-  stopifnot('qMetadata' %in% colnames(rowData(object)))
-  
-  i_MEC <- which(apply(qMetadata(object)=="missing MEC", 1, sum) >0)
+  stopifnot('qMetadata' %in% colnames(rowData(se)))
+  q.tmp <- rowData(se)[['qMetadata']]
+  i_MEC <- which(apply(q.tmp == "missing MEC", 1, sum) >0)
   
   if (length(i_MEC)==0){
     warning("The dataset contains no Missing value on Entire Condition (MEC). 
@@ -232,7 +146,7 @@ mvImage <- function(object,
     return(NULL)
   }
   
-  qData <- assay(object)[i_MEC,]
+  data <- assay(se)[i_MEC,]
   
   
   ### build indices of conditions
@@ -244,19 +158,19 @@ mvImage <- function(object,
                                grep(x, conds)), 
                       paste0('cond', seq_len(length(conds.names))))
   
-  nNA1 = apply(as.matrix(qData[,indCond$cond1]), 
+  nNA1 = apply(as.matrix(data[,indCond$cond1]), 
                1, 
                function(x) 
                  sum(is.na(x))
                )
-  nNA2 = apply(as.matrix(qData[,indCond$cond2]), 
+  nNA2 = apply(as.matrix(data[,indCond$cond2]), 
                1, 
                function(x) 
                  sum(is.na(x))
                )
   
   o <- order(((nNA1 + 1)^2) / (nNA2 + 1))
-  exprso <- qData[o,]
+  exprso <- data[o,]
   
   for (i in 1:nrow(exprso)){
     k <- order(exprso[i,indCond$cond1])
@@ -272,11 +186,11 @@ mvImage <- function(object,
   }
   
   colors <- colorRampPalette(c("yellow", "red"))(100)
-  mv.heatmap(exprso,
+  mv.heatmap(x = exprso,
                 col = colors,
-                key=TRUE,
-                srtCol= 0,
-                labCol=conds,
+                key = TRUE,
+                srtCol = 0,
+                labCol = conds,
                 ylab = "Peptides / proteins",
                 main = "MEC heatmap"
   )

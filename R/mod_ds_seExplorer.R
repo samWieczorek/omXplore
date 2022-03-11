@@ -62,7 +62,7 @@ mod_ds_seExplorer_ui <- function(id){
 #' @importFrom tibble as_tibble
 #' @importFrom stats setNames
 #' 
-#' @rdname QFeatures-explorer
+#' @rdname SE-explorer
 mod_ds_seExplorer_server <- function(id,
                                      se,
                                      digits = reactive({3})

@@ -9,7 +9,7 @@ customExportMenu(hc, fname)
 \arguments{
 \item{hc}{A highcharter object}
 
-\item{filename}{The filename under which the plot has to be saved}
+\item{fname}{The filename under which the plot has to be saved}
 }
 \value{
 A contextual menu for highcharts plots

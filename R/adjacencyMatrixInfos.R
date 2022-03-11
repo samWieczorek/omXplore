@@ -63,11 +63,15 @@
 
 
 
+
+#' @title Function to create a histogram that shows the repartition of
+#' peptides w.r.t. the proteins
+#' 
+#' @description 
+#' 
 #' Method to plot the disrtibution (histogram) of peptides w.r.t the proteins with proteins and peptides 
 #' in an adjacency matrix
 #' 
-#' @title Function to create a histogram that shows the repartition of
-#' peptides w.r.t. the proteins
 #' 
 #' @param X An adjacency matrix.
 #' 
@@ -78,12 +82,14 @@
 #' @author Alexia Dorffer, Samuel Wieczorek
 #' 
 #' @examples
+#' require(QFeatures)
 #' data(ft)
 #' X <- adjacencyMatrix(ft[[1]])
 #' GraphPepProt_hc(X)
 #' 
 #' @import highcharter
 #' @importFrom methods as 
+#' @importFrom QFeatures adjacencyMatrix
 #' 
 #' @export
 #' 

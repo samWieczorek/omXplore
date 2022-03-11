@@ -4,7 +4,7 @@
 #' 
 #' @param hc A highcharter object
 #' 
-#' @param filename The filename under which the plot has to be saved
+#' @param fname The filename under which the plot has to be saved
 #' 
 #' @return A contextual menu for highcharts plots
 #' 

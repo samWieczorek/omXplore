@@ -1,13 +1,7 @@
 context("Utils")
 
-require(DAPARdata2)
-data(Exp1_R2_pept)
-obj <- Exp1_R2_pept
-test <- Exp1_R2_pept[130:140]
-test2 <- Exp1_R2_pept[20:28]
+data(ft)
 
-
-# 
 # 
 # test_that("getProcessingInfo", {
 #     expect_equal(getProcessingInfo(Exp1_R2_pept), "Log2 tranformed data")

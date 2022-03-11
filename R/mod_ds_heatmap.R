@@ -78,7 +78,7 @@ mod_ds_heatmap_ui <- function(id){
 
 
 #' @param id xxx
-#' @param se xxx
+#' @param data xxx
 #' @param conds xxx
 #' @param width xxx
 #' @export
@@ -126,8 +126,8 @@ mod_ds_heatmap_server <- function(id,
         withProgress(message = 'Making plot', value = 100, {
           heatmapD(data = data(),
                    conds = conds,
-                   distance = input$distance,
-                   cluster = input$linkage)
+                   distfun = input$distance,
+                   hclustfun = input$linkage)
         })
       })
     })

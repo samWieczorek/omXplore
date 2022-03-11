@@ -3,12 +3,24 @@
 \name{SE-explorer}
 \alias{SE-explorer}
 \alias{mod_ds_seExplorer_ui}
+\alias{mod_ds_seExplorer_server}
 \title{Explore a \code{SummarizedExperiment} object}
 \usage{
 mod_ds_seExplorer_ui(id)
+
+mod_ds_seExplorer_server(id, se, digits = reactive({
+    3
+}))
 }
 \arguments{
 \item{id}{xxx}
+
+\item{se}{An instance of the class \code{SummarizedExperiment}}
+
+\item{digits}{xxx}
+}
+\value{
+NA
 }
 \description{
 xxxx
