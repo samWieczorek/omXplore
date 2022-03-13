@@ -31,7 +31,7 @@
 #' 
 NULL
 
-#' @param id xxx
+#' @param id A `character(1)` which is the id of the shiny module.
 #' @export
 #' @importFrom shiny NS tagList
 #' @rdname corrmatrix
@@ -46,7 +46,7 @@ mod_ds_corrmatrix_ui <- function(id){
   )
 }
 
-#' @param id xxx
+#' @param id A `character(1)` which is the id of the shiny module.
 #' @param data xxx
 #' @param rate xxx. Default value is 0.9
 #' @param showValues Default is FALSE.
@@ -55,9 +55,9 @@ mod_ds_corrmatrix_ui <- function(id){
 #' @rdname corrmatrix
 #'
 mod_ds_corrmatrix_server <- function(id,
-                                  data,
-                                  rate = reactive({0.5}),
-                                  showValues = reactive({FALSE})){
+                                     data,
+                                     rate = reactive({0.5}),
+                                     showValues = reactive({FALSE})){
 
   moduleServer(id, function(input, output, session) {
     ns <- session$ns

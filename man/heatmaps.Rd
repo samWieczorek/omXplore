@@ -28,11 +28,13 @@ mv.heatmap(
 )
 }
 \arguments{
-\item{id}{xxx}
+\item{id}{A \code{character(1)} which is the id of the shiny module.}
 
 \item{data}{A \code{matrix} or \code{array} quantitative values}
 
-\item{conds}{A \code{character()} of the conditions (one condition per sample).}
+\item{conds}{A \code{character()} of the name of conditions
+(one condition per sample). The number of conditions must be equal to
+the number of samples (number of columns) of the parameter 'data'.}
 
 \item{width}{xxx}
 

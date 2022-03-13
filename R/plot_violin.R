@@ -1,10 +1,13 @@
 #' @param data An instance of the class `matrix`
 #' 
-#' @param conds xxx
+#' @param conds A `character()` of the name of conditions 
+#' (one condition per sample). The number of conditions must be equal to
+#' the number of samples (number of columns) of the parameter 'data'.
 #' 
 #' @param subset A vector of index indicating rows to highlight
 #' 
-#' @param pal.name xxx
+#' @param pal.name A `character(1)` which is the name of the palette from the package
+#' [RColorBrewer] from which the colors are taken. Default value is 'Set1'.
 #' 
 #' @return A violinplot
 #' 

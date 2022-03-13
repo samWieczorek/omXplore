@@ -8,9 +8,8 @@
 #'
 #' @param n The number of desired colors in the palette
 #'
-#' @param pal.name The name of the palette of the package [RColorBrewer] from which
-#' the extended palette is built. Default value is 'Set1'. A `character(1)` which is the name of the palette from the package
-#' [RColorBrewer] from which the colors are taken.
+#' @param pal.name A `character(1)` which is the name of the palette from the package
+#' [RColorBrewer] from which the colors are taken. Default value is 'Set1'. 
 #' 
 #' @param conds A `character()` of conditions. The length of the vector is
 #' the number of samples in the dataset.

@@ -49,7 +49,8 @@ mod_ds_density_ui <- function(id){
 #' @param id A `character(1)` which is the id of the shiny module.
 #' @param data An instance of the class `matrix` or `data.frame`. 
 #' It must be a reactive value.
-#' @param conds It is not a reactive value
+#' @param conds A `character()` of the name of conditions 
+#' (one condition per sample). It is not a reactive value.
 #' @param pal.name It is a reactive value.
 #' @export
 #' @rdname density-plot

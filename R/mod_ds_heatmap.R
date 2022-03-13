@@ -76,9 +76,10 @@ mod_ds_heatmap_ui <- function(id){
 
 
 
-#' @param id xxx
+#' @param id A `character(1)` which is the id of the shiny module.
 #' @param data xxx
-#' @param conds xxx
+#' @param conds A `character()` of the name of conditions 
+#' (one condition per sample). It is not a reactive value.
 #' @param width xxx
 #' @export
 #' @rdname heatmaps

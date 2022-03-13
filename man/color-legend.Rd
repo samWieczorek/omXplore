@@ -11,11 +11,12 @@ mod_colorLegend_ui(id)
 mod_colorLegend_server(id, text, colors)
 }
 \arguments{
-\item{id}{The 'id' of the shiny module.}
+\item{id}{A \code{character(1)} which is the id of the shiny module.}
 
 \item{text}{A \code{character()} xxx}
 
-\item{colors}{A \code{HEX()} xxx}
+\item{colors}{A \code{HEX()} containing the color codes to apply to the plot.
+The number of colors must be equal to the length of parameter 'text'.}
 }
 \description{
 xxxx

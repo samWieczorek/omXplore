@@ -17,7 +17,7 @@ mod_format_DT_server(
 )
 }
 \arguments{
-\item{id}{internal}
+\item{id}{A \code{character(1)} which is the id of the shiny module.}
 
 \item{df}{internal}
 

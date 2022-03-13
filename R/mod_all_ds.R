@@ -101,10 +101,10 @@
 #' 
 #' if(interactive()){
 #'  data(ft_na)
-#'  ui <- mod_ds_ui('plot')
+#'  ui <- mod_all_ds_ui('plot')
 #' 
 #'  server <- function(input, output, session) {
-#'   mod_ds_server('plot', object = reactive({ft_na}))
+#'   mod_all_ds_server('plot', object = reactive({ft_na}))
 #'   }
 #'  
 #'  shinyApp(ui=ui, server=server)
@@ -121,7 +121,7 @@ NULL
 #' @export
 listPlotModules <- function(){
   ll <- ls('package:ProteomicsExplorer')
-  ll <- ll[grep('mod_', ll)]
+  ll <- ll[grep('mod_ds_', ll)]
   ll <- gsub('_server', '', ll)
   ll <- gsub('_ui', '', ll)
   ll <- unique(ll)
@@ -138,7 +138,7 @@ listPlotModules <- function(){
 #' @importFrom shinyjs useShinyjs
 #' @rdname ds-plots
 #' @export
-mod_ds_ui <- function(id){
+mod_all_ds_ui <- function(id){
   ns <- NS(id)
   tagList(
     shinyjs::useShinyjs(),
@@ -170,7 +170,7 @@ mod_ds_ui <- function(id){
 #' @rdname ds-plots
 #' @export
 #'
-mod_ds_server <- function(id, object){
+mod_all_ds_server <- function(id, object){
   if (! requireNamespace("SummarizedExperiment", quietly = TRUE)) {
     stop("Please install SummarizedExperiment: BiocManager::install('SummarizedExperiment')")
   }
@@ -180,10 +180,17 @@ mod_ds_server <- function(id, object){
     .width <- .height <- 40
     
     ll.mods <- listPlotModules()
-    
+    conds <- reactiveVal()
     current.se <- reactiveVal()
-    conds <- SummarizedExperiment::colData(object()$Condition)
     btns.history <- reactiveVal(rep(0, length(ll.mods)))
+    
+    
+    observe({
+      req(object())
+      stopifnot(inherits(object(), 'QFeatures'))
+      conds(SummarizedExperiment::colData(object())$Condition)
+    })
+    
     
     observeEvent(GetVignettesBtns(), {
       clicked <- which(btns.history() != GetVignettesBtns())
@@ -196,9 +203,7 @@ mod_ds_server <- function(id, object){
     })
   
     GetVignettesBtns <- reactive({
-      unlist(lapply(ll.mods, 
-                    function(x) input[[x]])
-      )
+      unlist(lapply(ll.mods, function(x) input[[x]]))
     })
     
     output$ShowPlots_ui <- renderUI({
@@ -213,29 +218,23 @@ mod_ds_server <- function(id, object){
       })
     })
     
-    
+
     output$ShowVignettes_ui <- renderUI({
       lapply(ll.mods, function(x){
-        actionButton(ns(x), 
+        actionButton(ns(x),
                      label = tagList(
-                       p(gsub('mod_', '', x)),
-                       tags$img(src = base64enc::dataURI(
-                             file = system.file('images',
-                                                paste0(gsub('mod_', '', x), '.png'),
-                                                package='ProteomicsExplorer'),
-                             mime='image/png'),
-                             height = "50px")
-                       ),
-                      style = 'padding: 0px;
+                       p(gsub('mod_ds_', '', x)),
+                       img(src = paste0('images/', gsub('mod_', '', x), '.png'),
+                         height = "50px")
+                     ),
+                     style = 'padding: 0px;
                       border: none;
                       background-size: cover;
                            background-position: center;'
-                         )
+        )
       }
-                       )
-        })
-      
-
+      )
+    })
     
     observeEvent(input$chooseDataset, {
       current.se(object()[[input$chooseDataset]])
@@ -260,43 +259,48 @@ mod_ds_server <- function(id, object){
     #
     # Calls to server modules
     #
-    mod_ds_seExplorer_server('mod_seExplorer_large',
+    mod_ds_seExplorer_server('mod_ds_seExplorer_large',
                              se = reactive({current.se()})
                            )
     
     
-    mod_ds_intensity_server('mod_intensity_large',
-                            data = reactive({current.se()}),
-                            conds = conds
+    mod_ds_intensity_server('mod_ds_intensity_large',
+                            se = reactive({current.se()}),
+                            conds = conds()
                             )
     
     
-    mod_ds_pca_server('mod_pca_large',
-                      data = reactive({current.se()}),
-                      conds = conds
+    mod_ds_pca_server('mod_ds_pca_large',
+                      data = reactive({SummarizedExperiment::assay(current.se())}),
+                      conds = conds()
                       )
     
     
-    mod_ds_variance_server('mod_variance_large',
-                            data = reactive({current.se()}),
-                            conds = conds
+    mod_ds_variance_server('mod_ds_variance_large',
+                            data = reactive({SummarizedExperiment::assay(current.se())}),
+                            conds = conds()
                            )
     
-    mod_ds_corrmatrix_server(id = 'mod_corrmatrix_large',
-                             data = reactive({current.se()})
+    mod_ds_corrmatrix_server(id = 'mod_ds_corrmatrix_large',
+                             data = reactive({SummarizedExperiment::assay(current.se())})
                              )
     
     
     
-    mod_ds_heatmap_server("mod_heatmap_large",
-                          data = reactive({current.se()}),
-                             conds = conds
+    mod_ds_heatmap_server("mod_ds_heatmap_large",
+                          data = reactive({SummarizedExperiment::assay(current.se())}),
+                          conds = conds()
                           )
     
     
-    mod_ds_mv_server("mod_mv_large",
-                     data = reactive({current.se()}),
-                     conds = conds
+    mod_ds_mv_server("mod_ds_mv_large",
+                     data = reactive({SummarizedExperiment::assay(current.se())}),
+                     conds = conds()
+                     )
+    
+    mod_ds_density_server("mod_ds_density_large",
+                     data = reactive({SummarizedExperiment::assay(current.se())}),
+                     conds = conds()
                      )
     
   })

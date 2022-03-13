@@ -38,7 +38,7 @@
 NULL
 
 
-#' @param id xxx
+#' @param id A `character(1)` which is the id of the shiny module.
 #' 
 #' @importFrom shiny NS tagList
 #' @importFrom shinyjs useShinyjs hidden
@@ -69,10 +69,11 @@ mod_ds_intensity_ui <- function(id){
 
 
 
-#' @param id xxx
-#' @param se xxx
-#' @param conds xxx
-#' @param ... xxx
+#' @param id A `character(1)` which is the id of the shiny module.
+#' @param se A instance of the class `SummarizedExperiment`
+#' @param conds A `character()` of the name of conditions 
+#' (one condition per sample). It is not a reactive value.
+#' @param ... Additional parameters for [boxPlot()] or [violinPlot()].
 #' 
 #' @rdname intensity-plots
 #'
@@ -83,9 +84,9 @@ mod_ds_intensity_ui <- function(id){
 #'@return NA
 #'
 mod_ds_intensity_server <- function(id,
-                                 se,
-                                 conds,
-                                 ...){
+                                    se,
+                                    conds,
+                                    ...){
   if (! requireNamespace("SummarizedExperiment", quietly = TRUE)) {
     stop("Please install SummarizedExperiment: BiocManager::install('SummarizedExperiment')")
   }
@@ -109,9 +110,8 @@ mod_ds_intensity_server <- function(id,
     output$box <- renderHighchart({
        withProgress(message = 'Making plot', value = 100, {
         tmp <- boxPlot(data = SummarizedExperiment::assay(se()),
-                        conds = conds,
-                        subset = indices(),
-                        ...)
+                       conds = conds,
+                       subset = indices())
       })
 
     })
@@ -125,7 +125,7 @@ mod_ds_intensity_server <- function(id,
     })
     
     output$violin <- renderImage({
-      
+      req(se())
       # A temp file to save the output. It will be deleted after renderImage
       # sends it, because deleteFile=TRUE.
       outfile <- tempfile(fileext='.png')
@@ -133,10 +133,9 @@ mod_ds_intensity_server <- function(id,
       withProgress(message = 'Making plot', value = 100, {
         png(outfile)
         pattern <- paste0('test',".violinplot")
-        tmp <- violinPlot(SummarizedExperiment::assay(se()),
-                           conds,
-                           subset = indices(),
-                           ...)
+        tmp <- violinPlot(data = SummarizedExperiment::assay(se()),
+                          conds,
+                          subset = indices())
         #future(createPNGFromWidget(tmp,pattern))
         dev.off()
       })

@@ -11,7 +11,7 @@ mod_seTracker_ui(id)
 mod_seTracker_server(id, se)
 }
 \arguments{
-\item{id}{xxx}
+\item{id}{A \code{character(1)} which is the id of the shiny module.}
 
 \item{se}{A instance of the class \code{SummarizedExperiment}}
 }

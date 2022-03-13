@@ -48,13 +48,7 @@ mod_plots_cc_server(input, output, session, cc, matAdj, obj, settings)
 
 \item{clickFunction}{A JavaScript code to show an information when a point is clicked}
 
-\item{id}{shiny id}
-
-\item{input}{internal}
-
-\item{output}{internal}
-
-\item{session}{internal}
+\item{id}{A \code{character(1)} which is the id of the shiny module.}
 
 \item{cc}{xxx}
 

@@ -15,14 +15,15 @@ mod_ds_variance_server(id, data, conds, pal.name = NULL)
 CVDist(data, conds = NULL, pal.name = NULL)
 }
 \arguments{
-\item{id}{shiny id}
+\item{id}{A \code{character(1)} which is the id of the shiny module.}
 
-\item{data}{xxx}
+\item{data}{A \code{data.frame} or \code{matrix} which is the quantitative values.}
 
-\item{conds}{A \code{character()} representings the condition for
-each sample of the \code{QFeatures} object.}
+\item{conds}{A \code{character()} of the name of conditions
+(one condition per sample).}
 
-\item{pal.name}{xxx}
+\item{pal.name}{A \code{character(1)} which is the name of the palette from the package
+\link{RColorBrewer} from which the colors are taken. Default value is 'Set1'.}
 }
 \description{
 xxxx

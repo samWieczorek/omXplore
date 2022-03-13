@@ -17,11 +17,14 @@ wrapper_pca(data, conds, var.scaling = TRUE, ncp = NULL)
 plotPCA_Eigen(res.pca)
 }
 \arguments{
-\item{id}{xxx.}
+\item{id}{A \code{character(1)} which is the id of the shiny module.}
 
-\item{data}{An instance of the class \code{SummarizedExperiment}}
+\item{data}{An instance of the class \code{SummarizedExperiment} which is the
+quantitative values.}
 
-\item{conds}{xxx}
+\item{conds}{A \code{character()} of the name of conditions
+(one condition per sample). The number of conditions must be equal to
+the number of samples (number of columns) of the parameter 'data'.}
 
 \item{var.scaling}{The dimensions to plot}
 

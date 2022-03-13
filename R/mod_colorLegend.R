@@ -22,7 +22,7 @@ NULL
 
 
 
-#' @param id xxx
+#' @param id A `character(1)` which is the id of the shiny module.
 #'
 #' @importFrom shinyBS bsCollapse bsCollapsePanel
 #' @importFrom shiny NS tagList
@@ -44,9 +44,10 @@ mod_colorLegend_ui <- function(id){
 }
 
 
-#' @param id The 'id' of the shiny module.
+#' @param id A `character(1)` which is the id of the shiny module.
 #' @param text A `character()` xxx
-#' @param colors A `HEX()` xxx
+#' @param colors A `HEX()` containing the color codes to apply to the plot.
+#' The number of colors must be equal to the length of parameter 'text'.
 #' 
 #' @export
 #' 

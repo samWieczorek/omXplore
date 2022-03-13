@@ -19,19 +19,22 @@ boxPlot(data, conds, subset = NULL, pal.name = NULL)
 violinPlot(data, conds, subset = NULL, pal.name)
 }
 \arguments{
-\item{id}{xxx}
+\item{id}{A \code{character(1)} which is the id of the shiny module.}
 
-\item{se}{xxx}
+\item{se}{A instance of the class \code{SummarizedExperiment}}
 
-\item{conds}{xxx}
+\item{conds}{A \code{character()} of the name of conditions
+(one condition per sample). The number of conditions must be equal to
+the number of samples (number of columns) of the parameter 'data'.}
 
-\item{...}{xxx}
+\item{...}{Additional parameters for \code{\link[=boxPlot]{boxPlot()}} or \code{\link[=violinPlot]{violinPlot()}}.}
 
 \item{data}{An instance of the class \code{matrix}}
 
 \item{subset}{A vector of index indicating rows to highlight}
 
-\item{pal.name}{xxx}
+\item{pal.name}{A \code{character(1)} which is the name of the palette from the package
+\link{RColorBrewer} from which the colors are taken. Default value is 'Set1'.}
 }
 \value{
 NA

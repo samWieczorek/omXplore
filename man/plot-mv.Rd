@@ -45,9 +45,12 @@ mvHisto(data, conds, showValues = FALSE, pal.name = NULL)
 
 \item{data}{xxxx}
 
-\item{conds}{xxx}
+\item{conds}{A \code{character()} of the name of conditions
+(one condition per sample). The number of conditions must be equal to
+the number of samples (number of columns) of the parameter 'data'.}
 
-\item{pal.name}{xxx}
+\item{pal.name}{A \code{character(1)} which is the name of the palette from the package
+\link{RColorBrewer} from which the colors are taken. Default value is 'Set1'.}
 
 \item{se}{An instance of a class \code{SummarizedExperiment}.}
 
@@ -57,7 +60,8 @@ mvHisto(data, conds, showValues = FALSE, pal.name = NULL)
 
 \item{title}{The title of the plot}
 
-\item{showValues}{xxx}
+\item{showValues}{A \code{logical()} that indicates whether to show
+values in the plot.}
 }
 \value{
 A plot

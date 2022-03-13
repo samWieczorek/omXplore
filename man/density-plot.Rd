@@ -19,13 +19,14 @@ densityPlot(data, conds, pal.name = NULL)
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
-\item{data}{numeric matrix}
+\item{data}{A \code{data.frame} or \code{matrix} of \code{numeric()} which is the quantitative
+data to plot.}
 
 \item{conds}{A \code{character()} of condition name for each sample. The
-length of 'conds' must be equal to the number of columns of 'qData'.}
+length of 'conds' must be equal to the number of columns of 'data'.}
 
-\item{pal.name}{A \code{character(1)} which is the name of a palette in
-the package \link{RColorBrewer}.}
+\item{pal.name}{A \code{character(1)} which is the name of the palette from the package
+\link{RColorBrewer} from which the colors are taken. Default value is 'Set1'.}
 }
 \description{
 xxxx

@@ -1,6 +1,6 @@
 
-#' @param se xxx
-#' @param conds  A `character()` of the name of conditions (one condition per sample).
+#' @param se A instance of the class `SummarizedExperiment`
+#' @param conds A `character()` of the name of conditions (one condition per sample).
 #' 
 #' @param pal.name A `character(1)` which is the name of the palette (from
 #' the package [RColorBrewer] to use.

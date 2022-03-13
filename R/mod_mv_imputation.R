@@ -63,7 +63,7 @@
 NULL
 
 
-#' @param id shiny id
+#' @param id A `character(1)` which is the id of the shiny module.
 #' @rdname plot-mv
 #' @export
 #' @importFrom shiny NS tagList plotOutput
@@ -85,7 +85,9 @@ mod_mv_imputation_ui <- function(id){
 
 #' @param id A `character(1)` which is the 'id' of the shiny module.
 #' @param se An instance of a class `SummarizedExperiment`.
-#' @param conds A `character()` of the name of conditions (one condition per sample).
+#' @param conds A `character()` of the name of conditions 
+#' (one condition per sample). The number of conditions must be equal to
+#' the number of samples (number of columns) of [assay(se)].
 #' @param pal.name  A `character(1)` which is the name of the palette (from
 #' the package [RColorBrewer] to use.
 #' 

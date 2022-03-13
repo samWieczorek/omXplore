@@ -9,7 +9,7 @@
 #' 
 NULL
 
-#' @param id Internal parameters for {shiny}.
+#' @param id A `character(1)` which is the id of the shiny module.
 #' 
 #' @importFrom shiny NS tagList
 #' @import visNetwork
@@ -71,7 +71,7 @@ mod_graph_pept_prot_ui <- function(id){
 }
 
 
-#' @param id xxx
+#' @param id A `character(1)` which is the id of the shiny module.
 #' @param cc xxx
 #' @param matAdj xxx
 #' @param dataIn An object of class `QFeatures`

@@ -49,7 +49,7 @@
 NULL
 
 
-#' @param id xxx.
+#' @param id A `character(1)` which is the id of the shiny module.
 #'
 #' @rdname ds-pca
 #'
@@ -66,9 +66,12 @@ mod_ds_pca_ui <- function(id){
   )
 }
 
-#' @param id xxx.
+#' @param id A `character(1)` which is the id of the shiny module.
 #' @param data xxx
-#' @param conds xxx
+#' @param conds A `character()` of the name of conditions 
+#' (one condition per sample). The number of conditions must be equal to
+#' the number of samples (number of columns) of the parameter 'data'. 
+#' It is not a reactive value.
 #' 
 #' @rdname ds-pca
 #'

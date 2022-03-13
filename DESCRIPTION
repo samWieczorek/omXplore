@@ -46,6 +46,7 @@ biocViews:
     DataImport
 NeedsCompilation: no
 Collate:
+    zzz.R
     palette.R
     utils.R
     example-data.R
@@ -54,7 +55,7 @@ Collate:
     ConnectedComps.R
     plots_compare_normalization_plots.R
     global.R
-    mod_ds.R
+    mod_all_ds.R
     mod_graph_pept_prot.R
     mod_ds_corrmatrix.R
     mod_ds_density.R

@@ -13,7 +13,7 @@ mod_ds_seExplorer_server(id, se, digits = reactive({
 }))
 }
 \arguments{
-\item{id}{xxx}
+\item{id}{A \code{character(1)} which is the id of the shiny module.}
 
 \item{se}{An instance of the class \code{SummarizedExperiment}}
 

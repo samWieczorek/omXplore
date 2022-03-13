@@ -14,9 +14,8 @@ ExtendPalette(n, pal.name = "Set1")
 \item{conds}{A \code{character()} of conditions. The length of the vector is
 the number of samples in the dataset.}
 
-\item{pal.name}{The name of the palette of the package \link{RColorBrewer} from which
-the extended palette is built. Default value is 'Set1'. A \code{character(1)} which is the name of the palette from the package
-\link{RColorBrewer} from which the colors are taken.}
+\item{pal.name}{A \code{character(1)} which is the name of the palette from the package
+\link{RColorBrewer} from which the colors are taken. Default value is 'Set1'.}
 
 \item{n}{The number of desired colors in the palette}
 }

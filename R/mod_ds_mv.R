@@ -32,7 +32,7 @@
 NULL
 
 
-#' @param id xxx
+#' @param id A `character(1)` which is the id of the shiny module.
 #' @export
 #' @importFrom shiny NS tagList
 #' @importFrom highcharter highchartOutput
@@ -54,10 +54,12 @@ mod_ds_mv_ui <- function(id){
     )
 }
 
-#' @param id xxx
+#' @param id A `character(1)` which is the id of the shiny module.
 #' @param data An instance of the class [matrix]
-#' @param conds A `character()`
-#' @param pal.name xxx
+#' @param conds A `character()` of the name of conditions 
+#' (one condition per sample). It is not a reactive value.
+#' @param pal.name A `character(1)` which is the name of the palette from the package
+#' [RColorBrewer] from which the colors are taken. Default value is 'Set1'.
 #'
 #' @export
 #' @importFrom highcharter renderHighchart

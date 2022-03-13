@@ -1,6 +1,8 @@
 #' @param data A `matrix` or `array` quantitative values
 #' 
-#' @param conds A `character()` of the conditions (one condition per sample).
+#' @param conds A `character()` of the name of conditions 
+#' (one condition per sample). The number of conditions must be equal to
+#' the number of samples (number of columns) of the parameter 'data'.
 #' 
 #' @param distfun A `character(1)` defining the distance used by the clustering 
 #' algorithm to compute. Default value is 'euclidean'. See \code{help(heatmap.2)}

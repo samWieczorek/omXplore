@@ -20,7 +20,7 @@ mod_ds_corrmatrix_server(
 corrMatrix(data, rate = 0.5, showValues = FALSE)
 }
 \arguments{
-\item{id}{xxx}
+\item{id}{A \code{character(1)} which is the id of the shiny module.}
 
 \item{data}{An object of class 'SummarizedExperiment'}
 

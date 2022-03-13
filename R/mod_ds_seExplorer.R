@@ -27,7 +27,7 @@
 NULL
 
 
-#' @param id xxx
+#' @param id A `character(1)` which is the id of the shiny module.
 #' @export 
 #' @importFrom shiny NS tagList 
 #' @rdname SE-explorer
@@ -48,7 +48,7 @@ mod_ds_seExplorer_ui <- function(id){
   )
 }
 
-#' @param id xxx
+#' @param id A `character(1)` which is the id of the shiny module.
 #' @param se An instance of the class `SummarizedExperiment`
 #' @param digits xxx
 #' 

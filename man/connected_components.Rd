@@ -11,7 +11,7 @@ mod_graph_pept_prot_ui(id)
 mod_graph_pept_prot_server(id, cc, matAdj, dataIn, settings)
 }
 \arguments{
-\item{id}{xxx}
+\item{id}{A \code{character(1)} which is the id of the shiny module.}
 
 \item{cc}{xxx}
 

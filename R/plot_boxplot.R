@@ -1,8 +1,11 @@
 
 #' @param data Numeric matrix 
-#' @param conds xxx
-#' @param pal.name xxxx
-#' @param subset A `integrer()` vector of index indicating the indices
+#' @param conds A `character()` of the name of conditions 
+#' (one condition per sample). The number of conditions must be equal to
+#' the number of samples (number of columns) of the parameter 'data'.
+#' @param pal.name A `character(1)` which is the name of the palette from the package
+#' [RColorBrewer] from which the colors are taken. Default value is 'Set1'.
+#' @param subset A `integer()` vector of index indicating the indices
 #' of rows in the dataset to highlight
 #' 
 #' @return A boxplot

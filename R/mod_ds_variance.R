@@ -32,7 +32,7 @@
 NULL
 
 
-#' @param id shiny id
+#' @param id A `character(1)` which is the id of the shiny module.
 #' @importFrom shiny NS tagList
 #' @rdname plot-variance
 #' @export
@@ -48,11 +48,12 @@ mod_ds_variance_ui <- function(id){
 
 
 
-#' @param id shiny id
-#' @param data xxx
-#' @param conds A `character()` representings the condition for 
-#' each sample of the `QFeatures` object.
-#' @param pal.name xxx
+#' @param id A `character(1)` which is the id of the shiny module.
+#' @param data A `data.frame` or `matrix` which is the quantitative values.
+#' @param conds A `character()` of the name of conditions 
+#' (one condition per sample).
+#' @param pal.name A `character(1)` which is the name of the palette from the package
+#' [RColorBrewer] from which the colors are taken. Default value is 'Set1'.
 #' 
 #' @importFrom shiny NS tagList
 #' @rdname plot-variance

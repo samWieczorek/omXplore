@@ -1,10 +1,11 @@
-#' @param data numeric matrix
+#' @param data A `data.frame` or `matrix` of `numeric()` which is the quantitative
+#' data to plot.
 #' 
 #' @param conds A `character()` of condition name for each sample. The 
-#' length of 'conds' must be equal to the number of columns of 'qData'.
+#' length of 'conds' must be equal to the number of columns of 'data'.
 #' 
-#' @param pal.name A `character(1)` which is the name of a palette in
-#' the package [RColorBrewer].
+#' @param pal.name A `character(1)` which is the name of the palette from the package
+#' [RColorBrewer] from which the colors are taken. Default value is 'Set1'.
 #' 
 #' @import highcharter
 #' @importFrom stats density

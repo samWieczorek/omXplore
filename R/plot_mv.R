@@ -41,8 +41,11 @@ mvPerLinesHisto <- function(data){
 
 
 #' @param data xxxx
-#' @param conds xxx
-#' @param pal.name xxx
+#' @param conds A `character()` of the name of conditions 
+#' (one condition per sample). The number of conditions must be equal to
+#' the number of samples (number of columns) of the parameter 'data'.
+#' @param pal.name A `character(1)` which is the name of the palette from the package
+#' [RColorBrewer] from which the colors are taken. Default value is 'Set1'.
 #' @export
 #' 
 #' @import highcharter
@@ -102,9 +105,13 @@ mvPerLinesHistoPerCondition <- function(data,
 
 
 #' @param data xxxx
-#' @param conds xxx
-#' @param showValues xxx
-#' @param pal.name xxx
+#' @param conds A `character()` of the name of conditions 
+#' (one condition per sample). The number of conditions must be equal to
+#' the number of samples (number of columns) of the parameter 'data'.
+#' @param showValues A `logical()` that indicates whether to show 
+#' values in the plot.
+#' @param pal.name A `character(1)` which is the name of the palette from the package
+#' [RColorBrewer] from which the colors are taken. Default value is 'Set1'.
 #' @export
 #' @import highcharter
 #' @rdname plot-mv

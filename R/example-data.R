@@ -22,8 +22,8 @@
 #' @importFrom utils read.table
 #' 
 create_ft_example <- function(with.na = FALSE){
-  if (! requireNamespace("QFeatures", quietly = TRUE)) {
-    stop("Please install QFeatures: BiocManager::install('QFeatures')")
+  if (! requireNamespace("DaparToolshed", quietly = TRUE)) {
+    stop("Please install DaparToolshed: BiocManager::install('DaparToolshed')")
   }
   filename <- if (with.na) "ft-data-na.txt" else "ft-data.txt"
   data.file <- system.file("extdata", 

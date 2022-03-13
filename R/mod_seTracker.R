@@ -37,7 +37,7 @@
 NULL
 
  
-#' @param id shiny id
+#' @param id A `character(1)` which is the id of the shiny module.
 #' @export
 #'
 #' @importFrom shiny NS tagList
@@ -58,7 +58,7 @@ mod_seTracker_ui <- function(id){
   )
 }
 
-#' @param id xxx
+#' @param id A `character(1)` which is the id of the shiny module.
 #' @param se A instance of the class `SummarizedExperiment`
 #' 
 #' @rdname tracking

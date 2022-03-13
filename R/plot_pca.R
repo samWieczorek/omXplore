@@ -1,6 +1,9 @@
 
-#' @param data An instance of the class `SummarizedExperiment`
-#' @param conds xxx
+#' @param data An instance of the class `SummarizedExperiment` which is the 
+#' quantitative values.
+#' @param conds A `character()` of the name of conditions 
+#' (one condition per sample). The number of conditions must be equal to
+#' the number of samples (number of columns) of the parameter 'data'.
 #' @param var.scaling The dimensions to plot
 #' @param ncp A `integer(1)` which represents the umber of dimensions kept in the results.
 #' 

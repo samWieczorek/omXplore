@@ -2,10 +2,7 @@
 #' 
 #' @description  A shiny Module.
 #'
-#' @param id shiny id
-#' @param input internal
-#' @param output internal
-#' @param session internal
+#' @param id A `character(1)` which is the id of the shiny module.
 #' @param cc xxx
 #' @param matAdj xxx
 #' @param obj xxx

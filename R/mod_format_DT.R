@@ -25,7 +25,7 @@
 NULL
 
 
-#' @param id shiny id
+#' @param id A `character(1)` which is the id of the shiny module.
 #' 
 #' @importFrom shiny NS tagList 
 #' @importFrom DT DTOutput
@@ -38,7 +38,7 @@ mod_format_DT_ui <- function(id){
   DT::DTOutput(ns("dt"))
 }
 
-#' @param id internal
+#' @param id A `character(1)` which is the id of the shiny module.
 #' @param df internal
 #' @param rownames xxxx
 #' @param dom xxx
@@ -118,8 +118,7 @@ mod_format_DT_server <- function(id,
 #' @description 
 #' xxxx
 #' 
-#' @param se xxx
-#' @param xxx xxxx
+#' @param se A instance of the class `SummarizedExperiment`
 #' 
 #' @noRd
 #' 
