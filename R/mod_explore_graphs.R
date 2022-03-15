@@ -2,7 +2,6 @@
 #' @param id A `character(1)` which is the id of the shiny module.
 #' 
 #' @importFrom shiny NS tagList
-#' @import visNetwork
 #' @importFrom DT renderDT DTOutput formatStyle %>% styleEqual datatable
 #' @importFrom shinyjs toggle hidden
 #' 
@@ -10,6 +9,11 @@
 #' @export
 mod_explore_graphs_ui <- function(id){
   ns <- NS(id)
+  
+  if (! requireNamespace("visNetwork", quietly = TRUE)) {
+    stop("Please install visNetwork: BiocManager::install('visNetwork')")
+  }
+  
 fluidPage(
   tabPanel("Peptide-Protein Graph",
            value = "graphTab",
@@ -62,7 +66,7 @@ fluidPage(
                                  ),
                           column(width=6, 
                                  tagList(
-                                   visNetworkOutput(ns("visNet_CC"), 
+                                   visNetwork::visNetworkOutput(ns("visNet_CC"), 
                                                     height='600px')))
                           ),
                         uiOutput(ns('CCDetailed'))
@@ -95,6 +99,10 @@ mod_explore_graphs_server <- function(id,
   
   if (! requireNamespace("QFeatures", quietly = TRUE)) {
     stop("Please install QFeatures: BiocManager::install('QFeatures')")
+  }
+  
+  if (! requireNamespace("visNetwork", quietly = TRUE)) {
+    stop("Please install visNetwork: BiocManager::install('visNetwork')")
   }
   
   moduleServer(id, function(input, output, session){
@@ -432,7 +440,7 @@ mod_explore_graphs_server <- function(id,
     })
 
 
-    output$visNet_CC <- renderVisNetwork({
+    output$visNet_CC <- visNetwork::renderVisNetwork({
       req(rv.cc$selectedCC)
       local <- Extract_CC(ll.cc(), 'MultiAny')
       #print(local[[rv.cc$selectedCC]])
@@ -440,12 +448,12 @@ mod_explore_graphs_server <- function(id,
                                         X = QFeatures::adjacencyMatrix(se()))
 
       show.graph(rv.cc$selectedCCgraph) %>%
-        visEvents(click = paste0("function(nodes){
+        visNetwork::visEvents(click = paste0("function(nodes){
                 Shiny.onInputChange('", ns("click"),"', nodes.nodes[0]);
                 Shiny.onInputChange('", ns("node_selected"), "', nodes.nodes.length);
                 ;}")
         ) %>%
-        visOptions(highlightNearest = TRUE )
+        visNetwork::visOptions(highlightNearest = TRUE )
     })
 
 

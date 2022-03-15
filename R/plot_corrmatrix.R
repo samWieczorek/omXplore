@@ -7,8 +7,6 @@
 #' 
 #' @param showValues xxx
 #' 
-#' @importFrom dplyr mutate left_join
-#' @importFrom tidyr gather
 #' @import highcharter
 #' @importFrom DT JS
 #' @importFrom tibble tibble as_tibble
@@ -20,6 +18,17 @@
 corrMatrix <- function(data,
                        rate = 0.5,
                        showValues = FALSE) {
+  
+  
+  if (! requireNamespace("dplyr", quietly = TRUE)) {
+    stop("Please install dplyr: BiocManager::install('dplyr')")
+  }
+  
+  if (! requireNamespace("tidyr", quietly = TRUE)) {
+    stop("Please install tidyr: BiocManager::install('tidyr')")
+  }
+  
+  
   stopifnot(inherits(data, 'matrix'))
   
   res <- cor(data,

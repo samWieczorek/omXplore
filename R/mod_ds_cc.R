@@ -73,7 +73,7 @@ mod_plots_cc_ui <- function(id) {
                             shinyjs::hidden( DTOutput(ns('CCMultiMulti')))
                           )),
                           column(width=6, tagList(
-                            visNetworkOutput(ns("visNet_CC"), height='600px')))
+                            visNetwork::visNetworkOutput(ns("visNet_CC"), height='600px')))
                         ),
                         uiOutput(ns('CCDetailed'))
                       )
@@ -84,7 +84,6 @@ mod_plots_cc_ui <- function(id) {
 
 
  
-#' @importFrom visNetwork visEvents visOptions
 #' @importFrom tibble tibble
 #' @importFrom shinyjs toggle hidden
 #' @export
@@ -99,6 +98,11 @@ mod_plots_cc_server <- function(input, output, session,
   if (! requireNamespace("SummarizedExperiment", quietly = TRUE)) {
     stop("Please install SummarizedExperiment: BiocManager::install('SummarizedExperiment')")
   }
+  
+  if (! requireNamespace("visNetwork", quietly = TRUE)) {
+    stop("Please install visNetwork: BiocManager::install('visNetwork')")
+  }
+  
   rv.cc <- reactiveValues(
     ## selected CC in global CC list (tab or plot)
     selectedCC = NULL,
@@ -158,15 +162,15 @@ mod_plots_cc_server <- function(input, output, session,
   })
   
   
-  output$visNet_CC <- renderVisNetwork({
+  output$visNet_CC <- visNetwork::renderVisNetwork({
     req(rv.cc$selectedCC)
     local <- cc()[Get_CC_Multi2Any()]
     print(local[[rv.cc$selectedCC]])
     
     
-    rv.cc$selectedCCgraph <- buildGraph(local[[rv.cc$selectedCC]], matAdj())
+    rv.cc$selectedCCgraph <- convertCC2graph(local[[rv.cc$selectedCC]], matAdj())
     
-    display.CC.visNet(rv.cc$selectedCCgraph) %>%
+    show.graph(rv.cc$selectedCCgraph) %>%
       visNetwork::visEvents(click = paste0("function(nodes){
                 Shiny.onInputChange('",ns("click"),"', nodes.nodes[0]);
                 Shiny.onInputChange('",ns("node_selected"), "', nodes.nodes.length);

@@ -131,7 +131,6 @@ heatmapD <- function(data,
 #' @export
 #' 
 #' @importFrom grDevices heat.colors
-#' @importFrom graphics image strwidth strheight axis mtext text title layout par plot.new
 #' 
 #' @rdname heatmaps
 #' 
@@ -144,6 +143,11 @@ mv.heatmap <- function (x,
                         key.title = NULL,
                         main = NULL,  
                         ylab = NULL) {
+  
+  if (! requireNamespace("graphics", quietly = TRUE)) {
+    stop("Please install graphics: BiocManager::install('graphics')")
+  }
+  
   
   stopifnot(inherits(x, 'matrix'))
   
@@ -220,8 +224,8 @@ mv.heatmap <- function (x,
   }
   else {
     adjCol = c(1, NA)
-    xpd.orig <- par("xpd")
-    par(xpd = NA)
+    xpd.orig <- graphics::par("xpd")
+    graphics::par(xpd = NA)
     xpos <- graphics::axis(1,
                            seq_len(nc),
                            labels = rep("", nc),
@@ -229,7 +233,7 @@ mv.heatmap <- function (x,
                            tick = 0
                            )
     graphics::text(x = xpos, 
-                   y = par("usr")[3] - (1 + offsetCol) * strheight("M"), 
+                   y = graphics::par("usr")[3] - (1 + offsetCol) * graphics::strheight("M"), 
                    label = labCol, 
                    adj = adjCol, 
                    cex = cexCol, 
@@ -251,16 +255,16 @@ mv.heatmap <- function (x,
                    padj = NA)
   }
   else {
-    xpd.orig <- par("xpd")
-    par(xpd = NA)
-    ypos <- axis(4, 
+    xpd.orig <- graphics::par("xpd")
+    graphics::par(xpd = NA)
+    ypos <- graphics::axis(4, 
                  iy, 
                  labels = rep("", nr), 
                  las = 2, 
                  line = -0.5, 
                  tick = 0
                  )
-    graphics::text(x = par("usr")[2] + (1 + offsetRow) * graphics::strwidth("M"), 
+    graphics::text(x = graphics::par("usr")[2] + (1 + offsetRow) * graphics::strwidth("M"), 
                    y = ypos, 
                    labels = labRow, 
                    adj = c(0,NA), 
@@ -285,7 +289,7 @@ mv.heatmap <- function (x,
     mar <- c(5, 4, 2, 1)
     graphics::par(mar = mar, cex = 0.75, mgp = c(2, 1, 0))
     if (length(key.par) > 0) 
-      do.call(par, key.par)
+      do.call(graphics::par, key.par)
     
     tmpbreaks <- breaks
     min.raw <- min.breaks
@@ -300,18 +304,18 @@ mv.heatmap <- function (x,
     xargs <- list(at = xv, labels = lv)
     
     xargs$side <- 1
-    do.call(axis, xargs)
+    do.call(graphics::axis, xargs)
     key.xlab <- "Intensity value"
     
     graphics::mtext(side = 1, 
                     key.xlab, 
-                    line = par("mgp")[1], 
+                    line = graphics::par("mgp")[1], 
                     padj = 0.5, 
-                    cex = par("cex") * par("cex.lab")
+                    cex = graphics::par("cex") * graphics::par("cex.lab")
                     )
     
     if (is.null(key.title)) 
-      title("Color Key")
+      graphics::title("Color Key")
   }
   
 }

@@ -125,7 +125,7 @@ xxx
 
 }
 \seealso{
-The \code{\link[=adjacencyMatrix]{adjacencyMatrix()}} function of the package \link{QFeatures}.
+The \code{adjacencyMatrix()} function of the package \code{QFeatures}.
 }
 \author{
 Thomas Burger, Samuel Wieczorek

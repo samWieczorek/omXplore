@@ -14,7 +14,7 @@
 #' 
 #' @param g A `list()` formed to store a graph with its nodes and edges.
 #' 
-#' @seealso The [adjacencyMatrix()] function of the package [QFeatures].
+#' @seealso The `adjacencyMatrix()` function of the package `QFeatures`.
 #'
 #' @author Thomas Burger, Samuel Wieczorek
 #' 
@@ -94,14 +94,14 @@ wrapper.compute.cc <- function(obj.se){
   ll.X <- QFeatures::adjacencyMatrix(obj.se)
 
   if (!is.null(ll.X$all))
-    res$all <- get.pep.prot.cc(ll.X$all)
+    res$all <- compute.cc(ll.X$all)
 
 
   if (!is.null(ll.X$onlyShared))
-    res$onlyShared <- get.pep.prot.cc(ll.X$onlyShared)
+    res$onlyShared <- compute.cc(ll.X$onlyShared)
 
   if (!is.null(ll.X$onlySpec))
-    res$onlySpec <- get.pep.prot.cc(ll.X$onlySpec)
+    res$onlySpec <- compute.cc(ll.X$onlySpec)
 
   return (res)
 }
@@ -323,7 +323,7 @@ plotJitter_hc <- function(ll.cc,
   txt_tooltips <- NULL
   if (!is.null(df.tooltips)){
     stopifnot(inherits(df.tooltips, 'data.frame'))
-    stopifnot(length(dim(df.tooltips)) == 2 && length(colnames(tt)) > 0)
+    stopifnot(length(dim(df.tooltips)) == 2 && length(colnames(df.tooltips)) > 0)
     df <- cbind(df, df.tooltips)
     
     # Affect only tooltips columns

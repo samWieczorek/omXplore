@@ -18,21 +18,16 @@ Description: This package contains a collection of functions for the
 License: Artistic-2.0
 Depends: R (>= 4.1.0)
 Imports:
-    base64enc,
     DT,
     RColorBrewer,
     methods,
-    dplyr,
     gplots,
     highcharter,
     tibble,
-    tidyr,
-    vioplot,
     shiny,
     shinyBS,
     shinyjs,
     grDevices,
-    graphics,
     stats,
     utils
 biocViews: 
@@ -91,10 +86,14 @@ Suggests:
     testthat,
     SummarizedExperiment,
     Matrix,
+    graphics,
     FactoMineR,
     factoextra,
     graph,
     QFeatures,
     DaparToolshed,
-    visNetwork
+    visNetwork,
+    vioplot,
+    dplyr,
+    tidyr
 Roxygen: list(markdown = TRUE)

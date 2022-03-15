@@ -163,7 +163,6 @@ mod_all_ds_ui <- function(id){
 #'
 #' @param object A instance of the class `QFeatures`.
 #'
-#' @importFrom base64enc dataURI
 #' @importFrom shinyjs show hide hidden
 #' @import shiny
 #'

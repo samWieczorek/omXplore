@@ -12,9 +12,7 @@
 #' @return A violinplot
 #' 
 #' 
-#' @importFrom vioplot vioplot
 #' @importFrom grDevices colorRampPalette
-#' @importFrom graphics plot.window axis mtext legend points segments plot.new
 #' @importFrom RColorBrewer brewer.pal
 #' 
 #' @export
@@ -26,6 +24,14 @@ violinPlot <- function(data,
                        subset = NULL, 
                        pal.name){
 
+  
+  if (! requireNamespace("graphics", quietly = TRUE)) {
+    stop("Please install graphics: BiocManager::install('graphics')")
+  }
+  
+  if (! requireNamespace("vioplot", quietly = TRUE)) {
+    stop("Please install vioplot: BiocManager::install('vioplot')")
+  }
   
   stopifnot(inherits(data, 'matrix'))
   
@@ -42,7 +48,7 @@ violinPlot <- function(data,
                                  max(na.omit(data)))
                         )
   
-  title( ylab="Log (intensity)")
+  graphics::title( ylab="Log (intensity)")
   for (i in seq_len(ncol(data)))
     vioplot::vioplot(na.omit(data[ ,i]), 
                      col = myColors[i], 
