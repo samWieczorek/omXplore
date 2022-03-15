@@ -42,6 +42,9 @@ mod_ds_seExplorer_ui <- function(id){
                                                  style = 'info'),
                         shinyBS::bsCollapsePanel("Metadata", 
                                                  DT::DTOutput(ns("metadata_ui")),
+                                                 style = 'info'),
+                        shinyBS::bsCollapsePanel("quantitative Metadata", 
+                                                 DT::DTOutput(ns("qMetadata_ui")),
                                                  style = 'info')
                         ),
     mod_colorLegend_ui(ns('legend'))
@@ -80,8 +83,8 @@ mod_ds_seExplorer_server <- function(id,
     observe({
       req(se())
       stopifnot (inherits(se(), "SummarizedExperiment"))
-      
-      tags <- unique(SummarizedExperiment::rowData(se())$qMetadata)
+      tags <- apply(SummarizedExperiment::rowData(se())$qMetadata, 2, unique)
+      tags <- unique(unlist(tags))
       mod_colorLegend_server('legend', 
                              tags, 
                              ExtendPalette(length(tags), 'Dark2'))
@@ -150,7 +153,7 @@ mod_ds_seExplorer_server <- function(id,
                                columnDefs = list(
                                  list(
                                    columns.width = c("60px"),
-                                   columnDefs.targets = c(list(0),list(1),list(2)))
+                                   targets = c(list(0),list(1),list(2)))
                                  )
                                )
                            )
@@ -193,10 +196,10 @@ mod_ds_seExplorer_server <- function(id,
                          )
                        )
                      ) %>%
-        formatStyle(
+        DT::formatStyle(
           colnames(df)[2:(1 + (ncol(df)-1)/2)],
           colnames(df)[((2 + (ncol(df)-1)/2)):ncol(df)],
-          backgroundColor = styleEqual(names(colors), unlist(colors)),
+          backgroundColor = DT::styleEqual(names(colors), unlist(colors)),
           backgroundSize = '98% 48%',
           backgroundRepeat = 'no-repeat',
           backgroundPosition = 'center'
@@ -204,22 +207,37 @@ mod_ds_seExplorer_server <- function(id,
       
     })
     
+    output$qMetadata_ui <- DT::renderDataTable(server=TRUE,{
+      req(se())
+      df <- DaparToolshed::qMetadata(se())
 
-    # getDataForExprs <- reactive({
-    #   req(se())
-    #   test.table <- round(SummarizedExperiment::assay(se()), digits=10)
-    #   test.table <- tibble::as_tibble(test.table)
-    #   
-    #   addon.table <- matrix(rep(NA,
-    #                             ncol(test.table) * nrow(test.table)), 
-    #                         nrow = nrow(test.table)
-    #                         )
-    #   addon.table <- tibble::as_tibble(addon.table)
-    #   test.table <- cbind(test.table, addon.table)
-    # 
-    #   test.table
-    # })
-  
+      mc <- DaparToolshed::qMetadata.def(DaparToolshed::typeDataset(se()))
+      colors <- as.list(setNames(mc$color, mc$node))
+      
+      DT::datatable( df,
+                     extensions = c('Scroller'),
+                     options = list(
+                       initComplete = .initComplete(),
+                       displayLength = 20,
+                       deferRender = TRUE,
+                       bLengthChange = FALSE,
+                       scrollX = 200,
+                       scrollY = 600,
+                       scroller = TRUE,
+                       ordering = FALSE,
+                       server = TRUE
+                     )
+      ) %>%
+        DT::formatStyle(
+          colnames(df),
+          colnames(df),
+          backgroundColor = DT::styleEqual(names(colors), unlist(colors)),
+          backgroundSize = '98% 48%',
+          backgroundRepeat = 'no-repeat',
+          backgroundPosition = 'center'
+        )
+      
+    })
   })
   
   
