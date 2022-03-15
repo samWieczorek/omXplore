@@ -27,7 +27,6 @@ Imports:
     highcharter,
     tibble,
     tidyr,
-    visNetwork, 
     vioplot,
     shiny,
     shinyBS,
@@ -56,7 +55,7 @@ Collate:
     plots_compare_normalization_plots.R
     global.R
     mod_all_ds.R
-    mod_graph_pept_prot.R
+    mod_explore_graphs.R
     mod_ds_corrmatrix.R
     mod_ds_density.R
     mod_ds_seExplorer.R
@@ -96,5 +95,6 @@ Suggests:
     factoextra,
     graph,
     QFeatures,
-    DaparToolshed
+    DaparToolshed,
+    visNetwork
 Roxygen: list(markdown = TRUE)

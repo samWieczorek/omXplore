@@ -70,13 +70,14 @@ numeric matrix.</h1>
     <dl><dt>id</dt>
 <dd><p>A <code>character(1)</code> which is the id of the shiny module.</p></dd>
 <dt>data</dt>
-<dd><p>numeric matrix</p></dd>
+<dd><p>A <code>data.frame</code> or <code>matrix</code> of <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric()</a></code> which is the quantitative
+data to plot.</p></dd>
 <dt>conds</dt>
 <dd><p>A <code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code> of condition name for each sample. The
-length of 'conds' must be equal to the number of columns of 'qData'.</p></dd>
+length of 'conds' must be equal to the number of columns of 'data'.</p></dd>
 <dt>pal.name</dt>
-<dd><p>A <code>character(1)</code> which is the name of a palette in
-the package RColorBrewer.</p></dd>
+<dd><p>A <code>character(1)</code> which is the name of the palette from the package
+RColorBrewer from which the colors are taken. Default value is 'Set1'.</p></dd>
 </dl></div>
 
     <div id="ref-examples">

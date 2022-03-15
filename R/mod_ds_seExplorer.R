@@ -34,7 +34,7 @@ NULL
 mod_ds_seExplorer_ui <- function(id){
   ns <- NS(id)
   tagList(
-    shinyBS::bsCollapse(id = "collapseCCInfos", 
+    shinyBS::bsCollapse(id = "infos", 
                         open = "",
                         multiple = TRUE,
                         shinyBS::bsCollapsePanel("Quantitative data", 

@@ -77,7 +77,10 @@ mod_format_DT_server <- function(id,
                                       dom = dom,
                                       server = FALSE,
                                       autoWidth = TRUE,
-                                      columnDefs = list(list(width='150px', targets= "_all")),
+                                      columnDefs = list(
+                                        list(width='150px', 
+                                             targets= "_all")
+                                        ),
                                       ordering = FALSE
                                       )
                         )
@@ -91,7 +94,11 @@ mod_format_DT_server <- function(id,
                                       dom = dom,
                                       server = FALSE,
                                       autoWidth = TRUE,
-                                      columnDefs = list(list(width='150px',targets= "_all")),
+                                      columnDefs = list(
+                                        list(
+                                          width='150px',
+                                          targets= "_all")
+                                        ),
                                       ordering = FALSE
                                       )
                         )  %>%
@@ -121,6 +128,7 @@ mod_format_DT_server <- function(id,
 #' @param se A instance of the class `SummarizedExperiment`
 #' 
 #' @noRd
+#' @export
 #' 
 .getDataForExprs <- function(se){
   
@@ -128,8 +136,8 @@ mod_format_DT_server <- function(id,
     stop("Please install SummarizedExperiment: BiocManager::install('SummarizedExperiment')")
   }
   
-  req(se())
-  test.table <- round(SummarizedExperiment::assay(se()), digits=10)
+  req(se)
+  test.table <- round(SummarizedExperiment::assay(se), digits=10)
   test.table <- tibble::as_tibble(test.table)
   
   addon.table <- matrix(rep(NA,

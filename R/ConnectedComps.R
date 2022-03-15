@@ -1,24 +1,75 @@
-
-
-#' @title Computes the connex components of a graph, represented by an adjacency matrix.
+#' @title Connected components of a graph.
 #'
-#' @description This function computes the connex components of a graph, represented by an adjacency matrix.
+#' @description
+#' 
+#' This function computes the connex components of a graph, 
+#' represented by its adjacency matrix.
 #'
-#' @param obj.se xxxx
+#' @param obj.se An instance of the class `SummarizedExperiment`. This object
+#' must have a adjacencyMatrix.
+#' 
+#' @param X A `Matrix` which is the adjacency matrix.
+#' 
+#' @param cc A `list()` which contains the connected components
+#' 
+#' @param g A `list()` formed to store a graph with its nodes and edges.
+#' 
+#' @seealso The [adjacencyMatrix()] function of the package [QFeatures].
 #'
-#' @return A list of items containing the connex components derived from the matrices given in arguments
-#'
-#' @author Samuel Wieczorek
+#' @author Thomas Burger, Samuel Wieczorek
+#' 
+#' @name connected-components
 #'
 #' @examples
 #' data(ft)
-#' cc <- ComputeConnectedComposants(ft[[1]])
+#' X <- adjacencyMatrix(ft[[1]])
+#' 
+#' #------------------------------------------
+#' # Build the cc list for an adjaceny matrix
+#' #------------------------------------------
+#' 
+#' ll.cc <- compute.cc(X)
+#' 
+#' #-------------------------------------------------
+#' # Convert one cc of this list to a graph structure
+#' #-------------------------------------------------
+#' 
+#' g <- convertCC2graph(ll.cc[[1]], X)
+#' 
+#' #-------------------------------------------
+#' # Build the cc list for all type of peptides 
+#' # 'all', 'shared', 'specific'
+#' #-------------------------------------------
+#' 
+#' ll.cc <- wrapper.compute.cc(ft[[1]])
 #'
+#' #-------------------------------------------------
+#' # Show the graph
+#' #-------------------------------------------------
+#'  
+#' show.graph(g)
+#' 
+#' 
+#' #-----------------------------------------------------
+#' # Plots a graph which x-axis is the number of peptides
+#' # in the cc and the y-axis is the number of proteins
+#' # in the cc.
+#' #'-----------------------------------------------------
+#'
+#' tt <- as.data.frame(rowData(ft[[1]])[,1])
+#' colnames(tt) <- colnames(rowData(ft[[1]]))[1]
+#' plotJitter_hc(ll.cc, tt)
+#' plotJitter_hc(ll.cc)
+#' 
+NULL
+
+
+
 #' @export
 #'
 #' @rdname connected-components
 #'
-ComputeConnectedComposants <- function(obj.se){
+wrapper.compute.cc <- function(obj.se){
   
   if (!requireNamespace("SummarizedExperiment", quietly = TRUE)) {
     stop(
@@ -57,29 +108,13 @@ ComputeConnectedComposants <- function(obj.se){
 
 
 
-
-#' @title Build the list of connected components of an adjacency matrix.
-#'
-#' @description Method to build the list of connected components of an adjacency matrix
-#'
-#' @param X An adjacency matrix
-#'
-#' @return A list of Connected Components (CC)
-#'
-#' @author Thomas Burger, Samuel Wieczorek
-#'
-#' @examples
-#' data(ft)
-#' X <- adjacencyMatrix(ft[[1]])
-#' ll <- get.pep.prot.cc(X)
-#'
 #' @export
 #'
 #' @importFrom methods as
 #'
 #' @rdname connected-components
 #'
-get.pep.prot.cc <- function(X){
+compute.cc <- function(X){
   
   if (! requireNamespace("Matrix", quietly = TRUE)) {
     stop("Please install Matrix: BiocManager::install('Matrix')")
@@ -89,11 +124,7 @@ get.pep.prot.cc <- function(X){
     stop("Please install graph: BiocManager::install('graph')")
   }
   
-  
-  
-  if (is.null(X)){
-    warning("The adjacency matrix is NULL")
-    return()}
+  stopifnot(!is.null(X))
 
   p <- dim(X)[2] # Nb proteins
   q <- dim(X)[1] # Nb peptides
@@ -120,25 +151,26 @@ get.pep.prot.cc <- function(X){
     singprot.cc <- as.list(names(SingleProt.CC.id))
     singprot.cc.pep <- list()
     for(i in seq_len(length(singprot.cc))){
-      peplist <- which(X[,singprot.cc[[i]]]!=0)
+      peplist <- which(X[, singprot.cc[[i]]]!=0)
       singprot.cc.pep[[i]] <- names(peplist)
     }
   }
 
 
   if (length(SingleProt.CC.id) < nrow(A)){
-    B <- A[-SingleProt.CC.id,-SingleProt.CC.id] # matrix with no 1-prot CC
+    # matrix with no 1-prot CC
+    B <- A[-SingleProt.CC.id, -SingleProt.CC.id] 
 
     ### Protein CCs
     multprot.cc <- NULL
-    g <- graph::graphAM(B, edgemode='undirected', values=NA)
+    g <- graph::graphAM(B, edgemode = 'undirected', values=NA)
     multprot.cc <- graph::connComp(as(g, 'graphNEL'))
 
     ### Peptides from multiple prot CCs
     multprot.cc.pep <- list()
     for(i in seq_len(length(multprot.cc))){
       protlist <- multprot.cc[[i]]
-      subX <- as.matrix(X[,protlist])
+      subX <- as.matrix(X[, protlist])
       peplist <- which(rowSums(subX)!=0)
       multprot.cc.pep[[i]] <- names(peplist)
     }
@@ -158,51 +190,40 @@ get.pep.prot.cc <- function(X){
   }
 
   ### Clean memory and return result
-  rm(A,B,g,multprot.cc,singprot.cc,multprot.cc.pep,singprot.cc.pep,prot.cc,pep.cc)
+  rm(A,
+     B,
+     g,
+     multprot.cc,
+     singprot.cc,
+     multprot.cc.pep, 
+     singprot.cc.pep,
+     pep,prot.cc,
+     pep.cc)
   gc()
   return(global.cc)
 }
 
 
 
-
-
-
-
-#' @title Build graph definition
-#'
-#' @description Builds a graph as defined by its nodes and edges.
-#'
-#' @param The.CC A cc (a list)
-#'
-#' @param X An adjacency matrix as given by the function BuildListAdjacencyMatrices
-#'
-#' @return A list of two itens: nodes and edges
-#'
-#' @author Thomas Burger, Samuel Wieczorek
-#'
-#' @examples
-#' data(ft)
-#' X <- adjacencyMatrix(ft[[1]])
-#' ll <- get.pep.prot.cc(X)
-#' g <- buildGraph(ll[[1]], X)
 #'
 #' @export
 #'
 #' @rdname connected-components
 #'
-buildGraph <- function(The.CC, X){
+convertCC2graph <- function(cc, X){
 
-  subX <- as.matrix(X[The.CC$peptides, The.CC$proteins])
-  nb.prot <- length(The.CC$proteins)
-  nb.pep <- length(The.CC$peptides)
+  subX <- as.matrix(X[cc$peptides, cc$proteins])
+  nb.prot <- length(cc$proteins)
+  nb.pep <- length(cc$peptides)
   nb.pep.shared <- length(which(rowSums(subX)>1))
   nb.pep.spec <- length(which(rowSums(subX)==1))
   nb.total = nb.prot + nb.pep
-  edge.list <- as.data.frame(which(subX==1, arr.ind=TRUE))
+  edge.list <- as.data.frame(which(subX == 1, arr.ind = TRUE))
 
-  def.grp <- c(rep("shared.peptide", nb.pep), rep("protein", nb.prot))
-  def.grp[which(rowSums(subX)==1)] <- 'spec.peptide'
+  def.grp <- c(rep("shared.peptide", nb.pep), 
+               rep("protein", nb.prot)
+               )
+  def.grp[which(rowSums(subX) == 1)] <- 'spec.peptide'
 
 
   nodes <- data.frame(id = seq_len(nb.total),
@@ -212,169 +233,162 @@ buildGraph <- function(The.CC, X){
                       size = c(rep(10, nb.pep),rep(20, nb.prot)),
                       stringsAsFactors = FALSE
   )
-  edges <- data.frame(from=c(edge.list$row),
-                      to=c(edge.list$col+ nb.pep),
+  edges <- data.frame(from = c(edge.list$row),
+                      to = c(edge.list$col+ nb.pep),
                       stringsAsFactors = FALSE)
 
-  return(list(nodes=nodes, edges=edges))
+  return(list(nodes = nodes, 
+              edges = edges)
+         )
 }
 
 
-
-
-#' @title Display a connected component.
-#'
-#' @description Displays a connected component as a graph with the package 'visNetwork'.
-#'
-#' @param g A connex component (a list)
-#'
 #' @param obj xxx
-#'
-#' @param prot.tooltip A vector of strings which are the text for the tooltips of the proteins.
-#'
-#' @param pept.tooltip A vector of strings which are the text for the tooltips of the peptides.
-#'
-#' @return A plot
-#'
-#' @author Thomas Burger, Samuel Wieczorek
-#'
-#' @examples
-#' data(ft)
-#' X <- adjacencyMatrix(ft[[1]])
-#' ll <- get.pep.prot.cc(X)
-#' g <- buildGraph(ll[[1]], X)
-#' display.CC.visNet(g)
-#'
-#' @importFrom visNetwork visNetwork visNodes visGroups visOptions
-#'
+#' @param g xxx
+#' @param prot.tooltip A `character()` which are the tooltips of the proteins.
+#' @param pept.tooltip A `character()` which are the tooltips of the peptides.
 #' @export
 #'
 #' @rdname connected-components
 #'
-display.CC.visNet <- function(g,
-                              obj = NULL,
-                              prot.tooltip = NULL,
-                              pept.tooltip = NULL){
+show.graph <- function(g,
+                       obj = NULL,
+                       prot.tooltip = NULL,
+                       pept.tooltip = NULL){
 
-  col.prot <- "#ECB57C"
-  col.spec <- "#5CA3F7"
-  col.shared <- "#0EA513"
+  if (! requireNamespace("visNetwork", quietly = TRUE)) {
+    stop("Please install visNetwork: BiocManager::install('visNetwork')")
+  }
+  
+  
+  col <- list(prot = "#ECB57C",
+              spec = "#5CA3F7",
+              shared = "#0EA513",
+              edges = "#A9A9A9")
 
 
-  visNetwork::visNetwork(g$nodes, g$edges, width = "100%", height = "100%") %>%
-    visNetwork::visNodes(shape = "dot") %>%                        # square for all nodes
-    visNetwork::visGroups(groupname = "spec.peptide", color = col.spec) %>%    # darkblue for group "A"
-    visNetwork::visGroups(groupname = "shared.peptide", color = col.shared) %>%    # darkblue for group "A"
-    visNetwork::visGroups(groupname = "protein", color = col.prot, shape = "dot") %>%
+  visNetwork::visNetwork(g$nodes, 
+                         g$edges, 
+                         width = "100%", 
+                         height = "100%") %>%
+    # square for all nodes
+    visNetwork::visNodes(shape = "dot") %>%
+    # darkblue for group "A"
+    visNetwork::visGroups(groupname = "spec.peptide", 
+                          color = col$spec) %>%
+    # darkblue for group "A"
+    visNetwork::visGroups(groupname = "shared.peptide", 
+                          color = col$shared) %>%    
+    visNetwork::visGroups(groupname = "protein", 
+                          color = col$prot, 
+                          shape = "dot") %>%
     visNetwork::visOptions(highlightNearest = FALSE) %>%
     #visLegend()
     #visPhysics(stabilization = FALSE)%>%
-    visNetwork::visEdges(color = "#A9A9A9",width = 2)
+    visNetwork::visEdges(color = col$edges,
+                         width = 2)
 
 
 }
 
 
 
-#' @title Jitter plot of CC
-#'
-#' @description Jitter plot of CC
-#'
-#' @param list.of.cc List of cc such as returned by the function get.pep.prot.cc
-#'
-#' @return A plot
-#'
-#' @author Thomas Burger
-#'
-#' @examples
-#' data(ft)
-#' X <- adjacenyMatrix(ft[[1]])
-#' ll <- get.pep.prot.cc(X)
-#' plotJitterCC(ll)
-#'
-#' @export
-#'
-#' @importFrom graphics plot
-#'
-#' @rdname connected-components
-#'
-plotJitterCC <- function(list.of.cc){
-  stopifnot(!is.null(list.of.cc))
-
-  length(list.of.cc) # number of CCs
-  cc.summary <- sapply(list.of.cc, function(x){c(length(x[[1]]),length(x[[2]]))})
-  rownames(cc.summary) <- c("Nb_proteins","Nb_peptides")
-  colSums(cc.summary) # total amount of pep and prot in each CC
-  colnames(cc.summary) <- seq_len(length(list.of.cc))
-  cc.summary
-  rowSums(cc.summary) # c(number of prot, number of pep)
-
-
-  cc.summary <- as.data.frame(t(jitter(cc.summary)))
-  graphics::plot(jitter(cc.summary[,2]),jitter(cc.summary[,1]), type="p", xlab="#peptides in CC", ylab="#proteins in CC")
-
-}
-
-
-
-
-
-#' @title Display a a jitter plot for CC
-#'
-#' @description Display a jitter plot for connex component with the package highcharter
-#'
-#' @param df A dataframe containing xxx
+#' @param tooltips A `data.frame` which contains a subset of the rowData
+#' of the object and will be use as tooltips. Each column of the data.frame
+#' will be showed in the global tooltip of a point in the plot.
+#' 
+#' @param ll.cc A dataframe containing xxx
 #'
 #' @param clickFunction A JavaScript code to show an information when a point is clicked
-#'
-#' @return A plot
-#'
-#' @author Thomas Burger, Samuel Wieczorek
-#'
-#' @examples
-#' df <- data.frame(x=seq_len(10), y=seq_len(10))
-#' plotJitter_hc(df)
-#'
 #' @export
 #'
 #' @import highcharter
+#' @importFrom tibble tibble
 #'
 #' @rdname connected-components
 #'
-plotJitter_hc <- function(df, clickFunction=NULL){
+plotJitter_hc <- function(ll.cc,
+                          df.tooltips = NULL,
+                          clickFunction = NULL){
 
-  xtitle <- "TO DO"
+  
+  n.prot <- unlist(lapply(ll.cc, function(x){length(x$proteins)}))
+  n.pept <- unlist(lapply(ll.cc, function(x){length(x$peptides)}))
+  
+  df <- tibble::tibble(x = jitter(n.pept),
+                       y = jitter(n.prot),
+                       index = seq_len(length(ll.cc))
+                       )
+  # Add tooltips
+  txt_tooltips <- NULL
+  if (!is.null(df.tooltips)){
+    stopifnot(inherits(df.tooltips, 'data.frame'))
+    stopifnot(length(dim(df.tooltips)) == 2 && length(colnames(tt)) > 0)
+    df <- cbind(df, df.tooltips)
+    
+    # Affect only tooltips columns
+    ind <- seq(4, ncol(df))
+    colnames(df)[ind] <- paste("tooltip_", colnames(df)[ind], sep="")
+    
+    for (i in 4:ncol(df))
+      txt_tooltips <- paste(txt_tooltips,
+                            "<b>",
+                            gsub("tooltip_", "", colnames(df)[i], fixed=TRUE),
+                            " </b>: {point.", colnames(df)[i],"} <br> ",
+                            sep="")
+  }
 
   if (is.null(clickFunction)){
     clickFunction <-
-      JS("function(event) {Shiny.onInputChange('eventPointClicked', [this.index]+'_'+ [this.series.name]);}")
+      JS(paste0("function(event) {",
+      "Shiny.onInputChange('eventPointClicked',",
+      "[this.index]+'_'+ [this.series.name]);}"))
   }
 
-  i_tooltip <- which(startsWith(colnames(df),"tooltip"))
-  txt_tooltip <- NULL
-  for (i in i_tooltip){
-    t <- txt_tooltip <- paste(txt_tooltip,"<b>",gsub("tooltip_", "",
-                                                     colnames(df)[i],
-                                                     fixed=TRUE),
-                              " </b>: {point.", colnames(df)[i],"} <br> ",
-                              sep="")
-  }
-
+  
+  
   h1 <-  highchart() %>%
     hc_add_series(data = df, type = "scatter") %>%
-    customChart(zoomType = "xy",chartType="scatter") %>%
+    customChart(zoomType = "xy", chartType="scatter") %>%
     hc_legend(enabled = FALSE) %>%
-    hc_yAxis(title = list(text="Nb of proteins ic CC")) %>%
-    hc_xAxis(title = list(text = "Nb of peptides ic CC")) %>%
-    hc_tooltip(headerFormat= '',pointFormat = txt_tooltip) %>%
-    hc_plotOptions(series = list( animation=list(duration = 100),
+    hc_yAxis(title = list(text="Nb of proteins in CC")) %>%
+    hc_xAxis(title = list(text = "Nb of peptides in CC")) %>%
+    hc_plotOptions(series = list( animation = list(duration = 100),
                                   cursor = "pointer",
                                   point = list( events = list(
                                     click = clickFunction ) ) ) ) %>%
     customExportMenu(fname = "plotCC")
 
-
+if (!is.null(txt_tooltips))
+  h1 <- h1 %>% hc_tooltip(headerFormat = '', pointFormat = txt_tooltips)
+  
   return(h1)
+}
+
+
+#' @param ll.cc A `list()` of xxx
+#' @param type A `character(1)` which denotes the type ofconnected components
+#' to extract. Available values are: 'OneOne', 'OneMulti' and 'MultiAny'.
+#' @rdname connected-components
+#' @export
+Extract_CC <- function(ll.cc, type){
+  
+  if(missing(type)){
+    warning('type is missing. Returns the cc list.')
+    return(ll.cc)
+  }
+  
+  stopifnot(type %in% c('OneOne', 'OneMulti', 'MultiAny'))
+  
+  ll.prot <- lapply(ll.cc, function(x){length(x$proteins)})
+  ll.pept <- lapply(ll.cc, function(x){length(x$peptides)})
+  
+  ind.res <- switch(type,
+                OneOne = intersect(which(ll.prot == 1), which(ll.pept == 1)),
+                OneMulti = intersect(which(ll.prot == 1), which(ll.pept > 1)),
+                MultiAny = which(ll.prot > 1))
+  
+  ll.cc[ind.res]
 }
 
 

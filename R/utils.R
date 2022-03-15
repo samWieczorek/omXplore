@@ -89,6 +89,7 @@ customChart <- function(hc,
 
 
 #' @noRd
+#' @export
 .initComplete <- function(){
   
   return (DT::JS(

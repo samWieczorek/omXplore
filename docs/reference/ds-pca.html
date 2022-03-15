@@ -67,11 +67,14 @@ number of missing values (NA) per lines (ie proteins).</p>
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>id</dt>
-<dd><p>xxx.</p></dd>
+<dd><p>A <code>character(1)</code> which is the id of the shiny module.</p></dd>
 <dt>data</dt>
-<dd><p>An instance of the class <code>SummarizedExperiment</code></p></dd>
+<dd><p>An instance of the class <code>SummarizedExperiment</code> which is the
+quantitative values.</p></dd>
 <dt>conds</dt>
-<dd><p>xxx</p></dd>
+<dd><p>A <code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code> of the name of conditions
+(one condition per sample). The number of conditions must be equal to
+the number of samples (number of columns) of the parameter 'data'.</p></dd>
 <dt>var.scaling</dt>
 <dd><p>The dimensions to plot</p></dd>
 <dt>ncp</dt>

@@ -78,11 +78,13 @@ numeric matrix.</h1>
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>id</dt>
-<dd><p>xxx</p></dd>
+<dd><p>A <code>character(1)</code> which is the id of the shiny module.</p></dd>
 <dt>data</dt>
 <dd><p>A <code>matrix</code> or <code>array</code> quantitative values</p></dd>
 <dt>conds</dt>
-<dd><p>A <code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code> of the conditions (one condition per sample).</p></dd>
+<dd><p>A <code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code> of the name of conditions
+(one condition per sample). The number of conditions must be equal to
+the number of samples (number of columns) of the parameter 'data'.</p></dd>
 <dt>width</dt>
 <dd><p>xxx</p></dd>
 <dt>distfun</dt>
