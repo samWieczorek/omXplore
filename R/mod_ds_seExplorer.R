@@ -83,11 +83,11 @@ mod_ds_seExplorer_server <- function(id,
     observe({
       req(se())
       stopifnot (inherits(se(), "SummarizedExperiment"))
-      tags <- apply(SummarizedExperiment::rowData(se())$qMetadata, 2, unique)
-      tags <- unique(unlist(tags))
+      tmp.tags <- DaparToolshed::custom_qMetadata_colors()
       mod_colorLegend_server('legend', 
-                             tags, 
-                             ExtendPalette(length(tags), 'Dark2'))
+                             text = names(tmp.tags), 
+                             colors = unname(unlist(tmp.tags))
+                             )
     })
 
     
@@ -171,11 +171,11 @@ mod_ds_seExplorer_server <- function(id,
     output$qdata_ui <- DT::renderDataTable(server=TRUE,{
       req(se())
       df <- cbind(keyId = SummarizedExperiment::rowData(se())[, DaparToolshed::idcol(se())],
-                  round(SummarizedExperiment::assay(se()), digits = digits()), 
+                  round(SummarizedExperiment::assay(se()), 
+                        digits = digits()), 
                   DaparToolshed::qMetadata(se())
                   )
-      mc <- DaparToolshed::qMetadata.def(DaparToolshed::typeDataset(se()))
-      colors <- as.list(setNames(mc$color, mc$node))
+      colors <- DaparToolshed::custom_qMetadata_colors()
       
       DT::datatable( df,
                      extensions = c('Scroller'),
@@ -199,7 +199,9 @@ mod_ds_seExplorer_server <- function(id,
         DT::formatStyle(
           colnames(df)[2:(1 + (ncol(df)-1)/2)],
           colnames(df)[((2 + (ncol(df)-1)/2)):ncol(df)],
-          backgroundColor = DT::styleEqual(names(colors), unlist(colors)),
+          backgroundColor = DT::styleEqual(names(colors), 
+                                           unname(unlist(colors))
+                                           ),
           backgroundSize = '98% 48%',
           backgroundRepeat = 'no-repeat',
           backgroundPosition = 'center'
@@ -211,8 +213,7 @@ mod_ds_seExplorer_server <- function(id,
       req(se())
       df <- DaparToolshed::qMetadata(se())
 
-      mc <- DaparToolshed::qMetadata.def(DaparToolshed::typeDataset(se()))
-      colors <- as.list(setNames(mc$color, mc$node))
+      colors <- DaparToolshed::custom_qMetadata_colors()
       
       DT::datatable( df,
                      extensions = c('Scroller'),
@@ -231,7 +232,9 @@ mod_ds_seExplorer_server <- function(id,
         DT::formatStyle(
           colnames(df),
           colnames(df),
-          backgroundColor = DT::styleEqual(names(colors), unlist(colors)),
+          backgroundColor = DT::styleEqual(names(colors), 
+                                           unname(unlist(colors))
+                                           ),
           backgroundSize = '98% 48%',
           backgroundRepeat = 'no-repeat',
           backgroundPosition = 'center'

@@ -110,14 +110,16 @@ wrapper.compute.cc <- function(obj.se){
 
 #' @export
 #'
-#' @importFrom methods as
-#'
 #' @rdname connected-components
 #'
 compute.cc <- function(X){
   
   if (! requireNamespace("Matrix", quietly = TRUE)) {
     stop("Please install Matrix: BiocManager::install('Matrix')")
+  }
+  
+  if (! requireNamespace("methods", quietly = TRUE)) {
+    stop("Please install methods: BiocManager::install('methods')")
   }
   
   if (! requireNamespace("graph", quietly = TRUE)) {
@@ -164,7 +166,7 @@ compute.cc <- function(X){
     ### Protein CCs
     multprot.cc <- NULL
     g <- graph::graphAM(B, edgemode = 'undirected', values=NA)
-    multprot.cc <- graph::connComp(as(g, 'graphNEL'))
+    multprot.cc <- graph::connComp(methods::as(g, 'graphNEL'))
 
     ### Peptides from multiple prot CCs
     multprot.cc.pep <- list()
