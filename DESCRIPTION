@@ -46,7 +46,7 @@ Collate:
     mod_format_DT.R
     adjacencyMatrixInfos.R
     ConnectedComps.R
-    plots_compare_normalization_plots.R
+    plots_compare_assays.R
     global.R
     mod_all_ds.R
     mod_explore_graphs.R

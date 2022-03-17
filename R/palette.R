@@ -69,7 +69,7 @@ ExtendPalette <- function(n, pal.name = "Set1"){
 
   stopifnot(is.numeric(n))
   
-  if( !(pal.name %in% rownames(brewer.pal.info)))
+  if( is.null(pal.name) || !(pal.name %in% rownames(brewer.pal.info)))
     pal.name <- "Set1"
   
   extended.pal <- NULL
