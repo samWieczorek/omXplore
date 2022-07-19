@@ -17,9 +17,11 @@ plotCompareAssays(
 )
 }
 \arguments{
-\item{assay1}{A numeric matrix containing quantitative data before normalization.}
+\item{assay1}{A numeric matrix containing quantitative data before
+normalization.}
 
-\item{assay2}{A numeric matrix containing quantitative data after normalization.}
+\item{assay2}{A numeric matrix containing quantitative data after
+normalization.}
 
 \item{conds}{A vector of the conditions (one condition per sample).}
 
@@ -40,12 +42,14 @@ A plot
 }
 \description{
 This plot compares the quantitative proteomics data between two assays.
-It can be used for example to compare the effect of the normalization process.
+It can be used for example to compare the effect of the normalization
+process.
 
 The comparison is made with the division operator.
 }
 \examples{
-data(ft)
+library(SummarizedExperiment)
+data(ft, package='DaparViz')
 assay1 <- assay(ft, 1)
 assay2 <- 3 * assay(ft, 1)
 conds <- colData(ft)$Condition
@@ -55,7 +59,6 @@ conds <- colData(ft)$Condition
 ## -----------------------------------------------------------------
 
 plotCompareAssays(assay1, assay2, conds, n = 5)
-
 
 }
 \author{

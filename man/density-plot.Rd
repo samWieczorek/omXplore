@@ -10,49 +10,62 @@ numeric matrix.}
 \usage{
 mod_ds_density_ui(id)
 
-mod_ds_density_server(id, data, conds, pal.name = reactive({
-    NULL
-}))
+mod_ds_density_server(
+  id,
+  data,
+  conds,
+  pal.name = reactive({
+     NULL
+ })
+)
 
 densityPlot(data, conds, pal.name = NULL)
 }
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
-\item{data}{A \code{data.frame} or \code{matrix} of \code{numeric()} which is the quantitative
-data to plot.}
+\item{data}{A \code{data.frame} or \code{matrix} of \code{numeric()} which is the
+quantitative data to plot.}
 
 \item{conds}{A \code{character()} of condition name for each sample. The
 length of 'conds' must be equal to the number of columns of 'data'.}
 
-\item{pal.name}{A \code{character(1)} which is the name of the palette from the package
-\link{RColorBrewer} from which the colors are taken. Default value is 'Set1'.}
+\item{pal.name}{A \code{character(1)} which is the name of the palette from
+the package \link{RColorBrewer} from which the colors are taken. Default
+value is 'Set1'.}
+}
+\value{
+NA
+
+NA
 }
 \description{
 xxxx
 }
 \examples{
-data(ft)
+library(SummarizedExperiment)
+data(ft, package='DaparViz')
 densityPlot(assay(ft, 1))
 
 
 #------------------------------------------
 # Shiny module
 #------------------------------------------
-if(interactive()){
-data(ft)
- ui <- mod_ds_density_ui('plot')
+if (interactive()) {
+    data(ft, package='DaparViz')
+    ui <- mod_ds_density_ui("plot")
 
- server <- function(input, output, session) {
-  mod_ds_density_server('plot', 
-                     reactive({assay(ft, 1)}),
-                     colData(ft)$Condition)
-  }
- 
- shinyApp(ui=ui, server=server)
+    server <- function(input, output, session) {
+        mod_ds_density_server(
+            "plot",
+            reactive({
+                assay(ft, 1)
+            }),
+            colData(ft)$Condition
+        )
+    }
+
+    shinyApp(ui = ui, server = server)
 }
-
-
-
 
 }

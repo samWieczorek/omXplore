@@ -25,10 +25,10 @@ Customised resetZoom Button of highcharts plots
 }
 \examples{
 library("highcharter")
-hc <- highchart() 
-hc_chart(hc,type = "line") 
-hc_add_series(hc,data = c(29, 71, 40))
-customChart(hc,filename='foo')
+hc <- highchart()
+hc_chart(hc, type = "line")
+hc_add_series(hc, data = c(29, 71, 40))
+customChart(hc, filename = "foo")
 
 }
 \author{

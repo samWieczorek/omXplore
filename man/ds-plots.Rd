@@ -56,20 +56,21 @@ number of missing values (NA) per lines (ie proteins) and per conditions,
 }
 
 \examples{
-data(ft)
-data(ft_na)
+library(SummarizedExperiment)
+data(ft, package='DaparViz')
+data(ft_na, package='DaparViz')
 
 qData <- assay(ft, 1)
 conds <- design(ft)$Condition
-pal <- 'Dark2'
+pal <- "Dark2"
 
-data(ft)
+data(ft, package='DaparViz')
 qData <- assay(ft, 1)
 conds <- design(ft)$Condition
 densityPlot(qData, conds)
 
 legend <- design(ft)$Sample.name
-densityPlot(qData, conds, pal.name = 'Dark2')
+densityPlot(qData, conds, pal.name = "Dark2")
 
 CVDist(qData, conds)
 
@@ -100,7 +101,7 @@ mvHisto(qData, conds, pal.name = pal)
 # Plots a histogram of missing values
 #----------------------------------------
 
-data(ft)
+data(ft, package='DaparViz')
 mv.heatmap(assay(ft, 1))
 
 #----------------------------------------
@@ -108,15 +109,17 @@ mv.heatmap(assay(ft, 1))
 # Here, an example with the density plot
 #----------------------------------------
 
-if(interactive()){
- data(ft_na)
- ui <- mod_all_ds_ui('plot')
+if (interactive()) {
+    data(ft_na, package='DaparViz')
+    ui <- mod_all_ds_ui("plot")
 
- server <- function(input, output, session) {
-  mod_all_ds_server('plot', object = reactive({ft_na}))
-  }
- 
- shinyApp(ui=ui, server=server)
+    server <- function(input, output, session) {
+        mod_all_ds_server("plot", object = reactive({
+            ft_na
+        }))
+    }
+
+    shinyApp(ui = ui, server = server)
 }
 }
 \author{

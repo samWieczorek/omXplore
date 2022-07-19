@@ -14,8 +14,9 @@ ExtendPalette(n, pal.name = "Set1")
 \item{conds}{A \code{character()} of conditions. The length of the vector is
 the number of samples in the dataset.}
 
-\item{pal.name}{A \code{character(1)} which is the name of the palette from the package
-\link{RColorBrewer} from which the colors are taken. Default value is 'Set1'.}
+\item{pal.name}{A \code{character(1)} which is the name of the palette from the
+package \link{RColorBrewer} from which the colors are taken. Default value
+is 'Set1'.}
 
 \item{n}{The number of desired colors in the palette}
 }
@@ -24,7 +25,8 @@ A \code{HEX()} color codes.
 }
 \description{
 Builds a vector of \verb{#conditions} colors for a set of samples. One color is
-given for a given condition. This function extends a base palette from the package \link{RColorBrewer} to 'n' colors.
+given for a given condition. This function extends a base palette from the
+package \link{RColorBrewer} to 'n' colors.
 The colors in the returned palette are always in the same order
 }
 \examples{
@@ -34,9 +36,9 @@ The colors in the returned palette are always in the same order
 # of 3 samples each.
 #------------------------------------------------
 
-conds <- c(rep('A', 3), rep('B', 3), rep('C', 3))
+conds <- c(rep("A", 3), rep("B", 3), rep("C", 3))
 SampleColors(conds)
-SampleColors(conds, 'Dark2')
+SampleColors(conds, "Dark2")
 
 
 #-----------------------------------------------

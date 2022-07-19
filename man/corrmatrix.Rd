@@ -13,8 +13,12 @@ mod_ds_corrmatrix_ui(id)
 mod_ds_corrmatrix_server(
   id,
   data,
-  rate = reactive({     0.5 }),
-  showValues = reactive({     FALSE })
+  rate = reactive({
+     0.5
+ }),
+  showValues = reactive({
+     FALSE
+ })
 )
 
 corrMatrix(data, rate = 0.5, showValues = FALSE)
@@ -29,30 +33,37 @@ the gradient of colors}
 
 \item{showValues}{xxx}
 }
+\value{
+NA
+
+NA
+}
 \description{
 xxxx
 }
 \examples{
-data(ft)
+library(SummarizedExperiment)
+data(ft, package='DaparViz')
 corrMatrix(assay(ft, 1))
 
 
 #------------------------------------------
 # Shiny module
 #------------------------------------------
-if(interactive()){
-data(ft)
- ui <- mod_ds_corrmatrix_ui('plot')
+if (interactive()) {
+    data(ft, package='DaparViz')
+    ui <- mod_ds_corrmatrix_ui("plot")
 
- server <- function(input, output, session) {
-  mod_ds_corrmatrix_server('plot', 
-  reactive({assay(ft, 1)})
-  )}
- 
- shinyApp(ui=ui, server=server)
+    server <- function(input, output, session) {
+        mod_ds_corrmatrix_server(
+            "plot",
+            reactive({
+                assay(ft, 1)
+            })
+        )
+    }
+
+    shinyApp(ui = ui, server = server)
 }
-
-
-
 
 }

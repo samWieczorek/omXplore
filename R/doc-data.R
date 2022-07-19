@@ -1,15 +1,15 @@
 #' ft dataset
-#' 
+#'
 #' @name ft
 #' @title ft dataset
 #' @description xxx
 #' @aliases ft
 #' @docType data
 #' @keywords data
-#' @usage data(ft)
-#' 
+#' @usage data(ft, package = 'DaparViz')
+#'
 #' @format An object of class `QFeatures`
-#' 
+#'
 #' @keywords datasets
 NULL
 
@@ -21,8 +21,8 @@ NULL
 #' @aliases ft_na
 #' @docType data
 #' @keywords data
-#' @description 
+#' @description
 #' xxx
-#' 
+#'
 #' @keywords datasets
 NULL

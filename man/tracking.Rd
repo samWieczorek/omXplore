@@ -15,6 +15,9 @@ mod_seTracker_server(id, se)
 
 \item{se}{A instance of the class \code{SummarizedExperiment}}
 }
+\value{
+NA
+}
 \description{
 This shiny module offers a UI to select a subset of a dataset
 and superimpose quantitative values of this selection on the complete plot
@@ -26,25 +29,26 @@ Three modes of selection are implemented:
 }
 }
 \examples{
-if (interactive()){
+if (interactive()) {
+    ui <- tagList(
+        mod_seTracker_ui("track"),
+        uiOutput("show")
+    )
 
-ui <- tagList(
-  mod_seTracker_ui('track'),
-  uiOutput('show')
-)
+    server <- function(input, output, session) {
+        tmp <- reactiveVal()
 
-server <- function(input, output, session) {
-  tmp <- reactiveVal()
-  
-  tmp <- mod_seTracker_server(id = 'track',
-                              se = reactive({ft[[1]]})
-  )
-  
-  output$show <- renderUI({
-    p(paste0(tmp(), collapse = ' '))
-  })
-  
-}
-shinyApp(ui=ui, server=server)
+        tmp <- mod_seTracker_server(
+            id = "track",
+            se = reactive({
+                ft[[1]]
+            })
+        )
+
+        output$show <- renderUI({
+            p(paste0(tmp(), collapse = " "))
+        })
+    }
+    shinyApp(ui = ui, server = server)
 }
 }

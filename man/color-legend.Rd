@@ -20,26 +20,29 @@ mod_colorLegend_server(id, text, pal.name = NULL, colors = NULL)
 \item{colors}{A \code{HEX()} containing the color codes to apply to the plot.
 The number of colors must be equal to the length of parameter 'text'.}
 }
+\value{
+NA
+}
 \description{
 xxxx
 }
 \examples{
-if(interactive()){
- text <- LETTERS[1:5]
- colors <- RColorBrewer::brewer.pal(5, 'Dark2')
- ui <- mod_colorLegend_ui('plot')
- server <- function(input, output, session) {
-   
-   # Use the default color palette
-   mod_colorLegend_server('plot', text)
-   
-   # Use of a user-defined color palette
-   mod_colorLegend_server('plot', text, colors = colors)
-   
-   # Use of a  palette
-   mod_colorLegend_server('plot', text, pal.name = "Dark3")
-   }
- 
- shinyApp(ui=ui, server=server)
+if (interactive()) {
+    text <- LETTERS[1:5]
+    colors <- RColorBrewer::brewer.pal(5, "Dark2")
+    ui <- mod_colorLegend_ui("plot")
+    server <- function(input, output, session) {
+
+        # Use the default color palette
+        mod_colorLegend_server("plot", text)
+
+        # Use of a user-defined color palette
+        mod_colorLegend_server("plot", text, colors = colors)
+
+        # Use of a  palette
+        mod_colorLegend_server("plot", text, pal.name = "Dark3")
+    }
+
+    shinyApp(ui = ui, server = server)
 }
 }

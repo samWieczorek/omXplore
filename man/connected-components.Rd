@@ -53,7 +53,8 @@ must have a adjacencyMatrix.}
 
 \item{ll.cc}{xxx}
 
-\item{clickFunction}{A JavaScript code to show an information when a point is clicked}
+\item{clickFunction}{A JavaScript code to show an information when a point
+is clicked}
 
 \item{type}{A \code{character(1)} which denotes the type ofconnected components
 to extract. Available values are: 'OneOne', 'OneMulti' and 'MultiAny'.}
@@ -80,7 +81,7 @@ represented by its adjacency matrix.
 A shiny Module.
 }
 \examples{
-data(ft)
+data(ft, package='DaparViz')
 X <- adjacencyMatrix(ft[[1]])
 
 #------------------------------------------
@@ -96,7 +97,7 @@ ll.cc <- compute.cc(X)
 g <- convertCC2graph(ll.cc[[1]], X)
 
 #-------------------------------------------
-# Build the cc list for all type of peptides 
+# Build the cc list for all type of peptides
 # 'all', 'shared', 'specific'
 #-------------------------------------------
 
@@ -105,7 +106,7 @@ ll.cc <- wrapper.compute.cc(ft[[1]])
 #-------------------------------------------------
 # Show the graph
 #-------------------------------------------------
- 
+
 show.graph(g)
 
 
@@ -113,9 +114,9 @@ show.graph(g)
 # Plots a graph which x-axis is the number of peptides
 # in the cc and the y-axis is the number of proteins
 # in the cc.
-#'-----------------------------------------------------
+#' -----------------------------------------------------
 
-tt <- as.data.frame(rowData(ft[[1]])[,1])
+tt <- as.data.frame(rowData(ft[[1]])[, 1])
 colnames(tt) <- colnames(rowData(ft[[1]]))[1]
 plotJitter_hc(ll.cc, tt)
 plotJitter_hc(ll.cc)

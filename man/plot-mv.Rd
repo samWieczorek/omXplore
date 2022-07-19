@@ -17,24 +17,33 @@ numeric matrix.}
 \usage{
 mod_ds_mv_ui(id)
 
-mod_ds_mv_server(id, data, conds, pal.name = reactive({
-    NULL
-}))
+mod_ds_mv_server(
+  id,
+  data,
+  conds,
+  pal.name = reactive({
+     NULL
+ })
+)
 
 mod_mv_imputation_ui(id)
 
 mod_mv_imputation_server(
   id,
-  se = reactive({     NULL }),
+  se = reactive({
+     NULL
+ }),
   conds = NULL,
-  pal.name = reactive({     NULL })
+  pal.name = reactive({
+     NULL
+ })
 )
 
 mv.density(se, conds, pal.name = NULL, pattern, typeofMV = NULL, title = NULL)
 
 mv.mec.heatmap(se, conds)
 
-mvPerLinesHisto(data)
+mvPerLinesHisto(se, pattern, detailed = FALSE, showValues = FALSE)
 
 mvPerLinesHistoPerCondition(data, conds, pal.name)
 
@@ -49,16 +58,20 @@ mvHisto(data, conds, showValues = FALSE, pal.name = NULL)
 (one condition per sample). The number of conditions must be equal to
 the number of samples (number of columns) of the parameter 'data'.}
 
-\item{pal.name}{A \code{character(1)} which is the name of the palette from the package
-\link{RColorBrewer} from which the colors are taken. Default value is 'Set1'.}
+\item{pal.name}{A \code{character(1)} which is the name of the palette from the
+package \link{RColorBrewer} from which the colors are taken. Default value
+is 'Set1'.}
 
-\item{se}{An instance of a class \code{SummarizedExperiment}.}
+\item{se}{An instance of the class \code{SummarizedExperiment}}
 
-\item{pattern}{xxx}
+\item{pattern}{A \code{character(1)} indicating the type of quantitative
+metadata to view. Available values are given by 'qMetadata.def()'}
 
 \item{typeofMV}{xxx}
 
 \item{title}{The title of the plot}
+
+\item{detailed}{A \code{logical(1)} that indicates whether to show xxx}
 
 \item{showValues}{A \code{logical()} that indicates whether to show
 values in the plot.}
@@ -95,29 +108,37 @@ number of missing values. A white square is plotted for missing values.
 }
 
 \examples{
-data(ft_na)
+library(SummarizedExperiment)
+data(ft_na, package='DaparViz')
 mvPerLinesHisto(assay(ft_na, 1))
 
-mvPerLinesHistoPerCondition(assay(ft_na, 1),
-                            colData(ft_na)$Condition)
+mvPerLinesHistoPerCondition(
+    assay(ft_na, 1),
+    colData(ft_na)$Condition
+)
 mvHisto(assay(ft_na, 1), colData(ft_na)$Condition)
 
 #------------------------------------------
 # Shiny module
 #------------------------------------------
-if(interactive()){
- data(ft_na)
- ui <- mod_ds_mv_ui('plot')
+if (interactive()) {
+    data(ft_na, package='DaparViz')
+    ui <- mod_ds_mv_ui("plot")
 
- server <- function(input, output, session) {
-  mod_ds_mv_server('plot', 
-                reactive({assay(ft_na, 1)}),
-                colData(ft_na)$Condition)
-               }
- 
- shinyApp(ui=ui, server=server)
+    server <- function(input, output, session) {
+        mod_ds_mv_server(
+            "plot",
+            reactive({
+                assay(ft_na, 1)
+            }),
+            colData(ft_na)$Condition
+        )
+    }
+
+    shinyApp(ui = ui, server = server)
 }
-data(ft_na)
+library(SummarizedExperiment)
+data(ft_na, package='DaparViz')
 data <- assay(ft_na, 1)
 conds <- colData(ft_na)$Condition
 
@@ -125,7 +146,7 @@ conds <- colData(ft_na)$Condition
 # xxx
 #-----------------------------
 
-mv.density(ft_na[[1]], conds, pattern = 'missing MEC')
+mv.density(ft_na[[1]], conds, pattern = "missing MEC")
 
 mv.mec.heatmap(ft_na[[1]], conds)
 
@@ -133,18 +154,21 @@ mv.mec.heatmap(ft_na[[1]], conds)
 # xxx
 #-----------------------------
 
-if(interactive()){
- data(ft_na)
- 
- ui <- mod_mv_imputation_ui('plot')
+if (interactive()) {
+    data(ft_na, package='DaparViz')
 
- server <- function(input, output, session) {
-  mod_mv_imputation_server('plot',
-                           se = reactive({ft_na[[1]]}),
-                           conds = colData(ft_na)$Condition)
-  }
- 
- shinyApp(ui=ui, server=server)
+    ui <- mod_mv_imputation_ui("plot")
+
+    server <- function(input, output, session) {
+        mod_mv_imputation_server("plot",
+            se = reactive({
+                ft_na[[1]]
+            }),
+            conds = colData(ft_na)$Condition
+        )
+    }
+
+    shinyApp(ui = ui, server = server)
 }
 }
 \seealso{

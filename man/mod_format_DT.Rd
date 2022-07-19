@@ -13,7 +13,9 @@ mod_format_DT_server(
   df,
   rownames = FALSE,
   dom = "Bt",
-  style = reactive({     NULL })
+  style = reactive({
+     NULL
+ })
 )
 }
 \arguments{
@@ -27,22 +29,24 @@ mod_format_DT_server(
 
 \item{style}{xxx}
 }
+\value{
+NA
+}
 \description{
 A shiny Module.
 }
 \examples{
-if(interactive()){
- data(ft)
- ui <- mod_format_DT_ui('dt')
-
- server <- function(input, output, session) {
-  mod_format_DT_server(id = 'dt',
-                       df = reactive({assay(ft,1)})
-                       )
-  }
- 
- shinyApp(ui=ui, server=server)
+library(SummarizedExperiment)
+if (interactive()) {
+    data(ft, package='DaparViz')
+    ui <- mod_format_DT_ui("dt")
+    server <- function(input, output, session) {
+        mod_format_DT_server(
+            id = "dt",
+            df = reactive({assay(ft, 1)})
+        )
+    }
+    shinyApp(ui = ui, server = server)
 }
-
 
 }

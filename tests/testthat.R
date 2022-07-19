@@ -1,3 +1,3 @@
 library(testthat)
 
-test_check("ProteomicsExplorer")
+test_check("DaparViz")

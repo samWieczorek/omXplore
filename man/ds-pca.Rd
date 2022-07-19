@@ -28,7 +28,8 @@ the number of samples (number of columns) of the parameter 'data'.}
 
 \item{var.scaling}{The dimensions to plot}
 
-\item{ncp}{A \code{integer(1)} which represents the umber of dimensions kept in the results.}
+\item{ncp}{A \code{integer(1)} which represents the umber of dimensions kept in
+the results.}
 
 \item{res.pca}{Result of FactoMineR::PCA}
 }
@@ -45,9 +46,10 @@ number of missing values (NA) per lines (ie proteins).
 # Plots a heatmap for generic quantitative data
 #----------------------------------------------
 
+library(SummarizedExperiment)
 heatmapD(assay(ft, 1), conds)
 
-data(ft)
+data(ft, package='DaparViz')
 
 
 #----------------------------------------
@@ -58,26 +60,26 @@ data(ft)
 # and add the necessaray parameters
 #----------------------------------------
 
-if(interactive()){
- data(ft)
- ui <- mod_ds_pca_ui('plot')
+if (interactive()) {
+    data(ft, package='DaparViz')
+    ui <- mod_ds_pca_ui("plot")
 
- server <- function(input, output, session) {
-  conds <- colData(ft)$Condition
- 
-  mod_ds_pca_server('plot',
-                 reactive({assay(ft, 1)}),
-                 colData(ft)$Condition
-                 )
-  }
- 
- shinyApp(ui=ui, server=server)
+    server <- function(input, output, session) {
+        conds <- colData(ft)$Condition
+
+        mod_ds_pca_server(
+            "plot",
+            reactive({
+                assay(ft, 1)
+            }),
+            colData(ft)$Condition
+        )
+    }
+
+    shinyApp(ui = ui, server = server)
 }
-
 
 }
 \author{
-Samuel Wieczorek, Enora Fremy
-
 Samuel Wieczorek, Enora Fremy
 }

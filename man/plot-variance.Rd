@@ -22,33 +22,41 @@ CVDist(data, conds = NULL, pal.name = NULL)
 \item{conds}{A \code{character()} of the name of conditions
 (one condition per sample).}
 
-\item{pal.name}{A \code{character(1)} which is the name of the palette from the package
-\link{RColorBrewer} from which the colors are taken. Default value is 'Set1'.}
+\item{pal.name}{A \code{character(1)} which is the name of the palette from the
+package \link{RColorBrewer} from which the colors are taken.
+Default value is 'Set1'.}
+}
+\value{
+NA
+
+NA
 }
 \description{
 xxxx
 }
 \examples{
-data(ft)
+library(SummarizedExperiment)
+data(ft, package='DaparViz')
 CVDist(assay(ft, 1), colData(ft)$Condition)
 
 
 #------------------------------------------
 # Shiny module
 #------------------------------------------
-if(interactive()){
-data(ft)
- ui <- mod_ds_variance_ui('plot')
+if (interactive()) {
+    data(ft, package='DaparViz')
+    ui <- mod_ds_variance_ui("plot")
 
- server <- function(input, output, session) {
-  mod_ds_variance_server('plot', 
-  reactive({assay(ft, 1)})
-  )}
- 
- shinyApp(ui=ui, server=server)
+    server <- function(input, output, session) {
+        mod_ds_variance_server(
+            "plot",
+            reactive({
+                assay(ft, 1)
+            })
+        )
+    }
+
+    shinyApp(ui = ui, server = server)
 }
-
-
-
 
 }

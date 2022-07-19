@@ -8,7 +8,7 @@
 An object of class \code{QFeatures}
 }
 \usage{
-data(ft)
+data(ft, package = 'DaparViz')
 }
 \description{
 xxx

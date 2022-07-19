@@ -8,9 +8,13 @@
 \usage{
 mod_ds_seExplorer_ui(id)
 
-mod_ds_seExplorer_server(id, se, digits = reactive({
-    3
-}))
+mod_ds_seExplorer_server(
+  id,
+  se,
+  digits = reactive({
+     3
+ })
+)
 }
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
@@ -26,22 +30,27 @@ NA
 xxxx
 }
 \examples{
-data(ft)
+library(SummarizedExperiment)
+data(ft, package='DaparViz')
 corrMatrix(assay(ft, 1))
 
 
 #------------------------------------------
 # Shiny module
 #------------------------------------------
-if(interactive()){
-data(ft_na)
- ui <- mod_ds_seExplorer_ui('plot')
+if (interactive()) {
+    data(ft_na, package='DaparViz')
+    ui <- mod_ds_seExplorer_ui("plot")
 
- server <- function(input, output, session) {
-  mod_ds_seExplorer_server('plot', 
-  reactive({ft_na[[1]]})
-  )}
- 
- shinyApp(ui=ui, server=server)
+    server <- function(input, output, session) {
+        mod_ds_seExplorer_server(
+            "plot",
+            reactive({
+                ft_na[[1]]
+            })
+        )
+    }
+
+    shinyApp(ui = ui, server = server)
 }
 }

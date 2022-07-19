@@ -1,33 +1,40 @@
 #' @title Displays a correlation matrix of the quantitative data of a
 #' numeric matrix.
-#' 
-#' @description 
+#'
+#' @description
 #' xxxx
-#' 
+#'
 #' @name plot-mv
-#' 
+#'
 #' @examples
-#' data(ft_na)
+#' library(SummarizedExperiment)
+#' data(ft_na, package='DaparViz')
 #' mvPerLinesHisto(assay(ft_na, 1))
-#' 
-#' mvPerLinesHistoPerCondition(assay(ft_na, 1),
-#'                             colData(ft_na)$Condition)
+#'
+#' mvPerLinesHistoPerCondition(
+#'     assay(ft_na, 1),
+#'     colData(ft_na)$Condition
+#' )
 #' mvHisto(assay(ft_na, 1), colData(ft_na)$Condition)
-#' 
+#'
 #' #------------------------------------------
 #' # Shiny module
 #' #------------------------------------------
-#' if(interactive()){
-#'  data(ft_na)
-#'  ui <- mod_ds_mv_ui('plot')
-#' 
-#'  server <- function(input, output, session) {
-#'   mod_ds_mv_server('plot', 
-#'                 reactive({assay(ft_na, 1)}),
-#'                 colData(ft_na)$Condition)
-#'                }
-#'  
-#'  shinyApp(ui=ui, server=server)
+#' if (interactive()) {
+#'     data(ft_na, package='DaparViz')
+#'     ui <- mod_ds_mv_ui("plot")
+#'
+#'     server <- function(input, output, session) {
+#'         mod_ds_mv_server(
+#'             "plot",
+#'             reactive({
+#'                 assay(ft_na, 1)
+#'             }),
+#'             colData(ft_na)$Condition
+#'         )
+#'     }
+#'
+#'     shinyApp(ui = ui, server = server)
 #' }
 NULL
 
@@ -37,92 +44,98 @@ NULL
 #' @importFrom shiny NS tagList
 #' @importFrom highcharter highchartOutput
 #' @rdname plot-mv
-mod_ds_mv_ui <- function(id){
-  ns <- NS(id)
-  fluidPage(
-    tagList(
-      fluidRow(
-        column(width = 4, 
-               highchartOutput(ns("histo_MV")), 
-               height="600px"),
-        column(width = 4, 
-               highchartOutput(ns("histo_MV_per_lines"))),
-        column(width = 4, 
-               highchartOutput(ns("histo_MV_per_lines_per_conditions")))
+mod_ds_mv_ui <- function(id) {
+    ns <- NS(id)
+    fluidPage(
+        tagList(
+            fluidRow(
+                column(
+                    width = 4,
+                    highchartOutput(ns("histo_MV")),
+                    height = "600px"
+                ),
+                column(
+                    width = 4,
+                    highchartOutput(ns("histo_MV_per_lines"))
+                ),
+                column(
+                    width = 4,
+                    highchartOutput(ns("histo_MV_per_lines_per_conditions"))
+                )
+            )
         )
-      )
     )
 }
 
 #' @param id A `character(1)` which is the id of the shiny module.
 #' @param data An instance of the class [matrix]
-#' @param conds A `character()` of the name of conditions 
+#' @param conds A `character()` of the name of conditions
 #' (one condition per sample). It is not a reactive value.
-#' @param pal.name A `character(1)` which is the name of the palette from the package
-#' [RColorBrewer] from which the colors are taken. Default value is 'Set1'.
+#' @param pal.name A `character(1)` which is the name of the palette from the 
+#' package [RColorBrewer] from which the colors are taken. Default 
+#' value is 'Set1'.
 #'
 #' @export
 #' @importFrom highcharter renderHighchart
-#' 
+#'
 #' @rdname plot-mv
 #'
 mod_ds_mv_server <- function(id,
-                          data,
-                          conds,
-                          pal.name = reactive({NULL})){
-
-  moduleServer(id, function(input, output, session){
-    ns <- session$ns
-
-
-    observe({
-      req(data())
-      stopifnot (inherits(data(), "matrix"))
-    })
+    data,
+    conds,
+    pal.name = reactive({NULL})) {
+    moduleServer(id, function(input, output, session) {
+        ns <- session$ns
 
 
-
-    output$histo_MV <- renderHighchart({
-      req(data())
-      pal.name()
-
-      withProgress(message = 'Making plot', value = 100, {
-        tmp <- mvHisto(data(),
-                       conds = conds,
-                       pal.name = pal.name())
+        observe({
+            req(data())
+            stopifnot(inherits(data(), "matrix"))
         })
-      tmp
-    })
 
 
 
-    output$histo_MV_per_lines <- renderHighchart({
-      req(data())
-      
-      isolate({
-        withProgress(message = 'Making plot', value = 100, {
-          tmp <- mvPerLinesHisto(data())
+        output$histo_MV <- renderHighchart({
+            req(data())
+            pal.name()
+
+            withProgress(message = "Making plot", value = 100, {
+                tmp <- mvHisto(data(),
+                    conds = conds,
+                    pal.name = pal.name()
+                )
+            })
+            tmp
         })
-      })
-      tmp
+
+
+
+        output$histo_MV_per_lines <- renderHighchart({
+            req(data())
+
+            isolate({
+                withProgress(message = "Making plot", value = 100, {
+                    tmp <- mvPerLinesHisto(data())
+                })
+            })
+            tmp
+        })
+
+
+
+
+        output$histo_MV_per_lines_per_conditions <- renderHighchart({
+            req(data())
+            pal.name()
+
+            withProgress(message = "Making plot", value = 100, {
+                tmp <- mvPerLinesHistoPerCondition(
+                    data = data(),
+                    conds = conds,
+                    pal.name = pal.name()
+                )
+            })
+            tmp
+        })
     })
-
-
-
-
-    output$histo_MV_per_lines_per_conditions <- renderHighchart({
-      req(data())
-      pal.name()
-
-      withProgress(message = 'Making plot', value = 100, {
-        tmp <- mvPerLinesHistoPerCondition(data = data(),
-                                           conds = conds,
-                                           pal.name = pal.name())
-      })
-      tmp
-    })
-
-  })
-
-
 }
