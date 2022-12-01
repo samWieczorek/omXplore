@@ -10,22 +10,28 @@
 #'
 #' @examples
 #' if (interactive()) {
-#'     text <- LETTERS[1:5]
-#'     colors <- RColorBrewer::brewer.pal(5, "Dark2")
-#'     ui <- mod_colorLegend_ui("plot")
-#'     server <- function(input, output, session) {
+#'     ui <- tagList(
+#'mod_colorLegend_ui("plot1"),
+#'mod_colorLegend_ui("plot2"),
+#'mod_colorLegend_ui("plot3")
+#')
+#'server <- function(input, output, session) {
+    
+#'    # Use the default color palette
+#'    mod_colorLegend_server("plot1", paste0('Default_',1:5))
+#'    
+#'    # Use of a user-defined color palette
+#'    mod_colorLegend_server("plot2", 
+#'        paste0('Pastel2_',1:5), 
+#'        colors = RColorBrewer::brewer.pal(5, "Pastel2"))
+#'    
+#'    # Use of a  palette
+#'    mod_colorLegend_server("plot3", 
+#'        paste0('Accent_',1:5), 
+#'        pal.name = "Accent")
+#'}
 #'
-#'         # Use the default color palette
-#'         mod_colorLegend_server("plot", text)
-#'
-#'         # Use of a user-defined color palette
-#'         mod_colorLegend_server("plot", text, colors = colors)
-#'
-#'         # Use of a  palette
-#'         mod_colorLegend_server("plot", text, pal.name = "Dark3")
-#'     }
-#'
-#'     shinyApp(ui = ui, server = server)
+#'shinyApp(ui, server)
 #' }
 NULL
 

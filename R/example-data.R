@@ -27,10 +27,7 @@ create_ft_example <- function(with.na = FALSE) {
             BiocManager::install('DaparToolshed')")
     }
     filename <- if (with.na) "ft-data-na.txt" else "ft-data.txt"
-    data.file <- system.file("extdata",
-        filename,
-        package = "DaparViz"
-    )
+    data.file <- system.file("extdata",filename,package = "DaparViz")
     data <- read.table(data.file,
         header = TRUE,
         sep = "\t",
@@ -38,10 +35,7 @@ create_ft_example <- function(with.na = FALSE) {
         stringsAsFactors = FALSE
     )
 
-    sample.file <- system.file("extdata",
-        "ft-samples.txt",
-        package = "DaparViz"
-    )
+    sample.file <- system.file("extdata","ft-samples.txt",package = "DaparViz")
     sample <- read.table(sample.file,
         header = TRUE,
         sep = "\t",

@@ -101,16 +101,17 @@
 #' #----------------------------------------
 #'
 #' if (interactive()) {
-#'     data(ft_na, package='DaparViz')
-#'     ui <- mod_all_ds_ui("plot")
-#'
-#'     server <- function(input, output, session) {
-#'         mod_all_ds_server("plot", object = reactive({
-#'             ft_na
-#'         }))
-#'     }
-#'
-#'     shinyApp(ui = ui, server = server)
+#' data(ft, package='DaparViz')
+#' data(ft_na, package='DaparViz')
+#' ui <- mod_all_ds_ui("plot")
+#' 
+#' server <- function(input, output, session) {
+#'     mod_all_ds_server("plot", 
+#'         object = reactive({ft_na}),
+#'         modal = reactive({TRUE}) )
+#' }
+#' 
+#' shinyApp(ui = ui, server = server)
 #' }
 NULL
 
@@ -146,13 +147,9 @@ mod_all_ds_ui <- function(id) {
     tagList(
         shinyjs::useShinyjs(),
         fluidPage(
-            div(
-                style = general_style,
-                uiOutput(ns("chooseDataset_ui"))
+            div(style = general_style,  uiOutput(ns("chooseDataset_ui"))
             ),
-            div(
-                style = general_style,
-                uiOutput(ns("ShowVignettes_ui"))
+            div(style = general_style, uiOutput(ns("ShowVignettes_ui"))
             ),
             br(), br(), br(),
             uiOutput(ns("ShowPlots_ui"))
@@ -194,9 +191,10 @@ mod_all_ds_server <- function(id, object) {
         })
 
 
-        observeEvent(GetVignettesBtns(), {
+        observeEvent(GetVignettesBtns(), ignoreInit = TRUE, {
             clicked <- which(btns.history() != GetVignettesBtns())
             shinyjs::show(paste0("div_", ll.mods[clicked], "_large"))
+            
             lapply(ll.mods[-clicked], function(y) {
                 shinyjs::hide(paste0("div_", y, "_large"))
             })
@@ -206,6 +204,7 @@ mod_all_ds_server <- function(id, object) {
         GetVignettesBtns <- reactive({
             unlist(lapply(ll.mods, function(x) input[[x]]))
         })
+
 
         output$ShowPlots_ui <- renderUI({
             lapply(ll.mods, function(x) {
@@ -241,7 +240,8 @@ mod_all_ds_server <- function(id, object) {
             })
         })
 
-        observeEvent(input$chooseDataset, {
+        observeEvent(req(object(), input$chooseDataset), ignoreNULL = TRUE,{
+            #object()
             current.se(object()[[input$chooseDataset]])
         })
 
