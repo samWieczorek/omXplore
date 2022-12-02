@@ -45,6 +45,7 @@
 #'   )
 #'   mod_format_DT_server("dt_demo_NA_colored",
 #'     data = reactive({assay(ft_na, 1)}),
+#'     withDLBtns = TRUE,
 #'     style = reactive({
 #'       list(
 #'         cols = colnames(assay(ft_na,1)),
@@ -106,13 +107,13 @@ mod_format_DT_ui <- function(id){
         mod_download_btns_ui(ns("DL_btns"))
       )
     ),
-    #fluidRow(
-    #  column(
-     #   align = "center",
-    #    width = 12,
+    fluidRow(
+     column(
+    # align = "center",
+       width = 12,
         DT::dataTableOutput(ns("StaticDataTable"))
-    #  )
-    #)
+      )
+    )
   )
 }
 

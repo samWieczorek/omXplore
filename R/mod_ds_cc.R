@@ -596,12 +596,7 @@ mod_plots_cc_server <- function(input, output, session,
     #   return(dat)
     # })
     mod_format_DT_server("OneMultiDT",
-        df = reactive({
-            BuildOne2MultiTab()
-        }),
-        style = reactive({
-            NULL
-        })
+        data = reactive({BuildOne2MultiTab()})
     )
 
 
@@ -682,12 +677,7 @@ mod_plots_cc_server <- function(input, output, session,
     })
 
     mod_format_DT_server("OneMultiDTDetailed",
-        df = reactive({
-            BuildOne2MultiDetailedTab()
-        }),
-        style = reactive({
-            NULL
-        })
+        data = reactive({ BuildOne2MultiDetailedTab()})
     )
 
 
@@ -715,12 +705,7 @@ mod_plots_cc_server <- function(input, output, session,
     # })
 
     mod_format_DT_server("OneOneDT",
-        df = reactive({
-            BuildOne2OneTab()
-        }),
-        style = reactive({
-            NULL
-        })
+        data = reactive({ BuildOne2OneTab()})
     )
 
 
@@ -801,11 +786,6 @@ mod_plots_cc_server <- function(input, output, session,
     })
 
     mod_format_DT_server("OneOneDTDetailed",
-        df = reactive({
-            BuildOne2OneDetailedTab()
-        }),
-        style = reactive({
-            NULL
-        })
+        data = reactive({BuildOne2OneDetailedTab()})
     )
 }

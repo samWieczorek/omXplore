@@ -200,9 +200,7 @@ mod_ds_pca_server <- function(id,
             )
         })
         mod_format_DT_server("PCAvarCoord",
-            df = reactive({
-                as.data.frame(rv.pca$res.pca$var$coord)
-            }),
+            data = reactive({as.data.frame(rv.pca$res.pca$var$coord)}),
             rownames = TRUE,
             style = reactive({
                 list(
