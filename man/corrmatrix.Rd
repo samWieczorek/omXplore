@@ -57,9 +57,7 @@ if (interactive()) {
     server <- function(input, output, session) {
         mod_ds_corrmatrix_server(
             "plot",
-            reactive({
-                assay(ft, 1)
-            })
+            reactive({assay(ft, 1)})
         )
     }
 

@@ -46,6 +46,7 @@ Collate:
     utils.R
     example-data.R
     mod_format_DT.R
+    mod_download_btns.R
     plots_volcano.R
     adjacencyMatrixInfos.R
     ConnectedComps.R
@@ -75,7 +76,7 @@ Collate:
     plot_violin.R
     plot_mv.R
     doc-data.R
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.2
 Packaged: 2017-10-13 11:13:04 UTC; sw175264
 Encoding: UTF-8
 LazyData: false
