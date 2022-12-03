@@ -46,6 +46,7 @@ Collate:
     utils.R
     example-data.R
     mod_format_DT.R
+    mod_infos_dataset.R
     mod_download_btns.R
     plots_volcano.R
     adjacencyMatrixInfos.R
