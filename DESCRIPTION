@@ -45,9 +45,7 @@ Collate:
     palette.R
     utils.R
     example-data.R
-    mod_format_DT.R
     mod_infos_dataset.R
-    mod_download_btns.R
     plots_volcano.R
     adjacencyMatrixInfos.R
     ConnectedComps.R
@@ -77,7 +75,10 @@ Collate:
     plot_violin.R
     plot_mv.R
     doc-data.R
-RoxygenNote: 7.2.2
+    mod_plots_intensity.R
+    mod_plots_metacell_histo.R
+    mod_plots_tracking.R
+RoxygenNote: 7.2.3
 Packaged: 2017-10-13 11:13:04 UTC; sw175264
 Encoding: UTF-8
 LazyData: false

@@ -44,12 +44,12 @@ mod_plots_cc_ui <- function(id) {
                             fluidRow(
                                 column(
                                     width = 4, 
-                                    mod_format_DT_ui(ns("OneOneDT"))
+                                    DaparToolshed::format_DT_ui(ns("OneOneDT"))
                                     # DT::DTOutput(ns("OneOneDT"))
                                 ),
                                 column(
                                     width = 8, 
-                                    mod_format_DT_ui(ns("OneOneDTDetailed"))
+                                    DaparToolshed::format_DT_ui(ns("OneOneDTDetailed"))
                                     # DT::DTOutput(ns("OneOneDTDetailed"))
                                 )
                             ),
@@ -59,12 +59,12 @@ mod_plots_cc_ui <- function(id) {
                             fluidRow(
                                 column(
                                     width = 4, 
-                                    mod_format_DT_ui(ns("OneMultiDT"))
+                                    DaparToolshed::format_DT_ui(ns("OneMultiDT"))
                                     # DT::DTOutput(ns("OneMultiDT"))
                                 ),
                                 column(
                                     width = 8, 
-                                    mod_format_DT_ui(ns("OneMultiDTDetailed"))
+                                    DaparToolshed::format_DT_ui(ns("OneMultiDTDetailed"))
                                     # DT::DTOutput(ns("OneMultiDTDetailed"))
                                 )
                             ),
@@ -595,7 +595,7 @@ mod_plots_cc_server <- function(input, output, session,
     #
     #   return(dat)
     # })
-    mod_format_DT_server("OneMultiDT",
+    DaparToolshed::format_DT_server("OneMultiDT",
         data = reactive({BuildOne2MultiTab()})
     )
 
@@ -676,7 +676,7 @@ mod_plots_cc_server <- function(input, output, session,
         }
     })
 
-    mod_format_DT_server("OneMultiDTDetailed",
+    DaparToolshed::format_DT_server("OneMultiDTDetailed",
         data = reactive({ BuildOne2MultiDetailedTab()})
     )
 
@@ -704,7 +704,7 @@ mod_plots_cc_server <- function(input, output, session,
     #   return(dat)
     # })
 
-    mod_format_DT_server("OneOneDT",
+    DaparToolshed::format_DT_server("OneOneDT",
         data = reactive({ BuildOne2OneTab()})
     )
 
@@ -785,7 +785,7 @@ mod_plots_cc_server <- function(input, output, session,
         data
     })
 
-    mod_format_DT_server("OneOneDTDetailed",
+    DaparToolshed::format_DT_server("OneOneDTDetailed",
         data = reactive({BuildOne2OneDetailedTab()})
     )
 }

@@ -115,12 +115,10 @@ data(ft_na, package='DaparViz')
 ui <- mod_all_ds_ui("plot")
 
 server <- function(input, output, session) {
-    mod_all_ds_server("plot", 
-        object = reactive({ft_na}),
-        modal = reactive({TRUE}) )
+    mod_all_ds_server("plot", object = reactive({ft_na}))
 }
 
-shinyApp(ui = ui, server = server)
+shinyApp(ui, server)
 }
 }
 \author{

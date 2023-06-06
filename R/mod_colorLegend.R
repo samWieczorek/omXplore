@@ -3,7 +3,10 @@
 #' @description
 #' xxxx
 #'
-#'
+#' @param id A `character(1)` which is the id of the shiny module.
+#' @param obj A `character()` xxx
+#' @param hide.white  xxxxx
+#' 
 #' @name color-legend
 #' 
 #' @return NA
@@ -38,8 +41,7 @@ NULL
 
 
 
-#' @param id A `character(1)` which is the id of the shiny module.
-#'
+
 #' @importFrom shiny NS tagList
 #'
 #' @rdname color-legend
@@ -51,85 +53,79 @@ mod_colorLegend_ui <- function(id) {
         stop("Please install shinyBS: BiocManager::install('shinyBS')")
     }
 
-    fluidPage(
-        shinyBS::bsCollapse(
-            id = "collapseExample",
-            open = "",
-            shinyBS::bsCollapsePanel(
-                title = "Legend of colors",
-                uiOutput(ns("legend")),
-                style = "info"
-            )
-        )
+    shinyBS::bsCollapse(
+      id = "collapseExample",
+      open = "",
+      shinyBS::bsCollapsePanel(
+        title = "Legend of colors",
+        uiOutput(ns("legend")),
+        style = ""
+      )
     )
 }
 
 
-#' @param id A `character(1)` which is the id of the shiny module.
-#' @param text A `character()` xxx
-#' @param pal.name A `character()` xxxxx
-#' @param colors A `HEX()` containing the color codes to apply to the plot.
-#' The number of colors must be equal to the length of parameter 'text'.
-#'
+
 #' @export
 #'
 #' @rdname color-legend
-mod_colorLegend_server <- function(id,
-                                   text,
-                                   pal.name = NULL,
-                                   colors = NULL) {
-    moduleServer(
-        id,
-        function(input, output, session) {
-            ns <- session$ns
-
-
-            Get_colors <- reactive({
-                .colors <- NULL
-
-                cond1 <- is.null(pal.name) && is.null(colors)
-                cond2 <- !is.null(pal.name) && is.null(colors)
-                cond3 <- is.null(pal.name) && !is.null(colors)
-
-                stopifnot(cond1 || cond2 || cond3)
-
-                if (isTRUE(cond1)) {
-                    .colors <- ExtendPalette(length(text), "Dark2")
-                } else if (isTRUE(cond2)) {
-                    .colors <- ExtendPalette(length(text), pal.name)
-                } else if (isTRUE(cond3)) {
-                    stopifnot(length(text) == length(colors))
-                    .colors <- colors
-                }
-
-                .colors
-            })
-
-            output$legend <- renderUI({
-                Get_colors()
-                lapply(seq_len(length(text)), function(x) {
-                    tagList(
-                        tags$div(
-                            class = "color-box",
-                            style = paste0(
-                                "display: inline-block;
-                                      vertical-align: middle;
-                                      width: 20px;
-                                      height: 20px;
-                                      border: 1px solid #000;
-                                      background-color: ",
-                                Get_colors()[x], ";"
-                            ),
-                        ),
-                        tags$p(
-                            style = paste0("display: inline-block;
+mod_colorLegend_server <- function(id, obj, hide.white = TRUE) {
+  moduleServer(id, function(input, output, session) {
+      ns <- session$ns
+      
+      
+      output$legend <- renderUI({
+        mc <- metacell.def(GetTypeofData(obj()))
+        
+        tagList(
+          lapply(1:nrow(mc), function(x) {
+            if (mc[x, "color"] != "white" ||
+                (mc[x, "color"] == "white" &&
+                 !isTRUE(hide.white))) {
+              tagList(
+                tags$div(
+                  class = "color-box",
+                  style = paste0(
+                    "display:inline-block; vertical-align: middle;
+                    width:20px; height:20px; border:1px solid #000;
+                    background-color: ", mc[x, "color"], ";"
+                  ),
+                ),
+                tags$p(
+                  style = paste0("display:inline-block;
                                        vertical-align: middle;"),
-                            text[x]
-                        ),
-                        br()
-                    )
-                })
-            })
-        }
-    )
+                  mc[x, "node"]
+                ),
+                br()
+              )
+            }
+          })
+        )
+      })
+    }
+  )
 }
+
+
+
+
+ui <- tagList(
+  mod_colorLegend_ui("plot1"),
+  mod_colorLegend_ui("plot2"),
+  mod_colorLegend_ui("plot3")
+  )
+
+server <- function(input, output, session) {
+  
+      data(Exp1_R25_prot, package='DAPARdata')
+      # Use the default color palette
+      mod_colorLegend_server("plot1", reactive({Exp1_R25_prot}))
+      
+      # Use of a user-defined color palette
+      mod_colorLegend_server("plot2", reactive({Exp1_R25_prot}))
+      
+      # Use of a  palette
+      mod_colorLegend_server("plot3", reactive({Exp1_R25_prot}))
+  }
+  
+shinyApp(ui, server)

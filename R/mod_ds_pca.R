@@ -195,14 +195,14 @@ mod_ds_pca_server <- function(id,
             tagList(
                 plotOutput(ns("pcaPlotVar")),
                 plotOutput(ns("pcaPlotInd")),
-                mod_format_DT_ui(ns("PCAvarCoord")),
+                DaparToolshed::format_DT_ui(ns("PCAvarCoord")),
                 highchartOutput(ns("pcaPlotEigen"))
             )
         })
-        mod_format_DT_server("PCAvarCoord",
+        DaparToolshed::format_DT_server("PCAvarCoord",
             data = reactive({as.data.frame(rv.pca$res.pca$var$coord)}),
-            rownames = TRUE,
-            style = reactive({
+            showRownames = TRUE,
+            full_style = reactive({
                 list(
                     cols = colnames(rv.pca$res.pca$var$coord),
                     vals = colnames(rv.pca$res.pca$var$coord),

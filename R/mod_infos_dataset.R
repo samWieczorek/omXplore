@@ -1,6 +1,10 @@
 #' @title   mod_infos_dataset_ui and mod_infos_dataset_server
 #' @description  A shiny Module.
 #' 
+#' @param id shiny id
+#' @param obj object mae
+#'
+#' 
 #' @name mod_infos_dataset
 #' 
 #' @examples 
@@ -26,15 +30,9 @@ NULL
 
 
 #'
-#' @param id shiny id
-#' @param input internal
-#' @param output internal
-#' @param session internal
-#' @param obj object mae
 #'
 #' @rdname mod_infos_dataset
 #'
-#' @keywords internal
 #' @export 
 #' @importFrom shiny NS tagList 
 #' @import QFeatures
@@ -47,7 +45,7 @@ mod_infos_dataset_ui <- function(id){
     
     fluidRow(
       column(width=6,
-             DaparViz::mod_format_DT_ui(ns('dt')),
+             DaparToolshed::format_DT_ui(ns('dt')),
              br(),
              br(),
              
@@ -69,10 +67,6 @@ mod_infos_dataset_ui <- function(id){
 # Module Server
 
 #' @rdname mod_infos_dataset
-#' 
-#' @param id xxx
-#' @param obj xxx
-#' 
 #' @export
 #' 
 #' @keywords internal
@@ -95,10 +89,12 @@ mod_infos_dataset_server <- function(id, obj){
         return(NULL)
       }
       
-      DaparViz::mod_format_DT_server('samples_tab',
-                           data = reactive({req(obj())
-                             data.frame(colData(obj()))}),
-                           style = reactive({req(obj())
+      DaparToolshed::format_DT_server('samples_tab',
+                           data = reactive({
+                             req(obj())
+                             data.frame(colData(obj()))
+                             }),
+                           full_style = reactive({req(obj())
                              list(cols = colnames(MultiAssayExperiment::colData(obj())),
                                   vals = colnames(MultiAssayExperiment::colData(obj()))[2],
                                   unique = unique(MultiAssayExperiment::colData(obj())$Condition),
@@ -108,10 +104,10 @@ mod_infos_dataset_server <- function(id, obj){
     })
     
     
-    DaparViz::mod_format_DT_server('dt',
+    DaparToolshed::format_DT_server('dt',
                          data = reactive({req(Get_QFeatures_summary())
                            tibble::as_tibble(Get_QFeatures_summary())}),
-                         style=reactive({NULL}))
+                         full_style=reactive({NULL}))
     
     
     
@@ -122,7 +118,7 @@ mod_infos_dataset_server <- function(id, obj){
       
       tagList(
         h4("Samples"),
-        mod_format_DT_ui(ns('samples_tab'))
+        DaparToolshed::format_DT_ui(ns('samples_tab'))
       )
       
     })
@@ -183,12 +179,7 @@ mod_infos_dataset_server <- function(id, obj){
         #browser()
         
         .se <- obj()[[input$selectInputSE]]
-        
-        columns <- c("Type of data",
-                     "Number of lines",
-                     "% of missing values",
-                     "Number of empty lines")
-        
+        #data <- MultiAssayExperiment::experiments(obj())[[input$selectInputSE]]
         
         
         typeOfData <- MultiAssayExperiment::metadata(.se)$typeDataset
@@ -198,12 +189,12 @@ mod_infos_dataset_server <- function(id, obj){
         nEmptyLines <-  length(which(.nNA$nNArows[,'pNA']==100))
         
         val <- c(typeOfData, nLines, percentMV, nEmptyLines)
-        
+        row_names <- c("Type of data",
+                       "Number of lines",
+                       "% of missing values",
+                       "Number of empty lines")
         
         if (tolower(typeOfData) == 'peptide'){
-          columns <- c(columns,
-                       "Adjacency matrices",
-                       "Connex components")
           
           if(length(MultiAssayExperiment::metadata(.se)$list.matAdj) > 0){
             adjMat.txt <- "<span style=\"color: lime\">OK</span>"
@@ -218,17 +209,13 @@ mod_infos_dataset_server <- function(id, obj){
           }
           
           val <- c(val, adjMat.txt, cc.txt)
-          
+          row_names <- c(row_names, "Adjacency matrices", "Connex components")
         }
-        do <- data.frame(Definition = columns,
+        
+        
+        do <- data.frame(Definition = row_names, 
                          Value = val,
-                         row.names = c("Type of data",
-                          "Number of lines",
-                          "% of missing values",
-                          "Number of empty lines",
-                          "Adjacency matrices",
-                          "Connex components")
-                         )
+                         row.names = row_names)
         do
         
       }
@@ -280,11 +267,11 @@ mod_infos_dataset_server <- function(id, obj){
         
         data <- MultiAssayExperiment::experiments(obj())[[input$selectInputSE]]
         print(class(data))
-        mod_format_DT_server('dt2',
+        DaparToolshed::format_DT_server('dt2',
                              data = reactive({Get_SE_Summary()}),
-                             style=reactive({NULL}))
+                             full_style=reactive({NULL}))
         tagList(
-          mod_format_DT_ui(ns('dt2')),
+          DaparToolshed::format_DT_ui(ns('dt2')),
           br(),
           uiOutput(ns('info'))
         )
@@ -349,9 +336,19 @@ mod_infos_dataset_server <- function(id, obj){
   
 }
 
-## To be copied in the UI
-# mod_infos_dataset_ui("infos_dataset_ui_1")
 
-## To be copied in the server
-# callModule(mod_infos_dataset_server, "infos_dataset_ui_1")
+library(SummarizedExperiment)
+library(shinyjqui)
+library(shinyjs)
+library(shiny)
+
+data(ft_na, package='DaparViz')
+
+ui <- fluidPage(mod_infos_dataset_ui("mod_info"))
+
+server <- function(input, output, session) {
+  mod_infos_dataset_server("mod_info", reactive({ft_na}))
+}
+
+shinyApp(ui, server)
 
