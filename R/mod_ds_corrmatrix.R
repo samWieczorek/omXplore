@@ -42,7 +42,7 @@ mod_ds_corrmatrix_ui <- function(id) {
     tagList(
         uiOutput(ns("showValues_ui")),
         uiOutput(ns("rate_ui")),
-        highchartOutput(ns("plot"),
+        highcharter::highchartOutput(ns("plot"),
             width = "600px",
             height = "500px"
         )

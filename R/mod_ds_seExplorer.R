@@ -75,9 +75,7 @@ mod_ds_seExplorer_ui <- function(id) {
 #' @rdname SE-explorer
 mod_ds_seExplorer_server <- function(id,
                                      se,
-                                     digits = reactive({
-                                         3
-                                     })) {
+                                     digits = reactive({3})) {
     if (!requireNamespace("SummarizedExperiment", quietly = TRUE)) {
         stop("Please install SummarizedExperiment: 
             BiocManager::install('SummarizedExperiment')")
@@ -94,7 +92,7 @@ mod_ds_seExplorer_server <- function(id,
         observe({
             req(se())
             stopifnot(inherits(se(), "SummarizedExperiment"))
-            tmp.tags <- DaparToolshed::custom_qMetadata_colors()
+            tmp.tags <- custom_metacell_colors()
             mod_colorLegend_server("legend",
                 text = names(tmp.tags),
                 colors = unname(unlist(tmp.tags))
@@ -186,15 +184,15 @@ mod_ds_seExplorer_server <- function(id,
 
         output$qdata_ui <- DT::renderDataTable(server = TRUE, {
             req(se())
-            .col <- DaparToolshed::idcol(se())
+            .col <- idcol(se())
             df <- cbind(
                 keyId = SummarizedExperiment::rowData(se())[, .col],
                 round(SummarizedExperiment::assay(se()),
                     digits = digits()
                 ),
-                DaparToolshed::qMetadata(se())
+                qMetadata(se())
             )
-            colors <- DaparToolshed::custom_qMetadata_colors()
+            colors <- custom_metacell_colors()
 
             DT::datatable(df,
                 extensions = c("Scroller"),
@@ -231,9 +229,9 @@ mod_ds_seExplorer_server <- function(id,
 
         output$qMetadata_ui <- DT::renderDataTable(server = TRUE, {
             req(se())
-            df <- DaparToolshed::qMetadata(se())
+            df <- qMetadata(se())
 
-            colors <- DaparToolshed::custom_qMetadata_colors()
+            colors <- custom_metacell_colors()
 
             DT::datatable(df,
                 extensions = c("Scroller"),

@@ -7,13 +7,13 @@ mod_plotsMetacellHistos_ui <- function(id) {
         uiOutput(ns('chooseTagUI')),
         fluidRow(
             column(width = 4,
-                   highchartOutput(ns("histo_Metacell")), height = "600px"
+                   highcharter::highchartOutput(ns("histo_Metacell")), height = "600px"
                    ),
             column(width = 4,
-                   highchartOutput(ns("histo_Metacell_per_lines"))
+                   highcharter::highchartOutput(ns("histo_Metacell_per_lines"))
                    ),
             column(width = 4,
-                   highchartOutput(ns("histo_Metacell_per_lines_per_conditions"))
+                   highcharter::highchartOutput(ns("histo_Metacell_per_lines_per_conditions"))
                    )
             )
         )

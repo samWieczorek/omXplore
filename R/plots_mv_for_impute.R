@@ -44,10 +44,10 @@ mv.density <- function(se,
 
     for (iCond in uconds) {
         ind.conds <- which(conds == iCond)
-        tags <- DaparToolshed::match.qMetadata(
-            DaparToolshed::qMetadata(se)[, ind.conds],
+        tags <- match.qMetadata(
+            qMetadata(se)[, ind.conds],
             pattern = pattern,
-            level = DaparToolshed::typeDataset(se)
+            level = typeDataset(se)
         )
         for (l in seq(length(ind.conds))) {
             ind <- which(rowSums(tags) == l)

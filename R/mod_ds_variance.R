@@ -47,7 +47,7 @@ mod_ds_variance_ui <- function(id) {
         CV (Coefficient of Variation) of the protein/peptides."),
         helpText("For better visualization, it is possible to zoom in by
             click-and-drag."),
-        highchartOutput(ns("viewDistCV"), width = 600, height = 600)
+        highcharter::highchartOutput(ns("viewDistCV"), width = 600, height = 600)
     )
 }
 

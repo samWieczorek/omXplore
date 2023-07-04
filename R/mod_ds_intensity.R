@@ -110,9 +110,9 @@ mod_ds_intensity_server <- function(id,
 
         output$box_ui <- renderUI({
             if (input$choosePlot == "box") {
-                highchartOutput(ns("box"))
+              highcharter::highchartOutput(ns("box"))
             } else {
-                hidden(highchartOutput(ns("box")))
+                hidden(highcharter::highchartOutput(ns("box")))
             }
         })
 

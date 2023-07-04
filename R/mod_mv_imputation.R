@@ -80,7 +80,7 @@ mod_mv_imputation_ui <- function(id) {
             tags$div(
                 style = "display:inline-block; vertical-align: top;
                        padding-right: 20px;",
-                highchartOutput(ns("nabyMean_ui"), width = "600px")
+                highcharter::highchartOutput(ns("nabyMean_ui"), width = "600px")
             ),
             tags$div(
                 style = "display:inline-block; vertical-align: top;

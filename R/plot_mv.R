@@ -23,10 +23,10 @@ mvPerLinesHisto <- function(se,
     # NbNAPerRow <- rowSums(is.na(data))
 
 
-    mask <- DaparToolshed::match.qMetadata(
-        DaparToolshed::qMetadata(se),
+    mask <- match.qMetadata(
+        qMetadata(se),
         pattern = pattern,
-        level = DaparToolshed::typeDataset(se)
+        level = typeDataset(se)
     )
     NbNAPerRow <- rowSums(mask)
 

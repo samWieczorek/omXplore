@@ -43,7 +43,7 @@ create_ft_example <- function(with.na = FALSE) {
         stringsAsFactors = FALSE
     )
 
-    tmp.qf <- DaparToolshed::createQFeatures(
+    tmp.qf <- createQFeatures(
         data = data,
         sample = sample,
         indQData = 2:7,

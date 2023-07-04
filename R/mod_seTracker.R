@@ -101,7 +101,7 @@ mod_seTracker_server <- function(id, se) {
 
 
         output$listSelect_ui <- renderUI({
-            .col <- DaparToolshed::idcol(se())
+            .col <- idcol(se())
             widget <- selectInput(ns("listSelect"),
                 "Select protein",
                 choices = c(
@@ -170,7 +170,7 @@ mod_seTracker_server <- function(id, se) {
             if (is.null(rv.track$listSelect)) {
                 rv.track$indices <- NULL
             } else {
-                .col <- DaparToolshed::idcol(se())
+                .col <- idcol(se())
                 rv.track$indices <- match(
                     rv.track$listSelect,
                     SummarizedExperiment::rowData(se())[, .col]

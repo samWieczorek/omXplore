@@ -28,7 +28,7 @@ mod_plots_intensity_ui <- function(id) {
         tags$div(
             tags$div(
                 style = "display:inline-block; vertical-align: middle;",
-                highchartOutput(ns("BoxPlot")),
+                highcharter::highchartOutput(ns("BoxPlot")),
                 shinyjs::hidden(imageOutput(ns("viewViolinPlot")))
             ),
             tags$div(

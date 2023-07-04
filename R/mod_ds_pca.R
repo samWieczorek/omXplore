@@ -195,11 +195,13 @@ mod_ds_pca_server <- function(id,
             tagList(
                 plotOutput(ns("pcaPlotVar")),
                 plotOutput(ns("pcaPlotInd")),
-                DaparToolshed::format_DT_ui(ns("PCAvarCoord")),
-                highchartOutput(ns("pcaPlotEigen"))
+                mod_format_DT_ui(ns("PCAvarCoord")),
+                highcharter::highchartOutput(ns("pcaPlotEigen"))
             )
         })
-        DaparToolshed::format_DT_server("PCAvarCoord",
+        
+        tryCatch({
+        mod_format_DT_server("PCAvarCoord",
             data = reactive({as.data.frame(rv.pca$res.pca$var$coord)}),
             showRownames = TRUE,
             full_style = reactive({
@@ -210,6 +212,18 @@ mod_ds_pca_server <- function(id,
                     pal = RColorBrewer::brewer.pal(3, "Dark2")[seq_len(2)]
                 )
             })
+        )},
+        warning = function(w) {
+          shinyjs::info(conditionMessage(w))
+          return(NULL)
+        },
+        error = function(e) {
+          shinyjs::info(conditionMessage(e))
+          return(NULL)
+        },
+        finally = {
+          # cleanup-code
+        }
         )
 
         output$pcaPlotVar <- renderPlot({

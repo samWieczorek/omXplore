@@ -43,7 +43,7 @@ NULL
 mod_ds_density_ui <- function(id) {
     ns <- NS(id)
     tagList(
-        highchartOutput(ns("plot_ui"))
+      highcharter::highchartOutput(ns("plot_ui"))
     )
 }
 

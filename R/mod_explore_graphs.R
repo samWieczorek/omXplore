@@ -69,7 +69,7 @@ mod_explore_graphs_ui <- function(id) {
                             column(
                                 width = 6,
                                 tagList(
-                                    highchartOutput(ns("graphicalView_ui")),
+                                  highcharter::highchartOutput(ns("graphicalView_ui")),
                                     uiOutput(ns("CCMultiMulti_DL_btns_ui")),
                                     dataTableOutput(ns("tabularView_ui"))
                                 )

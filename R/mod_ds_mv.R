@@ -51,16 +51,16 @@ mod_ds_mv_ui <- function(id) {
             fluidRow(
                 column(
                     width = 4,
-                    highchartOutput(ns("histo_MV")),
+                    highcharter::highchartOutput(ns("histo_MV")),
                     height = "600px"
                 ),
                 column(
                     width = 4,
-                    highchartOutput(ns("histo_MV_per_lines"))
+                    highcharter::highchartOutput(ns("histo_MV_per_lines"))
                 ),
                 column(
                     width = 4,
-                    highchartOutput(ns("histo_MV_per_lines_per_conditions"))
+                    highcharter::highchartOutput(ns("histo_MV_per_lines_per_conditions"))
                 )
             )
         )

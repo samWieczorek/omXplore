@@ -136,11 +136,11 @@ listPlotModules <- function() {
 #' @param id A `character(1)` for the 'id' of the shiny module. It must be
 #' the same as for the server function.
 #'
-#' @importFrom shiny NS tagList
+#' @import shiny
 #' @importFrom shinyjs useShinyjs
 #' @rdname ds-plots
 #' @export
-mod_all_ds_ui <- function(id) {
+mod_view_dataset_ui <- function(id) {
     ns <- NS(id)
     tagList(
         shinyjs::useShinyjs(),
@@ -166,7 +166,7 @@ mod_all_ds_ui <- function(id) {
 #' @rdname ds-plots
 #' @export
 #'
-mod_all_ds_server <- function(id, object) {
+mod_view_dataset_server <- function(id, object) {
     if (!requireNamespace("SummarizedExperiment", quietly = TRUE)) {
         stop("Please install SummarizedExperiment: 
             BiocManager::install('SummarizedExperiment')")
@@ -264,63 +264,47 @@ mod_all_ds_server <- function(id, object) {
         # Calls to server modules
         #
         mod_ds_seExplorer_server("mod_ds_seExplorer_large",
-            se = reactive({
-                current.se()
-            })
+            se = reactive({current.se()})
         )
 
 
         mod_ds_intensity_server("mod_ds_intensity_large",
-            se = reactive({
-                current.se()
-            }),
+            se = reactive({current.se()}),
             conds = conds()
         )
 
 
         mod_ds_pca_server("mod_ds_pca_large",
-            data = reactive({
-                SummarizedExperiment::assay(current.se())
-            }),
+            data = reactive({SummarizedExperiment::assay(current.se())}),
             conds = conds()
         )
 
 
         mod_ds_variance_server("mod_ds_variance_large",
-            data = reactive({
-                SummarizedExperiment::assay(current.se())
-            }),
+            data = reactive({SummarizedExperiment::assay(current.se())}),
             conds = conds()
         )
 
         mod_ds_corrmatrix_server(
             id = "mod_ds_corrmatrix_large",
-            data = reactive({
-                SummarizedExperiment::assay(current.se())
-            })
+            data = reactive({SummarizedExperiment::assay(current.se())})
         )
 
 
 
         mod_ds_heatmap_server("mod_ds_heatmap_large",
-            data = reactive({
-                SummarizedExperiment::assay(current.se())
-            }),
+            data = reactive({SummarizedExperiment::assay(current.se())}),
             conds = conds()
         )
 
 
         mod_ds_mv_server("mod_ds_mv_large",
-            data = reactive({
-                SummarizedExperiment::assay(current.se())
-            }),
+            data = reactive({SummarizedExperiment::assay(current.se())}),
             conds = conds()
         )
 
         mod_ds_density_server("mod_ds_density_large",
-            data = reactive({
-                SummarizedExperiment::assay(current.se())
-            }),
+            data = reactive({SummarizedExperiment::assay(current.se())}),
             conds = conds()
         )
     })
@@ -334,10 +318,10 @@ mod_all_ds_server <- function(id, object) {
 
 data(ft, package='DaparViz')
 data(ft_na, package='DaparViz')
-ui <- mod_all_ds_ui("plot")
+ui <- mod_view_dataset_ui("plot")
 
 server <- function(input, output, session) {
-    mod_all_ds_server("plot", object = reactive({ft_na}))
+    mod_view_dataset_server("plot", object = reactive({ft_na}))
 }
 
 shinyApp(ui, server)

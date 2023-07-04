@@ -18,7 +18,7 @@ Description: This package contains a collection of functions (shiny modules)
     for the visualisation and the statistical analysis of proteomic data. These
     plots can be displayed individually or embedded in a global Shiny module.
 License: Artistic-2.0
-Depends: R (>= 4.2.2)
+Depends: R (>= 4.2.2), DaparToolshed
 Imports:
     DT,
     RColorBrewer,
@@ -45,13 +45,12 @@ Collate:
     palette.R
     utils.R
     example-data.R
-    mod_infos_dataset.R
     plots_volcano.R
     adjacencyMatrixInfos.R
     ConnectedComps.R
     plots_compare_assays.R
     global.R
-    mod_all_ds.R
+    mod_view_dataset.R
     mod_explore_graphs.R
     mod_ds_corrmatrix.R
     mod_ds_density.R
@@ -97,7 +96,6 @@ Suggests:
     factoextra,
     graph,
     QFeatures,
-    DaparToolshed,
     visNetwork,
     vioplot,
     dplyr,

@@ -8,17 +8,14 @@
 \usage{
 mod_colorLegend_ui(id)
 
-mod_colorLegend_server(id, text, pal.name = NULL, colors = NULL)
+mod_colorLegend_server(id, obj, hide.white = TRUE)
 }
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
-\item{text}{A \code{character()} xxx}
+\item{obj}{A \code{character()} xxx}
 
-\item{pal.name}{A \code{character()} xxxxx}
-
-\item{colors}{A \code{HEX()} containing the color codes to apply to the plot.
-The number of colors must be equal to the length of parameter 'text'.}
+\item{hide.white}{xxxxx}
 }
 \value{
 NA

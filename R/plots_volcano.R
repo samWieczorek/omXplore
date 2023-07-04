@@ -137,7 +137,7 @@ diffAnaVolcanoplot_rCharts <- function(df,
             type = "scatter", 
             hcaes(df$x, df$y, group = g)) %>%
         hc_colors(c(palette$In, palette$Out)) %>%
-        DaparToolshed::dapar_hc_chart(
+        dapar_hc_chart(
             zoomType = "xy", 
             chartType = "scatter") %>%
         hc_title(
@@ -174,7 +174,7 @@ diffAnaVolcanoplot_rCharts <- function(df,
                 ))
             )
         ) %>%
-        DaparToolshed::dapar_hc_ExportMenu(filename = "volcanoplot") %>%
+        dapar_hc_ExportMenu(filename = "volcanoplot") %>%
         hc_add_series(data = leftBorder, type = "line", color = "grey") %>%
         hc_add_series(data = rightBorder, type = "line", color = "grey")
 
