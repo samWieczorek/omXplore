@@ -5,37 +5,16 @@
 #'
 #' @name SE-explorer
 #'
-#' @examples
-#' library(SummarizedExperiment)
-#' data(ft, package='DaparViz')
-#' corrMatrix(assay(ft, 1))
-#'
-#'
-#' #------------------------------------------
-#' # Shiny module
-#' #------------------------------------------
-#' if (interactive()) {
-#'     data(ft_na, package='DaparViz')
-#'     ui <- mod_ds_seExplorer_ui("plot")
-#'
-#'     server <- function(input, output, session) {
-#'         mod_ds_seExplorer_server(
-#'             "plot",
-#'             reactive({
-#'                 ft_na[[1]]
-#'             })
-#'         )
-#'     }
-#'
-#'     shinyApp(ui = ui, server = server)
-#' }
+#' @example examples/example_mod_ds_seExplorer.R
+#' 
 NULL
 
 
 #' @param id A `character(1)` which is the id of the shiny module.
 #' @export
-#' @importFrom shiny NS tagList
+#' @import shiny
 #' @rdname SE-explorer
+#' 
 mod_ds_seExplorer_ui <- function(id) {
     ns <- NS(id)
     tagList(
@@ -52,7 +31,7 @@ mod_ds_seExplorer_ui <- function(id) {
                 style = "info"
             ),
             shinyBS::bsCollapsePanel("quantitative Metadata",
-                DT::DTOutput(ns("qMetadata_ui")),
+                DT::DTOutput(ns("qMetacell_ui")),
                 style = "info"
             )
         ),
@@ -92,11 +71,7 @@ mod_ds_seExplorer_server <- function(id,
         observe({
             req(se())
             stopifnot(inherits(se(), "SummarizedExperiment"))
-            tmp.tags <- custom_metacell_colors()
-            mod_colorLegend_server("legend",
-                text = names(tmp.tags),
-                colors = unname(unlist(tmp.tags))
-            )
+            mod_colorLegend_server("legend", se())
         })
 
 
@@ -140,7 +115,7 @@ mod_ds_seExplorer_server <- function(id,
             rdata <- SummarizedExperiment::rowData(se())
             # Delete columns that are not one-dimensional
             rdata <- rdata[, -which(colnames(rdata) == "adjacencyMatrix")]
-            rdata <- rdata[, -which(colnames(rdata) == "qMetadata")]
+            rdata <- rdata[, -which(colnames(rdata) == "qMetacell")]
 
             dat <- DT::datatable(tibble::as_tibble(rdata),
                 rownames = TRUE,
@@ -190,7 +165,7 @@ mod_ds_seExplorer_server <- function(id,
                 round(SummarizedExperiment::assay(se()),
                     digits = digits()
                 ),
-                qMetadata(se())
+                qMetacell(se())
             )
             colors <- custom_metacell_colors()
 
@@ -227,9 +202,9 @@ mod_ds_seExplorer_server <- function(id,
                 )
         })
 
-        output$qMetadata_ui <- DT::renderDataTable(server = TRUE, {
+        output$qMetacell_ui <- DT::renderDataTable(server = TRUE, {
             req(se())
-            df <- qMetadata(se())
+            df <- qMetacell(se())
 
             colors <- custom_metacell_colors()
 
@@ -261,3 +236,8 @@ mod_ds_seExplorer_server <- function(id,
         })
     })
 }
+
+
+
+
+#-----------------------------------------------

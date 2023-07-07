@@ -11,42 +11,20 @@
 #' 
 #' @return NA
 #'
-#' @examples
-#' if (interactive()) {
-#'     ui <- tagList(
-#'mod_colorLegend_ui("plot1"),
-#'mod_colorLegend_ui("plot2"),
-#'mod_colorLegend_ui("plot3")
-#')
-#'server <- function(input, output, session) {
-    
-#'    # Use the default color palette
-#'    mod_colorLegend_server("plot1", paste0('Default_',1:5))
-#'    
-#'    # Use of a user-defined color palette
-#'    mod_colorLegend_server("plot2", 
-#'        paste0('Pastel2_',1:5), 
-#'        colors = RColorBrewer::brewer.pal(5, "Pastel2"))
-#'    
-#'    # Use of a  palette
-#'    mod_colorLegend_server("plot3", 
-#'        paste0('Accent_',1:5), 
-#'        pal.name = "Accent")
-#'}
-#'
-#'shinyApp(ui, server)
-#' }
+#' @example examples/example_mod_colorLegend.R
+#' 
 NULL
 
 
 
 
 
-#' @importFrom shiny NS tagList
+#' @import shiny
 #'
 #' @rdname color-legend
 #'
 #' @export
+#' 
 mod_colorLegend_ui <- function(id) {
     ns <- NS(id)
     if (!requireNamespace("shinyBS", quietly = TRUE)) {
@@ -78,15 +56,15 @@ mod_colorLegend_server <- function(id, obj, hide.white = TRUE) {
       }
       
       output$legend <- renderUI({
-        req(obj())
-        stopifnot(inherits(obj(), "SummarizedExperiment"))
+        req(obj)
+        stopifnot(inherits(obj, "SummarizedExperiment"))
         
         mc <- custom_metacell_colors()
         
         
         # Keep only tags that are in the dataset
-        presentTags <- GetMetacellTags(obj(),
-                                level = typeDataset(obj()),
+        presentTags <- GetMetacellTags(obj,
+                                level = typeDataset(obj),
                                 onlyPresent = TRUE,
                                 all = FALSE)
 
@@ -116,25 +94,3 @@ mod_colorLegend_server <- function(id, obj, hide.white = TRUE) {
 
 
 
-
-ui <- tagList(
-  mod_colorLegend_ui("plot1"),
-  mod_colorLegend_ui("plot2"),
-  mod_colorLegend_ui("plot3")
-  )
-
-server <- function(input, output, session) {
-  
-      data(Exp1_R25_prot, package='DaparToolshedData')
-
-      # Use the default color palette
-      mod_colorLegend_server("plot1", reactive({Exp1_R25_prot[[1]]}))
-      
-      # Use of a user-defined color palette
-      mod_colorLegend_server("plot2", reactive({Exp1_R25_prot[[1]]}))
-      
-      # Use of a  palette
-      mod_colorLegend_server("plot3", reactive({Exp1_R25_prot[[1]]}))
-  }
-  
-shinyApp(ui, server)

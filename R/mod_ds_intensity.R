@@ -42,8 +42,8 @@ NULL
 
 #' @param id A `character(1)` which is the id of the shiny module.
 #'
-#' @importFrom shiny NS tagList
-#' @importFrom shinyjs useShinyjs hidden
+#' @import shiny
+#' @import shinyjs
 #' @importFrom stats setNames
 #'
 #' @return NA
@@ -85,13 +85,11 @@ mod_ds_intensity_ui <- function(id) {
 #' @export
 #' @importFrom grDevices png dev.off
 #' @importFrom shinyjs toggle hidden
+#' @import highcharter
 #'
 #' @return NA
 #'
-mod_ds_intensity_server <- function(id,
-                                    se,
-                                    conds,
-                                    ...) {
+mod_ds_intensity_server <- function(id, se, conds, ...) {
     if (!requireNamespace("SummarizedExperiment", quietly = TRUE)) {
         stop("Please install SummarizedExperiment: 
             BiocManager::install('SummarizedExperiment')")
@@ -103,9 +101,7 @@ mod_ds_intensity_server <- function(id,
         indices <- reactiveVal()
 
         indices <- mod_seTracker_server("tracker",
-            se = reactive({
-                se()
-            })
+            se = reactive({ se()})
         )
 
         output$box_ui <- renderUI({

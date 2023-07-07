@@ -140,15 +140,16 @@ listPlotModules <- function() {
 #' @importFrom shinyjs useShinyjs
 #' @rdname ds-plots
 #' @export
+#' 
+#' @example examples/example_mod_view_dataset.R
+#' 
 mod_view_dataset_ui <- function(id) {
     ns <- NS(id)
     tagList(
         shinyjs::useShinyjs(),
         fluidPage(
-            div(style = general_style,  uiOutput(ns("chooseDataset_ui"))
-            ),
-            div(style = general_style, uiOutput(ns("ShowVignettes_ui"))
-            ),
+            div(style = general_style,  uiOutput(ns("chooseDataset_ui"))),
+            div(style = general_style, uiOutput(ns("ShowVignettes_ui"))),
             br(), br(), br(),
             uiOutput(ns("ShowPlots_ui"))
         )
@@ -316,12 +317,3 @@ mod_view_dataset_server <- function(id, object) {
 
 
 
-data(ft, package='DaparViz')
-data(ft_na, package='DaparViz')
-ui <- mod_view_dataset_ui("plot")
-
-server <- function(input, output, session) {
-    mod_view_dataset_server("plot", object = reactive({ft_na}))
-}
-
-shinyApp(ui, server)
