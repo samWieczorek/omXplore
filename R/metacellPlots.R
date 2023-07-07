@@ -42,22 +42,21 @@ metacellPerLinesHisto_HC <- function(object,
   samplesData <- design
   
   if (identical(indLegend, "auto")) {
-    indLegend <- seq.int(from = 2, to = length(colnames(samplesData)))
+    indLegend <- seq.int(from = 2, to = nrow(samplesData))
   }
   
+  browser()
+  # for (j in seq_len(ncol(qData))) {
+  #   noms <- NULL
+  #   for (i in seq_len(length(indLegend))) {
+  #     noms <- paste(noms, samplesData[j, indLegend[i]], sep = " ")
+  #   }
+  #   colnames(qData)[j] <- noms
+  # }
   
-  for (j in seq_len(length(colnames(qData)))) {
-    noms <- NULL
-    for (i in seq_len(length(indLegend))) {
-      noms <- paste(noms, samplesData[j, indLegend[i]], sep = " ")
-    }
-    colnames(qData)[j] <- noms
-  }
-  
+
   .level <- typeDataset(object)
-  mask <- match.metacell(qMetacell(object),
-                         pattern = pattern,
-                         level = .level)
+  mask <- match.metacell(qMetacell(object), pattern = pattern, level = .level)
   
   
   if (length(mask) == 0)
@@ -152,7 +151,6 @@ metacellPerLinesHistoPerCondition_HC <- function(object,
   
   if(missing(pattern) || is.null(pattern))
     return(NULL)
-  
   qData <- SummarizedExperiment::assay(object)
   samplesData <- design
   conds <- samplesData$Condition
@@ -162,21 +160,19 @@ metacellPerLinesHistoPerCondition_HC <- function(object,
   myColors <- NULL
   if (is.null(pal)) {
     warning("Color palette set to default.")
-    myColors <- GetColorsForConditions(conds, 
-                                       ExtendPalette(length(unique(conds))))
+    myColors <- GetColorsForConditions(conds, ExtendPalette(length(unique(conds))))
   } else {
     if (length(pal) != length(u_conds)) {
       warning("The color palette has not the same dimension as the 
                 number of samples")
-      myColors <- GetColorsForConditions(conds, 
-                                         ExtendPalette(length(unique(conds))))
+      myColors <- GetColorsForConditions(conds, ExtendPalette(length(unique(conds))))
     } else {
       myColors <- pal
     }
   }
   
   if (identical(indLegend, "auto")) {
-    indLegend <- seq.int(from = 2, to = length(colnames(samplesData)))
+    indLegend <- seq.int(from = 2, to = nrow(samplesData))
   }
   
   
@@ -300,20 +296,18 @@ metacellHisto_HC <- function(object,
   myColors <- NULL
   if (is.null(pal)) {
     warning("Color palette set to default.")
-    myColors <- GetColorsForConditions(conds, 
-                                       ExtendPalette(length(unique(conds))))
+    myColors <- GetColorsForConditions(conds, ExtendPalette(length(unique(conds))))
   } else {
     if (length(pal) != length(unique(conds))) {
       warning("The color palette has not the same dimension as the number of samples")
-      myColors <- GetColorsForConditions(conds, 
-                                         ExtendPalette(length(unique(conds))))
+      myColors <- GetColorsForConditions(conds, ExtendPalette(length(unique(conds))))
     } else {
       myColors <- GetColorsForConditions(conds, pal)
     }
   }
   
   if (identical(indLegend, "auto")) {
-    indLegend <- seq.int(from=2, to = length(colnames(samplesData)))
+    indLegend <- seq.int(from=2, to = nrow(samplesData))
   }
   
   
@@ -557,7 +551,7 @@ hc_mvTypePlot2 <- function(object,
   myColors <- NULL
   j <- 1
   
-  level <- GetTypeofData(object)
+  level <- typeDataset(object)
   
   for (iCond in unique(conditions)) {
     if (length(which(conditions == iCond)) == 1) {

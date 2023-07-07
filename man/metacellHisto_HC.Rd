@@ -5,7 +5,8 @@
 \title{Histogram of missing values}
 \usage{
 metacellHisto_HC(
-  obj,
+  object,
+  design,
   pattern = NULL,
   indLegend = "auto",
   showValues = FALSE,
@@ -13,7 +14,7 @@ metacellHisto_HC(
 )
 }
 \arguments{
-\item{obj}{xxx}
+\item{object}{xxx}
 
 \item{pattern}{xxx}
 

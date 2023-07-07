@@ -17,30 +17,20 @@ NULL
 #' @rdname plot-mv
 mod_ds_mv_ui <- function(id) {
     ns <- NS(id)
-    fluidPage(
-        tagList(
-            fluidRow(
-                column(
-                    width = 4,
-                    highcharter::highchartOutput(ns("histo_MV")),
-                    height = "600px"
-                ),
-                column(
-                    width = 4,
-                    highcharter::highchartOutput(ns("histo_MV_per_lines"))
-                ),
-                column(
-                    width = 4,
-                    highcharter::highchartOutput(ns("histo_MV_per_lines_per_conditions"))
-                )
-            )
-        )
-    )
+    fluidRow(
+      column(width = 4,
+             highcharter::highchartOutput(ns("histo_MV")),
+             height = "600px"),
+      column(width = 4,
+             highcharter::highchartOutput(ns("histo_MV_per_lines"))),
+      column(width = 4,
+             highcharter::highchartOutput(ns("histo_MV_per_lines_per_conditions")))
+      )
 }
 
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param data An instance of the class [matrix]
-#' @param conds A `character()` of the name of conditions
+#' @param se An instance of the class [matrix]
+#' @param design A `character()` of the name of conditions
 #' (one condition per sample). It is not a reactive value.
 #' @param pal.name A `character(1)` which is the name of the palette from the 
 #' package [RColorBrewer] from which the colors are taken. Default 
@@ -52,28 +42,26 @@ mod_ds_mv_ui <- function(id) {
 #' @rdname plot-mv
 #'
 mod_ds_mv_server <- function(id,
-    data,
-    conds,
-    pal.name = reactive({NULL})) {
+                             se,
+                             design,
+                             pal.name = reactive({NULL})) {
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
 
 
         observe({
-            req(data())
-            stopifnot(inherits(data(), "matrix"))
+            req(se())
+            stopifnot(inherits(se(), "SummarizedExperiment"))
         })
 
 
 
         output$histo_MV <- renderHighchart({
-            req(data())
+            req(se())
             pal.name()
 
             withProgress(message = "Making plot", value = 100, {
-                tmp <- mvHisto(data(),
-                    conds = conds,
-                    pal.name = pal.name()
+                tmp <- mvHisto(se(), conds = design$Condition, pal.name = pal.name()
                 )
             })
             tmp
@@ -82,11 +70,11 @@ mod_ds_mv_server <- function(id,
 
 
         output$histo_MV_per_lines <- renderHighchart({
-            req(data())
+            req(se())
 
             isolate({
                 withProgress(message = "Making plot", value = 100, {
-                    tmp <- mvPerLinesHisto(data())
+                    tmp <- mvPerLinesHisto(se())
                 })
             })
             tmp
@@ -96,12 +84,12 @@ mod_ds_mv_server <- function(id,
 
 
         output$histo_MV_per_lines_per_conditions <- renderHighchart({
-            req(data())
+            req(se())
             pal.name()
 
             withProgress(message = "Making plot", value = 100, {
                 tmp <- mvPerLinesHistoPerCondition(
-                    data = data(),
+                    data = se(),
                     conds = conds,
                     pal.name = pal.name()
                 )

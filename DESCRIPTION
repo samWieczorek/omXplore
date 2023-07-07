@@ -57,7 +57,7 @@ Collate:
     mod_ds_seExplorer.R
     mod_ds_heatmap.R
     mod_ds_intensity.R
-    mod_ds_mv.R
+    mod_ds_metacell.R
     mod_mv_imputation.R
     mod_ds_pca.R
     mod_ds_cc.R
@@ -72,10 +72,8 @@ Collate:
     plots_mv_for_impute.R
     plot_pca.R
     plot_violin.R
-    plot_mv.R
     doc-data.R
     mod_plots_intensity.R
-    mod_plots_metacell_histo.R
     mod_plots_tracking.R
     metacellPlots.R
 RoxygenNote: 7.2.3

@@ -4,10 +4,10 @@
 \alias{wrapper.mvImage}
 \title{Heatmap of missing values from a \code{MSnSet} object}
 \usage{
-wrapper.mvImage(obj, pattern = "Missing MEC")
+wrapper.mvImage(object, pattern = "Missing MEC")
 }
 \arguments{
-\item{obj}{An object of class \code{MSnSet}.}
+\item{object}{An object of class \code{MSnSet}.}
 
 \item{pattern}{xxx}
 }

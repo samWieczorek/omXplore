@@ -4,10 +4,10 @@
 \alias{hc_mvTypePlot2}
 \title{Distribution of Observed values with respect to intensity values}
 \usage{
-hc_mvTypePlot2(obj, pal = NULL, pattern, typeofMV = NULL, title = NULL)
+hc_mvTypePlot2(object, pal = NULL, pattern, typeofMV = NULL, title = NULL)
 }
 \arguments{
-\item{obj}{xxx}
+\item{object}{xxx}
 
 \item{pal}{The different colors for conditions}
 

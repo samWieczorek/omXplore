@@ -5,7 +5,8 @@
 \title{Bar plot of missing values per lines and per condition}
 \usage{
 metacellPerLinesHistoPerCondition_HC(
-  obj,
+  object,
+  design,
   pattern = NULL,
   indLegend = "auto",
   showValues = FALSE,
@@ -13,8 +14,6 @@ metacellPerLinesHistoPerCondition_HC(
 )
 }
 \arguments{
-\item{obj}{xxx}
-
 \item{pattern}{xxx}
 
 \item{indLegend}{The indice of the column name's in \code{Biobase::pData()}
@@ -24,6 +23,8 @@ tab}
 drawn above the bars.}
 
 \item{pal}{xxx}
+
+\item{obj}{xxx}
 }
 \value{
 A bar plot
@@ -33,12 +34,39 @@ This method plots a bar plot which represents the distribution of the
 number of missing values (NA) per lines (ie proteins) and per conditions.
 }
 \examples{
-data(Exp1_R25_pept, package="DAPARdata")
+data(Exp1_R25_pept, package="DaparToolshedData")
 obj <- Exp1_R25_pept
-pal <- ExtendPalette(length(unique(Biobase::pData(obj)$Condition)), "Dark2")
-metacellPerLinesHistoPerCondition_HC(obj, c("Missing POV", "Missing MEC"), pal = pal)
-metacellPerLinesHistoPerCondition_HC(obj, "Quantified")
 
+obj <- obj[1:10]
+se <- obj[[1]]
+design <- colData(obj)
+
+
+pal <- ExtendPalette(length(unique(design(obj)$Condition)), "Dark2")
+
+
+metacellPerLinesHisto_HC(object = se, design = design, pattern = "Missing POV")
+metacellPerLinesHisto_HC(object = se, design = design)
+metacellPerLinesHisto_HC(object = se, design = design, pattern = "Quantified")
+metacellPerLinesHisto_HC(object = se, design = design, pattern = "Quant. by direct id")
+metacellPerLinesHisto_HC(object = se, design = design, pattern = "Quant. by recovery")
+metacellPerLinesHisto_HC(object = se, design = design, pattern = c("Quantified", "Quant. by direct id", "Quant. by recovery"))
+
+
+metacellPerLinesHistoPerCondition_HC(object = se, design = design, pattern = "Missing POV")
+metacellPerLinesHistoPerCondition_HC(object = se, design = design)
+metacellPerLinesHistoPerCondition_HC(object = se, design = design, pattern = "Quantified")
+metacellPerLinesHistoPerCondition_HC(object = se, design = design, pattern = "Quant. by direct id")
+metacellPerLinesHistoPerCondition_HC(object = se, design = design, pattern = "Quant. by recovery")
+metacellPerLinesHistoPerCondition_HC(object = se, design = design, pattern = c("Quantified", "Quant. by direct id", "Quant. by recovery"))
+
+
+metacellHisto_HC(object = se, design = design, pattern = "Missing POV")
+metacellHisto_HC(object = se, design = design)
+metacellHisto_HC(object = se, design = design, pattern = "Quantified")
+metacellHisto_HC(object = se, design = design, pattern = "Quant. by direct id")
+metacellHisto_HC(object = se, design = design, pattern = "Quant. by recovery")
+metacellHisto_HC(object = se, design = design, pattern = c("Quantified", "Quant. by direct id", "Quant. by recovery"))
 }
 \author{
 Samuel Wieczorek
