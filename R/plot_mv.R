@@ -7,9 +7,9 @@
 #' @import highcharter
 #' @rdname plot-mv
 mvPerLinesHisto <- function(se,
-    pattern,
-    detailed = FALSE,
-    showValues = FALSE) {
+                            pattern,
+                            detailed = FALSE,
+                            showValues = FALSE) {
     if (missing(pattern) || pattern %in% c("", "None")) {
         stop("'pattern' is missing.")
     }
@@ -23,11 +23,10 @@ mvPerLinesHisto <- function(se,
     # NbNAPerRow <- rowSums(is.na(data))
 
 
-    mask <- match.qMetadata(
-        qMetadata(se),
-        pattern = pattern,
-        level = typeDataset(se)
-    )
+    mask <- match.qMetadata(qMetadata(se),
+                            pattern = pattern,
+                            level = typeDataset(se)
+                            )
     NbNAPerRow <- rowSums(mask)
 
 

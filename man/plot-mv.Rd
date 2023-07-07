@@ -108,6 +108,7 @@ number of missing values. A white square is plotted for missing values.
 }
 
 \examples{
+
 library(SummarizedExperiment)
 data(ft_na, package='DaparViz')
 mvPerLinesHisto(assay(ft_na, 1))
@@ -121,22 +122,18 @@ mvHisto(assay(ft_na, 1), colData(ft_na)$Condition)
 #------------------------------------------
 # Shiny module
 #------------------------------------------
-if (interactive()) {
-    data(ft_na, package='DaparViz')
-    ui <- mod_ds_mv_ui("plot")
 
-    server <- function(input, output, session) {
-        mod_ds_mv_server(
-            "plot",
-            reactive({
-                assay(ft_na, 1)
-            }),
-            colData(ft_na)$Condition
-        )
+data(ft_na, package='DaparViz')
+ui <- mod_ds_mv_ui("plot")
+
+server <- function(input, output, session) {
+  mod_ds_mv_server("plot",
+                   reactive({assay(ft_na, 1)}),
+                   colData(ft_na)$Condition
+                   )
     }
 
-    shinyApp(ui = ui, server = server)
-}
+shinyApp(ui = ui, server = server)
 library(SummarizedExperiment)
 data(ft_na, package='DaparViz')
 data <- assay(ft_na, 1)

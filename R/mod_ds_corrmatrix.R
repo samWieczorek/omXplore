@@ -8,28 +8,7 @@
 #' 
 #' @return NA
 #'
-#' @examples
-#' library(SummarizedExperiment)
-#' data(ft, package='DaparViz')
-#' corrMatrix(assay(ft, 1))
-#'
-#'
-#' #------------------------------------------
-#' # Shiny module
-#' #------------------------------------------
-#' if (interactive()) {
-#'     data(ft, package='DaparViz')
-#'     ui <- mod_ds_corrmatrix_ui("plot")
-#'
-#'     server <- function(input, output, session) {
-#'         mod_ds_corrmatrix_server(
-#'             "plot",
-#'             reactive({assay(ft, 1)})
-#'         )
-#'     }
-#'
-#'     shinyApp(ui = ui, server = server)
-#' }
+#' @example examples/example_mod_ds_corrmatrix.R
 #'
 NULL
 

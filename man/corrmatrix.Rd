@@ -42,6 +42,7 @@ NA
 xxxx
 }
 \examples{
+
 library(SummarizedExperiment)
 data(ft, package='DaparViz')
 corrMatrix(assay(ft, 1))
@@ -50,7 +51,7 @@ corrMatrix(assay(ft, 1))
 #------------------------------------------
 # Shiny module
 #------------------------------------------
-if (interactive()) {
+
     data(ft, package='DaparViz')
     ui <- mod_ds_corrmatrix_ui("plot")
 
@@ -62,6 +63,4 @@ if (interactive()) {
     }
 
     shinyApp(ui = ui, server = server)
-}
-
 }
