@@ -76,6 +76,7 @@ Collate:
     mod_plots_intensity.R
     mod_plots_tracking.R
     metacellPlots.R
+    mod_metacell_tree.R
 RoxygenNote: 7.2.3
 Packaged: 2017-10-13 11:13:04 UTC; sw175264
 Encoding: UTF-8

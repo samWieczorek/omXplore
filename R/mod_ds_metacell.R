@@ -1,4 +1,21 @@
-mod_ds_mv_ui <- function(id) {
+#' @title Displays a correlation matrix of the quantitative data of a
+#' numeric matrix.
+#'
+#' @description
+#' xxxx
+#'
+#' @name metacell-plots
+#' 
+#' @return NA
+#'
+#' @example examples/example_mod_ds_metacell.R
+#'
+NULL
+
+#' @rdname metacell-plots
+#' @export
+#' 
+mod_ds_metacell_ui <- function(id) {
     ns <- NS(id)
     tagList(
         shinyjs::useShinyjs(),
@@ -17,6 +34,9 @@ mod_ds_mv_ui <- function(id) {
 }
 
 
+#' @rdname metacell-plots
+#' @export
+#' 
 mod_ds_mv_server <- function(id, 
                              obj = reactive({NULL}), 
                              design = NULL,
@@ -93,7 +113,7 @@ mod_ds_mv_server <- function(id,
 # 
 
 ui <- fluidPage(
-  mod_ds_mv_ui('test')
+  mod_ds_metacell_ui('test')
 )
 
 server <- function(input, output) {
@@ -103,7 +123,7 @@ server <- function(input, output) {
     
    # pattern <- NULL
     observe({
-      mod_ds_mv_server('test',
+      mod_ds_metacell_server('test',
                        obj = reactive({obj[[1]]}),
                        design = design.qf(obj),
                        pal = reactive({NULL}),

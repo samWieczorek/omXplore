@@ -6,19 +6,24 @@
 #' This method plots a bar plot which represents the distribution of the
 #' number of missing values (NA) per lines (ie proteins).
 #'
-#' @param obj An instance of the class `SummarizedExperiment`
+#' @param object An instance of the class `SummarizedExperiment`
 #' @param design xxx
 #' @param pattern xxx
 #' @param detailed 'value' or 'percent'
-#' @param indLegend The indice of the column name's in \code{Biobase::pData()} 
+#' @param indLegend The indices of the column name's in \code{Biobase::pData()} 
 #' tab
 #' @param showValues A logical that indicates whether numeric values should be
 #' drawn above the bars.
 #' @return A bar plot
 #' @author Florence Combes, Samuel Wieczorek
 #' @example examples/ex_metacellPerLinesHisto_HC.R
-
+#' 
+#' @name metacell-plots
 #'
+NULL
+
+
+#' @rdname metacell-plots
 #' @export
 #' @import highcharter
 #'
@@ -45,7 +50,7 @@ metacellPerLinesHisto_HC <- function(object,
     indLegend <- seq.int(from = 2, to = nrow(samplesData))
   }
   
-  browser()
+  #browser()
   # for (j in seq_len(ncol(qData))) {
   #   noms <- NULL
   #   for (i in seq_len(length(indLegend))) {
@@ -111,28 +116,8 @@ metacellPerLinesHisto_HC <- function(object,
 
 
 
-#' @title Bar plot of missing values per lines and per condition
-#' 
-#' @description 
-#' This method plots a bar plot which represents the distribution of the
-#' number of missing values (NA) per lines (ie proteins) and per conditions.
-#'
-#' @param obj xxx
-#'
-#' @param pattern xxx
-#'
-#' @param indLegend The indice of the column name's in \code{Biobase::pData()} 
-#' tab
-#'
-#' @param showValues A logical that indicates wether numeric values should be
-#' drawn above the bars.
-#'
-#' @param pal xxx
-#'
-#' @return A bar plot
-#'
-#' @author Samuel Wieczorek
-#'
+
+#' @rdname metacell-plots
 #' @example examples/ex_metacellPerLinesHisto_HC.R
 #' @export
 #'
@@ -247,21 +232,8 @@ metacellPerLinesHistoPerCondition_HC <- function(object,
 
 
 
-#' @title Histogram of missing values
-#' @description 
-#' #' This method plots a histogram of missing values. Same as the function
-#' \code{mvHisto} but uses the package \code{highcharter}
-#' 
-#' @param object xxx
-#' @param pattern xxx
-#' @param indLegend The indices of the column name's in \code{Biobase::pData()}
-#'  tab
-#' @param showValues A logical that indicates wether numeric values should be
-#' drawn above the bars.
-#' @param pal xxx
-#' @return A histogram
-#' @author Florence Combes, Samuel Wieczorek
-#'
+
+#' @rdname metacell-plots
 #' @import highcharter
 #'
 #' @examples
