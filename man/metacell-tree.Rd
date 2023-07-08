@@ -11,13 +11,18 @@ mod_metacell_tree_ui(id)
 
 mod_metacell_tree_server(
   id,
-  obj = reactive({
-     NULL
- }),
+  type = NULL,
   reset = reactive({
      NULL
  })
 )
+}
+\arguments{
+\item{id}{xxx}
+
+\item{type}{xxx}
+
+\item{reset}{xxx}
 }
 \value{
 NA

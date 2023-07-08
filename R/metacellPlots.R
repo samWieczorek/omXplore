@@ -6,7 +6,9 @@
 #' This method plots a bar plot which represents the distribution of the
 #' number of missing values (NA) per lines (ie proteins).
 #'
-#' @param object An instance of the class `SummarizedExperiment`
+#' @param qdata An instance of the class `SummarizedExperiment`
+#' @param metacell xxx
+#' @param type xxx
 #' @param design xxx
 #' @param pattern xxx
 #' @param detailed 'value' or 'percent'
@@ -27,23 +29,25 @@ NULL
 #' @export
 #' @import highcharter
 #'
-metacellPerLinesHisto_HC <- function(object,
+metacellPerLinesHisto_HC <- function(qdata,
+                                     metacell = NULL,
+                                     type,
                                      design,
                                      pattern = NULL,
                                      detailed = FALSE,
                                      indLegend = "auto",
                                      showValues = FALSE) {
-  if (missing(object)) {
-    stop("'object' is missing.")
-  } else if (is.null(object)) {
-    stop("'object' is NULL. Abort...")
-  }
-  stopifnot(inherits(object, "SummarizedExperiment"))
+  # if (missing(object)) {
+  #   stop("'object' is missing.")
+  # } else if (is.null(object)) {
+  #   stop("'object' is NULL. Abort...")
+  # }
+  #stopifnot(inherits(object, "SummarizedExperiment"))
   
   if(missing(pattern) || is.null(pattern))
     return(NULL)
   
-  qData <- SummarizedExperiment::assay(object)
+  #qdata <- SummarizedExperiment::assay(object)
   samplesData <- design
   
   if (identical(indLegend, "auto")) {
@@ -51,17 +55,17 @@ metacellPerLinesHisto_HC <- function(object,
   }
   
   #browser()
-  # for (j in seq_len(ncol(qData))) {
+  # for (j in seq_len(ncol(qdata))) {
   #   noms <- NULL
   #   for (i in seq_len(length(indLegend))) {
   #     noms <- paste(noms, samplesData[j, indLegend[i]], sep = " ")
   #   }
-  #   colnames(qData)[j] <- noms
+  #   colnames(qdata)[j] <- noms
   # }
   
 
-  .level <- typeDataset(object)
-  mask <- match.metacell(qMetacell(object), pattern = pattern, level = .level)
+ # .level <- typeDataset(object)
+  mask <- match.metacell(metacell, pattern = pattern, level = type)
   
   
   if (length(mask) == 0)
@@ -69,10 +73,10 @@ metacellPerLinesHisto_HC <- function(object,
   
   NbNAPerRow <- rowSums(mask)
   
-  nb.col <- dim(qData)[2]
+  nb.col <- dim(qdata)[2]
   nb.na <- NbNAPerRow
   temp <- table(NbNAPerRow)
-  nb.na2barplot <- rep(0, ncol(qData))
+  nb.na2barplot <- rep(0, ncol(qdata))
   
   for (i in seq_len(length(temp))) {
     nb.na2barplot[as.integer(names(temp)[i])] <- temp[i]
@@ -81,7 +85,7 @@ metacellPerLinesHisto_HC <- function(object,
   
   df <- data.frame(
     y = nb.na2barplot,
-    y_percent = round(100 * nb.na2barplot / dim(qData)[1], digits = 2)
+    y_percent = round(100 * nb.na2barplot / dim(qdata)[1], digits = 2)
   )
   
   myColors <- rep("lightgrey", nrow(df))
@@ -121,22 +125,25 @@ metacellPerLinesHisto_HC <- function(object,
 #' @example examples/ex_metacellPerLinesHisto_HC.R
 #' @export
 #'
-metacellPerLinesHistoPerCondition_HC <- function(object,
+metacellPerLinesHistoPerCondition_HC <- function(qdata,
+                                                 metacell = NULL,
+                                                 type,
                                                  design, 
                                                  pattern = NULL,
                                                  indLegend = "auto",
                                                  showValues = FALSE,
                                                  pal = NULL) {
-  if (missing(object)) {
-    stop("'object' is missing.")
-  } else if (is.null(object)) {
-    stop("'object' is NULL. Abort...")
-  }
-  stopifnot(inherits(object, "SummarizedExperiment"))
+  # if (missing(object)) {
+  #   stop("'object' is missing.")
+  # } else if (is.null(object)) {
+  #   stop("'object' is NULL. Abort...")
+  # }
+  # stopifnot(inherits(object, "SummarizedExperiment"))
   
   if(missing(pattern) || is.null(pattern))
     return(NULL)
-  qData <- SummarizedExperiment::assay(object)
+  
+  #qdata <- SummarizedExperiment::assay(object)
   samplesData <- design
   conds <- samplesData$Condition
   u_conds <- unique(conds)
@@ -145,12 +152,12 @@ metacellPerLinesHistoPerCondition_HC <- function(object,
   myColors <- NULL
   if (is.null(pal)) {
     warning("Color palette set to default.")
-    myColors <- GetColorsForConditions(conds, ExtendPalette(length(unique(conds))))
+    myColors <- GetColorsForConditions(conds, ExtendPalette(length(u_conds)))
   } else {
     if (length(pal) != length(u_conds)) {
       warning("The color palette has not the same dimension as the 
                 number of samples")
-      myColors <- GetColorsForConditions(conds, ExtendPalette(length(unique(conds))))
+      myColors <- GetColorsForConditions(conds, ExtendPalette(length(u_conds)))
     } else {
       myColors <- pal
     }
@@ -167,8 +174,8 @@ metacellPerLinesHistoPerCondition_HC <- function(object,
   )))
   
   
-  .level <- typeDataset(object)
-  mask <- match.metacell(qMetacell(object), pattern = pattern, level = .level)
+  #.level <- typeDataset(object)
+  mask <- match.metacell(metacell, pattern = pattern, level = type)
   
   
   
@@ -178,7 +185,6 @@ metacellPerLinesHistoPerCondition_HC <- function(object,
   ll.df <- list()
   for (i in u_conds)
     {
-    print(i)
     df <- as.data.frame(matrix(rep(0, 2 * (1 + nbConditions)),
                                nrow = 1 + nbConditions,
                                dimnames = list(
@@ -196,7 +202,7 @@ metacellPerLinesHistoPerCondition_HC <- function(object,
     }
     #browser()
     df[as.integer(names(t)) + 1, "y"] <- t
-    df[as.integer(names(t)) + 1, "y_percent"] <- round(100 * t / nrow(object), digits = 2)
+    df[as.integer(names(t)) + 1, "y_percent"] <- round(100 * t / nrow(qdata), digits = 2)
     
     ll.df[[i]] <- df
     }
@@ -245,34 +251,36 @@ metacellPerLinesHistoPerCondition_HC <- function(object,
 #'
 #' @export
 #'
-metacellHisto_HC <- function(object,
+metacellHisto_HC <- function(qdata,
+                             metacell = NULL,
+                             type,
                              design,
                              pattern = NULL,
                              indLegend = "auto",
                              showValues = FALSE,
                              pal = NULL) {
-  if (missing(object)) {
-    stop("'object' is missing.")
-  } else if (is.null(object)) {
-    stop("'object' is NULL. Abort...")
-  }
+  # if (missing(object)) {
+  #   stop("'object' is missing.")
+  # } else if (is.null(object)) {
+  #   stop("'object' is NULL. Abort...")
+  # }
   if(missing(pattern) || is.null(pattern))
     return(NULL)
   
-  stopifnot(inherits(object, "SummarizedExperiment"))
+  #stopifnot(inherits(object, "SummarizedExperiment"))
   
-  qData <- SummarizedExperiment::assay(object)
+  #qdata <- SummarizedExperiment::assay(object)
   samplesData <- design
   conds <- samplesData[, "Condition"]
   
   myColors <- NULL
   if (is.null(pal)) {
     warning("Color palette set to default.")
-    myColors <- GetColorsForConditions(conds, ExtendPalette(length(unique(conds))))
+    myColors <- GetColorsForConditions(conds, ExtendPalette(length(u_conds)))
   } else {
     if (length(pal) != length(unique(conds))) {
       warning("The color palette has not the same dimension as the number of samples")
-      myColors <- GetColorsForConditions(conds, ExtendPalette(length(unique(conds))))
+      myColors <- GetColorsForConditions(conds, ExtendPalette(length(u_conds)))
     } else {
       myColors <- GetColorsForConditions(conds, pal)
     }
@@ -284,9 +292,7 @@ metacellHisto_HC <- function(object,
   
   
   
-  mask <- match.metacell(qMetacell(object),
-                         pattern = pattern,
-                         level = typeDataset(object))
+  mask <- match.metacell(metacell, pattern = pattern, level = type)
   if (length(mask) == 0)
     return(NULL)
   
@@ -357,7 +363,7 @@ wrapper.mvImage <- function(object, pattern = "Missing MEC") {
     warning("'object' is NULL. Return NULL.")
     return(NULL)
   }
-  qData <- Biobase::exprs(object)
+  qdata <- Biobase::exprs(object)
   conds <- Biobase::pData(object)[, "Condition"]
   metac <- Biobase::fData(object)[, object@experimentData@other$names_metacell]
   level <- object@experimentData@other$typeOfData
@@ -375,7 +381,7 @@ wrapper.mvImage <- function(object, pattern = "Missing MEC") {
     return(NULL)
   }
   
-  mvImage(qData[indices, ], conds)
+  mvImage(qdata[indices, ], conds)
 }
 
 
@@ -391,20 +397,20 @@ wrapper.mvImage <- function(object, pattern = "Missing MEC") {
 #' The lines have been sorted in order to vizualize easily the different
 #' number of missing values. A white square is plotted for missing values.
 #' 
-#' @param qData A dataframe that contains quantitative data.
+#' @param qdata A dataframe that contains quantitative data.
 #' @param conds A vector of the conditions (one condition per sample).
 #' @return A heatmap
 #' @author Samuel Wieczorek, Thomas Burger
 #' @examples
 #' data(Exp1_R25_pept, package="DAPARdata")
-#' qData <- Biobase::exprs(Exp1_R25_pept)
+#' qdata <- Biobase::exprs(Exp1_R25_pept)
 #' conds <- Biobase::pData(Exp1_R25_pept)[, "Condition"]
-#' mvImage(qData, conds)
+#' mvImage(qdata, conds)
 #'
 #' @export
 #'
 #'
-mvImage <- function(qData, conds) {
+mvImage <- function(qdata, conds) {
   
   pkgs.require(c('grDevices', 'stats'))
   
@@ -416,12 +422,12 @@ mvImage <- function(qData, conds) {
   }
   indCond <- stats::setNames(indCond, as.list(c("cond1", "cond2")))
   
-  nNA1 <- apply(as.matrix(qData[, indCond$cond1]), 1, 
+  nNA1 <- apply(as.matrix(qdata[, indCond$cond1]), 1, 
                 function(x) sum(is.na(x)))
-  nNA2 <- apply(as.matrix(qData[, indCond$cond2]), 1, 
+  nNA2 <- apply(as.matrix(qdata[, indCond$cond2]), 1, 
                 function(x) sum(is.na(x)))
   o <- order(((nNA1 + 1)^2) / (nNA2 + 1))
-  exprso <- qData[o, ]
+  exprso <- qdata[o, ]
   
   for (i in seq_len(nrow(exprso))) {
     k <- order(exprso[i, indCond$cond1])
@@ -498,7 +504,7 @@ hc_mvTypePlot2 <- function(object,
   pkgs.require('stats')
   
   conds <- Biobase::pData(object)[, "Condition"]
-  qData <- Biobase::exprs(object)
+  qdata <- Biobase::exprs(object)
   myColors <- NULL
   if (is.null(pal)) {
     warning("Color palette set to default.")
@@ -513,8 +519,8 @@ hc_mvTypePlot2 <- function(object,
   
   conditions <- conds
   mTemp <- nbNA <- nbValues <- matrix(
-    rep(0, nrow(qData) * length(unique(conditions))),
-    nrow = nrow(qData),
+    rep(0, nrow(qdata) * length(unique(conditions))),
+    nrow = nrow(qdata),
     dimnames = list(NULL, unique(conditions))
   )
   dataCond <- data.frame()
@@ -527,7 +533,7 @@ hc_mvTypePlot2 <- function(object,
   
   for (iCond in unique(conditions)) {
     if (length(which(conditions == iCond)) == 1) {
-      mTemp[, iCond] <- qData[, which(conditions == iCond)]
+      mTemp[, iCond] <- qdata[, which(conditions == iCond)]
       nbNA[, iCond] <- as.integer(
         match.metacell(GetMetacell(object)[, which(conditions == iCond)],
                        pattern = pattern,
@@ -539,7 +545,7 @@ hc_mvTypePlot2 <- function(object,
       nbValues[, iCond] <- .op1 - .op2
     } else {
       .qcond <- which(conditions == iCond)
-      mTemp[, iCond] <- apply(qData[, .qcond], 1, mean, na.rm = TRUE)
+      mTemp[, iCond] <- apply(qdata[, .qcond], 1, mean, na.rm = TRUE)
       nbNA[, iCond] <- rowSums(
         match.metacell(GetMetacell(object)[, .qcond],
                        pattern = pattern,
