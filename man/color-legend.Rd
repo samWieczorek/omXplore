@@ -8,12 +8,12 @@
 \usage{
 mod_colorLegend_ui(id)
 
-mod_colorLegend_server(id, obj, hide.white = TRUE)
+mod_colorLegend_server(id, presentTags = NULL, hide.white = TRUE)
 }
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
-\item{obj}{A \code{character()} xxx}
+\item{presentTags}{A vector of \code{character()} which correspond to the tags.}
 
 \item{hide.white}{xxxxx}
 }
@@ -32,17 +32,18 @@ ui <- tagList(
   )
 
 server <- function(input, output, session) {
+  data(Exp1_R25_prot, package='DaparToolshedData')
+  obj <- Exp1_R25_prot[[1]]
+  tags <- GetMetacellTags(obj, level = typeDataset(obj), onlyPresent = TRUE)
+      
+  # Use the default color palette
+  mod_colorLegend_server("plot1",tags)
 
-      data(Exp1_R25_prot, package='DaparToolshedData')
+  # Use of a user-defined color palette
+  mod_colorLegend_server("plot2", tags)
 
-      # Use the default color palette
-      mod_colorLegend_server("plot1", Exp1_R25_prot[[1]])
-
-      # Use of a user-defined color palette
-      mod_colorLegend_server("plot2", Exp1_R25_prot[[1]])
-
-      # Use of a  palette
-      mod_colorLegend_server("plot3", Exp1_R25_prot[[1]])
+  # Use of a  palette
+  mod_colorLegend_server("plot3", tags)
   }
 
 shinyApp(ui, server)

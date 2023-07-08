@@ -21,9 +21,9 @@
 #' @rdname intensity-plots
 #'
 violinPlot <- function(data,
-    conds,
-    subset = NULL,
-    pal.name) {
+                       conds,
+                       subset = NULL,
+                       pal.name) {
     if (!requireNamespace("graphics", quietly = TRUE)) {
         stop("Please install graphics: BiocManager::install('graphics')")
     }

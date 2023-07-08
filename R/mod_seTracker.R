@@ -14,29 +14,8 @@
 #' 
 #' @return NA
 #'
-#' @examples
-#' if (interactive()) {
-#'     ui <- tagList(
-#'         mod_seTracker_ui("track"),
-#'         uiOutput("show")
-#'     )
-#'
-#'     server <- function(input, output, session) {
-#'         tmp <- reactiveVal()
-#'
-#'         tmp <- mod_seTracker_server(
-#'             id = "track",
-#'             se = reactive({
-#'                 ft[[1]]
-#'             })
-#'         )
-#'
-#'         output$show <- renderUI({
-#'             p(paste0(tmp(), collapse = " "))
-#'         })
-#'     }
-#'     shinyApp(ui = ui, server = server)
-#' }
+#' @example examples/ex_mod_seTracker.R
+#' 
 NULL
 
 
@@ -62,7 +41,8 @@ mod_seTracker_ui <- function(id) {
 }
 
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param se A instance of the class `SummarizedExperiment`
+#' @param mdata A instance of the class `SummarizedExperiment`
+#' @param colID
 #'
 #' @rdname tracking
 #'
@@ -70,11 +50,9 @@ mod_seTracker_ui <- function(id) {
 #'
 #' @importFrom shinyjs toggle hidden show hide
 #' @importFrom stats setNames
-mod_seTracker_server <- function(id, se) {
-    if (!requireNamespace("SummarizedExperiment", quietly = TRUE)) {
-        stop("Please install SummarizedExperiment: 
-            BiocManager::install('SummarizedExperiment')")
-    }
+#' 
+mod_seTracker_server <- function(id, mdata, colID) {
+    
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
 
@@ -101,13 +79,10 @@ mod_seTracker_server <- function(id, se) {
 
 
         output$listSelect_ui <- renderUI({
-            .col <- idcol(se())
+            #.col <- idcol(se())
             widget <- selectInput(ns("listSelect"),
                 "Select protein",
-                choices = c(
-                    "None",
-                    SummarizedExperiment::rowData(se())[, .col]
-                ),
+                choices = c("None", mdata()[, colID]),
                 multiple = TRUE,
                 selected = rv.track$listSelect,
                 width = "200px",
@@ -125,7 +100,7 @@ mod_seTracker_server <- function(id, se) {
         output$colSelect_ui <- renderUI({
             widget <- selectInput(ns("colSelect"),
                 "Column of rowData",
-                choices = c("", colnames(SummarizedExperiment::rowData(se()))),
+                choices = c("", colnames(mdata)),
                 selected = rv.track$colSelect
             )
             if (rv.track$typeSelect == "Column") {
@@ -170,11 +145,8 @@ mod_seTracker_server <- function(id, se) {
             if (is.null(rv.track$listSelect)) {
                 rv.track$indices <- NULL
             } else {
-                .col <- idcol(se())
-                rv.track$indices <- match(
-                    rv.track$listSelect,
-                    SummarizedExperiment::rowData(se())[, .col]
-                )
+                #.col <- idcol(se())
+                rv.track$indices <- match(rv.track$listSelect, mdata()[, colID])
             }
         })
 
@@ -189,9 +161,9 @@ mod_seTracker_server <- function(id, se) {
             cond <- is.null(rv.track$randSelect)
             cond <- cond || rv.track$randSelect == ""
             cond <- cond || (as.numeric(rv.track$randSelect) < 0)
-            cond <- cond || (as.numeric(rv.track$randSelect) > nrow(se()))
+            cond <- cond || (as.numeric(rv.track$randSelect) > nrow(mdata()))
             if (!cond) {
-                rv.track$indices <- sample(seq_len(nrow(se())),
+                rv.track$indices <- sample(seq_len(nrow(mdata())),
                     as.numeric(rv.track$randSelect),
                     replace = FALSE
                 )
@@ -204,13 +176,11 @@ mod_seTracker_server <- function(id, se) {
             rv.track$randSelect <- ""
 
             if (rv.track$colSelect != "") {
-                .rowD <- SummarizedExperiment::rowData(se())
-                rv.track$indices <- which(.rowD[, rv.track$colSelect] == 1)
+                #.rowD <- SummarizedExperiment::rowData(se())
+                rv.track$indices <- which(mdata[, rv.track$colSelect] == 1)
             }
         })
 
-        return(reactive({
-            rv.track$indices
-        }))
+        return(reactive({ rv.track$indices}))
     })
 }

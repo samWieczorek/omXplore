@@ -4,10 +4,10 @@
 \alias{mvImage}
 \title{Heatmap of missing values}
 \usage{
-mvImage(qData, conds)
+mvImage(qdata, conds)
 }
 \arguments{
-\item{qData}{A dataframe that contains quantitative data.}
+\item{qdata}{A dataframe that contains quantitative data.}
 
 \item{conds}{A vector of the conditions (one condition per sample).}
 }
@@ -24,9 +24,9 @@ number of missing values. A white square is plotted for missing values.
 }
 \examples{
 data(Exp1_R25_pept, package="DAPARdata")
-qData <- Biobase::exprs(Exp1_R25_pept)
+qdata <- Biobase::exprs(Exp1_R25_pept)
 conds <- Biobase::pData(Exp1_R25_pept)[, "Condition"]
-mvImage(qData, conds)
+mvImage(qdata, conds)
 
 }
 \author{

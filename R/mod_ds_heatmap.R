@@ -22,41 +22,17 @@ mod_ds_heatmap_ui <- function(id) {
     ns <- NS(id)
     tagList(
         div(
-            div(
-                style = "display:inline-block; 
-                vertical-align: middle; 
-                padding-right: 20px;",
+            div( style = "display:inline-block; vertical-align: middle; padding-right: 20px;",
                 selectInput(ns("distance"), "Distance",
-                    choices = setNames(nm = c(
-                        "euclidean",
-                        "manhattan",
-                        "maximum",
-                        "canberra",
-                        "binary",
-                        "minkowski"
-                    )),
+                    choices = setNames(nm = c("euclidean", "manhattan", "maximum", "canberra", "binary", "minkowski")),
                     selected = "euclidean",
-                    width = "150px"
-                )
+                    width = "150px")
             ),
-            div(
-                style = "display:inline-block; 
-                vertical-align: middle; 
-                padding-right: 20px;",
+            div(style = "display:inline-block; vertical-align: middle; padding-right: 20px;",
                 selectInput(ns("linkage"), "Linkage",
-                    choices = setNames(nm = c(
-                        "complete",
-                        "average",
-                        "ward.D",
-                        "ward.D2",
-                        "single",
-                        "centroid",
-                        "mcquitty",
-                        "median"
-                    )),
+                    choices = setNames(nm = c("complete", "average", "ward.D", "ward.D2", "single", "centroid", "mcquitty", "median")),
                     selected = "complete",
-                    width = "150px"
-                )
+                    width = "150px")
             ),
             tags$hr(),
             uiOutput(ns("DS_PlotHeatmap"))

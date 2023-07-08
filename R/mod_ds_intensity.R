@@ -25,8 +25,7 @@ mod_ds_intensity_ui <- function(id) {
     tagList(
         shinyjs::useShinyjs(),
         tags$div(
-            tags$div(
-                style = "display:inline-block; vertical-align: middle;",
+            tags$div(style = "display:inline-block; vertical-align: middle;",
                 uiOutput(ns("box_ui")),
                 uiOutput(ns("violin_ui"))
             ),
@@ -46,7 +45,7 @@ mod_ds_intensity_ui <- function(id) {
 
 
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param se A instance of the class `SummarizedExperiment`
+#' @param qdata A instance of the class `SummarizedExperiment`
 #' @param conds A `character()` of the name of conditions
 #' (one condition per sample). It is not a reactive value.
 #' @param ... Additional parameters for [boxPlot()] or [violinPlot()].
@@ -60,20 +59,17 @@ mod_ds_intensity_ui <- function(id) {
 #'
 #' @return NA
 #'
-mod_ds_intensity_server <- function(id, se, conds, ...) {
-    if (!requireNamespace("SummarizedExperiment", quietly = TRUE)) {
-        stop("Please install SummarizedExperiment: 
-            BiocManager::install('SummarizedExperiment')")
-    }
-
+mod_ds_intensity_server <- function(id, qdata, conds, mdata, colID) {
+    
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
 
         indices <- reactiveVal()
 
         indices <- mod_seTracker_server("tracker",
-            se = reactive({ se()})
-        )
+                                        mdata = reactive({mdata()}),
+                                        colID = colID()
+                                        )
 
         output$box_ui <- renderUI({
             if (input$choosePlot == "box") {
@@ -85,11 +81,9 @@ mod_ds_intensity_server <- function(id, se, conds, ...) {
 
         output$box <- renderHighchart({
             withProgress(message = "Making plot", value = 100, {
-                tmp <- boxPlot(
-                    data = SummarizedExperiment::assay(se()),
-                    conds = conds,
-                    subset = indices()
-                )
+                tmp <- boxPlot(data = qdata(), 
+                               conds = conds(), 
+                               subset = indices())
             })
         })
 
@@ -104,7 +98,7 @@ mod_ds_intensity_server <- function(id, se, conds, ...) {
 
         output$violin <- renderImage(
             {
-                req(se())
+                req(qdata)
                 # A temp file to save the output. It will be deleted after 
                 # renderImage sends it, because deleteFile=TRUE.
                 outfile <- tempfile(fileext = ".png")
@@ -112,21 +106,15 @@ mod_ds_intensity_server <- function(id, se, conds, ...) {
                 withProgress(message = "Making plot", value = 100, {
                     png(outfile)
                     pattern <- paste0("test", ".violinplot")
-                    tmp <- violinPlot(
-                        data = SummarizedExperiment::assay(se()),
-                        conds,
-                        subset = indices()
-                    )
+                    tmp <- violinPlot(data = as.matrix(qdata()), conds(), subset = indices())
                     # future(createPNGFromWidget(tmp,pattern))
                     dev.off()
                 })
                 tmp
 
                 # Return a list
-                list(
-                    src = outfile,
-                    alt = "This is alternate text"
-                )
+                list(src = outfile,
+                     alt = "This is alternate text")
             },
             deleteFile = TRUE
         )

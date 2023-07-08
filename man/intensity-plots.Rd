@@ -12,7 +12,7 @@ numeric matrix.}
 \usage{
 mod_ds_intensity_ui(id)
 
-mod_ds_intensity_server(id, se, conds, ...)
+mod_ds_intensity_server(id, qdata, conds, mdata, colID)
 
 boxPlot(data, conds, subset = NULL, pal.name = NULL)
 
@@ -21,13 +21,11 @@ violinPlot(data, conds, subset = NULL, pal.name)
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
-\item{se}{A instance of the class \code{SummarizedExperiment}}
+\item{qdata}{A instance of the class \code{SummarizedExperiment}}
 
 \item{conds}{A \code{character()} of the name of conditions
 (one condition per sample). The number of conditions must be equal to
 the number of samples (number of columns) of the parameter 'data'.}
-
-\item{...}{Additional parameters for \code{\link[=boxPlot]{boxPlot()}} or \code{\link[=violinPlot]{violinPlot()}}.}
 
 \item{data}{An instance of the class \code{matrix}}
 
@@ -36,6 +34,8 @@ the number of samples (number of columns) of the parameter 'data'.}
 \item{pal.name}{A \code{character(1)} which is the name of the palette from the
 package \link{RColorBrewer} from which the colors are taken. Default value
 is 'Set1'.}
+
+\item{...}{Additional parameters for \code{\link[=boxPlot]{boxPlot()}} or \code{\link[=violinPlot]{violinPlot()}}.}
 }
 \value{
 NA
@@ -69,8 +69,14 @@ boxPlot(assay(ft, 1), conds, subset = c(2, 4))
     ui <- mod_ds_intensity_ui("iplot")
 
     server <- function(input, output, session) {
-        mod_ds_intensity_server("iplot", reactive({ft[[1]]}),
-            colData(ft)$Condition)
+      
+      obj <- ft[[1]]
+        mod_ds_intensity_server("iplot", 
+                                qdata = reactive({obj}),
+                                conds = reactive({colData(obj)$Condition}),
+                                mdata = reactive({rowData(obj)}),
+                                colID = reactive({idcol(obj)}),
+                                )
     }
 
     shinyApp(ui = ui, server = server)

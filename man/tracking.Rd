@@ -8,12 +8,14 @@
 \usage{
 mod_seTracker_ui(id)
 
-mod_seTracker_server(id, se)
+mod_seTracker_server(id, mdata, colID)
 }
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
-\item{se}{A instance of the class \code{SummarizedExperiment}}
+\item{mdata}{A instance of the class \code{SummarizedExperiment}}
+
+\item{colID}{}
 }
 \value{
 NA
@@ -26,29 +28,5 @@ Three modes of selection are implemented:
 \item 'Protein list': xxx,
 \item 'Random': xxx,
 \item 'Specific column': xxx
-}
-}
-\examples{
-if (interactive()) {
-    ui <- tagList(
-        mod_seTracker_ui("track"),
-        uiOutput("show")
-    )
-
-    server <- function(input, output, session) {
-        tmp <- reactiveVal()
-
-        tmp <- mod_seTracker_server(
-            id = "track",
-            se = reactive({
-                ft[[1]]
-            })
-        )
-
-        output$show <- renderUI({
-            p(paste0(tmp(), collapse = " "))
-        })
-    }
-    shinyApp(ui = ui, server = server)
 }
 }

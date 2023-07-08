@@ -40,9 +40,7 @@ mod_ds_density_ui <- function(id) {
 mod_ds_density_server <- function(id,
                                   data,
                                   conds,
-                                  pal.name = reactive({
-                                      NULL
-                                  })) {
+                                  pal.name = reactive({NULL})) {
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
 

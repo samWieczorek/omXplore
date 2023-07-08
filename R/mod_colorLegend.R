@@ -4,7 +4,7 @@
 #' xxxx
 #'
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param obj A `character()` xxx
+#' @param presentTags A vector of `character()` which correspond to the tags.
 #' @param hide.white  xxxxx
 #' 
 #' @name color-legend
@@ -47,7 +47,7 @@ mod_colorLegend_ui <- function(id) {
 #' @export
 #' @import DaparToolshed
 #' @rdname color-legend
-mod_colorLegend_server <- function(id, obj, hide.white = TRUE) {
+mod_colorLegend_server <- function(id, presentTags=NULL, hide.white = TRUE) {
   moduleServer(id, function(input, output, session) {
       ns <- session$ns
       
@@ -56,19 +56,10 @@ mod_colorLegend_server <- function(id, obj, hide.white = TRUE) {
       }
       
       output$legend <- renderUI({
-        req(obj)
-        stopifnot(inherits(obj, "SummarizedExperiment"))
+        req(presentTags)
+       # stopifnot(inherits(obj, "SummarizedExperiment"))
         
         mc <- custom_metacell_colors()
-        
-        
-        # Keep only tags that are in the dataset
-        presentTags <- GetMetacellTags(obj,
-                                level = typeDataset(obj),
-                                onlyPresent = TRUE,
-                                all = FALSE)
-
-     
         
         tagList(
           lapply(presentTags, function(x) {

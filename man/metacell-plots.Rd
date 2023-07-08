@@ -30,7 +30,9 @@ mod_ds_mv_server(
 )
 
 metacellPerLinesHisto_HC(
-  object,
+  qdata,
+  metacell = NULL,
+  type,
   design,
   pattern = NULL,
   detailed = FALSE,
@@ -39,7 +41,9 @@ metacellPerLinesHisto_HC(
 )
 
 metacellPerLinesHistoPerCondition_HC(
-  object,
+  qdata,
+  metacell = NULL,
+  type,
   design,
   pattern = NULL,
   indLegend = "auto",
@@ -48,7 +52,9 @@ metacellPerLinesHistoPerCondition_HC(
 )
 
 metacellHisto_HC(
-  object,
+  qdata,
+  metacell = NULL,
+  type,
   design,
   pattern = NULL,
   indLegend = "auto",
@@ -61,7 +67,11 @@ metacellHisto_HC(
 
 \item{pattern}{xxx}
 
-\item{object}{An instance of the class \code{SummarizedExperiment}}
+\item{qdata}{An instance of the class \code{SummarizedExperiment}}
+
+\item{metacell}{xxx}
+
+\item{type}{xxx}
 
 \item{detailed}{'value' or 'percent'}
 

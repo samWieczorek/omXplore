@@ -21,10 +21,7 @@ mod_ds_corrmatrix_ui <- function(id) {
     tagList(
         uiOutput(ns("showValues_ui")),
         uiOutput(ns("rate_ui")),
-        highcharter::highchartOutput(ns("plot"),
-            width = "600px",
-            height = "500px"
-        )
+        highcharter::highchartOutput(ns("plot"), width = "600px", height = "500px")
     )
 }
 
@@ -37,9 +34,9 @@ mod_ds_corrmatrix_ui <- function(id) {
 #' @rdname corrmatrix
 #'
 mod_ds_corrmatrix_server <- function(id,
-    data,
-    rate = reactive({0.5}),
-    showValues = reactive({FALSE})) {
+                                     data,
+                                     rate = reactive({0.5}),
+                                     showValues = reactive({FALSE})) {
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
 

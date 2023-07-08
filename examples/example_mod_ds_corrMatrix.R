@@ -12,10 +12,8 @@ corrMatrix(assay(ft, 1))
     ui <- mod_ds_corrmatrix_ui("plot")
 
     server <- function(input, output, session) {
-        mod_ds_corrmatrix_server(
-            "plot",
-            reactive({assay(ft, 1)})
-        )
+      qdata <- assay(ft, 1)
+      mod_ds_corrmatrix_server("plot", reactive({qdata}))
     }
 
     shinyApp(ui = ui, server = server)
