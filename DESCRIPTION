@@ -45,6 +45,8 @@ Collate:
     palette.R
     utils.R
     example-data.R
+    AllGenerics.R
+    DaparVizData.R
     plots_volcano.R
     adjacencyMatrixInfos.R
     ConnectedComps.R

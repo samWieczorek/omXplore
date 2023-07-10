@@ -26,6 +26,7 @@ mod_ds_corrmatrix_ui <- function(id) {
 }
 
 #' @param id A `character(1)` which is the id of the shiny module.
+#' @param object xxx
 #' @param data xxx
 #' @param rate xxx. Default value is 0.9
 #' @param showValues Default is FALSE.
@@ -34,18 +35,49 @@ mod_ds_corrmatrix_ui <- function(id) {
 #' @rdname corrmatrix
 #'
 mod_ds_corrmatrix_server <- function(id,
-                                     data,
+                                     obj,
+                                     data = reactive({NULL}),
                                      rate = reactive({0.5}),
                                      showValues = reactive({FALSE})) {
+  
+  
+
+ 
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
 
-        observe({
-            req(data())
-            stopifnot(inherits(data(), "matrix"))
+        .data <- reactiveVal()
+        
+        observeEvent(id, {
+          
+          if (is.null(obj()) && is.null(data)){
+            warning("is.null(obj()) && is.null(data)")
+            return(NULL)
+          }
+          
+          if (!is.null(obj()) && !is.null(data)){
+            warning("!is.null(obj()) && !is.null(data)")
+            return(NULL)
+          }
+          
+          if (!is.null(obj)){
+            if(inherits(data(), "MSnset") || inherits(data(), 'QFeatures'))
+              rv.corr$data <- Build_GenericData(obj)
+            else {
+              warning('toto')
+              return(NULL)
+            }
+          }
+          if (!is.null(data) && !inherits(data(), "GenericData")){
+            warning('toto')
+            return(NULL)
+          }
+
         })
+        
 
         rv.corr <- reactiveValues(
+          data = NULL,
             rate = NULL,
             showValues = FALSE
         )

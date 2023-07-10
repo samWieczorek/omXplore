@@ -47,7 +47,9 @@ mod_colorLegend_ui <- function(id) {
 #' @export
 #' @import DaparToolshed
 #' @rdname color-legend
-mod_colorLegend_server <- function(id, presentTags=NULL, hide.white = TRUE) {
+mod_colorLegend_server <- function(id, 
+                                   presentTags=NULL, 
+                                   hide.white = TRUE) {
   moduleServer(id, function(input, output, session) {
       ns <- session$ns
       

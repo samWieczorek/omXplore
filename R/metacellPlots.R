@@ -18,7 +18,7 @@
 #' drawn above the bars.
 #' @return A bar plot
 #' @author Florence Combes, Samuel Wieczorek
-#' @example examples/ex_metacellPerLinesHisto_HC.R
+#' @example examples/ex_metacell_plots.R
 #' 
 #' @name metacell-plots
 #'
@@ -122,7 +122,6 @@ metacellPerLinesHisto_HC <- function(qdata,
 
 
 #' @rdname metacell-plots
-#' @example examples/ex_metacellPerLinesHisto_HC.R
 #' @export
 #'
 metacellPerLinesHistoPerCondition_HC <- function(qdata,

@@ -12,7 +12,10 @@ mod_ds_corrmatrix_ui(id)
 
 mod_ds_corrmatrix_server(
   id,
-  data,
+  obj,
+  data = reactive({
+     NULL
+ }),
   rate = reactive({
      0.5
  }),
@@ -32,6 +35,8 @@ corrMatrix(data, rate = 0.5, showValues = FALSE)
 the gradient of colors}
 
 \item{showValues}{xxx}
+
+\item{object}{xxx}
 }
 \value{
 NA

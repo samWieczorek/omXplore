@@ -71,12 +71,14 @@ boxPlot(assay(ft, 1), conds, subset = c(2, 4))
     server <- function(input, output, session) {
       
       obj <- ft[[1]]
-        mod_ds_intensity_server("iplot", 
-                                qdata = reactive({obj}),
-                                conds = reactive({colData(obj)$Condition}),
-                                mdata = reactive({rowData(obj)}),
-                                colID = reactive({idcol(obj)}),
-                                )
+    
+      
+      mod_ds_intensity_server("iplot",
+                              qdata = reactive({assay(obj)}),
+                              conds = reactive({colData(ft)$Condition}),
+                              mdata = reactive({rowData(obj)}),
+                              colID = reactive({idcol(obj)})
+                              )
     }
 
     shinyApp(ui = ui, server = server)
