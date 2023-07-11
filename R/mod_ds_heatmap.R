@@ -51,15 +51,14 @@ mod_ds_heatmap_ui <- function(id) {
 #' @rdname heatmaps
 #'
 mod_ds_heatmap_server <- function(id,
-                                  data,
-                                  conds,
+                                  vizData = reactive({NULL}),
                                   width = 900) {
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
 
         observe({
-            req(data())
-            stopifnot(inherits(data(), "matrix"))
+            req(vizData())
+            stopifnot(inherits(vizData(), "DaparVizData"))
         })
 
 
@@ -68,10 +67,9 @@ mod_ds_heatmap_server <- function(id,
         width <- paste0(width, "px")
 
         output$DS_PlotHeatmap <- renderUI({
-            req(data())
-            if (nrow(data()) > limitHeatmap) {
-                tags$p("The dataset is too big to compute the heatmap in a 
-                    reasonable time.")
+            req(vizData())
+            if (nrow(vizData()@qdata) > limitHeatmap) {
+                tags$p("The dataset is too big to compute the heatmap in a reasonable time.")
             } else {
                 tagList(
                     plotOutput(ns("heatmap_ui"),
@@ -91,8 +89,8 @@ mod_ds_heatmap_server <- function(id,
             isolate({
                 withProgress(message = "Making plot", value = 100, {
                     heatmapD(
-                        data = data(),
-                        conds = conds,
+                        data = vizData()@qdata,
+                        conds = vizData()@conds,
                         distfun = input$distance,
                         hclustfun = input$linkage
                     )

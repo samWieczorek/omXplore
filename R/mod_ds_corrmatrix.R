@@ -35,51 +35,29 @@ mod_ds_corrmatrix_ui <- function(id) {
 #' @rdname corrmatrix
 #'
 mod_ds_corrmatrix_server <- function(id,
-                                     obj,
-                                     data = reactive({NULL}),
+                                     vizData = reactive({NULL}),
                                      rate = reactive({0.5}),
                                      showValues = reactive({FALSE})) {
   
   
-
  
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
 
-        .data <- reactiveVal()
         
         observeEvent(id, {
           
-          if (is.null(obj()) && is.null(data)){
+          if (is.null(vizData())){
             warning("is.null(obj()) && is.null(data)")
             return(NULL)
-          }
-          
-          if (!is.null(obj()) && !is.null(data)){
-            warning("!is.null(obj()) && !is.null(data)")
-            return(NULL)
-          }
-          
-          if (!is.null(obj)){
-            if(inherits(data(), "MSnset") || inherits(data(), 'QFeatures'))
-              rv.corr$data <- Build_GenericData(obj)
-            else {
-              warning('toto')
-              return(NULL)
-            }
-          }
-          if (!is.null(data) && !inherits(data(), "GenericData")){
-            warning('toto')
-            return(NULL)
-          }
-
+          } else
+            stopifnot(inherits(vizData(), 'DaparVizData'))
         })
         
 
         rv.corr <- reactiveValues(
-          data = NULL,
-            rate = NULL,
-            showValues = FALSE
+          rate = NULL,
+          showValues = FALSE
         )
 
 
@@ -116,11 +94,11 @@ mod_ds_corrmatrix_server <- function(id,
         })
 
         output$plot <- renderHighchart({
-            req(data())
+            req(vizData())
 
             withProgress(message = "Making plot", value = 100, {
                 tmp <- corrMatrix(
-                    data = data(),
+                    data = vizData()@qdata,
                     rate = rv.corr$rate,
                     showValues = rv.corr$showValues
                 )

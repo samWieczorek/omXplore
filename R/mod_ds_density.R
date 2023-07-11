@@ -38,29 +38,26 @@ mod_ds_density_ui <- function(id) {
 #' @importFrom highcharter renderHighchart
 #'
 mod_ds_density_server <- function(id,
-                                  data,
-                                  conds,
+                                  vizData = reactive({NULL}),
                                   pal.name = reactive({NULL})) {
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
 
         observe({
-            req(data())
-            stopifnot(inherits(data(), "matrix"))
+            req(vizData())
+            stopifnot(inherits(vizData(), "DaparVizData"))
         })
 
 
         output$plot_ui <- renderHighchart({
-            req(data())
-            req(conds)
+            req(vizData())
             tmp <- NULL
             isolate({
                 withProgress(message = "Making plot", value = 100, {
-                    tmp <- densityPlot(
-                        data = data(),
-                        conds = conds,
-                        pal.name = pal.name()
-                    )
+                    tmp <- densityPlot(data = vizData()@qdata,
+                                       conds = vizData()@conds,
+                                       pal.name = pal.name()
+                                       )
                 })
             })
             tmp

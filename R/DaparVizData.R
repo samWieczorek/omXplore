@@ -45,6 +45,8 @@ DaparVizData <- setClass(
       name = "character",
       qdata = "matrix",
       metacell = 'data.frame',
+      metadata = 'data.frame',
+      colID = "character",
       conds = "vector",
       type = "character"
       ),
@@ -54,6 +56,8 @@ DaparVizData <- setClass(
       name = NA_character_,
       qdata = matrix(),
       metacell = data.frame(),
+      metadata = data.frame(),
+      colID = NA_character_,
       conds = c(),
       type = NA_character_
     ),
@@ -65,6 +69,12 @@ DaparVizData <- setClass(
         msg <- "The slots 'qdata' and 'metacell' must have the same number of rows."
         errors <- c(errors, msg)
       }
+      
+      if (nrow(object@qdata) != nrow(object@metadata)){
+        msg <- "The slots 'qdata' and 'metadata' must have the same number of rows."
+        errors <- c(errors, msg)
+      }
+      
       
       if (ncol(object@qdata) != length(object@conds)){
         msg <- "The slots 'qdata' must have the same number of columns as the length of 'conds'."
@@ -119,15 +129,46 @@ setMethod("initialize" , "DaparVizData" ,
              name,
              qdata,
              metacell,
+             metadata,
+             colID,
              conds,
              type){
         
         # Basic init of slots
       .Object@name <- name
-      .Object@qdata <- qdata
-      .Object@metacell <- metacell
-      .Object@conds <- conds
-      .Object@type <- type
+      
+      if(is.null(qdata) || !inherits(qdata, 'matrix'))
+        .Object@qdata <- matrix()
+      else 
+        .Object@qdata <- qdata
+      
+      if(is.null(metacell) || !inherits(metacell, 'data.frame'))
+        .Object@metacell <- data.frame()
+      else
+        .Object@metacell <- metacell
+
+      if(is.null(metadata) || !inherits(metadata, 'data.frame'))
+        .Object@metadata <- data.frame()
+      else
+        .Object@metadata <- metadata
+      
+      
+      if(is.null(colID) || length(colID)==0 || !inherits(colID, 'character'))
+        .Object@colID <- ''
+      else 
+        .Object@colID <- colID
+      
+      
+      
+      if(is.null(conds) || !is.vector(conds))
+        .Object@conds <- c()
+      else 
+        .Object@conds <- conds
+      
+      if(is.null(type) || length(type)==0 || !inherits(type, 'character'))
+        .Object@type <- ''
+      else 
+        .Object@type <- type
       
       return(.Object)
     }
@@ -144,29 +185,18 @@ setMethod("initialize" , "DaparVizData" ,
 #' @param steps xxx
 #' @param mandatory xxx
 #' 
-# Build_DaparVizData <- function(name = '',
-#                         qdata = '',
-#                         metacell = '',
-#                         conds = '',
-#                         type = ''){
-# 
-#     new(Class ="DaparVizData",
-#         name = name,
-#         qdata = qdata,
-#         metacell = metacell,
-#         conds = conds,
-#         type = type)
-# }
-
 
 #' #' @exportMethod qMetacell
 #' #' @rdname QFeatures-accessors
 #' #' @return NA
 setMethod("Build_DaparVizData", "list",
           function(object) {
+            
             new(Class ="DaparVizData",
                 name = object$name,
                 qdata = object$qdata,
+                metadata = object$metadata,
+                colID = object$colID,
                 metacell = object$metacell,
                 conds = object$conds,
                 type = object$type
@@ -182,10 +212,19 @@ setMethod("Build_DaparVizData", "list",
 #' @return NA
 setMethod("Build_DaparVizData", signature = "QFeatures",
   function(object, i) {
+    mdata <- rowData(object[[i]])
+    if ("qMetacell" %in% names(mdata))
+      mdata <- mdata[, -which(names(mdata)=="qMetacell")]
+    
+    if ("adjacencyMatrix" %in% names(mdata))
+      mdata <- mdata[, -which(names(mdata)==-"adjacencyMatrix")]
+    
     new(Class ="DaparVizData",
         name =  names(object[i]) ,
         qdata = assay(object[[i]]),
-        metacell = qMetacell(object[[i]]), 
+        metacell = qMetacell(object[[i]]),
+        metadata = mdata,
+        colID = idcol(object[[i]]),
         conds = colData(object)$Condition,
         type = typeDataset(object[[i]])
         )
@@ -203,6 +242,8 @@ setMethod("Build_DaparVizData", signature = "MSnSet",
         name = deparse(substitute(object)) ,
         qdata = exprs(object),
         metacell = fData(object)[, object@experimentData@other$names_metacell], 
+        metadata = fData(object),
+        colID = object@experimentData@other$keyId,
         conds = pData(object)$Condition,
         type = object@experimentData@other$typeOfData
         )

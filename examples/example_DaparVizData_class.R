@@ -4,7 +4,7 @@ library(DaparToolshed)
 
 data(Exp1_R25_prot, package='DaparToolshedData')
 qf <- Exp1_R25_prot
-Build_DaparVizData(qf, 1)
+vizData <- Build_DaparVizData(qf, 1)
 
 
 
@@ -16,6 +16,8 @@ ll <- list(
   name = 'test_list',
   qdata = exprs(msnset),
   metacell = fData(msnset)[ , msnset@experimentData@other$names_metacell],
+  mdata = fData(msnset),
+  colID = msnset@experimentData@other$keyId,
   conds = pData(msnset)[, 'Condition'],
   type = msnset@experimentData@other$typeOfData
   )

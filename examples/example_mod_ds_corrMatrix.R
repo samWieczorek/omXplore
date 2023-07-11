@@ -1,7 +1,9 @@
 
-library(SummarizedExperiment)
+
 data(ft, package='DaparViz')
-corrMatrix(assay(ft, 1))
+
+vizData <- Build_DaparVizData(ft,1)
+corrMatrix(vizData@qdata)
 
 
 #------------------------------------------
@@ -13,7 +15,7 @@ corrMatrix(assay(ft, 1))
 
     server <- function(input, output, session) {
       qdata <- assay(ft, 1)
-      mod_ds_corrmatrix_server("plot", reactive({qdata}))
+      mod_ds_corrmatrix_server("plot", reactive({vizData}))
     }
 
     shinyApp(ui = ui, server = server)
