@@ -1,32 +1,27 @@
 
 library(SummarizedExperiment)
 data(ft, package='DaparViz')
-conds <- colData(ft)$Condition
-violinPlot(assay(ft, 1), conds)
-violinPlot(assay(ft, 1), conds, subset = c(2, 4))
 
-boxPlot(assay(ft, 1), conds)
-boxPlot(assay(ft, 1), conds, subset = c(2, 4))
+vizData <- Build_DaparVizData(ft, 1)
+violinPlot(vizData@qdata, vizData@conds)
+violinPlot(vizData@qdata, vizData@conds, subset = c(2, 4))
+
+boxPlot(vizData@qdata, vizData@conds)
+boxPlot(vizData@qdata, vizData@conds, subset = c(2, 4))
 
 
 #------------------------------------------
 # Shiny module
 #------------------------------------------
+data(ft, package='DaparViz')
 
-    data(ft, package='DaparViz')
-    ui <- mod_ds_intensity_ui("iplot")
+ui <- mod_ds_intensity_ui("iplot")
 
-    server <- function(input, output, session) {
-      
-      obj <- ft[[1]]
-    
-      
-      mod_ds_intensity_server("iplot",
-                              qdata = reactive({assay(obj)}),
-                              conds = reactive({colData(ft)$Condition}),
-                              mdata = reactive({rowData(obj)}),
-                              colID = reactive({idcol(obj)})
-                              )
+server <- function(input, output, session) {
+  vizData <- Build_DaparVizData(ft, 1)
+  mod_ds_intensity_server("iplot",
+                          vizData = reactive({vizData})
+                          )
     }
 
     shinyApp(ui = ui, server = server)

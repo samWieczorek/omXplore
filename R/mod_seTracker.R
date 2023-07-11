@@ -41,7 +41,7 @@ mod_seTracker_ui <- function(id) {
 }
 
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param mdata A instance of the class `SummarizedExperiment`
+#' @param metadata A instance of the class `SummarizedExperiment`
 #' @param colID
 #'
 #' @rdname tracking
@@ -51,7 +51,7 @@ mod_seTracker_ui <- function(id) {
 #' @importFrom shinyjs toggle hidden show hide
 #' @importFrom stats setNames
 #' 
-mod_seTracker_server <- function(id, mdata, colID) {
+mod_seTracker_server <- function(id, vizData) {
     
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
@@ -79,10 +79,10 @@ mod_seTracker_server <- function(id, mdata, colID) {
 
 
         output$listSelect_ui <- renderUI({
-            #.col <- idcol(se())
+
             widget <- selectInput(ns("listSelect"),
                 "Select protein",
-                choices = c("None", mdata()[, colID]),
+                choices = c("None", vizData()@metadata[, vizData()@colID]),
                 multiple = TRUE,
                 selected = rv.track$listSelect,
                 width = "200px",
@@ -100,7 +100,7 @@ mod_seTracker_server <- function(id, mdata, colID) {
         output$colSelect_ui <- renderUI({
             widget <- selectInput(ns("colSelect"),
                 "Column of rowData",
-                choices = c("", colnames(mdata)),
+                choices = c("", colnames(vizData()@metadata)),
                 selected = rv.track$colSelect
             )
             if (rv.track$typeSelect == "Column") {
@@ -146,7 +146,7 @@ mod_seTracker_server <- function(id, mdata, colID) {
                 rv.track$indices <- NULL
             } else {
                 #.col <- idcol(se())
-                rv.track$indices <- match(rv.track$listSelect, mdata()[, colID])
+                rv.track$indices <- match(rv.track$listSelect, vizData()@metadata[, vizData()@colID])
             }
         })
 
@@ -161,9 +161,9 @@ mod_seTracker_server <- function(id, mdata, colID) {
             cond <- is.null(rv.track$randSelect)
             cond <- cond || rv.track$randSelect == ""
             cond <- cond || (as.numeric(rv.track$randSelect) < 0)
-            cond <- cond || (as.numeric(rv.track$randSelect) > nrow(mdata()))
+            cond <- cond || (as.numeric(rv.track$randSelect) > nrow(vizData()@metadata))
             if (!cond) {
-                rv.track$indices <- sample(seq_len(nrow(mdata())),
+                rv.track$indices <- sample(seq_len(nrow(vizData()@metadata)),
                     as.numeric(rv.track$randSelect),
                     replace = FALSE
                 )
@@ -177,7 +177,7 @@ mod_seTracker_server <- function(id, mdata, colID) {
 
             if (rv.track$colSelect != "") {
                 #.rowD <- SummarizedExperiment::rowData(se())
-                rv.track$indices <- which(mdata[, rv.track$colSelect] == 1)
+                rv.track$indices <- which(metadata[, rv.track$colSelect] == 1)
             }
         })
 

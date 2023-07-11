@@ -8,10 +8,9 @@
     server <- function(input, output, session) {
         tmp <- reactiveVal()
         data(ft, package='DaparViz')
-        obj <- ft[[1]]
+        vizData <- Build_DaparVizData(qf, 1)
         tmp <- mod_seTracker_server(id = "track", 
-                                    mdata = reactive({rowData(obj)}),
-                                    colID = idcol(obj))
+                                    vizData = reactive({vizData}))
 
         output$show <- renderUI({
             p(paste0(tmp(), collapse = " "))

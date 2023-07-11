@@ -11,7 +11,13 @@ numeric matrix.}
 \usage{
 mod_ds_heatmap_ui(id)
 
-mod_ds_heatmap_server(id, data, conds, width = 900)
+mod_ds_heatmap_server(
+  id,
+  vizData = reactive({
+     NULL
+ }),
+  width = 900
+)
 
 heatmapD(data, conds, distfun = "euclidean", hclustfun = "complete")
 
@@ -30,13 +36,13 @@ mv.heatmap(
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
+\item{width}{xxx}
+
 \item{data}{A \code{matrix} or \code{array} quantitative values}
 
 \item{conds}{A \code{character()} of the name of conditions
 (one condition per sample). The number of conditions must be equal to
 the number of samples (number of columns) of the parameter 'data'.}
-
-\item{width}{xxx}
 
 \item{distfun}{A \code{character(1)} defining the distance used by the clustering
 algorithm to compute. Default value is 'euclidean'.
@@ -76,8 +82,11 @@ xxxx
 
 library(SummarizedExperiment)
 data(ft_na, package='DaparViz')
-heatmapD(assay(ft_na, 1), colData(ft_na)$Condition)
-mv.heatmap(assay(ft_na, 1))
+
+vizData <- Build_DaparVizData(ft,1)
+
+heatmapD(vizData@qdata, vizData@conds)
+mv.heatmap(vizData@qdata)
 
 #------------------------------------------
 # Shiny module
@@ -87,9 +96,11 @@ data(ft, package='DaparViz')
 ui <- mod_ds_heatmap_ui("plot")
 
 server <- function(input, output, session) {
+  vizData <- Build_DaparVizData(ft,1)
+  
   mod_ds_heatmap_server("plot",
-                        reactive({assay(ft, 1)}),
-                        colData(ft)$Condition)
+                        reactive({vizData})
+  )
   }
 shinyApp(ui = ui, server = server)
 }

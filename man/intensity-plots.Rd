@@ -12,7 +12,7 @@ numeric matrix.}
 \usage{
 mod_ds_intensity_ui(id)
 
-mod_ds_intensity_server(id, qdata, conds, mdata, colID)
+mod_ds_intensity_server(id, vizData)
 
 boxPlot(data, conds, subset = NULL, pal.name = NULL)
 
@@ -21,19 +21,19 @@ violinPlot(data, conds, subset = NULL, pal.name)
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
-\item{qdata}{A instance of the class \code{SummarizedExperiment}}
+\item{data}{An instance of the class \code{matrix}}
 
 \item{conds}{A \code{character()} of the name of conditions
 (one condition per sample). The number of conditions must be equal to
 the number of samples (number of columns) of the parameter 'data'.}
-
-\item{data}{An instance of the class \code{matrix}}
 
 \item{subset}{A vector of index indicating rows to highlight}
 
 \item{pal.name}{A \code{character(1)} which is the name of the palette from the
 package \link{RColorBrewer} from which the colors are taken. Default value
 is 'Set1'.}
+
+\item{qdata}{A instance of the class \code{SummarizedExperiment}}
 
 \item{...}{Additional parameters for \code{\link[=boxPlot]{boxPlot()}} or \code{\link[=violinPlot]{violinPlot()}}.}
 }
@@ -70,14 +70,12 @@ boxPlot(assay(ft, 1), conds, subset = c(2, 4))
 
     server <- function(input, output, session) {
       
-      obj <- ft[[1]]
-    
+      data(ft, package='DaparViz')
+      vizData <- Build_DaparVizData(qf, 1)
+      
       
       mod_ds_intensity_server("iplot",
-                              qdata = reactive({assay(obj)}),
-                              conds = reactive({colData(ft)$Condition}),
-                              mdata = reactive({rowData(obj)}),
-                              colID = reactive({idcol(obj)})
+                              vizData = reactive({assay(obj)})
                               )
     }
 

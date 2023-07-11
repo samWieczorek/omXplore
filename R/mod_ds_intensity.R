@@ -59,7 +59,7 @@ mod_ds_intensity_ui <- function(id) {
 #'
 #' @return NA
 #'
-mod_ds_intensity_server <- function(id, qdata, conds, mdata, colID) {
+mod_ds_intensity_server <- function(id, vizData) {
     
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
@@ -67,8 +67,7 @@ mod_ds_intensity_server <- function(id, qdata, conds, mdata, colID) {
         indices <- reactiveVal()
 
         indices <- mod_seTracker_server("tracker",
-                                        mdata = reactive({mdata()}),
-                                        colID = colID()
+                                        vizData = reactive({vizData()})
                                         )
 
         output$box_ui <- renderUI({
@@ -81,8 +80,8 @@ mod_ds_intensity_server <- function(id, qdata, conds, mdata, colID) {
 
         output$box <- renderHighchart({
             withProgress(message = "Making plot", value = 100, {
-                tmp <- boxPlot(data = qdata(), 
-                               conds = conds(), 
+                tmp <- boxPlot(data = vizData()@qdata, 
+                               conds = vizData@conds, 
                                subset = indices())
             })
         })
@@ -98,7 +97,7 @@ mod_ds_intensity_server <- function(id, qdata, conds, mdata, colID) {
 
         output$violin <- renderImage(
             {
-                req(qdata)
+                req(vizData()@qdata)
                 # A temp file to save the output. It will be deleted after 
                 # renderImage sends it, because deleteFile=TRUE.
                 outfile <- tempfile(fileext = ".png")
@@ -106,7 +105,9 @@ mod_ds_intensity_server <- function(id, qdata, conds, mdata, colID) {
                 withProgress(message = "Making plot", value = 100, {
                     png(outfile)
                     pattern <- paste0("test", ".violinplot")
-                    tmp <- violinPlot(data = as.matrix(qdata()), conds(), subset = indices())
+                    tmp <- violinPlot(data = as.matrix(vizData()@qdata), 
+                                      vizData()@conds, 
+                                      subset = indices())
                     # future(createPNGFromWidget(tmp,pattern))
                     dev.off()
                 })

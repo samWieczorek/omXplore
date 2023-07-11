@@ -33,8 +33,10 @@ ui <- tagList(
 
 server <- function(input, output, session) {
   data(Exp1_R25_prot, package='DaparToolshedData')
-  obj <- Exp1_R25_prot[[1]]
-  tags <- GetMetacellTags(obj, level = typeDataset(obj), onlyPresent = TRUE)
+  vizData <- Build_DaparVizData(Exp1_R25_prot, 1)
+  tags <- GetMetacellTags(Exp1_R25_prot[[1]], 
+                          level = vizData@type, 
+                          onlyPresent = TRUE)
       
   # Use the default color palette
   mod_colorLegend_server("plot1",tags)

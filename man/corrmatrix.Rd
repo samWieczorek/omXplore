@@ -12,8 +12,7 @@ mod_ds_corrmatrix_ui(id)
 
 mod_ds_corrmatrix_server(
   id,
-  obj,
-  data = reactive({
+  vizData = reactive({
      NULL
  }),
   rate = reactive({
@@ -29,12 +28,12 @@ corrMatrix(data, rate = 0.5, showValues = FALSE)
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
-\item{data}{An object of class 'SummarizedExperiment'}
-
 \item{rate}{The rate parameter to control the exponential law for
 the gradient of colors}
 
 \item{showValues}{xxx}
+
+\item{data}{An object of class 'SummarizedExperiment'}
 
 \item{object}{xxx}
 }
@@ -48,9 +47,11 @@ xxxx
 }
 \examples{
 
-library(SummarizedExperiment)
+
 data(ft, package='DaparViz')
-corrMatrix(assay(ft, 1))
+
+vizData <- Build_DaparVizData(ft,1)
+corrMatrix(vizData@qdata)
 
 
 #------------------------------------------
@@ -62,7 +63,7 @@ corrMatrix(assay(ft, 1))
 
     server <- function(input, output, session) {
       qdata <- assay(ft, 1)
-      mod_ds_corrmatrix_server("plot", reactive({qdata}))
+      mod_ds_corrmatrix_server("plot", reactive({vizData}))
     }
 
     shinyApp(ui = ui, server = server)

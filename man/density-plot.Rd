@@ -12,8 +12,9 @@ mod_ds_density_ui(id)
 
 mod_ds_density_server(
   id,
-  data,
-  conds,
+  vizData = reactive({
+     NULL
+ }),
   pal.name = reactive({
      NULL
  })
@@ -24,15 +25,15 @@ densityPlot(data, conds, pal.name = NULL)
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
+\item{pal.name}{A \code{character(1)} which is the name of the palette from
+the package \link{RColorBrewer} from which the colors are taken. Default
+value is 'Set1'.}
+
 \item{data}{A \code{data.frame} or \code{matrix} of \code{numeric()} which is the
 quantitative data to plot.}
 
 \item{conds}{A \code{character()} of condition name for each sample. The
 length of 'conds' must be equal to the number of columns of 'data'.}
-
-\item{pal.name}{A \code{character(1)} which is the name of the palette from
-the package \link{RColorBrewer} from which the colors are taken. Default
-value is 'Set1'.}
 }
 \value{
 NA
@@ -46,7 +47,10 @@ xxxx
 
 library(SummarizedExperiment)
 data(ft, package='DaparViz')
-densityPlot(assay(ft, 1), conds = colData(ft)$Condition)
+
+vizData <- Build_DaparVizData(ft,1)
+
+densityPlot(vizData@qdata, conds = vizData@conds)
 
 
 #------------------------------------------
@@ -57,10 +61,9 @@ data(ft, package='DaparViz')
 ui <- shinyUI(mod_ds_density_ui("plot"))
 
 server <- shinyServer(function(input, output, session) {
-  mod_ds_density_server( "plot",
-                         reactive({assay(ft, 1)}),
-                         colData(ft)$Condition)
-    })
+  mod_ds_density_server("plot", vizData = reactive({vizData})
+  )
+                         })
 
 shinyApp(ui, server)
 }

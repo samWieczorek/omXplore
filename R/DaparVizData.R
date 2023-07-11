@@ -217,13 +217,13 @@ setMethod("Build_DaparVizData", signature = "QFeatures",
       mdata <- mdata[, -which(names(mdata)=="qMetacell")]
     
     if ("adjacencyMatrix" %in% names(mdata))
-      mdata <- mdata[, -which(names(mdata)==-"adjacencyMatrix")]
+      mdata <- mdata[, -which(names(mdata)=="adjacencyMatrix")]
     
     new(Class ="DaparVizData",
         name =  names(object[i]) ,
         qdata = assay(object[[i]]),
         metacell = qMetacell(object[[i]]),
-        metadata = mdata,
+        metadata = as.data.frame(mdata),
         colID = idcol(object[[i]]),
         conds = colData(object)$Condition,
         type = typeDataset(object[[i]])

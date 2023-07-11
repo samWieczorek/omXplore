@@ -8,12 +8,12 @@
 \usage{
 mod_seTracker_ui(id)
 
-mod_seTracker_server(id, mdata, colID)
+mod_seTracker_server(id, vizData)
 }
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
-\item{mdata}{A instance of the class \code{SummarizedExperiment}}
+\item{metadata}{A instance of the class \code{SummarizedExperiment}}
 
 \item{colID}{}
 }
