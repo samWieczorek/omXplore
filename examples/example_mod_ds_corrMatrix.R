@@ -1,21 +1,20 @@
 
 
-data(ft, package='DaparViz')
+data(ft, package='DaparToolshed')
 
-vizData <- Build_DaparVizData(ft,1)
-corrMatrix(vizData@qdata)
+vizData <- convert2viz(ft)
+corrMatrix(vizData[[1]]@qdata)
 
 
 #------------------------------------------
 # Shiny module
 #------------------------------------------
 
-    data(ft, package='DaparViz')
+    data(ft, package='DaparToolshed')
     ui <- mod_ds_corrmatrix_ui("plot")
 
     server <- function(input, output, session) {
-      qdata <- assay(ft, 1)
-      mod_ds_corrmatrix_server("plot", reactive({vizData}))
+      mod_ds_corrmatrix_server("plot", reactive({vizData[[1]]}))
     }
 
     shinyApp(ui = ui, server = server)

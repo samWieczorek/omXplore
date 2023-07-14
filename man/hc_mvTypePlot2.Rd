@@ -4,11 +4,9 @@
 \alias{hc_mvTypePlot2}
 \title{Distribution of Observed values with respect to intensity values}
 \usage{
-hc_mvTypePlot2(object, pal = NULL, pattern, typeofMV = NULL, title = NULL)
+hc_mvTypePlot2(vizData, pal = NULL, pattern, typeofMV = NULL, title = NULL)
 }
 \arguments{
-\item{object}{xxx}
-
 \item{pal}{The different colors for conditions}
 
 \item{pattern}{xxx}
@@ -16,6 +14,8 @@ hc_mvTypePlot2(object, pal = NULL, pattern, typeofMV = NULL, title = NULL)
 \item{typeofMV}{xxx}
 
 \item{title}{The title of the plot}
+
+\item{object}{xxx}
 }
 \value{
 Density plots
@@ -31,11 +31,10 @@ whereas the y-axis count the number of observed values for this entity
 and the considered condition.
 }
 \examples{
-data(Exp1_R25_pept, package="DAPARdata")
-obj <- Exp1_R25_pept[seq_len(100)]
-conds <- Biobase::pData(obj)$Condition
-pal <- ExtendPalette(length(unique(conds)), "Dark2")
-hc_mvTypePlot2(obj, pattern = "Missing MEC", title = "POV distribution", pal = pal)
+data(ft, package="DaparToolshed")
+vizData <- Convert2VizData(ft, 1)
+pal <- ExtendPalette(length(unique(vizData@conds)), "Dark2")
+hc_mvTypePlot2(vizData, pattern = "Missing MEC", title = "POV distribution", pal = pal)
 
 }
 \author{

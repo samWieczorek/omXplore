@@ -8,7 +8,7 @@
     server <- function(input, output, session) {
         tmp <- reactiveVal()
         data(ft, package='DaparViz')
-        vizData <- Build_DaparVizData(qf, 1)
+        vizData <- Coerce2VizData(qf, 1)
         tmp <- mod_seTracker_server(id = "track", 
                                     vizData = reactive({vizData}))
 

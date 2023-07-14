@@ -10,7 +10,7 @@ mod_ds_seExplorer_ui(id)
 
 mod_ds_seExplorer_server(
   id,
-  se,
+  vizData,
   digits = reactive({
      3
  })
@@ -19,9 +19,9 @@ mod_ds_seExplorer_server(
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
-\item{se}{An instance of the class \code{SummarizedExperiment}}
-
 \item{digits}{xxx}
+
+\item{se}{An instance of the class \code{SummarizedExperiment}}
 }
 \value{
 NA
@@ -30,15 +30,21 @@ NA
 xxxx
 }
 \examples{
+library(MSnbase)
+library(DaparToolshed)
+library(highcharter)
+library(DaparViz)
+
+
 data(ft, package='DaparToolshed')
-data(ft_na, package='DaparToolshed')
+vizData <- Coerce2VizData(ft, 1)
 
 ui <- mod_ds_seExplorer_ui("plot")
 
 server <- function(input, output, session) {
-        mod_ds_seExplorer_server("plot", reactive({ft_na[[1]]})
+        mod_ds_seExplorer_server("plot", reactive({vizData})
         )
     }
 
-    shinyApp(ui = ui, server = server)
+shinyApp(ui = ui, server = server)
 }

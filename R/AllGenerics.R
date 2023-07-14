@@ -1,2 +1,4 @@
-setGeneric("Build_DaparVizData", 
-           function(object, ...) standardGeneric("Build_DaparVizData"))
+setGeneric("Convert2VizList", function(object, ...) standardGeneric("Convert2VizList"))
+setGeneric("Convert2VizData", function(object, ...) standardGeneric("Convert2VizData"))
+
+setGeneric("GetVizData", function(object, ...) standardGeneric("GetVizData"))

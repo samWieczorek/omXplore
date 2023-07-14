@@ -29,10 +29,7 @@ NULL
 #' @export
 #' @import highcharter
 #'
-metacellPerLinesHisto_HC <- function(qdata,
-                                     metacell = NULL,
-                                     type,
-                                     design,
+metacellPerLinesHisto_HC <- function(vizData,
                                      pattern = NULL,
                                      detailed = FALSE,
                                      indLegend = "auto",
@@ -47,25 +44,14 @@ metacellPerLinesHisto_HC <- function(qdata,
   if(missing(pattern) || is.null(pattern))
     return(NULL)
   
-  #qdata <- SummarizedExperiment::assay(object)
-  samplesData <- design
-  
+
   if (identical(indLegend, "auto")) {
-    indLegend <- seq.int(from = 2, to = nrow(samplesData))
+    indLegend <- seq.int(from = 2, to = length(vizData@conds))
   }
   
-  #browser()
-  # for (j in seq_len(ncol(qdata))) {
-  #   noms <- NULL
-  #   for (i in seq_len(length(indLegend))) {
-  #     noms <- paste(noms, samplesData[j, indLegend[i]], sep = " ")
-  #   }
-  #   colnames(qdata)[j] <- noms
-  # }
-  
-
- # .level <- typeDataset(object)
-  mask <- match.metacell(metacell, pattern = pattern, level = type)
+  mask <- match.metacell(vizData@metacell, 
+                         pattern = pattern, 
+                         level = vizData@type)
   
   
   if (length(mask) == 0)
@@ -73,10 +59,10 @@ metacellPerLinesHisto_HC <- function(qdata,
   
   NbNAPerRow <- rowSums(mask)
   
-  nb.col <- dim(qdata)[2]
+  nb.col <- dim(vizData@qdata)[2]
   nb.na <- NbNAPerRow
   temp <- table(NbNAPerRow)
-  nb.na2barplot <- rep(0, ncol(qdata))
+  nb.na2barplot <- rep(0, ncol(vizData@qdata))
   
   for (i in seq_len(length(temp))) {
     nb.na2barplot[as.integer(names(temp)[i])] <- temp[i]
@@ -85,7 +71,7 @@ metacellPerLinesHisto_HC <- function(qdata,
   
   df <- data.frame(
     y = nb.na2barplot,
-    y_percent = round(100 * nb.na2barplot / dim(qdata)[1], digits = 2)
+    y_percent = round(100 * nb.na2barplot / dim(vizData@qdata)[1], digits = 2)
   )
   
   myColors <- rep("lightgrey", nrow(df))
@@ -124,10 +110,7 @@ metacellPerLinesHisto_HC <- function(qdata,
 #' @rdname metacell-plots
 #' @export
 #'
-metacellPerLinesHistoPerCondition_HC <- function(qdata,
-                                                 metacell = NULL,
-                                                 type,
-                                                 design, 
+metacellPerLinesHistoPerCondition_HC <- function(vizData,
                                                  pattern = NULL,
                                                  indLegend = "auto",
                                                  showValues = FALSE,
@@ -142,41 +125,35 @@ metacellPerLinesHistoPerCondition_HC <- function(qdata,
   if(missing(pattern) || is.null(pattern))
     return(NULL)
   
-  #qdata <- SummarizedExperiment::assay(object)
-  samplesData <- design
-  conds <- samplesData$Condition
-  u_conds <- unique(conds)
-  nbConditions <- length(u_conds)
-  
+  u_conds <- unique(vizData@conds)
+  nbConds <- length(u_conds)
   myColors <- NULL
   if (is.null(pal)) {
     warning("Color palette set to default.")
-    myColors <- GetColorsForConditions(conds, ExtendPalette(length(u_conds)))
+    myColors <- GetColorsForConditions(vizData@conds, ExtendPalette(nbConds))
   } else {
-    if (length(pal) != length(u_conds)) {
-      warning("The color palette has not the same dimension as the 
-                number of samples")
-      myColors <- GetColorsForConditions(conds, ExtendPalette(length(u_conds)))
+    if (length(pal) != nbConds) {
+      warning("The color palette has not the same dimension as the number of samples")
+      myColors <- GetColorsForConditions(vizData@conds, ExtendPalette(nbConds))
     } else {
       myColors <- pal
     }
   }
   
   if (identical(indLegend, "auto")) {
-    indLegend <- seq.int(from = 2, to = nrow(samplesData))
+    indLegend <- seq.int(from = 2, to = length(vizData@conds))
   }
   
   
   ncolMatrix <- max(unlist(lapply(
     u_conds,  function(x)
-      length(which(conds == x))
+      length(which(vizData@conds == x))
   )))
   
   
-  #.level <- typeDataset(object)
-  mask <- match.metacell(metacell, pattern = pattern, level = type)
-  
-  
+  mask <- match.metacell(vizData@metacell, 
+                         pattern = pattern, 
+                         level = vizData@type)
   
   if (length(mask) == 0)
     return(NULL)
@@ -184,24 +161,24 @@ metacellPerLinesHistoPerCondition_HC <- function(qdata,
   ll.df <- list()
   for (i in u_conds)
     {
-    df <- as.data.frame(matrix(rep(0, 2 * (1 + nbConditions)),
-                               nrow = 1 + nbConditions,
+    df <- as.data.frame(matrix(rep(0, 2 * (1 + nbConds)),
+                               nrow = 1 + nbConds,
                                dimnames = list(
-                                 seq(seq.int(from=0, to=(nbConditions))),
+                                 seq(seq.int(from=0, to=(nbConds))),
                                  c("y", "y_percent")
                                )))
     rownames(df) <- seq.int(from = 0, to = (nrow(df) - 1))
     ll.df[[i]] <- df
-    nSample <- length(which(conds == i))
+    nSample <- length(which(vizData@conds == i))
     t <- NULL
     if (nSample == 1) {
-      t <- table(as.integer(mask[, which(conds == i)]))
+      t <- table(as.integer(mask[, which(vizData@conds == i)]))
     } else {
-      t <- table(rowSums(mask[, which(conds == i)]))
+      t <- table(rowSums(mask[, which(vizData@conds == i)]))
     }
     #browser()
     df[as.integer(names(t)) + 1, "y"] <- t
-    df[as.integer(names(t)) + 1, "y_percent"] <- round(100 * t / nrow(qdata), digits = 2)
+    df[as.integer(names(t)) + 1, "y_percent"] <- round(100 * t / nrow(vizData@qdata), digits = 2)
     
     ll.df[[i]] <- df
     }
@@ -226,7 +203,7 @@ metacellPerLinesHistoPerCondition_HC <- function(qdata,
       pointFormat = "{point.y} lines<br>({point.y_percent}% of all lines)"
     )
   
-  for (i in seq_len(nbConditions)) {
+  for (i in seq_len(nbConds)) {
     h1 <- h1 %>% hc_add_series(data = ll.df[[u_conds[i]]])
   }
   
@@ -242,18 +219,15 @@ metacellPerLinesHistoPerCondition_HC <- function(qdata,
 #' @import highcharter
 #'
 #' @examples
-#' data(Exp1_R25_pept, package="DAPARdata")
-#' obj <- Exp1_R25_pept
+#' data(ft, package="DaparToolshed")
 #' pattern <- "Missing POV"
 #' pal <- ExtendPalette(2, "Dark2")
-#' metacellHisto_HC(obj, pattern, showValues = TRUE, pal = pal)
+#' vizData <- Convert2VizData(ft, 1)
+#' metacellHisto_HC(vizData, pattern, showValues = TRUE, pal = pal)
 #'
 #' @export
 #'
-metacellHisto_HC <- function(qdata,
-                             metacell = NULL,
-                             type,
-                             design,
+metacellHisto_HC <- function(vizData,
                              pattern = NULL,
                              indLegend = "auto",
                              showValues = FALSE,
@@ -268,30 +242,29 @@ metacellHisto_HC <- function(qdata,
   
   #stopifnot(inherits(object, "SummarizedExperiment"))
   
-  #qdata <- SummarizedExperiment::assay(object)
-  samplesData <- design
-  conds <- samplesData[, "Condition"]
-  
+  u_conds <- unique(vizData@conds)
   myColors <- NULL
   if (is.null(pal)) {
     warning("Color palette set to default.")
-    myColors <- GetColorsForConditions(conds, ExtendPalette(length(u_conds)))
+    myColors <- GetColorsForConditions(vizData@conds, ExtendPalette(length(u_conds)))
   } else {
-    if (length(pal) != length(unique(conds))) {
+    if (length(pal) != length(u_conds)) {
       warning("The color palette has not the same dimension as the number of samples")
-      myColors <- GetColorsForConditions(conds, ExtendPalette(length(u_conds)))
+      myColors <- GetColorsForConditions(vizData@conds, ExtendPalette(length(u_conds)))
     } else {
-      myColors <- GetColorsForConditions(conds, pal)
+      myColors <- GetColorsForConditions(vizData@conds, pal)
     }
   }
   
   if (identical(indLegend, "auto")) {
-    indLegend <- seq.int(from=2, to = nrow(samplesData))
+    indLegend <- seq.int(from=2, to = length(vizData@conds))
   }
   
   
   
-  mask <- match.metacell(metacell, pattern = pattern, level = type)
+  mask <- match.metacell(vizData@metacell, 
+                         pattern = pattern, 
+                         level = vizData@type)
   if (length(mask) == 0)
     return(NULL)
   
@@ -314,7 +287,7 @@ metacellHisto_HC <- function(qdata,
       animation = list(duration = 100)
     ) %>%
     hc_legend(enabled = FALSE) %>%
-    hc_xAxis(categories = conds, title = list(text = "Replicates")) %>%
+    hc_xAxis(categories = vizData@conds, title = list(text = "Replicates")) %>%
     my_hc_ExportMenu(filename = "missingValuesPlot_3") %>%
     hc_tooltip(
       headerFormat = "",
@@ -344,29 +317,29 @@ metacellHisto_HC <- function(qdata,
 #' @return A heatmap
 #' @author Alexia Dorffer
 #' @examples
-#' data(Exp1_R25_prot, package="DAPARdata")
-#' obj <- Exp1_R25_prot[seq_len(1000)]
-#' level <- 'protein'
+#' data(ft, package="DaparToolshed")
+#' vizData <- Convert2VizData(ft, 1)
 #' metacell.mask <- match.metacell(GetMetacell(obj), c("Missing POV", "Missing MEC"), level)
 #' indices <- GetIndices_WholeMatrix(metacell.mask, op = ">=", th = 1)
 #' obj <- MetaCellFiltering(obj, indices, cmd = "delete")
-#' wrapper.mvImage(obj$new)
+#' wrapper.mvImage(vizData)
 #'
 #' @export
 #'
 #'
-wrapper.mvImage <- function(object, pattern = "Missing MEC") {
-  if (missing(object)) {
-    stop("'object' is required.")
+wrapper.mvImage <- function(vizData, pattern = "Missing MEC") {
+  if (missing(vizData)) {
+    stop("'vizData' is required.")
   } else if (is.null(object)) {
-    warning("'object' is NULL. Return NULL.")
+    warning("'vizData' is NULL. Return NULL.")
     return(NULL)
   }
-  qdata <- Biobase::exprs(object)
-  conds <- Biobase::pData(object)[, "Condition"]
-  metac <- Biobase::fData(object)[, object@experimentData@other$names_metacell]
-  level <- object@experimentData@other$typeOfData
-  indices <- which(apply(match.metacell(metac, pattern, level), 1, sum) > 0)
+  
+  
+  indices <- which(apply(match.metacell(vizData@metacell, 
+                                        pattern, 
+                                        level = vizData@type),
+                         1, sum) > 0)
   
   if (length(indices) == 0) {
     warning("The dataset contains no Missing value on Entire Condition. 
@@ -380,7 +353,7 @@ wrapper.mvImage <- function(object, pattern = "Missing MEC") {
     return(NULL)
   }
   
-  mvImage(qdata[indices, ], conds)
+  mvImage(vizData@qdata[indices, ], vizData@conds)
 }
 
 
@@ -401,32 +374,31 @@ wrapper.mvImage <- function(object, pattern = "Missing MEC") {
 #' @return A heatmap
 #' @author Samuel Wieczorek, Thomas Burger
 #' @examples
-#' data(Exp1_R25_pept, package="DAPARdata")
-#' qdata <- Biobase::exprs(Exp1_R25_pept)
-#' conds <- Biobase::pData(Exp1_R25_pept)[, "Condition"]
-#' mvImage(qdata, conds)
+#' data(ft, package="DaparToolshed")
+#' vizData <- Convert2VizData(ft, 1)
+#' mvImage(vizData)
 #'
 #' @export
 #'
 #'
-mvImage <- function(qdata, conds) {
+mvImage <- function(vizData) {
   
   pkgs.require(c('grDevices', 'stats'))
   
   ### build indices of conditions
   indCond <- list()
-  ConditionNames <- unique(conds)
+  ConditionNames <- unique(vizData@conds)
   for (i in ConditionNames) {
-    indCond <- append(indCond, list(which(i == conds)))
+    indCond <- append(indCond, list(which(i == vizData@conds)))
   }
   indCond <- stats::setNames(indCond, as.list(c("cond1", "cond2")))
   
-  nNA1 <- apply(as.matrix(qdata[, indCond$cond1]), 1, 
+  nNA1 <- apply(as.matrix(vizData@qdata[, indCond$cond1]), 1, 
                 function(x) sum(is.na(x)))
-  nNA2 <- apply(as.matrix(qdata[, indCond$cond2]), 1, 
+  nNA2 <- apply(as.matrix(vizData@qdata[, indCond$cond2]), 1, 
                 function(x) sum(is.na(x)))
   o <- order(((nNA1 + 1)^2) / (nNA2 + 1))
-  exprso <- qdata[o, ]
+  exprso <- vizData@qdata[o, ]
   
   for (i in seq_len(nrow(exprso))) {
     k <- order(exprso[i, indCond$cond1])
@@ -446,7 +418,7 @@ mvImage <- function(qdata, conds) {
                           col = grDevices::colorRampPalette(c("yellow", "red"))(100),
                           key = TRUE,
                           srtCol = 0,
-                          labCol = conds,
+                          labCol = vizData@conds,
                           ylab = "Peptides / proteins",
                           main = "MEC heatmap"
   )
@@ -485,42 +457,38 @@ mvImage <- function(qdata, conds) {
 #' @author Samuel Wieczorek
 #'
 #' @examples
-#' data(Exp1_R25_pept, package="DAPARdata")
-#' obj <- Exp1_R25_pept[seq_len(100)]
-#' conds <- Biobase::pData(obj)$Condition
-#' pal <- ExtendPalette(length(unique(conds)), "Dark2")
-#' hc_mvTypePlot2(obj, pattern = "Missing MEC", title = "POV distribution", pal = pal)
+#' data(ft, package="DaparToolshed")
+#' vizData <- Convert2VizData(ft, 1)
+#' pal <- ExtendPalette(length(unique(vizData@conds)), "Dark2")
+#' hc_mvTypePlot2(vizData, pattern = "Missing MEC", title = "POV distribution", pal = pal)
 #'
 #' @import highcharter
 #'
 #' @export
 #'
-hc_mvTypePlot2 <- function(object,
+hc_mvTypePlot2 <- function(vizData,
                            pal = NULL,
                            pattern,
                            typeofMV = NULL,
                            title = NULL) {
   pkgs.require('stats')
   
-  conds <- Biobase::pData(object)[, "Condition"]
-  qdata <- Biobase::exprs(object)
   myColors <- NULL
   if (is.null(pal)) {
     warning("Color palette set to default.")
-    pal <- ExtendPalette(length(unique(conds)))
+    pal <- ExtendPalette(length(unique(vizData@conds)))
   } else {
-    if (length(pal) != length(unique(conds))) {
+    if (length(pal) != length(unique(vizData@conds))) {
       warning("The color palette has not the same dimension as the 
                 number of samples")
-      pal <- ExtendPalette(length(unique(conds)))
+      pal <- ExtendPalette(length(unique(vizData@conds)))
     }
   }
   
-  conditions <- conds
   mTemp <- nbNA <- nbValues <- matrix(
-    rep(0, nrow(qdata) * length(unique(conditions))),
-    nrow = nrow(qdata),
-    dimnames = list(NULL, unique(conditions))
+    rep(0, nrow(vizData@qdata) * length(unique(vizData@conds))),
+    nrow = nrow(vizData@qdata),
+    dimnames = list(NULL, unique(vizData@conds))
   )
   dataCond <- data.frame()
   ymax <- 0
@@ -528,34 +496,34 @@ hc_mvTypePlot2 <- function(object,
   myColors <- NULL
   j <- 1
   
-  level <- typeDataset(object)
   
-  for (iCond in unique(conditions)) {
-    if (length(which(conditions == iCond)) == 1) {
-      mTemp[, iCond] <- qdata[, which(conditions == iCond)]
+  for (iCond in unique(vizData@conds)) {
+    if (length(which(vizData@conds == iCond)) == 1) {
+      mTemp[, iCond] <- qdata[, which(vizData@conds == iCond)]
       nbNA[, iCond] <- as.integer(
-        match.metacell(GetMetacell(object)[, which(conditions == iCond)],
+        match.metacell(vizData@metacell[, which(vizData@conds == iCond)],
                        pattern = pattern,
-                       level = level)
+                       level = vizData@type)
       )
       
-      .op1 <- length(which(conditions == iCond))
+      .op1 <- length(which(vizData@conds == iCond))
       .op2 <- nbNA[, iCond]
       nbValues[, iCond] <- .op1 - .op2
     } else {
-      .qcond <- which(conditions == iCond)
-      mTemp[, iCond] <- apply(qdata[, .qcond], 1, mean, na.rm = TRUE)
+      .qcond <- which(vizData@conds == iCond)
+      mTemp[, iCond] <- apply(vizData@qdata[, .qcond], 1, mean, na.rm = TRUE)
+      
       nbNA[, iCond] <- rowSums(
-        match.metacell(GetMetacell(object)[, .qcond],
+        match.metacell(vizData@metacell[, .qcond],
                        pattern = pattern,
-                       level = level)
+                       level = vizData@type)
       )
       
       nbValues[, iCond] <- length(.qcond) - nbNA[, iCond]
     }
     
     
-    for (i in seq_len(length(which(conditions == iCond)))) {
+    for (i in seq_len(length(which(vizData@conds == iCond)))) {
       data <- mTemp[which(nbValues[, iCond] == i), iCond]
       tmp <- NULL
       if (length(data) >= 2) {
@@ -566,7 +534,7 @@ hc_mvTypePlot2 <- function(object,
         }
       }
       series[[j]] <- tmp
-      myColors <- c(myColors, pal[which(unique(conditions) == iCond)])
+      myColors <- c(myColors, pal[which(unique(vizData@conds) == iCond)])
       j <- j + 1
     }
   }
@@ -603,16 +571,16 @@ hc_mvTypePlot2 <- function(object,
                         ))),
                         showInLegend = FALSE,
                         color = myColors[i],
-                        name = conds[i]
+                        name = vizData@conds[i]
     )
   }
   
   # add three empty series for the legend entries. Change color and marker 
   # symbol
-  for (c in seq_len(length(unique(conds)))) {
+  for (c in seq_len(length(unique(vizData@conds)))) {
     hc <- hc_add_series(hc,
                         data = data.frame(),
-                        name = unique(conds)[c],
+                        name = unique(vizData@conds)[c],
                         color = pal[c],
                         marker = list(symbol = "circle"),
                         type = "line"

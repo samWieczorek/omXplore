@@ -18,8 +18,7 @@ NULL
 mod_ds_seExplorer_ui <- function(id) {
     ns <- NS(id)
     tagList(
-        shinyBS::bsCollapse(
-            id = "infos",
+        shinyBS::bsCollapse(id = "infos",
             open = "",
             multiple = TRUE,
             shinyBS::bsCollapsePanel("Quantitative data",
@@ -53,25 +52,24 @@ mod_ds_seExplorer_ui <- function(id) {
 #'
 #' @rdname SE-explorer
 mod_ds_seExplorer_server <- function(id,
-                                     se,
+                                     vizData,
                                      digits = reactive({3})) {
     if (!requireNamespace("SummarizedExperiment", quietly = TRUE)) {
         stop("Please install SummarizedExperiment: 
             BiocManager::install('SummarizedExperiment')")
     }
 
-    if (!requireNamespace("DaparToolshed", quietly = TRUE)) {
-        stop("Please install DaparToolshed: 
-            BiocManager::install('DaparToolshed')")
-    }
 
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
 
         observe({
-            req(se())
-            stopifnot(inherits(se(), "SummarizedExperiment"))
-            mod_colorLegend_server("legend", se())
+            req(vizData())
+          stopifnot(inherits(vizData(), "DaparVizData"))
+            tags <- GetMetacellTags(vizData()@metacell, 
+                                    level = vizData()@type, 
+                                    onlyPresent = TRUE)
+            mod_colorLegend_server("legend", tags)
         })
 
 
@@ -110,14 +108,9 @@ mod_ds_seExplorer_server <- function(id,
 
 
         output$metadata_ui <- DT::renderDT({
-            req(se())
+            req(vizData())
 
-            rdata <- SummarizedExperiment::rowData(se())
-            # Delete columns that are not one-dimensional
-            rdata <- rdata[, -which(colnames(rdata) == "adjacencyMatrix")]
-            rdata <- rdata[, -which(colnames(rdata) == "qMetacell")]
-
-            dat <- DT::datatable(tibble::as_tibble(rdata),
+            dat <- DT::datatable(tibble::as_tibble(vizData()@metadata),
                 rownames = TRUE,
                 extensions = c("Scroller", "Buttons", "FixedColumns"),
                 options = list(
@@ -144,7 +137,7 @@ mod_ds_seExplorer_server <- function(id,
                 )
             )
 
-            if ("Significant" %in% colnames(rdata)) {
+            if ("Significant" %in% colnames(vizData()@metadata)) {
                 dat <- dat %>%
                     DT::formatStyle(
                         columns = "Significant",
@@ -158,15 +151,13 @@ mod_ds_seExplorer_server <- function(id,
 
 
         output$qdata_ui <- DT::renderDataTable(server = TRUE, {
-            req(se())
-            .col <- idcol(se())
-            df <- cbind(
-                keyId = SummarizedExperiment::rowData(se())[, .col],
-                round(SummarizedExperiment::assay(se()),
-                    digits = digits()
-                ),
-                qMetacell(se())
-            )
+            req(vizData())
+            
+           df <- cbind(
+                keyId = (vizData()@metadata)[, vizData()@colID],
+                round(vizData()@qdata, digits = digits()),
+                vizData()@metacell)
+
             colors <- custom_metacell_colors()
 
             DT::datatable(df,
@@ -203,9 +194,8 @@ mod_ds_seExplorer_server <- function(id,
         })
 
         output$qMetacell_ui <- DT::renderDataTable(server = TRUE, {
-            req(se())
-            df <- qMetacell(se())
-
+            req(vizData())
+          df <- vizData()@metacell
             colors <- custom_metacell_colors()
 
             DT::datatable(df,
@@ -237,7 +227,3 @@ mod_ds_seExplorer_server <- function(id,
     })
 }
 
-
-
-
-#-----------------------------------------------

@@ -45,12 +45,9 @@ mod_ds_corrmatrix_server <- function(id,
         ns <- session$ns
 
         
-        observeEvent(id, {
+        observe({
           
-          if (is.null(vizData())){
-            warning("is.null(obj()) && is.null(data)")
-            return(NULL)
-          } else
+          req(vizData())
             stopifnot(inherits(vizData(), 'DaparVizData'))
         })
         

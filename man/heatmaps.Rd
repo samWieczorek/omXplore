@@ -83,7 +83,7 @@ xxxx
 library(SummarizedExperiment)
 data(ft_na, package='DaparViz')
 
-vizData <- Build_DaparVizData(ft,1)
+vizData <- Coerce2VizData(ft,1)
 
 heatmapD(vizData@qdata, vizData@conds)
 mv.heatmap(vizData@qdata)
@@ -96,7 +96,7 @@ data(ft, package='DaparViz')
 ui <- mod_ds_heatmap_ui("plot")
 
 server <- function(input, output, session) {
-  vizData <- Build_DaparVizData(ft,1)
+  vizData <- Coerce2VizData(ft,1)
   
   mod_ds_heatmap_server("plot",
                         reactive({vizData})

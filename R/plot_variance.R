@@ -9,20 +9,17 @@
 #' 
 #' @return NA
 #'
-CVDist <- function(data,
-    conds = NULL,
-    pal.name = NULL) {
-    stopifnot(inherits(data, "matrix"))
+CVDist <- function(vizData,
+                   pal.name = NULL) {
+  
+    stopifnot(inherits(vizData@qdata, "matrix"))
 
 
-    if (is.null(conds)) {
-        stop("'conds' is NULL")
-    } else if (length(conds) != ncol(data)) {
-        stop("'conds' must have the same length as the number of samples in
-         the dataset.")
-    }
-
-    u_conds <- unique(conds)
+    if (is.null(vizData@conds)) {
+        stop("'vizData@conds' is NULL")
+    } 
+  
+  u_conds <- unique(vizData@conds)
 
     myColors <- SampleColors(u_conds)
 
@@ -42,20 +39,19 @@ CVDist <- function(data,
         ) %>%
         customExportMenu(fname = "logIntensity") %>%
         highcharter::hc_plotOptions(
-            series = list(
-                connectNulls = TRUE,
-                marker = list(
-                    enabled = FALSE
-                )
+            series = list(connectNulls = TRUE,
+                          marker = list(
+                            enabled = FALSE
+                            )
+                          )
             )
-        )
 
     minX <- maxX <- 0
     maxY <- 0
     for (i in seq_len(length(u_conds))) {
-        if (length(which(conds == u_conds[i])) > 1) {
+        if (length(which(vizData@conds == u_conds[i])) > 1) {
             t <- apply(
-                data[, which(conds == u_conds[i])], 1,
+                vizData@qdata[, which(vizData@conds == u_conds[i])], 1,
                 function(x) 
                     100 * stats::var(x, na.rm = TRUE) / mean(x, na.rm = TRUE)
             )

@@ -167,7 +167,9 @@ mod_view_dataset_ui <- function(id) {
 #' @rdname ds-plots
 #' @export
 #'
-mod_view_dataset_server <- function(id, object) {
+mod_view_dataset_server <- function(id, 
+                                    ll.vizData = list()
+                                    ) {
     if (!requireNamespace("SummarizedExperiment", quietly = TRUE)) {
         stop("Please install SummarizedExperiment: 
             BiocManager::install('SummarizedExperiment')")
@@ -184,9 +186,10 @@ mod_view_dataset_server <- function(id, object) {
 
 
         observe({
-            req(object())
-            stopifnot(inherits(object(), "QFeatures"))
-            conds(SummarizedExperiment::colData(object())$Condition)
+            req(length(ll.vizData()) > 0)
+            
+            stopifnot(inherits(ll.vizData(), "list"))
+            conds(ll.vizData()[[1]]@conds)
         })
 
 
@@ -208,11 +211,9 @@ mod_view_dataset_server <- function(id, object) {
         output$ShowPlots_ui <- renderUI({
             lapply(ll.mods, function(x) {
                 shinyjs::hidden(
-                    div(
-                        id = ns(paste0("div_", x, "_large")),
+                    div(id = ns(paste0("div_", x, "_large")),
                         do.call(
-                            paste0(x, "_ui"),
-                            list(ns(paste0(x, "_large")))
+                            paste0(x, "_ui"), list(ns(paste0(x, "_large")))
                         )
                     )
                 )
@@ -224,90 +225,67 @@ mod_view_dataset_server <- function(id, object) {
             lapply(ll.mods, function(x) {
                 actionButton(ns(x),
                     label = tagList(
-                        p(gsub("mod_ds_", "", x)),
-                        img(
-                            src = paste0("images/", 
-                                gsub("mod_", "", x), ".png"),
-                            height = "50px"
-                        )
+                        p(gsub("mod_ds_", "", x)), 
+                        img(src = paste0("images/", gsub("mod_", "", x), ".png"), height = "50px")
                     ),
-                    style = "padding: 0px;
-                      border: none;
-                      background-size: cover;
-                           background-position: center;"
+                    style = "padding: 0px; border: none; background-size: cover; background-position: center;"
                 )
             })
         })
 
-        observeEvent(req(object(), input$chooseDataset), ignoreNULL = TRUE,{
-            #object()
-            current.se(object()[[input$chooseDataset]])
+        observeEvent(req(ll.vizData(), input$chooseDataset), ignoreNULL = TRUE,{
+            current.se(ll.vizData()[[input$chooseDataset]])
         })
 
         output$chooseDataset_ui <- renderUI({
-            req(object())
-            if (length(names(object())) == 0) {
+            req(ll.vizData())
+            if (length(names(ll.vizData())) == 0) {
                 choices <- list(" " = character(0))
             } else {
-                choices <- names(object())
+                choices <- names(ll.vizData())
             }
 
             selectInput(ns("chooseDataset"), "Dataset",
                 choices = choices,
-                selected = names(object())[length(object())],
+                selected = names(ll.vizData())[length(ll.vizData())],
                 width = 200
             )
         })
 
+  observe({ #
+    # Calls to server modules
+    #
+    mod_ds_seExplorer_server("mod_ds_seExplorer_large",
+                             vizData = reactive({current.se()}))
+  
+  
+  mod_ds_intensity_server("mod_ds_intensity_large",
+                          vizData = reactive({current.se()}))
+  
+  
+  mod_ds_pca_server("mod_ds_pca_large", 
+                    vizData = reactive({current.se()}))
+  
+  
+  mod_ds_variance_server("mod_ds_variance_large",
+                         vizData = reactive({current.se()}))
+  
+  mod_ds_corrmatrix_server("mod_ds_corrmatrix_large",
+                           vizData = reactive({current.se()}))
+  
+  
+  
+  mod_ds_heatmap_server("mod_ds_heatmap_large",
+                        vizData = reactive({current.se()}))
+  
+  browser()
+  mod_ds_metacell_server("mod_ds_metacell_large",
+                         vizData = reactive({current.se()}))
+  
+  mod_ds_density_server("mod_ds_density_large",
+                        vizData = reactive({current.se()}))})
 
-
-        #
-        # Calls to server modules
-        #
-        mod_ds_seExplorer_server("mod_ds_seExplorer_large",
-            se = reactive({current.se()})
-        )
-
-
-        mod_ds_intensity_server("mod_ds_intensity_large",
-            se = reactive({current.se()}),
-            conds = conds()
-        )
-
-
-        mod_ds_pca_server("mod_ds_pca_large",
-            data = reactive({SummarizedExperiment::assay(current.se())}),
-            conds = conds()
-        )
-
-
-        mod_ds_variance_server("mod_ds_variance_large",
-            data = reactive({SummarizedExperiment::assay(current.se())}),
-            conds = conds()
-        )
-
-        mod_ds_corrmatrix_server(
-            id = "mod_ds_corrmatrix_large",
-            data = reactive({SummarizedExperiment::assay(current.se())})
-        )
-
-
-
-        mod_ds_heatmap_server("mod_ds_heatmap_large",
-            data = reactive({SummarizedExperiment::assay(current.se())}),
-            conds = conds()
-        )
-
-
-        mod_ds_mv_server("mod_ds_mv_large",
-            data = reactive({SummarizedExperiment::assay(current.se())}),
-            conds = conds()
-        )
-
-        mod_ds_density_server("mod_ds_density_large",
-            data = reactive({SummarizedExperiment::assay(current.se())}),
-            conds = conds()
-        )
+        
     })
 }
 

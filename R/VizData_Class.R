@@ -1,4 +1,4 @@
-#' @title DaparVizData class definition
+#' @title VizData class definition
 #'
 #' @description
 #'
@@ -19,30 +19,28 @@
 #'  * Description pipeline: This case is for a process -called 'Description' which is 
 #'  the first process module of a pipeline
 #'
-#' @name DaparVizData
+#' @name Viz_Classes
 #' 
 NULL
 
 
 
-#' 
-#' @slot name xxx
+
 #' @slot qdata xxx
 #' @slot metacell xxx
 #' @slot conds xxx
 #' @slot type xxx
 #' 
-#' @example examples/example_DaparVizData_class.R
+#' @example examples/ex_VizData_Class.R
 #'
-#' @rdname DaparVizData
-#' @export DaparVizData
-#' @exportClass DaparVizData
-DaparVizData <- setClass(
+#' @rdname Viz_Classes
+#' @export VizData
+#' @exportClass VizData
+VizData <- setClass(
   
-  "DaparVizData",
+  "VizData",
   
   representation(
-      name = "character",
       qdata = "matrix",
       metacell = 'data.frame',
       metadata = 'data.frame',
@@ -53,7 +51,6 @@ DaparVizData <- setClass(
   
   # Set the default values for the slots. (optional)
   prototype(
-      name = NA_character_,
       qdata = matrix(),
       metacell = data.frame(),
       metadata = data.frame(),
@@ -89,20 +86,13 @@ DaparVizData <- setClass(
 
 
 
-
-
-
-
-
-
 #' @title xxx
 #' @description xxx
 #' @param object xxx
+#' @rdname Viz_Classes
 #' 
-setMethod("show", 'DaparVizData',
+setMethod("show", 'VizData',
           function(object){
-            cat(crayon::green('\t ------- DaparVizData -------\n'))
-            cat(crayon::green(paste0('\tname: ', object@name, '\n')))
             cat(crayon::green(paste0('\tdim(qdata): ', dim(object@qdata), '\n')))
             cat(crayon::green(paste0('\tdim(metacell): ', dim(object@metacell), '\n')))
             
@@ -115,18 +105,16 @@ setMethod("show", 'DaparVizData',
               }
 )
 
-#' @title Initialization method for the class `DaparVizData`
-#' @rdname DaparVizData
+#' @title Initialization method for the class `VizData`
+#' @rdname Viz_Classes
 #' 
-setMethod("initialize" , "DaparVizData" ,
+setMethod("initialize" , "VizData" ,
     #' @param .Object xxx
-    #' @param name xxx
     #' @param qdata xxx
     #' @param metacell xxx
     #' @param conds xxx
     #' @param type xxx
     function(.Object,
-             name,
              qdata,
              metacell,
              metadata,
@@ -135,8 +123,6 @@ setMethod("initialize" , "DaparVizData" ,
              type){
         
         # Basic init of slots
-      .Object@name <- name
-      
       if(is.null(qdata) || !inherits(qdata, 'matrix'))
         .Object@qdata <- matrix()
       else 
@@ -174,72 +160,50 @@ setMethod("initialize" , "DaparVizData" ,
     }
 )
 
-#' @title Constructor of the `DaparVizData` class
-#' 
-#' @description Wrapper function to the constructor of the class
-#' 
-#' @rdname DaparVizData
-#' 
-#' @param fullname xxx
-#' @param mode xxx
-#' @param steps xxx
-#' @param mandatory xxx
-#' 
-
-#' #' @exportMethod qMetacell
-#' #' @rdname QFeatures-accessors
-#' #' @return NA
-setMethod("Build_DaparVizData", "list",
-          function(object) {
-            
-            new(Class ="DaparVizData",
-                name = object$name,
-                qdata = object$qdata,
-                metadata = object$metadata,
-                colID = object$colID,
-                metacell = object$metacell,
-                conds = object$conds,
-                type = object$type
-            )
-          }
-)
 
 
-
-
-#' @exportMethod Build_DaparVizData
-#' @rdname DaparVizData-accessors
+#' @title xxx
+#' @description xxx
+#' @exportMethod Convert2VizList
+#' @rdname Viz_Classes
 #' @return NA
-setMethod("Build_DaparVizData", signature = "QFeatures",
-  function(object, i) {
-    mdata <- rowData(object[[i]])
-    if ("qMetacell" %in% names(mdata))
-      mdata <- mdata[, -which(names(mdata)=="qMetacell")]
+setMethod("Convert2VizList", signature = "QFeatures",
+  function(object) {
+    ll <- list()
+    for (i in 1:length(object)){
+      metacell.backup <- qMetacell(object[[i]])
+      mdata <- rowData(object[[i]])
+      if ("qMetacell" %in% names(mdata))
+        mdata <- mdata[, -which(names(mdata)=="qMetacell")]
     
-    if ("adjacencyMatrix" %in% names(mdata))
-      mdata <- mdata[, -which(names(mdata)=="adjacencyMatrix")]
+      if ("adjacencyMatrix" %in% names(mdata))
+        mdata <- mdata[, -which(names(mdata)=="adjacencyMatrix")]
+  
+      ll[[names(object[i])]] <- new(Class ="VizData",
+                                    qdata = assay(object[[i]]),
+                                    metacell = metacell.backup,
+                                    metadata = as.data.frame(mdata),
+                                    colID = idcol(object[[i]]),
+                                    conds = colData(object)$Condition,
+                                    type = typeDataset(object[[i]])
+                                    )
+    }
+    #browser()
     
-    new(Class ="DaparVizData",
-        name =  names(object[i]) ,
-        qdata = assay(object[[i]]),
-        metacell = qMetacell(object[[i]]),
-        metadata = as.data.frame(mdata),
-        colID = idcol(object[[i]]),
-        conds = colData(object)$Condition,
-        type = typeDataset(object[[i]])
-        )
-  }
-)
+    ll.vizList <- VizList(ll)
+    return(ll.vizList)
+    })
 
 
 
 
-#' @export Build_DaparVizData
-#' @return NA
-setMethod("Build_DaparVizData", signature = "MSnSet",
+#' @title xxx
+#' @description xxx
+#' @export Convert2VizData
+#' @return An instance of 'VizData' class
+setMethod("Convert2VizData", signature = "MSnSet",
   function(object, ...) {
-    new(Class ="DaparVizData",
-        name = deparse(substitute(object)) ,
+    new(Class ="VizData",
         qdata = exprs(object),
         metacell = fData(object)[, object@experimentData@other$names_metacell], 
         metadata = fData(object),
@@ -250,3 +214,58 @@ setMethod("Build_DaparVizData", signature = "MSnSet",
   }
 )
 
+#' @title xxx
+#' @description xxx
+#' @export Convert2VizData
+#' @return An instance of 'VizData' class
+setMethod("Convert2VizData", signature = "list",
+          function(object, ...) {
+            new(Class ="VizData",
+                qdata = object$qdata,
+                metacell = object$metacell, 
+                metadata = object$metadata,
+                colID = object$colID,
+                conds = object$conds,
+                type = object$type
+            )
+          }
+)
+
+
+#' @title xxx
+#' @description xxx
+CheckClass <- function(ll){
+  ll.class <- NULL
+  if (inherits(ll, 'QFeatures'))
+    ll.class <- 'QFeatures'
+  else if (sum(unlist(lapply(ll, function(x) inherits(x, 'MSnSet')))) == length(ll)
+           && length(names(ll)) == length(ll))
+    ll.class <- 'MSnSet'
+  else if (inherits(ll, 'list'))
+    ll.class <- 'list'
+  else
+    ll.class <- NA
+  return(ll.class)
+}
+
+
+#' @export
+convert2viz <- function(obj){
+  # Checks if each item is an instance of 'MSnSet' class
+  ll.class <- CheckClass(obj)
+  ll <- NULL
+  switch(ll.class,
+         QFeatures = ll <- Convert2VizList(obj),
+         MSnSet = {
+           ll.tmp <- NULL
+           for (i in 1:length(obj))
+             ll[[names(obj)[i]]] <- Convert2VizData(obj[[i]])
+           #ll <- Convert2VizList(ll.tmp)
+         },
+         list = {
+           for (i in 1:length(obj))
+             ll[[names(obj)[i]]] <- Convert2VizData(obj[[i]])
+         }
+         )
+  return(ll)
+ }

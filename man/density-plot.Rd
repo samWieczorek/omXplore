@@ -48,7 +48,7 @@ xxxx
 library(SummarizedExperiment)
 data(ft, package='DaparViz')
 
-vizData <- Build_DaparVizData(ft,1)
+vizData <- Coerce2VizData(ft,1)
 
 densityPlot(vizData@qdata, conds = vizData@conds)
 

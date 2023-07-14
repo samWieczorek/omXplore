@@ -11,7 +11,7 @@ listPlotModules()
 
 mod_view_dataset_ui(id)
 
-mod_view_dataset_server(id, object)
+mod_view_dataset_server(id, ll.vizData = list())
 }
 \arguments{
 \item{id}{A \code{character(1)} for the 'id' of the shiny module. It must be
@@ -127,8 +127,13 @@ ui <- fluidPage(
   mod_view_dataset_ui("dataset")
 )
 
+
+
 server <- function(input, output, session) {
-  mod_view_dataset_server("dataset", object = reactive({ft_na}))
+  ll.vizData <- convert2viz(ft)
+  
+  mod_view_dataset_server("dataset", 
+                          ll.vizData = reactive({ll.vizData}))
 }
 
 shinyApp(ui, server)

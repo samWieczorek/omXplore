@@ -172,9 +172,10 @@ mod_metacell_tree_server <- function(id,
 
         
         init_tree <- function(){
-            req(type)
+          
+            req(type())
 
-          rv$meta <- DaparToolshed::metacell.def(type)
+          rv$meta <- DaparToolshed::metacell.def(type())
             rv$mapping <- BuildMapping(rv$meta)$names
             rv$bg_colors <- BuildMapping(rv$meta)$colors
             
@@ -193,7 +194,7 @@ mod_metacell_tree_server <- function(id,
             # dataOut$trigger <- as.numeric(Sys.time())
             # dataOut$values <- NULL
             
-            if (!is.null(type))
+            if (!is.null(type()))
                 init_tree()
             dataOut$trigger <- as.numeric(Sys.time())
             dataOut$values <- NULL
@@ -226,7 +227,7 @@ observeEvent(input$lastModalClose,  ignoreInit = FALSE, ignoreNULL = TRUE, {
 
 observeEvent(id, ignoreInit = FALSE, {
   
-  if (!is.null(type))
+  if (!is.null(type()))
         init_tree()
 
   dataOut$trigger <- as.numeric(Sys.time())
@@ -272,7 +273,7 @@ observeEvent(input$checkbox_mode, {
 
 output$tree <- renderUI({
     div(style = "overflow-y: auto;",
-        uiOutput(ns(paste0('metacell_tree_', type)))
+        uiOutput(ns(paste0('metacell_tree_', type())))
     )
 })
 
@@ -486,7 +487,7 @@ observeEvent(somethingChanged(), ignoreInit = TRUE, {
                    update_CB(newSelection)
                    },
                subtree = {
-                   level <- type
+                   level <- type()
                    # As the leaves are disabled, this selection is a node
                    # by default, all its children must be also selected
                    for (i in newSelection){

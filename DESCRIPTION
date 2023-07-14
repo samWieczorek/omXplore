@@ -44,9 +44,9 @@ Collate:
     zzz.R
     palette.R
     utils.R
-    example-data.R
     AllGenerics.R
-    DaparVizData.R
+    VizData_Class.R
+    VizList_Class.R
     plots_volcano.R
     adjacencyMatrixInfos.R
     ConnectedComps.R

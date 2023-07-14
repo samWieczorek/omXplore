@@ -10,44 +10,7 @@
 #'
 #' @author Samuel Wieczorek, Enora Fremy
 #'
-#' @examples
-#'
-#' #----------------------------------------------
-#' # Plots a heatmap for generic quantitative data
-#' #----------------------------------------------
-#'
-#' library(SummarizedExperiment)
-#' heatmapD(assay(ft, 1), conds)
-#'
-#' data(ft, package='DaparViz')
-#'
-#'
-#' #----------------------------------------
-#' # Launch a single shiny module
-#' # The list of all plots module is avaiable
-#' # with the function [listPlotModules()].
-#' # In the example, replace 'FOO' by the name of the module
-#' # and add the necessaray parameters
-#' #----------------------------------------
-#'
-#' if (interactive()) {
-#'     data(ft, package='DaparViz')
-#'     ui <- mod_ds_pca_ui("plot")
-#'
-#'     server <- function(input, output, session) {
-#'         conds <- colData(ft)$Condition
-#'
-#'         mod_ds_pca_server(
-#'             "plot",
-#'             reactive({
-#'                 assay(ft, 1)
-#'             }),
-#'             colData(ft)$Condition
-#'         )
-#'     }
-#'
-#'     shinyApp(ui = ui, server = server)
-#' }
+#' @example examples/ex_mod_ds_pca.R
 #'
 NULL
 
@@ -83,79 +46,68 @@ mod_ds_pca_ui <- function(id) {
 #'
 #' @export
 mod_ds_pca_server <- function(id,
-                              data,
-                              conds) {
+                              vizData) {
     if (!requireNamespace("factoextra", quietly = TRUE)) {
-        stop(
-            "Package \"factoextra\" must be installed to use this function.",
+        stop("Package 'factoextra' must be installed to use this function.",
             call. = FALSE
         )
     }
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
 
+        
         observe({
-            req(data())
-            stopifnot(inherits(data(), "matrix"))
+            req(vizData())
+          browser()
+            stopifnot(inherits(vizData()@qdata, "matrix"))
+            rv.pca$data <- as.matrix(vizData()@qdata)
+
         })
 
         rv.pca <- reactiveValues(
-            PCA_axes = NULL,
-            res.pca = NULL,
-            PCA_varScale = NULL
+          data = NULL,
+          PCA_axes = NULL,
+          res.pca = NULL,
+          PCA_varScale = NULL
         )
 
 
         output$WarningNA_PCA <- renderUI({
-            req(data())
-            req(length(which(is.na(data()))) > 0)
+            req(rv.pca$data)
+            req(length(which(is.na(rv.pca$data))) > 0)
 
             tagList(
-                tags$p("Warning: As your dataset contains missing values, 
-                the PCA cannot be computed. Please impute them first.",
-                    style = "color:red;font-size: 20px"
-                )
+                tags$p(style = "color:red;font-size: 20px",
+                "Warning: As your dataset contains missing values, 
+                the PCA cannot be computed. Please impute them first.")
             )
         })
 
 
 
         output$pcaOptions <- renderUI({
-            req(data())
+            req(rv.pca$data)
             req(rv.pca$res.pca)
-            req(length(which(is.na(data()))) == 0)
+            req(length(which(is.na(rv.pca$data))) == 0)
             tagList(
                 tags$div(
-                    tags$div(
-                        style = "display:inline-block; 
-                        vertical-align: middle;
-                        padding-right: 20px;",
-                        numericInput(ns("pca.axe1"),
-                            "Dimension 1",
-                            min = 1,
-                            max = Compute_PCA_dim(),
-                            value = 1,
-                            width = "100px"
-                        )
-                    ),
+                    tags$div(style = "display:inline-block; vertical-align: middle; padding-right: 20px;",
+                        numericInput(ns("pca.axe1"), "Dimension 1",
+                                     min = 1, 
+                                     max = Compute_PCA_dim(),
+                                     value = 1,
+                                     width = "100px")),
                     tags$div(
                         style = "display:inline-block; vertical-align: middle;",
-                        numericInput(ns("pca.axe2"),
-                            "Dimension 2",
-                            min = 1,
-                            max = Compute_PCA_dim(),
-                            value = 2,
-                            width = "100px"
-                        )
+                        numericInput(ns("pca.axe2"), "Dimension 2",
+                                     min = 1,
+                                     max = Compute_PCA_dim(),
+                                     value = 2,
+                                     width = "100px")
                     ),
-                    tags$div(
-                        style = "display:inline-block; 
-                        vertical-align: middle; 
-                        padding-right: 20px;",
-                        checkboxInput(ns("varScale_PCA"),
-                            "Variance scaling",
-                            value = rv.pca$PCA_varScale
-                        )
+                    tags$div(style = "display:inline-block; vertical-align: middle; padding-right: 20px;",
+                        checkboxInput(ns("varScale_PCA"), "Variance scaling",
+                                      value = rv.pca$PCA_varScale)
                     )
                 )
             )
@@ -169,27 +121,27 @@ mod_ds_pca_server <- function(id,
 
         observeEvent(input$varScale_PCA, {
             rv.pca$PCA_varScale <- input$varScale_PCA
-            rv.pca$res.pca <- wrapper_pca(data(),
-                conds,
-                rv.pca$PCA_varScale,
-                ncp = Compute_PCA_dim()
-            )
+            rv.pca$res.pca <- wrapper_pca(rv.pca$data,
+                                          vizData@conds,
+                                          rv.pca$PCA_varScale,
+                                          ncp = Compute_PCA_dim()
+                                          )
         })
 
-        observeEvent(data(), {
-            if (length(which(is.na(data()))) == 0) {
-                rv.pca$res.pca <- wrapper_pca(data(),
-                    conds,
-                    rv.pca$PCA_varScale,
-                    ncp = Compute_PCA_dim()
-                )
+        observeEvent(rv.pca$data, {
+            if (length(which(is.na(rv.pca$data))) == 0) {
+                rv.pca$res.pca <- wrapper_pca(rv.pca$data,
+                                              vizData@conds,
+                                              rv.pca$PCA_varScale,
+                                              ncp = Compute_PCA_dim()
+                                              )
             }
         })
 
 
         output$pcaPlots <- renderUI({
-            req(data())
-            req(length(which(is.na(data()))) == 0)
+            req(rv.pca$data)
+            req(length(which(is.na(rv.pca$data))) == 0)
             req(rv.pca$res.pca$var$coord)
 
             tagList(
@@ -208,7 +160,7 @@ mod_ds_pca_server <- function(id,
                 list(
                     cols = colnames(rv.pca$res.pca$var$coord),
                     vals = colnames(rv.pca$res.pca$var$coord),
-                    unique = unique(conds),
+                    unique = unique(vizData@conds),
                     pal = RColorBrewer::brewer.pal(3, "Dark2")[seq_len(2)]
                 )
             })
@@ -242,9 +194,9 @@ mod_ds_pca_server <- function(id,
             req(c(rv.pca$PCA_axes, rv.pca$res.pca))
             withProgress(message = "Making plot", value = 100, {
                 factoextra::fviz_pca_ind(rv.pca$res.pca,
-                    axes = rv.pca$PCA_axes,
-                    geom = "point"
-                )
+                                         axes = rv.pca$PCA_axes,
+                                         geom = "point"
+                                         )
             })
         })
 
@@ -263,22 +215,15 @@ mod_ds_pca_server <- function(id,
             nmax <- 12 # ncp should not be greater than...
             # for info, ncp = number of components or dimensions in PCA results
 
-            y <- data()
+            y <- rv.pca$data
             nprot <- dim(y)[1]
             n <- dim(y)[2] # If too big, take the number of conditions.
 
-            if (n > nmax) {
-                n <- length(unique(conds))
-            }
+            if (n > nmax)
+                n <- length(unique(vizData@conds))
 
             ncp <- min(n, nmax)
             ncp
         })
     })
 }
-
-## To be copied in the UI
-# mod_plots_pca_ui("plots_pca_ui_1")
-
-## To be copied in the server
-# callModule(mod_plots_pca_server, "plots_pca_ui_1")

@@ -10,21 +10,14 @@
 \usage{
 mod_ds_pca_ui(id)
 
-mod_ds_pca_server(id, data, conds)
+mod_ds_pca_server(id, vizData)
 
-wrapper_pca(data, conds, var.scaling = TRUE, ncp = NULL)
+wrapper_pca(vizData, var.scaling = TRUE, ncp = NULL)
 
 plotPCA_Eigen(res.pca)
 }
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
-
-\item{data}{An instance of the class \code{SummarizedExperiment} which is the
-quantitative values.}
-
-\item{conds}{A \code{character()} of the name of conditions
-(one condition per sample). The number of conditions must be equal to
-the number of samples (number of columns) of the parameter 'data'.}
 
 \item{var.scaling}{The dimensions to plot}
 
@@ -32,6 +25,13 @@ the number of samples (number of columns) of the parameter 'data'.}
 the results.}
 
 \item{res.pca}{Result of FactoMineR::PCA}
+
+\item{data}{An instance of the class \code{SummarizedExperiment} which is the
+quantitative values.}
+
+\item{conds}{A \code{character()} of the name of conditions
+(one condition per sample). The number of conditions must be equal to
+the number of samples (number of columns) of the parameter 'data'.}
 }
 \value{
 A plot
@@ -41,43 +41,6 @@ This method plots a bar plot which represents the distribution of the
 number of missing values (NA) per lines (ie proteins).
 }
 \examples{
-
-#----------------------------------------------
-# Plots a heatmap for generic quantitative data
-#----------------------------------------------
-
-library(SummarizedExperiment)
-heatmapD(assay(ft, 1), conds)
-
-data(ft, package='DaparViz')
-
-
-#----------------------------------------
-# Launch a single shiny module
-# The list of all plots module is avaiable
-# with the function [listPlotModules()].
-# In the example, replace 'FOO' by the name of the module
-# and add the necessaray parameters
-#----------------------------------------
-
-if (interactive()) {
-    data(ft, package='DaparViz')
-    ui <- mod_ds_pca_ui("plot")
-
-    server <- function(input, output, session) {
-        conds <- colData(ft)$Condition
-
-        mod_ds_pca_server(
-            "plot",
-            reactive({
-                assay(ft, 1)
-            }),
-            colData(ft)$Condition
-        )
-    }
-
-    shinyApp(ui = ui, server = server)
-}
 
 }
 \author{

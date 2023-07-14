@@ -4,7 +4,7 @@
 \alias{mvImage}
 \title{Heatmap of missing values}
 \usage{
-mvImage(qdata, conds)
+mvImage(vizData)
 }
 \arguments{
 \item{qdata}{A dataframe that contains quantitative data.}
@@ -23,10 +23,9 @@ The lines have been sorted in order to vizualize easily the different
 number of missing values. A white square is plotted for missing values.
 }
 \examples{
-data(Exp1_R25_pept, package="DAPARdata")
-qdata <- Biobase::exprs(Exp1_R25_pept)
-conds <- Biobase::pData(Exp1_R25_pept)[, "Condition"]
-mvImage(qdata, conds)
+data(ft, package="DaparToolshed")
+vizData <- Convert2VizData(ft, 1)
+mvImage(vizData)
 
 }
 \author{

@@ -10,21 +10,21 @@ numeric matrix.}
 \usage{
 mod_ds_variance_ui(id)
 
-mod_ds_variance_server(id, data, conds, pal.name = NULL)
+mod_ds_variance_server(id, vizData, pal.name = NULL)
 
-CVDist(data, conds = NULL, pal.name = NULL)
+CVDist(vizData, pal.name = NULL)
 }
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
+
+\item{pal.name}{A \code{character(1)} which is the name of the palette from the
+package \link{RColorBrewer} from which the colors are taken.
+Default value is 'Set1'.}
 
 \item{data}{A \code{data.frame} or \code{matrix} which is the quantitative values.}
 
 \item{conds}{A \code{character()} of the name of conditions
 (one condition per sample).}
-
-\item{pal.name}{A \code{character(1)} which is the name of the palette from the
-package \link{RColorBrewer} from which the colors are taken.
-Default value is 'Set1'.}
 }
 \value{
 NA

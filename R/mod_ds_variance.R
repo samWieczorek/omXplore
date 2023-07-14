@@ -65,25 +65,21 @@ mod_ds_variance_ui <- function(id) {
 #' @rdname plot-variance
 #' @export
 mod_ds_variance_server <- function(id,
-                                   data,
-                                   conds,
+                                   vizData,
                                    pal.name = NULL) {
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
 
         observe({
-            req(data())
-            stopifnot(inherits(data(), "matrix"))
+          req(vizData())
+            stopifnot(inherits(vizData()@qdata, "matrix"))
         })
 
 
         output$viewDistCV <- renderHighchart({
+          req(vizData())
             withProgress(message = "Making plot", value = 100, {
-                varDist <- CVDist(
-                    data(),
-                    conds,
-                    pal.name
-                )
+                varDist <- CVDist(vizData(), pal.name)
             })
         })
     })

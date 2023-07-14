@@ -4,12 +4,12 @@
 \alias{wrapper.mvImage}
 \title{Heatmap of missing values from a \code{MSnSet} object}
 \usage{
-wrapper.mvImage(object, pattern = "Missing MEC")
+wrapper.mvImage(vizData, pattern = "Missing MEC")
 }
 \arguments{
-\item{object}{An object of class \code{MSnSet}.}
-
 \item{pattern}{xxx}
+
+\item{object}{An object of class \code{MSnSet}.}
 }
 \value{
 A heatmap
@@ -23,13 +23,12 @@ The lines have been sorted in order to vizualize easily the different
 number of missing values. A white square is plotted for missing values.
 }
 \examples{
-data(Exp1_R25_prot, package="DAPARdata")
-obj <- Exp1_R25_prot[seq_len(1000)]
-level <- 'protein'
+data(ft, package="DaparToolshed")
+vizData <- Convert2VizData(ft, 1)
 metacell.mask <- match.metacell(GetMetacell(obj), c("Missing POV", "Missing MEC"), level)
 indices <- GetIndices_WholeMatrix(metacell.mask, op = ">=", th = 1)
 obj <- MetaCellFiltering(obj, indices, cmd = "delete")
-wrapper.mvImage(obj$new)
+wrapper.mvImage(vizData)
 
 }
 \author{

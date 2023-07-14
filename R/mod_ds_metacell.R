@@ -37,21 +37,20 @@ mod_ds_metacell_ui <- function(id) {
 #' @rdname metacell-plots
 #' @export
 #' 
-mod_ds_mv_server <- function(id, 
-                             obj = reactive({NULL}), 
-                             design = NULL,
+mod_ds_metacell_server <- function(id, 
+                             vizData = reactive({NULL}),
                              pal = reactive({NULL}), 
                              pattern = reactive({NULL}),
                              showSelect = reactive({TRUE})) {
     moduleServer(id, function(input, output, session) {
             ns <- session$ns
-            
+            #browser()
             rv <- reactiveValues(
                 chooseTag = pattern(),
                 showSelect = if(is.null(pattern())) TRUE else showSelect()
             )
             
-            tmp.tags <- mod_metacell_tree_server('tree', obj = reactive({obj()}))
+            tmp.tags <- mod_metacell_tree_server('tree', type = reactive({vizData()@type}))
             
             observeEvent(tmp.tags()$values, ignoreNULL = FALSE, ignoreInit = TRUE,{
                 rv$chooseTag <- tmp.tags()$values
@@ -59,14 +58,13 @@ mod_ds_mv_server <- function(id,
             
             
             output$chooseTagUI <- renderUI({
-                req(obj())
+                req(vizData())
                 mod_metacell_tree_ui(ns('tree'))
              })
 
             output$qMetacell <- renderHighchart({
                tmp <- NULL
-               tmp <- metacellHisto_HC(object = obj(),
-                                       design = design,
+               tmp <- metacellHisto_HC(vizData = vizData(),
                                        pattern = rv$chooseTag,
                                        pal = pal()
                                         )
@@ -76,13 +74,12 @@ mod_ds_mv_server <- function(id,
 
 
             output$qMetacell_per_lines <- renderHighchart({
-               tmp <- NULL
-                tmp <-
-                  metacellPerLinesHisto_HC(object = obj(),
-                                             design = design,
-                                             pattern = rv$chooseTag,
-                                             indLegend = c(2:nrow(design))
-                                             )
+              tmp <- NULL
+               tmp <-
+                  metacellPerLinesHisto_HC(vizData = vizData(),
+                                           pattern = rv$chooseTag,
+                                           indLegend = seq.int(from = 2, to = length(vizData()@conds))
+                                           )
                 # future(createPNGFromWidget(tmp,pattern))
                 # })
                 tmp
@@ -94,8 +91,7 @@ mod_ds_mv_server <- function(id,
                tmp <- NULL
                 # isolate({
                 # pattern <- paste0(GetCurrentObjName(),".MVplot2")
-                tmp <- metacellPerLinesHistoPerCondition_HC(object = obj(),
-                                                            design = design,
+                tmp <- metacellPerLinesHistoPerCondition_HC(vizData = vizData(),
                                                             pattern = rv$chooseTag,
                                                             pal = pal()
                                                             )
