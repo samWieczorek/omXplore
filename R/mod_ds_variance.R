@@ -8,30 +8,7 @@
 #' 
 #' @return NA
 #'
-#' @examples
-#' library(SummarizedExperiment)
-#' data(ft, package='DaparViz')
-#' CVDist(assay(ft, 1), colData(ft)$Condition)
-#'
-#'
-#' #------------------------------------------
-#' # Shiny module
-#' #------------------------------------------
-#' if (interactive()) {
-#'     data(ft, package='DaparViz')
-#'     ui <- mod_ds_variance_ui("plot")
-#'
-#'     server <- function(input, output, session) {
-#'         mod_ds_variance_server(
-#'             "plot",
-#'             reactive({
-#'                 assay(ft, 1)
-#'             })
-#'         )
-#'     }
-#'
-#'     shinyApp(ui = ui, server = server)
-#' }
+#' @example examples/ex_mod_ds_variance.R
 #'
 NULL
 
@@ -54,9 +31,7 @@ mod_ds_variance_ui <- function(id) {
 
 
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param data A `data.frame` or `matrix` which is the quantitative values.
-#' @param conds A `character()` of the name of conditions
-#' (one condition per sample).
+#' @param vData xxx
 #' @param pal.name A `character(1)` which is the name of the palette from the 
 #' package [RColorBrewer] from which the colors are taken. 
 #' Default value is 'Set1'.
@@ -65,21 +40,15 @@ mod_ds_variance_ui <- function(id) {
 #' @rdname plot-variance
 #' @export
 mod_ds_variance_server <- function(id,
-                                   vizData,
+                                   vData,
                                    pal.name = NULL) {
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
 
-        observe({
-          req(vizData())
-            stopifnot(inherits(vizData()@qdata, "matrix"))
-        })
-
-
         output$viewDistCV <- renderHighchart({
-          req(vizData())
-            withProgress(message = "Making plot", value = 100, {
-                varDist <- CVDist(vizData(), pal.name)
+          req(vData())
+          withProgress(message = "Making plot", value = 100, {
+                varDist <- CVDist(vData(), pal.name)
             })
         })
     })

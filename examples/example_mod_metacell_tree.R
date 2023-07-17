@@ -1,9 +1,4 @@
 
-
-
-#=============================================================================
-
-
 # Example
 #
 ui <- fluidPage(
@@ -14,7 +9,15 @@ ui <- fluidPage(
 )
 
 server <- function(input, output) {
-  mod_metacell_tree_server('tree', type = 'peptide')
+  rv <- reactiveValues(
+    tags = NULL
+  )
+  
+  observe({
+    rv$tags <- mod_metacell_tree_server('tree', type = 'peptide')
+  })
+  
+  
 }
 
 shinyApp(ui = ui, server = server)

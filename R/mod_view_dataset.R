@@ -168,12 +168,13 @@ mod_view_dataset_ui <- function(id) {
 #' @export
 #'
 mod_view_dataset_server <- function(id, 
-                                    ll.vizData = list()
+                                    ll.vizData = NULL
                                     ) {
     if (!requireNamespace("SummarizedExperiment", quietly = TRUE)) {
         stop("Please install SummarizedExperiment: 
             BiocManager::install('SummarizedExperiment')")
     }
+  
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
 
@@ -188,8 +189,8 @@ mod_view_dataset_server <- function(id,
         observe({
             req(length(ll.vizData()) > 0)
             
-            stopifnot(inherits(ll.vizData(), "list"))
-            conds(ll.vizData()[[1]]@conds)
+            stopifnot(inherits(ll.vizData(), "VizList"))
+            conds(ll.vizData()@ll.vizData[[1]]@conds)
         })
 
 
@@ -234,7 +235,7 @@ mod_view_dataset_server <- function(id,
         })
 
         observeEvent(req(ll.vizData(), input$chooseDataset), ignoreNULL = TRUE,{
-            current.se(ll.vizData()[[input$chooseDataset]])
+            current.se(ll.vizData()@ll.vizData[[input$chooseDataset]])
         })
 
         output$chooseDataset_ui <- renderUI({
@@ -256,7 +257,7 @@ mod_view_dataset_server <- function(id,
     # Calls to server modules
     #
     mod_ds_seExplorer_server("mod_ds_seExplorer_large",
-                             vizData = reactive({current.se()}))
+                             vData = reactive({current.se()}))
   
   
   mod_ds_intensity_server("mod_ds_intensity_large",
@@ -268,7 +269,7 @@ mod_view_dataset_server <- function(id,
   
   
   mod_ds_variance_server("mod_ds_variance_large",
-                         vizData = reactive({current.se()}))
+                         vData = reactive({current.se()}))
   
   mod_ds_corrmatrix_server("mod_ds_corrmatrix_large",
                            vizData = reactive({current.se()}))
@@ -278,7 +279,7 @@ mod_view_dataset_server <- function(id,
   mod_ds_heatmap_server("mod_ds_heatmap_large",
                         vizData = reactive({current.se()}))
   
-  browser()
+  
   mod_ds_metacell_server("mod_ds_metacell_large",
                          vizData = reactive({current.se()}))
   

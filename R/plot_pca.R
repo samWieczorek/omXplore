@@ -18,10 +18,7 @@ wrapper_pca <- function(vizData,
                         var.scaling = TRUE,
                         ncp = NULL) {
     if (!requireNamespace("FactoMineR", quietly = TRUE)) {
-        stop(
-            "Package \"FactoMineR\" must be installed to use this function.",
-            call. = FALSE
-        )
+        stop("Package \"FactoMineR\" must be installed to use this function.", call. = FALSE)
     }
 
     if (missing(vizData)) {
@@ -34,6 +31,7 @@ wrapper_pca <- function(vizData,
     }
 
   res.pca <- NULL
+ 
   if (length(which(is.na(vizData@qdata))) > 0) {
     if (is.null(ncp)) {
         nmax <- 12
@@ -64,6 +62,7 @@ wrapper_pca <- function(vizData,
 #' @author Samuel Wieczorek, Enora Fremy
 #'
 #' @export
+#' @example examples/ex_mod_ds_pca.R
 #'
 #' @import highcharter
 #'
@@ -121,10 +120,8 @@ plotPCA_Eigen <- function(res.pca) {
 #'
 #' @author Samuel Wieczorek
 #'
-#' @examples
-#' data(Exp1_R25_pept, package="DAPARdata")
-#' res.pca <- wrapper.pca(Exp1_R25_pept)
-#' plotPCA_Var(res.pca)
+#' @example examples/ex_mod_ds_pca.R
+#' 
 #'
 #' @export
 #'
@@ -159,10 +156,7 @@ plotPCA_Var <- function(res.pca, chosen.axes = c(1, 2)) {
 #'
 #' @author Samuel Wieczorek
 #'
-#' @examples
-#' data(Exp1_R25_pept, package="DAPARdata")
-#' res.pca <- wrapper.pca(Exp1_R25_pept)
-#' plotPCA_Ind(res.pca)
+#' @example examples/ex_mod_ds_pca.R
 #'
 #' @export
 #'
@@ -190,10 +184,7 @@ plotPCA_Ind <- function(res.pca, chosen.axes = c(1, 2)) {
 #'
 #' @author Samuel Wieczorek
 #'
-#' @examples
-#' data(Exp1_R25_pept, package='DAPARdata')
-#' res.pca <- wrapper.pca(Exp1_R25_pept, ncp = 6)
-#' plotPCA_Eigen_hc(res.pca)
+#' @example examples/ex_mod_ds_pca.R
 #'
 #' @import highcharter
 #'

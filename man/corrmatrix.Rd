@@ -50,8 +50,9 @@ xxxx
 
 data(ft, package='DaparToolshed')
 
-vizData <- convert2viz(ft)
-corrMatrix(vizData[[1]]@qdata)
+vList <- convert2viz(ft)
+vData <- vList@ll.vizData[[1]]
+corrMatrix(vData@qdata)
 
 
 #------------------------------------------
@@ -62,7 +63,12 @@ corrMatrix(vizData[[1]]@qdata)
     ui <- mod_ds_corrmatrix_ui("plot")
 
     server <- function(input, output, session) {
-      mod_ds_corrmatrix_server("plot", reactive({vizData[[1]]}))
+      data(ft, package='DaparToolshed')
+      
+      vList <- convert2viz(ft)
+      vData <- vList@ll.vizData[[1]]
+      
+      mod_ds_corrmatrix_server("plot", reactive({vData}))
     }
 
     shinyApp(ui = ui, server = server)

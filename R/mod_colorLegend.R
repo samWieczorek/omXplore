@@ -31,15 +31,12 @@ mod_colorLegend_ui <- function(id) {
         stop("Please install shinyBS: BiocManager::install('shinyBS')")
     }
 
-    shinyBS::bsCollapse(
-      id = "collapseExample",
+    shinyBS::bsCollapse(id = "collapseExample",
       open = "",
-      shinyBS::bsCollapsePanel(
-        title = "Legend of colors",
-        uiOutput(ns("legend")),
-        style = ""
+      shinyBS::bsCollapsePanel(title = "Legend of colors",
+                               uiOutput(ns("legend")),
+                               style = "")
       )
-    )
 }
 
 
@@ -58,10 +55,9 @@ mod_colorLegend_server <- function(id,
       }
       
       output$legend <- renderUI({
-        req(presentTags)
-       # stopifnot(inherits(obj, "SummarizedExperiment"))
-        
-        mc <- custom_metacell_colors()
+         req(presentTags)
+       
+         mc <- custom_metacell_colors()
         
         tagList(
           lapply(presentTags, function(x) {
@@ -73,8 +69,7 @@ mod_colorLegend_server <- function(id,
                   style = paste0("display:inline-block; vertical-align: middle;
                     width:20px; height:20px; border:1px solid #000; background-color: ", mc[[x]], ";"),
                 ),
-                tags$p(
-                  style = paste0("display:inline-block;  vertical-align: middle;"),  x),
+                tags$p(style = paste0("display:inline-block;  vertical-align: middle;"),  x),
                 br()
               )
             }

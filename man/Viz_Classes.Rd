@@ -115,8 +115,6 @@ library(DaparViz)
 
 # Convert a QFeatures object to an instance of VizList class
 data(ft, package='DaparToolshed')
-ll.vizList <- convert2viz(ft)
-
 convert2viz(ft)
 
 # Convert a list of MSnSet objects to an instance of VizList class
@@ -178,8 +176,6 @@ library(DaparViz)
 
 # Convert a QFeatures object to an instance of VizList class
 data(ft, package='DaparToolshed')
-ll.vizList <- convert2viz(ft)
-
 convert2viz(ft)
 
 # Convert a list of MSnSet objects to an instance of VizList class

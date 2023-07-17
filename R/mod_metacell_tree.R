@@ -226,8 +226,8 @@ observeEvent(input$lastModalClose,  ignoreInit = FALSE, ignoreNULL = TRUE, {
 
 
 observeEvent(id, ignoreInit = FALSE, {
-  
-  if (!is.null(type()))
+  req(type())
+  #if (!is.null(type()))
         init_tree()
 
   dataOut$trigger <- as.numeric(Sys.time())

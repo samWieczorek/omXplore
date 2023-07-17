@@ -4,7 +4,6 @@
 \alias{heatmaps}
 \alias{mod_ds_heatmap_ui}
 \alias{mod_ds_heatmap_server}
-\alias{heatmapD}
 \alias{mv.heatmap}
 \title{Displays a correlation matrix of the quantitative data of a
 numeric matrix.}
@@ -18,8 +17,6 @@ mod_ds_heatmap_server(
  }),
   width = 900
 )
-
-heatmapD(data, conds, distfun = "euclidean", hclustfun = "complete")
 
 mv.heatmap(
   x,
@@ -37,19 +34,6 @@ mv.heatmap(
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
 \item{width}{xxx}
-
-\item{data}{A \code{matrix} or \code{array} quantitative values}
-
-\item{conds}{A \code{character()} of the name of conditions
-(one condition per sample). The number of conditions must be equal to
-the number of samples (number of columns) of the parameter 'data'.}
-
-\item{distfun}{A \code{character(1)} defining the distance used by the clustering
-algorithm to compute. Default value is 'euclidean'.
-See \code{help(heatmap.2)}}
-
-\item{hclustfun}{the clustering algorithm used to build the dendrogram.
-Default value is 'complete'. See \code{help(heatmap.2)}}
 
 \item{x}{A \code{matrix} or \code{array} containing the quantitative data.}
 
@@ -69,10 +53,13 @@ be plotted.}
 \item{main}{Main title; default to none.}
 
 \item{ylab}{y-axis title; default to none.}
+
+\item{data}{xxx}
+
+\item{conds}{A \code{character()} of the name of conditions
+(one condition per sample). It is not a reactive value.}
 }
 \value{
-NA
-
 NA
 }
 \description{
@@ -81,25 +68,28 @@ xxxx
 \examples{
 
 library(SummarizedExperiment)
-data(ft_na, package='DaparViz')
+data(ft, package='DaparToolshed')
 
-vizData <- Coerce2VizData(ft,1)
-
-heatmapD(vizData@qdata, vizData@conds)
-mv.heatmap(vizData@qdata)
+vList <- convert2viz(ft)
+vData <- vList@ll.vizData[[1]]
+heatmapD(vData)
+mv.heatmap(vData@qdata)
 
 #------------------------------------------
 # Shiny module
 #------------------------------------------
 
-data(ft, package='DaparViz')
+
 ui <- mod_ds_heatmap_ui("plot")
 
 server <- function(input, output, session) {
-  vizData <- Coerce2VizData(ft,1)
+  
+  data(ft, package='DaparToolshed')
+  vList <- convert2viz(ft)
+  vData <- vList@ll.vizData[[1]]
   
   mod_ds_heatmap_server("plot",
-                        reactive({vizData})
+                        reactive({vData})
   )
   }
 shinyApp(ui = ui, server = server)

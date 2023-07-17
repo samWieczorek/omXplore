@@ -11,9 +11,9 @@
 #'
 CVDist <- function(vizData,
                    pal.name = NULL) {
-  
-    stopifnot(inherits(vizData@qdata, "matrix"))
 
+  stopifnot(inherits(vizData, "VizData"))
+  
 
     if (is.null(vizData@conds)) {
         stop("'vizData@conds' is NULL")

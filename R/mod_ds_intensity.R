@@ -81,7 +81,7 @@ mod_ds_intensity_server <- function(id, vizData) {
         output$box <- renderHighchart({
             withProgress(message = "Making plot", value = 100, {
                 tmp <- boxPlot(data = vizData()@qdata, 
-                               conds = vizData@conds, 
+                               conds = vizData()@conds, 
                                subset = indices())
             })
         })
@@ -106,7 +106,7 @@ mod_ds_intensity_server <- function(id, vizData) {
                     png(outfile)
                     pattern <- paste0("test", ".violinplot")
                     tmp <- violinPlot(data = as.matrix(vizData()@qdata), 
-                                      vizData()@conds, 
+                                      conds = vizData()@conds, 
                                       subset = indices())
                     # future(createPNGFromWidget(tmp,pattern))
                     dev.off()

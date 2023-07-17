@@ -21,23 +21,21 @@ NULL
 mod_ds_heatmap_ui <- function(id) {
     ns <- NS(id)
     tagList(
-        div(
-            div( style = "display:inline-block; vertical-align: middle; padding-right: 20px;",
+        div( style = "display:inline-block; vertical-align: middle; padding-right: 20px;",
                 selectInput(ns("distance"), "Distance",
-                    choices = setNames(nm = c("euclidean", "manhattan", "maximum", "canberra", "binary", "minkowski")),
+                    choices = setNames(nm = c("euclidean", "manhattan")),
                     selected = "euclidean",
                     width = "150px")
             ),
             div(style = "display:inline-block; vertical-align: middle; padding-right: 20px;",
                 selectInput(ns("linkage"), "Linkage",
-                    choices = setNames(nm = c("complete", "average", "ward.D", "ward.D2", "single", "centroid", "mcquitty", "median")),
+                    choices = setNames(nm = c("complete", "ward.D", "average")),
                     selected = "complete",
                     width = "150px")
             ),
             tags$hr(),
             uiOutput(ns("DS_PlotHeatmap"))
         )
-    )
 }
 
 
@@ -58,7 +56,7 @@ mod_ds_heatmap_server <- function(id,
 
         observe({
             req(vizData())
-            stopifnot(inherits(vizData(), "DaparVizData"))
+            stopifnot(inherits(vizData(), "VizData"))
         })
 
 
@@ -68,14 +66,12 @@ mod_ds_heatmap_server <- function(id,
 
         output$DS_PlotHeatmap <- renderUI({
             req(vizData())
+          #browser()
             if (nrow(vizData()@qdata) > limitHeatmap) {
                 tags$p("The dataset is too big to compute the heatmap in a reasonable time.")
             } else {
                 tagList(
-                    plotOutput(ns("heatmap_ui"),
-                        width = width,
-                        height = height
-                    )
+                    plotOutput(ns("heatmap_ui"), width = width, height = height)
                 )
             }
         })
@@ -83,18 +79,16 @@ mod_ds_heatmap_server <- function(id,
 
 
         output$heatmap_ui <- renderPlot({
-            req(input$linkage)
-            req(input$distance)
+            input$linkage
+            input$distance
 
-            isolate({
                 withProgress(message = "Making plot", value = 100, {
-                    heatmapD(
-                        data = vizData()@qdata,
-                        conds = vizData()@conds,
-                        distfun = input$distance,
-                        hclustfun = input$linkage
+                  
+                    DaparViz::heatmapD(
+                        vData = vizData(),
+                        distance = input$distance,
+                        cluster = input$linkage
                     )
-                })
             })
         })
     })

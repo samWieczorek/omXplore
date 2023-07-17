@@ -58,7 +58,7 @@ mod_ds_pca_server <- function(id,
         
         observe({
             req(vizData())
-          browser()
+   
             stopifnot(inherits(vizData()@qdata, "matrix"))
             rv.pca$data <- as.matrix(vizData()@qdata)
 
@@ -121,18 +121,16 @@ mod_ds_pca_server <- function(id,
 
         observeEvent(input$varScale_PCA, {
             rv.pca$PCA_varScale <- input$varScale_PCA
-            rv.pca$res.pca <- wrapper_pca(rv.pca$data,
-                                          vizData@conds,
-                                          rv.pca$PCA_varScale,
+            rv.pca$res.pca <- wrapper_pca(vizData = vizData(),
+                                          var.scaling = rv.pca$PCA_varScale,
                                           ncp = Compute_PCA_dim()
                                           )
         })
 
         observeEvent(rv.pca$data, {
             if (length(which(is.na(rv.pca$data))) == 0) {
-                rv.pca$res.pca <- wrapper_pca(rv.pca$data,
-                                              vizData@conds,
-                                              rv.pca$PCA_varScale,
+                rv.pca$res.pca <- wrapper_pca(vizData = vizData(),
+                                              var.scaling = rv.pca$PCA_varScale,
                                               ncp = Compute_PCA_dim()
                                               )
             }

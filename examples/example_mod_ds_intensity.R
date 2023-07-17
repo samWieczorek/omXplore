@@ -1,26 +1,30 @@
 
 library(SummarizedExperiment)
-data(ft, package='DaparViz')
+data(ft, package='DaparToolshed')
+vList <- convert2viz(ft)
+vData <- vList@ll.vizData[[1]]
 
-vizData <- Coerce2VizData(ft, 1)
-violinPlot(vizData@qdata, vizData@conds)
-violinPlot(vizData@qdata, vizData@conds, subset = c(2, 4))
 
-boxPlot(vizData@qdata, vizData@conds)
-boxPlot(vizData@qdata, vizData@conds, subset = c(2, 4))
+violinPlot(vData@qdata, vData@conds)
+violinPlot(vData@qdata, vData@conds, subset = c(2, 4))
+
+boxPlot(vData@qdata, vData@conds)
+boxPlot(vData@qdata, vData@conds, subset = c(2, 4))
 
 
 #------------------------------------------
 # Shiny module
 #------------------------------------------
-data(ft, package='DaparViz')
 
 ui <- mod_ds_intensity_ui("iplot")
 
 server <- function(input, output, session) {
-  vizData <- Coerce2VizData(ft, 1)
+  data(ft, package='DaparToolshed')
+  vList <- convert2viz(ft)
+  vData <- vList@ll.vizData[[1]]
+  
   mod_ds_intensity_server("iplot",
-                          vizData = reactive({vizData})
+                          vizData = reactive({vData})
                           )
     }
 

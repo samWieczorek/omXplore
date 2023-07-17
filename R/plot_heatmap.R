@@ -1,118 +1,110 @@
-#' @param data A `matrix` or `array` quantitative values
+
+
+
+#' @title This function is a wrapper to \code{heatmap.2} that displays
+#' quantitative data in the \code{Biobase::exprs()} table of an object of
+#' class \code{MSnSet}
 #'
-#' @param conds A `character()` of the name of conditions
-#' (one condition per sample). The number of conditions must be equal to
-#' the number of samples (number of columns) of the parameter 'data'.
+#' @param qData A dataframe that contains quantitative data.
 #'
-#' @param distfun A `character(1)` defining the distance used by the clustering
-#' algorithm to compute. Default value is 'euclidean'. 
+#' @param conds A vector containing the conditions
+#'
+#' @param distance The distance used by the clustering algorithm to compute
+#' the dendrogram. See \code{help(heatmap.2)}
+#'
+#' @param cluster the clustering algorithm used to build the dendrogram.
 #' See \code{help(heatmap.2)}
 #'
-#' @param hclustfun the clustering algorithm used to build the dendrogram.
-#' Default value is 'complete'. See \code{help(heatmap.2)}
+#' @param dendro A boolean to indicate fi the dendrogram has to be displayed
 #'
+#' @return A heatmap
 #'
-#' @importFrom grDevices colorRampPalette
-#' @importFrom gplots heatmap.2
-#' @importFrom stats heatmap
+#' @author Florence Combes, Samuel Wieczorek, Enor Fremy
+#'
+#' @examples
+#' data(ft, package="DaparToolshed")
+#' obj <- Exp1_R25_pept[seq_len(10), ]
+#' level <- 'peptide'
+#' metacell.mask <- match.metacell(GetMetacell(obj), c("Missing POV", "Missing MEC"), level)
+#' indices <- GetIndices_WholeLine(metacell.mask)
+#' qData <- Biobase::exprs(obj)
+#' conds <- Biobase::pData(obj)[["Condition"]]
+#' heatmapD(qData, conds)
+#'
 #'
 #' @export
 #'
-#' @rdname heatmaps
-#' 
-#' @return NA
-#'
-heatmapD <- function(data,
-    conds,
-    distfun = "euclidean",
-    hclustfun = "complete") {
-    # Check parameters
-    if (!(distfun %in% c("euclidean", "manhattan"))) {
-        stop("'distfun' is not correct.")
-        return(NULL)
-    }
-
-    if (!(hclustfun %in% c("complete", "ward.D", "average"))) {
-        stop("'hclustfun' is not correct.")
-        return(NULL)
-    }
-
-    if (length(conds) != ncol(data)) {
-        stop("The length of 'conds' must be equal to the number of samples.")
-    }
-
-    # .dendro = "none"
-    # if (dendro)
-    #   .dendro = "row"
-
-    # if (isTRUE(dendro) && getNumberOfEmptyLines(qData) != 0)  {
-    #     stop("Your dataset contains empty lines: the dendrogram cannot
-    # be computed.
-    #         Please filter or impute missing values before.")
-    #     return (NULL)
-    # }
-    # else {
-    .data <- matrix(data,
-        ncol = ncol(data),
-        byrow = FALSE,
-        dimnames = list(
-            rownames(data),
-            colnames(data)
-        )
-    )
-
-    #
-    # heatmap.color <- grDevices::colorRampPalette(c("green", "red"))(n = 1000)
-
-    # samples label color
-    x <- t(.data)
-    x[is.na(x)] <- -1e5
-    # dist = dist(x, method=distance)
-    # dend1 = hclust(dist, method=cluster) %>% as.dendrogram()
-    #
-    # cols_branches <- ExtendPalette(n = length(unique((conds))), base = NULL)
-    #
-    # dend1 <- dend1 %>% dendextend::color_branches(
-    #   k = length(unique(conds)),
-    #   col = cols_branches)
-    #
-    # dendextend::labels_colors(dend1) <- 
-    # dendextend::get_leaves_branches_col(dend1)
-    # col_labels <- dendextend::get_leaves_branches_col(dend1)
-    heatmap(x, Rowv = FALSE, Colv = NULL, na.rm = FALSE)
-
-    #   p <- gplots::heatmap.2(
-    #   x = t(.data),
-    #   distfun = function(x) {
-    #     x[is.na(x)] <- -1e5
-    #     dist(x, method=distance)
-    #   },
-    #   hclustfun = function(x) {
-    #     x[is.na(x)] <- -1e5
-    #     hclust(x, method=cluster)
-    #   },
-    #   dendrogram = 'none',
-    #   Rowv = FALSE,
-    #   Colv = FALSE,
-    #   col = grDevices::colorRampPalette(c("green", "red"))(n = 1000) ,
-    #   density.info = 'none',
-    #   key = TRUE,
-    #   trace = "none",
-    #   scale = "none",
-    #   #srtCol=45,
-    #   labCol = "",
-    #   margins=c(4,12),
-    #   #cexRow=1.5,
-    #   cexRow = 1.5 + ncol(.data)*-0.011 ,
-    #   keysize = 1.5,
-    #   lhei = c(1.5, 9),
-    #   lwid = c(1.5, 4),
-    #   lmat = rbind(4:3, 2:1),
-    #   colRow = labels_colors(dend1)
-    # )
+heatmapD <- function(vData,
+                     distance = "euclidean",
+                     cluster = "complete",
+                     dendro = FALSE) {
+  
+  pkgs.require(c('stats', 'dendextend', "gplots", 'grDevices', 'RColorBrewer'))
+  
+  qdata <- vData@qdata
+  conds <- vData@conds
+  
+  .data <- matrix(qdata,
+                  ncol = ncol(qdata),
+                  byrow = FALSE,
+                  dimnames = list(rownames(qdata), colnames(qdata))
+  )
+  colors <- c(
+    seq(-3, -2, length = 100),
+    seq(-2, 0.5, length = 100),
+    seq(0.5, 6, length = 100)
+  )
+  heatmap.color <- grDevices::colorRampPalette(c("green", "red"))(n = 1000)
+  
+  # samples label color
+  x <- t(.data)
+  x[is.na(x)] <- -1e5
+  dist <- dist(x, method = distance)
+  hcluster <- stats::hclust(dist, method = cluster)
+  pal <- GetColorsForConditions(conds)
+  
+  cols_branches <- pal
+  dend1 <- stats::as.dendrogram(hcluster)
+  dend1 <- dendextend::color_branches(
+    dend1, 
+    k = length(conds), 
+    col = cols_branches
+  )
+  col_labels <- dendextend::get_leaves_branches_col(dend1)
+  
+  if (dendro) {
+    .dendro <- "row"
+  } else {
+    .dendro <- "none"
+  }
+  p <- gplots::heatmap.2(
+    x = t(.data),
+    distfun = function(x) {
+      x[is.na(x)] <- -1e5
+      dist(x, method = distance)
+    },
+    hclustfun = function(x) {
+      x[is.na(x)] <- -1e5
+      stats::hclust(x, method = cluster)
+    },
+    dendrogram = .dendro,
+    Rowv = TRUE,
+    col = heatmap.color,
+    density.info = "none",
+    key = TRUE,
+    trace = "none",
+    scale = "none",
+    # srtCol=45,
+    labCol = "",
+    margins = c(4, 12),
+    cexRow = 1.5 + ncol(.data) * -0.011,
+    keysize = 1.5,
+    # lhei = c(1.5, 9),
+    # lwid = c(1.5, 4),
+    # lmat = rbind(4:3, 2:1),
+    colRow = col_labels
+  )
 }
-
-
 
 #' @param x A `matrix` or `array` containing the quantitative data.
 #'

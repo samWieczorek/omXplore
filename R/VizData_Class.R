@@ -165,6 +165,7 @@ setMethod("initialize" , "VizData" ,
 #' @title xxx
 #' @description xxx
 #' @exportMethod Convert2VizList
+#' @importFrom SummarizedExperiment rowData
 #' @rdname Viz_Classes
 #' @return NA
 setMethod("Convert2VizList", signature = "QFeatures",

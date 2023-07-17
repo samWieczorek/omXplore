@@ -1,9 +1,11 @@
-library(SummarizedExperiment)
+library(highcharter)
+library(DaparViz)
 data(ft, package='DaparToolshed')
+vList <- convert2viz(ft)
+vData <- vList@ll.vizData[[1]]
 
-ll.vizData <- Coerce2VizData(ft)
 
-CVDist(ll.vizData[[1]])
+CVDist(vData)
 
 
 #------------------------------------------
@@ -13,8 +15,11 @@ CVDist(ll.vizData[[1]])
 ui <- shinyUI(mod_ds_variance_ui("plot"))
 
 server <- shinyServer(function(input, output, session) {
-  mod_ds_variance_server("plot", vizData = reactive({ll.vizData[[1]]})
-  )
+  data(ft, package='DaparToolshed')
+  vList <- convert2viz(ft)
+  vData <- vList@ll.vizData[[1]]
+  
+  mod_ds_variance_server("plot", vData = reactive({vData}))
 })
 
 shinyApp(ui, server)

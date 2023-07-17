@@ -14,13 +14,18 @@ ui <- fluidPage(
 )
 
 server <- function(input, output) {
-  vizData <- Coerce2VizData(ft)
+  
+  rv <- reactiveValues(
+    tags = NULL
+  )
+  vList <- convert2viz(ft)
+  vData <- vList@ll.vizData[[1]]
   #pattern <- c('Missing POV', 'Missing MEC')
    pattern <- NULL
    
   observe({
-    mod_ds_metacell_server('test',
-                           vizData = reactive({vizData[[1]]}),
+    rv$tags <- mod_ds_metacell_server('test',
+                           vizData = reactive({vData}),
                            pal = reactive({NULL}),
                            pattern = reactive({pattern}),
                            showSelect = reactive({is.null(pattern)})

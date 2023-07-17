@@ -45,7 +45,7 @@ mod_ds_density_server <- function(id,
 
         observe({
             req(vizData())
-            stopifnot(inherits(vizData(), "DaparVizData"))
+            stopifnot(inherits(vizData(), "VizData"))
         })
 
 

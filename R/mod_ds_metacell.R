@@ -37,20 +37,27 @@ mod_ds_metacell_ui <- function(id) {
 #' @rdname metacell-plots
 #' @export
 #' 
-mod_ds_metacell_server <- function(id, 
-                             vizData = reactive({NULL}),
-                             pal = reactive({NULL}), 
-                             pattern = reactive({NULL}),
-                             showSelect = reactive({TRUE})) {
+mod_ds_metacell_server <- function(id,
+                                   vizData,
+                                   pal = reactive({NULL}), 
+                                   pattern = reactive({NULL}),
+                                   showSelect = reactive({TRUE})) {
     moduleServer(id, function(input, output, session) {
             ns <- session$ns
             #browser()
             rv <- reactiveValues(
                 chooseTag = pattern(),
-                showSelect = if(is.null(pattern())) TRUE else showSelect()
+                showSelect = if(is.null(pattern())) TRUE else showSelect(),
+                type = NULL
             )
             
-            tmp.tags <- mod_metacell_tree_server('tree', type = reactive({vizData()@type}))
+            observe({
+              req(vizData())
+              rv$type <- vizData()@type
+            })
+              
+              tmp.tags <- mod_metacell_tree_server('tree', type = reactive({rv$type}))
+
             
             observeEvent(tmp.tags()$values, ignoreNULL = FALSE, ignoreInit = TRUE,{
                 rv$chooseTag <- tmp.tags()$values

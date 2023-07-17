@@ -10,7 +10,7 @@ mod_ds_seExplorer_ui(id)
 
 mod_ds_seExplorer_server(
   id,
-  vizData,
+  vData,
   digits = reactive({
      3
  })
@@ -37,12 +37,13 @@ library(DaparViz)
 
 
 data(ft, package='DaparToolshed')
-vizData <- Coerce2VizData(ft, 1)
+vList <- convert2viz(ft)
+vData <- vList@ll.vizData[[1]]
 
 ui <- mod_ds_seExplorer_ui("plot")
 
 server <- function(input, output, session) {
-        mod_ds_seExplorer_server("plot", reactive({vizData})
+        mod_ds_seExplorer_server("plot", reactive({vData})
         )
     }
 
