@@ -31,7 +31,6 @@
 #' @author Samuel Wieczorek, Enora Fremy
 #'
 #' @examples
-#' library(SummarizedExperiment)
 #' data(ft_na, package='DaparViz')
 #' data <- assay(ft_na, 1)
 #' conds <- colData(ft_na)$Condition
@@ -107,10 +106,7 @@ mod_mv_imputation_server <- function(id,
     se = reactive({NULL}),
     conds = NULL,
     pal.name = reactive({NULL})) {
-    if (!requireNamespace("SummarizedExperiment", quietly = TRUE)) {
-        stop("Please install SummarizedExperiment: 
-            BiocManager::install('SummarizedExperiment')")
-    }
+    
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
 
@@ -126,7 +122,7 @@ mod_mv_imputation_server <- function(id,
 
             withProgress(message = "Making MV Intensity plot", value = 100, {
                 mv.density(
-                    se = SummarizedExperiment::assay(se()),
+                    se = assay(se()),
                     conds = conds,
                     pal.name = pal.name(),
                     pattern = "missing POV"

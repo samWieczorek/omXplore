@@ -1,6 +1,5 @@
 
-#' @param data An instance of the class `SummarizedExperiment` which is the
-#' quantitative values.
+#' @param data An instance of the class `VizData`.
 #' @param conds A `character()` of the name of conditions
 #' (one condition per sample). The number of conditions must be equal to
 #' the number of samples (number of columns) of the parameter 'data'.

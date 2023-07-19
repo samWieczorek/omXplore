@@ -4,7 +4,7 @@
 \alias{color-legend}
 \alias{mod_colorLegend_ui}
 \alias{mod_colorLegend_server}
-\title{Color legend}
+\title{Color legend for DaparToolshed}
 \usage{
 mod_colorLegend_ui(id)
 
@@ -15,26 +15,30 @@ mod_colorLegend_server(id, presentTags = NULL, hide.white = TRUE)
 
 \item{presentTags}{A vector of \code{character()} which correspond to the tags.}
 
-\item{hide.white}{xxxxx}
+\item{hide.white}{A \code{boolean()} to indicate whether the white cells must be
+hidden or not.}
 }
 \value{
 NA
 }
 \description{
-xxxx
+Shows xxx based on the tags in the package 'DaparToolshed'
 }
 \examples{
 library(DaparToolshed)
 library(DaparToolshedData)
 library(highcharter)
 library(shinyBS)
+library(DaparViz)
 
 #-------------------------------------------------------------------
-ui <- tagList(
+ui <- fluidPage(
+  tagList(
   mod_colorLegend_ui("plot1"),
   mod_colorLegend_ui("plot2"),
   mod_colorLegend_ui("plot3")
   )
+)
 
 server <- function(input, output, session) {
   
@@ -42,9 +46,7 @@ server <- function(input, output, session) {
   vList <- convert2viz(Exp1_R25_prot)
   vData <- vList@ll.vizData[[1]]
   
-
-  
-  tags <- GetMetacellTags(vData@metacell, 
+ tags <- GetMetacellTags(vData@metacell, 
                           level = vData@type, 
                           onlyPresent = TRUE)
      

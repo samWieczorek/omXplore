@@ -73,12 +73,12 @@ Collate:
     plot_heatmap.R
     plots_mv_for_impute.R
     plot_pca.R
+    plot_metacell.R
     plot_violin.R
-    doc-data.R
     mod_plots_intensity.R
     mod_plots_tracking.R
-    metacellPlots.R
     mod_metacell_tree.R
+    get_pep_prot_CC.R
 RoxygenNote: 7.2.3
 Packaged: 2017-10-13 11:13:04 UTC; sw175264
 Encoding: UTF-8
@@ -91,7 +91,8 @@ Suggests:
     rmarkdown,
     BiocStyle,
     testthat,
-    SummarizedExperiment,
+    MSnbase,
+    QFeatures,
     Matrix,
     graphics,
     FactoMineR,

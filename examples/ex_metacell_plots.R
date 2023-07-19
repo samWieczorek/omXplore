@@ -1,8 +1,10 @@
 library(MSnbase)
 library(DaparToolshed)
 
-data(ft, package='DaparToolshed')
-vList <- Convert2VizList(ft)
+#vList <- BuildExampleDataset('QFeatures')
+vList <- BuildExampleDataset('MSnbase')
+#vList <- BuildExampleDataset('list')
+
 vData <- GetVizData(vList, 1)
 pal <- ExtendPalette(length(unique(vData@conds)), "Dark2")
 

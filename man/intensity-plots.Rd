@@ -21,6 +21,8 @@ violinPlot(data, conds, subset = NULL, pal.name)
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
+\item{vizData}{A instance of the class \code{VizData}}
+
 \item{data}{An instance of the class \code{matrix}}
 
 \item{conds}{A \code{character()} of the name of conditions
@@ -32,10 +34,6 @@ the number of samples (number of columns) of the parameter 'data'.}
 \item{pal.name}{A \code{character(1)} which is the name of the palette from the
 package \link{RColorBrewer} from which the colors are taken. Default value
 is 'Set1'.}
-
-\item{qdata}{A instance of the class \code{SummarizedExperiment}}
-
-\item{...}{Additional parameters for \code{\link[=boxPlot]{boxPlot()}} or \code{\link[=violinPlot]{violinPlot()}}.}
 }
 \value{
 NA
@@ -48,35 +46,6 @@ A violinplot
 }
 \description{
 xxxx
-}
-\examples{
-
-library(SummarizedExperiment)
-data(ft, package='DaparViz')
-
-vizData <- Coerce2VizData(ft, 1)
-violinPlot(vizData@qdata, vizData@conds)
-violinPlot(vizData@qdata, vizData@conds, subset = c(2, 4))
-
-boxPlot(vizData@qdata, vizData@conds)
-boxPlot(vizData@qdata, vizData@conds, subset = c(2, 4))
-
-
-#------------------------------------------
-# Shiny module
-#------------------------------------------
-data(ft, package='DaparViz')
-
-ui <- mod_ds_intensity_ui("iplot")
-
-server <- function(input, output, session) {
-  vizData <- Coerce2VizData(ft, 1)
-  mod_ds_intensity_server("iplot",
-                          vizData = reactive({vizData})
-                          )
-    }
-
-    shinyApp(ui = ui, server = server)
 }
 \author{
 Samuel Wieczorek, Anais Courtier, Enora Fremy

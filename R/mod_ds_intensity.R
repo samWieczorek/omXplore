@@ -4,6 +4,8 @@
 #' @description
 #' xxxx
 #'
+#'@param id A `character(1)` which is the id of the shiny module.
+#' @param vizData A instance of the class `VizData`
 #' @name intensity-plots
 #'
 #' @example examples/example_mod_ds_intensity.R
@@ -11,8 +13,6 @@
 NULL
 
 
-#' @param id A `character(1)` which is the id of the shiny module.
-#'
 #' @import shiny
 #' @import shinyjs
 #' @importFrom stats setNames
@@ -44,12 +44,6 @@ mod_ds_intensity_ui <- function(id) {
 
 
 
-#' @param id A `character(1)` which is the id of the shiny module.
-#' @param qdata A instance of the class `SummarizedExperiment`
-#' @param conds A `character()` of the name of conditions
-#' (one condition per sample). It is not a reactive value.
-#' @param ... Additional parameters for [boxPlot()] or [violinPlot()].
-#'
 #' @rdname intensity-plots
 #'
 #' @export

@@ -55,12 +55,6 @@ mod_ds_seExplorer_ui <- function(id) {
 mod_ds_seExplorer_server <- function(id,
                                      vData,
                                      digits = reactive({3})) {
-    if (!requireNamespace("SummarizedExperiment", quietly = TRUE)) {
-        stop("Please install SummarizedExperiment: 
-            BiocManager::install('SummarizedExperiment')")
-    }
-
-
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
 

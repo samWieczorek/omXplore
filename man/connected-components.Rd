@@ -11,8 +11,6 @@
 \alias{Extract_CC}
 \alias{mod_explore_graphs_ui}
 \alias{mod_explore_graphs_server}
-\alias{mod_plots_cc_ui}
-\alias{mod_plots_cc_server}
 \title{Connected components of a graph.}
 \usage{
 wrapper.compute.cc(obj.se)
@@ -30,10 +28,6 @@ Extract_CC(ll.cc, type)
 mod_explore_graphs_ui(id)
 
 mod_explore_graphs_server(id, ll.cc, se, settings)
-
-mod_plots_cc_ui(id)
-
-mod_plots_cc_server(input, output, session, cc, matAdj, obj, settings)
 }
 \arguments{
 \item{obj.se}{An instance of the class \code{SummarizedExperiment}. This object
@@ -64,8 +58,6 @@ to extract. Available values are: 'OneOne', 'OneMulti' and 'MultiAny'.}
 \item{se}{An object of class \code{QFeatures}}
 
 \item{settings}{xxx}
-
-\item{matAdj}{xxx}
 
 \item{tooltips}{A \code{data.frame} which contains a subset of the rowData
 of the object and will be use as tooltips. Each column of the data.frame

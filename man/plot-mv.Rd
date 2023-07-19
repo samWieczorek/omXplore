@@ -72,7 +72,6 @@ number of missing values. A white square is plotted for missing values.
 }
 
 \examples{
-library(SummarizedExperiment)
 data(ft_na, package='DaparViz')
 data <- assay(ft_na, 1)
 conds <- colData(ft_na)$Condition

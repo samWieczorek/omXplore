@@ -16,10 +16,31 @@ A histogram
 Plots the eigen values of PCA with the highcharts library
 }
 \examples{
-data(Exp1_R25_pept, package='DAPARdata')
-res.pca <- wrapper.pca(Exp1_R25_pept, ncp = 6)
+library(highcharter)
+library(DaparViz)
+
+data(ft, package='DaparToolshed')
+vList <- convert2viz(ft)
+vData <- vList@ll.vizData[[1]]
+res.pca <- wrapper_pca(vData, ncp = 6)
+plotPCA_Var(res.pca)
+plotPCA_Ind(res.pca)
 plotPCA_Eigen_hc(res.pca)
 
+
+
+
+ui <- mod_ds_pca_ui("plot")
+
+server <- function(input, output, session) {
+  data(ft, package='DaparToolshed')
+  vList <- convert2viz(ft)
+  vData <- vList@ll.vizData[[1]]
+  
+  mod_ds_pca_server("plot", vizData = reactive({vData}))
+  }
+
+    shinyApp(ui = ui, server = server)
 }
 \author{
 Samuel Wieczorek

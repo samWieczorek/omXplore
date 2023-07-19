@@ -104,15 +104,7 @@ mod_explore_graphs_server <- function(id,
                                       ll.cc,
                                       se,
                                       settings) {
-    if (!requireNamespace("SummarizedExperiment", quietly = TRUE)) {
-        stop("Please install SummarizedExperiment: 
-            BiocManager::install('SummarizedExperiment')")
-    }
 
-    if (!requireNamespace("QFeatures", quietly = TRUE)) {
-        stop("Please install QFeatures: 
-            BiocManager::install('QFeatures')")
-    }
 
     if (!requireNamespace("visNetwork", quietly = TRUE)) {
         stop("Please install visNetwork: 

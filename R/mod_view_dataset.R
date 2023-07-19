@@ -47,7 +47,6 @@
 #' @author Samuel Wieczorek, Enora Fremy
 #'
 #' @examples
-#' library(SummarizedExperiment)
 #' data(ft, package='DaparViz')
 #' data(ft_na, package='DaparViz')
 #'
@@ -170,11 +169,7 @@ mod_view_dataset_ui <- function(id) {
 mod_view_dataset_server <- function(id, 
                                     ll.vizData = NULL
                                     ) {
-    if (!requireNamespace("SummarizedExperiment", quietly = TRUE)) {
-        stop("Please install SummarizedExperiment: 
-            BiocManager::install('SummarizedExperiment')")
-    }
-  
+
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
 
@@ -188,8 +183,8 @@ mod_view_dataset_server <- function(id,
 
         observe({
             req(length(ll.vizData()) > 0)
-            
             stopifnot(inherits(ll.vizData(), "VizList"))
+            #browser()
             conds(ll.vizData()@ll.vizData[[1]]@conds)
         })
 
@@ -240,15 +235,16 @@ mod_view_dataset_server <- function(id,
 
         output$chooseDataset_ui <- renderUI({
             req(ll.vizData())
-            if (length(names(ll.vizData())) == 0) {
+
+            if (length(ll.vizData()@ll.vizData) == 0) {
                 choices <- list(" " = character(0))
             } else {
-                choices <- names(ll.vizData())
+                choices <- names(ll.vizData()@ll.vizData)
             }
 
             selectInput(ns("chooseDataset"), "Dataset",
                 choices = choices,
-                selected = names(ll.vizData())[length(ll.vizData())],
+                selected = names(ll.vizData()@ll.vizData)[length(ll.vizData())],
                 width = 200
             )
         })

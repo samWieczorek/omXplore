@@ -176,8 +176,7 @@ mod_seTracker_server <- function(id, vizData) {
             rv.track$randSelect <- ""
 
             if (rv.track$colSelect != "") {
-                #.rowD <- SummarizedExperiment::rowData(se())
-                rv.track$indices <- which(metadata[, rv.track$colSelect] == 1)
+                 rv.track$indices <- which(metadata[, rv.track$colSelect] == 1)
             }
         })
 

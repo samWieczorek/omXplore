@@ -48,7 +48,6 @@ process.
 The comparison is made with the division operator.
 }
 \examples{
-library(SummarizedExperiment)
 data(ft, package='DaparViz')
 assay1 <- assay(ft, 1)
 assay2 <- 3 * assay(ft, 1)

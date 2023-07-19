@@ -33,7 +33,6 @@
 #' @author Samuel Wieczorek, Enora Fremy
 #'
 #' @examples
-#' library(SummarizedExperiment)
 #' data(ft, package='DaparViz')
 #' assay1 <- assay(ft, 1)
 #' assay2 <- 3 * assay(ft, 1)

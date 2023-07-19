@@ -30,6 +30,3 @@ Three modes of selection are implemented:
 \item 'Specific column': xxx
 }
 }
-\examples{
-
-}

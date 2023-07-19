@@ -493,7 +493,7 @@ observeEvent(somethingChanged(), ignoreInit = TRUE, {
                    for (i in newSelection){
                        if (i %in% metacell.def(level)$parent) {
                            #browser()
-                           childrens <- DAPAR::Children(level, i)
+                           childrens <- Children(level, i)
                            if (!is.null(childrens) && length(childrens)>0){
                                lapply(childrens, function(x){
                                    updateCheckboxInput(session, 

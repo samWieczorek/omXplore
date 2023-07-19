@@ -14,7 +14,7 @@
 \usage{
 \S4method{show}{VizData}(object)
 
-\S4method{initialize}{VizData}(.Object, qdata, metacell, metadata, colID, conds, type)
+\S4method{initialize}{VizData}(.Object, qdata, metacell, metadata, colID, conds, type, cc, matAdj)
 
 \S4method{Convert2VizList}{QFeatures}(object)
 
@@ -115,7 +115,7 @@ library(DaparViz)
 
 # Convert a QFeatures object to an instance of VizList class
 data(ft, package='DaparToolshed')
-convert2viz(ft)
+test <- convert2viz(ft)
 
 # Convert a list of MSnSet objects to an instance of VizList class
 data(Exp1_R25_prot, package='DAPARdata')
@@ -124,7 +124,7 @@ data(Exp1_R2_pept, package='DAPARdata')
 ll.tmp <- setNames(c(Exp1_R25_prot, Exp1_R25_pept, Exp1_R2_pept),
                    nm = c('Exp1_R25_prot', 'Exp1_R25_pept', 'Exp1_R2_pept'))
 
-convert2viz(ll.tmp)
+test <- convert2viz(ll.tmp)
 
 
 
@@ -176,7 +176,7 @@ library(DaparViz)
 
 # Convert a QFeatures object to an instance of VizList class
 data(ft, package='DaparToolshed')
-convert2viz(ft)
+test <- convert2viz(ft)
 
 # Convert a list of MSnSet objects to an instance of VizList class
 data(Exp1_R25_prot, package='DAPARdata')
@@ -185,7 +185,7 @@ data(Exp1_R2_pept, package='DAPARdata')
 ll.tmp <- setNames(c(Exp1_R25_prot, Exp1_R25_pept, Exp1_R2_pept),
                    nm = c('Exp1_R25_prot', 'Exp1_R25_pept', 'Exp1_R2_pept'))
 
-convert2viz(ll.tmp)
+test <- convert2viz(ll.tmp)
 
 
 

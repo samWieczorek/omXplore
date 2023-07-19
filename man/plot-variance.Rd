@@ -10,21 +10,18 @@ numeric matrix.}
 \usage{
 mod_ds_variance_ui(id)
 
-mod_ds_variance_server(id, vizData, pal.name = NULL)
+mod_ds_variance_server(id, vData, pal.name = NULL)
 
 CVDist(vizData, pal.name = NULL)
 }
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
+\item{vData}{xxx}
+
 \item{pal.name}{A \code{character(1)} which is the name of the palette from the
 package \link{RColorBrewer} from which the colors are taken.
 Default value is 'Set1'.}
-
-\item{data}{A \code{data.frame} or \code{matrix} which is the quantitative values.}
-
-\item{conds}{A \code{character()} of the name of conditions
-(one condition per sample).}
 }
 \value{
 NA
@@ -35,28 +32,29 @@ NA
 xxxx
 }
 \examples{
-library(SummarizedExperiment)
-data(ft, package='DaparViz')
-CVDist(assay(ft, 1), colData(ft)$Condition)
+library(highcharter)
+library(DaparViz)
+data(ft, package='DaparToolshed')
+vList <- convert2viz(ft)
+vData <- vList@ll.vizData[[1]]
+
+
+CVDist(vData)
 
 
 #------------------------------------------
 # Shiny module
 #------------------------------------------
-if (interactive()) {
-    data(ft, package='DaparViz')
-    ui <- mod_ds_variance_ui("plot")
 
-    server <- function(input, output, session) {
-        mod_ds_variance_server(
-            "plot",
-            reactive({
-                assay(ft, 1)
-            })
-        )
-    }
+ui <- shinyUI(mod_ds_variance_ui("plot"))
 
-    shinyApp(ui = ui, server = server)
-}
+server <- shinyServer(function(input, output, session) {
+  data(ft, package='DaparToolshed')
+  vList <- convert2viz(ft)
+  vData <- vList@ll.vizData[[1]]
+  
+  mod_ds_variance_server("plot", vData = reactive({vData}))
+})
 
+shinyApp(ui, server)
 }

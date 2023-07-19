@@ -1,28 +1,25 @@
-#' @title Color legend
+#' @title Color legend for DaparToolshed
 #'
 #' @description
-#' xxxx
+#' Shows xxx based on the tags in the package 'DaparToolshed'
 #'
 #' @param id A `character(1)` which is the id of the shiny module.
 #' @param presentTags A vector of `character()` which correspond to the tags.
-#' @param hide.white  xxxxx
+#' @param hide.white  A `boolean()` to indicate whether the white cells must be
+#' hidden or not.
 #' 
 #' @name color-legend
 #' 
 #' @return NA
 #'
-#' @example examples/example_mod_colorLegend.R
+#' @example examples/ex_mod_colorLegend.R
 #' 
 NULL
 
 
-
-
-
 #' @import shiny
-#'
+#' @import shinyBS
 #' @rdname color-legend
-#'
 #' @export
 #' 
 mod_colorLegend_ui <- function(id) {
@@ -31,12 +28,12 @@ mod_colorLegend_ui <- function(id) {
         stop("Please install shinyBS: BiocManager::install('shinyBS')")
     }
 
-    shinyBS::bsCollapse(id = "collapseExample",
-      open = "",
-      shinyBS::bsCollapsePanel(title = "Legend of colors",
+    bsCollapse(id = "collapseExample",
+               open = "",
+               bsCollapsePanel(title = "Legend of colors",
                                uiOutput(ns("legend")),
                                style = "")
-      )
+               )
 }
 
 
@@ -61,8 +58,7 @@ mod_colorLegend_server <- function(id,
         
         tagList(
           lapply(presentTags, function(x) {
-           # browser()
-            if (mc[[x]] != "white" || (mc[[x]] == "white" && !isTRUE(hide.white))) {
+           if (mc[[x]] != "white" || (mc[[x]] == "white" && !isTRUE(hide.white))) {
               tagList(
                 tags$div(
                   class = "color-box",

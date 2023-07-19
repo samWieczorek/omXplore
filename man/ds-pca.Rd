@@ -26,8 +26,7 @@ the results.}
 
 \item{res.pca}{Result of FactoMineR::PCA}
 
-\item{data}{An instance of the class \code{SummarizedExperiment} which is the
-quantitative values.}
+\item{data}{An instance of the class \code{VizData}.}
 
 \item{conds}{A \code{character()} of the name of conditions
 (one condition per sample). The number of conditions must be equal to
@@ -41,7 +40,56 @@ This method plots a bar plot which represents the distribution of the
 number of missing values (NA) per lines (ie proteins).
 }
 \examples{
+library(highcharter)
+library(DaparViz)
 
+data(ft, package='DaparToolshed')
+vList <- convert2viz(ft)
+vData <- vList@ll.vizData[[1]]
+res.pca <- wrapper_pca(vData, ncp = 6)
+plotPCA_Var(res.pca)
+plotPCA_Ind(res.pca)
+plotPCA_Eigen_hc(res.pca)
+
+
+
+
+ui <- mod_ds_pca_ui("plot")
+
+server <- function(input, output, session) {
+  data(ft, package='DaparToolshed')
+  vList <- convert2viz(ft)
+  vData <- vList@ll.vizData[[1]]
+  
+  mod_ds_pca_server("plot", vizData = reactive({vData}))
+  }
+
+    shinyApp(ui = ui, server = server)
+library(highcharter)
+library(DaparViz)
+
+data(ft, package='DaparToolshed')
+vList <- convert2viz(ft)
+vData <- vList@ll.vizData[[1]]
+res.pca <- wrapper_pca(vData, ncp = 6)
+plotPCA_Var(res.pca)
+plotPCA_Ind(res.pca)
+plotPCA_Eigen_hc(res.pca)
+
+
+
+
+ui <- mod_ds_pca_ui("plot")
+
+server <- function(input, output, session) {
+  data(ft, package='DaparToolshed')
+  vList <- convert2viz(ft)
+  vData <- vList@ll.vizData[[1]]
+  
+  mod_ds_pca_server("plot", vizData = reactive({vData}))
+  }
+
+    shinyApp(ui = ui, server = server)
 }
 \author{
 Samuel Wieczorek, Enora Fremy

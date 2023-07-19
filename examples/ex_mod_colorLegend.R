@@ -19,9 +19,7 @@ server <- function(input, output, session) {
   vList <- convert2viz(Exp1_R25_prot)
   vData <- vList@ll.vizData[[1]]
   
-
-  
-  tags <- GetMetacellTags(vData@metacell, 
+ tags <- GetMetacellTags(vData@metacell, 
                           level = vData@type, 
                           onlyPresent = TRUE)
      

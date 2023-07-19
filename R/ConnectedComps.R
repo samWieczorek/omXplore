@@ -70,14 +70,6 @@ NULL
 #' @rdname connected-components
 #'
 wrapper.compute.cc <- function(obj.se) {
-    if (!requireNamespace("SummarizedExperiment", quietly = TRUE)) {
-        stop(
-            "Package \"SummarizedExperiment\" must be installed to use 
-            this function.",
-            call. = FALSE
-        )
-    }
-
     if (!requireNamespace("QFeatures", quietly = TRUE)) {
         stop(
             "Package \"QFeatures\" must be installed to use this function.",

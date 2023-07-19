@@ -52,8 +52,6 @@ mod_plots_intensity_ui <- function(id) {
 #'
 #' @keywords internal
 #'
-#' @importFrom DAPAR violinPlotD boxPlotD_HC
-#'
 mod_plots_intensity_server <- function(input, output, session,
                                        dataIn,
                                        meta,
@@ -151,7 +149,7 @@ mod_plots_intensity_server <- function(input, output, session,
 
         pattern <- paste0("test", ".boxplot")
         withProgress(message = "Making plot", value = 100, {
-            tmp <- DAPAR::boxPlotD_HC(
+            tmp <- boxPlotD_HC(
                 obj = dataIn(),
                 conds = conds(),
                 keyId = keyId(),
@@ -178,7 +176,7 @@ mod_plots_intensity_server <- function(input, output, session,
                 # png(outfile, width = 640, height = 480, units = "px")
                 png(outfile)
                 pattern <- paste0("test", ".violinplot")
-                tmp <- DAPAR::violinPlotD(
+                tmp <- violinPlotD(
                     obj = dataIn(),
                     keyId = keyId(),
                     conds = conds(),

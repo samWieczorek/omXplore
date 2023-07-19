@@ -1,6 +1,6 @@
 
 
-#' @param data An object of class 'SummarizedExperiment'
+#' @param data An object of class 'matrix'
 #'
 #' @param rate The rate parameter to control the exponential law for
 #' the gradient of colors

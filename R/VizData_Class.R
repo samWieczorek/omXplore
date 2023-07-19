@@ -46,7 +46,9 @@ VizData <- setClass(
       metadata = 'data.frame',
       colID = "character",
       conds = "vector",
-      type = "character"
+      type = "character",
+      adjMat = 'matrix',
+      cc = 'list'
       ),
   
   # Set the default values for the slots. (optional)
@@ -56,7 +58,9 @@ VizData <- setClass(
       metadata = data.frame(),
       colID = NA_character_,
       conds = c(),
-      type = NA_character_
+      type = NA_character_,
+      adjMat = NULL,
+      cc = list()
     ),
   
     validity = function(object) {
@@ -99,9 +103,17 @@ setMethod("show", 'VizData',
             cat(crayon::green('\tconds: '))
             cat(crayon::green(object@conds))
             cat(crayon::green('\n'))
+            
             cat(crayon::green('\ttype: '))
             cat(crayon::green(object@type))
             cat(crayon::green('\n'))
+            cat(crayon::green('\tDimensions of adjacency matriX: '))
+            cat(crayon::green(paste0(dim(object@adjMat)[1], ' x ', dim(object@adjMat)[2])))
+            cat(crayon::green('\n'))
+            cat(crayon::green('\tNumber of connected components: '))
+            cat(crayon::green(length(object@cc)))
+            cat(crayon::green('\n'))
+
               }
 )
 
@@ -120,41 +132,26 @@ setMethod("initialize" , "VizData" ,
              metadata,
              colID,
              conds,
-             type){
+             type,
+             adjMat,
+             cc){
         
-        # Basic init of slots
-      if(is.null(qdata) || !inherits(qdata, 'matrix'))
-        .Object@qdata <- matrix()
-      else 
-        .Object@qdata <- qdata
-      
-      if(is.null(metacell) || !inherits(metacell, 'data.frame'))
-        .Object@metacell <- data.frame()
-      else
-        .Object@metacell <- metacell
 
-      if(is.null(metadata) || !inherits(metadata, 'data.frame'))
-        .Object@metadata <- data.frame()
-      else
-        .Object@metadata <- metadata
+      .Object@qdata <- if(is.null(qdata) || !inherits(qdata, 'matrix')) matrix() else qdata
       
+      .Object@metacell <- if(is.null(metacell) || !inherits(metacell, 'data.frame')) data.frame() else metacell
+
+      .Object@metadata <-  if(is.null(metadata) || !inherits(metadata, 'data.frame')) data.frame() else metadata
       
-      if(is.null(colID) || length(colID)==0 || !inherits(colID, 'character'))
-        .Object@colID <- ''
-      else 
-        .Object@colID <- colID
+      .Object@colID <- if(is.null(colID) || length(colID)==0 || !inherits(colID, 'character')) '' else colID
       
+      .Object@conds <- if(is.null(conds) || !is.vector(conds)) c() else conds
       
-      
-      if(is.null(conds) || !is.vector(conds))
-        .Object@conds <- c()
-      else 
-        .Object@conds <- conds
-      
-      if(is.null(type) || length(type)==0 || !inherits(type, 'character'))
-        .Object@type <- ''
-      else 
-        .Object@type <- type
+      .Object@type <-  if(is.null(type) || length(type)==0 || !inherits(type, 'character')) '' else type
+     
+      .Object@cc <- if(is.null(cc) || !inherits(cc, 'list')) list() else cc
+    
+      .Object@adjMat <- if(is.null(adjMat) || !inherits(adjMat, 'matrix')) matrix() else adjMat
       
       return(.Object)
     }
@@ -165,32 +162,44 @@ setMethod("initialize" , "VizData" ,
 #' @title xxx
 #' @description xxx
 #' @exportMethod Convert2VizList
-#' @importFrom SummarizedExperiment rowData
 #' @rdname Viz_Classes
 #' @return NA
 setMethod("Convert2VizList", signature = "QFeatures",
   function(object) {
+    require(PSMatch)
+    
     ll <- list()
     for (i in 1:length(object)){
       metacell.backup <- qMetacell(object[[i]])
       mdata <- rowData(object[[i]])
       if ("qMetacell" %in% names(mdata))
         mdata <- mdata[, -which(names(mdata)=="qMetacell")]
-    
       if ("adjacencyMatrix" %in% names(mdata))
         mdata <- mdata[, -which(names(mdata)=="adjacencyMatrix")]
-  
+
+
+      if (typeDataset(object[[i]]) == 'peptide'){
+        # Create the adjacency matrix
+        X <- PSMatch::makeAdjacencyMatrix(rowData(object[[i]])[, parentProtId(object[[i]])])
+        rownames(X) <- rownames(rowData(object[[i]]))
+        
+        
+        # Create the connected components
+        connectedComp <- PSMatch::ConnectedComponents(X)
+      }
+      
       ll[[names(object[i])]] <- new(Class ="VizData",
                                     qdata = assay(object[[i]]),
                                     metacell = metacell.backup,
                                     metadata = as.data.frame(mdata),
                                     colID = idcol(object[[i]]),
                                     conds = colData(object)$Condition,
-                                    type = typeDataset(object[[i]])
+                                    type = typeDataset(object[[i]]),
+                                    adjMat = as.matrix(X),
+                                    cc = as.list(connectedComp@adjMatrices)
                                     )
+
     }
-    #browser()
-    
     ll.vizList <- VizList(ll)
     return(ll.vizList)
     })
@@ -204,13 +213,26 @@ setMethod("Convert2VizList", signature = "QFeatures",
 #' @return An instance of 'VizData' class
 setMethod("Convert2VizData", signature = "MSnSet",
   function(object, ...) {
+    
+    X <- matrix()
+    cc <- list()
+    if (object@experimentData@other$typeOfData == 'peptide'){
+      X <- PSMatch::makeAdjacencyMatrix(fData(msnset)[, msnset@experimentData@other$proteinId])
+      rownames(X) <- rownames(fData(msnset))
+      connectedComp <- PSMatch::ConnectedComponents(X)
+      cc <- connectedComp@adjMatrices
+    }
+    
+    
     new(Class ="VizData",
         qdata = exprs(object),
         metacell = fData(object)[, object@experimentData@other$names_metacell], 
         metadata = fData(object),
         colID = object@experimentData@other$keyId,
         conds = pData(object)$Condition,
-        type = object@experimentData@other$typeOfData
+        type = object@experimentData@other$typeOfData,
+        adjMat = as.matrix(X),
+        cc = as.list(cc)
         )
   }
 )
@@ -227,7 +249,9 @@ setMethod("Convert2VizData", signature = "list",
                 metadata = object$metadata,
                 colID = object$colID,
                 conds = object$conds,
-                type = object$type
+                type = object$type,
+                adjMat = object$adjMat,
+                cc = object$cc
             )
           }
 )
@@ -255,17 +279,20 @@ convert2viz <- function(obj){
   # Checks if each item is an instance of 'MSnSet' class
   ll.class <- CheckClass(obj)
   ll <- NULL
+  
   switch(ll.class,
          QFeatures = ll <- Convert2VizList(obj),
          MSnSet = {
            ll.tmp <- NULL
            for (i in 1:length(obj))
-             ll[[names(obj)[i]]] <- Convert2VizData(obj[[i]])
-           #ll <- Convert2VizList(ll.tmp)
+             ll.tmp[[names(obj)[i]]] <- Convert2VizData(obj[[i]])
+           ll <- VizList(ll.tmp)
          },
          list = {
+           ll.tmp <- NULL
            for (i in 1:length(obj))
-             ll[[names(obj)[i]]] <- Convert2VizData(obj[[i]])
+             ll.tmp[[names(obj)[i]]] <- Convert2VizData(obj[[i]])
+           ll <- VizList(ll.tmp)
          }
          )
   return(ll)

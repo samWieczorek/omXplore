@@ -25,6 +25,8 @@ densityPlot(data, conds, pal.name = NULL)
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
+\item{vizData}{An instance of the class \code{VizData}.}
+
 \item{pal.name}{A \code{character(1)} which is the name of the palette from
 the package \link{RColorBrewer} from which the colors are taken. Default
 value is 'Set1'.}
@@ -44,12 +46,9 @@ NA
 xxxx
 }
 \examples{
-
-library(SummarizedExperiment)
-data(ft, package='DaparToolshed')
-
-vList <- convert2viz(ft)
+vList <- BuildExampleDataset('MSnbase')
 vData <- vList@ll.vizData[[1]]
+
 densityPlot(vData@qdata, conds = vData@conds)
 
 
@@ -61,14 +60,10 @@ densityPlot(vData@qdata, conds = vData@conds)
 ui <- shinyUI(mod_ds_density_ui("plot"))
 
 server <- shinyServer(function(input, output, session) {
-  data(ft, package='DaparToolshed')
-  
-  vList <- convert2viz(ft)
+  vList <- BuildExampleDataset('MSnbase')
   vData <- vList@ll.vizData[[1]]
-  mod_ds_density_server("plot",
-                        vizData = reactive({vData})
-  )
-                         })
+  mod_ds_density_server("plot", vizData = reactive({vData}))
+  })
 
 shinyApp(ui, server)
 }

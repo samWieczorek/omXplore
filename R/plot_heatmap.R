@@ -369,7 +369,7 @@ mv.heatmap <- function(x,
 #' @author Samuel Wieczorek
 #'
 #' @examples
-#' data(Exp1_R25_prot, package="DAPARdata")
+#' data(Exp1_R25_prot, package="DaparToolshedData")
 #' obj <- Exp1_R25_prot[seq_len(100)]
 #' level <- 'protein'
 #' metacell.mask <- match.metacell(GetMetacell(obj), c("Missing POV", "Missing MEC"), level)

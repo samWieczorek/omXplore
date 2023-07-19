@@ -1,7 +1,5 @@
 
-library(SummarizedExperiment)
-data(ft, package='DaparToolshed')
-vList <- convert2viz(ft)
+vList <- BuildExampleDataset('MSnbase')
 vData <- vList@ll.vizData[[1]]
 
 
