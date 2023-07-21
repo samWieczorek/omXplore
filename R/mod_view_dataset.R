@@ -167,7 +167,7 @@ mod_view_dataset_ui <- function(id) {
 #' @export
 #'
 mod_view_dataset_server <- function(id, 
-                                    ll.vizData = NULL
+                                    ll.vizData = reactive({NULL})
                                     ) {
 
     moduleServer(id, function(input, output, session) {
@@ -249,41 +249,20 @@ mod_view_dataset_server <- function(id,
             )
         })
 
-  observe({ #
-    # Calls to server modules
-    #
-    mod_ds_seExplorer_server("mod_ds_seExplorer_large",
-                             vData = reactive({current.se()}))
-  
-  
-  mod_ds_intensity_server("mod_ds_intensity_large",
-                          vizData = reactive({current.se()}))
-  
-  
-  mod_ds_pca_server("mod_ds_pca_large", 
-                    vizData = reactive({current.se()}))
-  
-  
-  mod_ds_variance_server("mod_ds_variance_large",
-                         vData = reactive({current.se()}))
-  
-  mod_ds_corrmatrix_server("mod_ds_corrmatrix_large",
-                           vizData = reactive({current.se()}))
-  
-  
-  
-  mod_ds_heatmap_server("mod_ds_heatmap_large",
-                        vizData = reactive({current.se()}))
-  
-  
-  mod_ds_metacell_server("mod_ds_metacell_large",
-                         vizData = reactive({current.se()}))
-  
-  mod_ds_density_server("mod_ds_density_large",
-                        vizData = reactive({current.se()}))})
-
-        
+  observe({
+    req(current.se())
+    mod_ds_seExplorer_server("mod_ds_seExplorer_large", vizData = reactive({current.se()}))
+    mod_ds_intensity_server("mod_ds_intensity_large", vizData = reactive({current.se()}))
+    mod_ds_pca_server("mod_ds_pca_large", vizData = reactive({current.se()}))
+    mod_ds_variance_server("mod_ds_variance_large", vData = reactive({current.se()}))
+    mod_ds_corrmatrix_server("mod_ds_corrmatrix_large", vizData = reactive({current.se()}))
+    mod_ds_heatmap_server("mod_ds_heatmap_large", vizData = reactive({current.se()}))
+    mod_ds_metacell_server("mod_ds_metacell_large", vizData = reactive({current.se()}))
+    mod_ds_density_server("mod_ds_density_large", vizData = reactive({current.se()}))
+    mod_ds_cc_server("mod_ds_cc_large", vizData = reactive({current.se()}))
     })
+  
+})
 }
 
 

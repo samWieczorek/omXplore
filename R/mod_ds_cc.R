@@ -99,9 +99,11 @@ mod_ds_cc_server <- function(id, vizData) {
       
       # 
       # observeEvent(id, {
-      #   
+      # 
       #   browser()
       # })
+      
+      
       rvCC <- reactiveValues(
         ## selected CC in global CC list (tab or plot)
         selectedCC = NULL,

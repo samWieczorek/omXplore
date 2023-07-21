@@ -219,9 +219,10 @@ setMethod("Convert2VizData", signature = "MSnSet",
     require(MSnbase)
     X <- matrix()
     cc <- list()
+    
     if (object@experimentData@other$typeOfData == 'peptide'){
-      X <- PSMatch::makeAdjacencyMatrix(fData(msnset)[, msnset@experimentData@other$proteinId])
-      rownames(X) <- rownames(fData(msnset))
+      X <- PSMatch::makeAdjacencyMatrix(fData(object)[, object@experimentData@other$proteinId])
+      rownames(X) <- rownames(fData(object))
       connectedComp <- PSMatch::ConnectedComponents(X)
       cc <- connectedComp@adjMatrices
     }
@@ -284,13 +285,16 @@ convert2viz <- function(obj){
   ll <- NULL
   
   switch(ll.class,
+         
          QFeatures = ll <- Convert2VizList(obj),
+         
          MSnSet = {
            ll.tmp <- NULL
            for (i in 1:length(obj))
              ll.tmp[[names(obj)[i]]] <- Convert2VizData(obj[[i]])
            ll <- VizList(ll.tmp)
          },
+         
          list = {
            ll.tmp <- NULL
            for (i in 1:length(obj))

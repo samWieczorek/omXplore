@@ -78,7 +78,6 @@ mod_format_DT_server <- function(id,
     require(DT)
     proxy = DT::dataTableProxy(session$ns('StaticDataTable'), session)
     
-    
     rv <- reactiveValues(
       dataOUt = NULL
     )
@@ -110,7 +109,7 @@ mod_format_DT_server <- function(id,
       
       req(length(data()) > 0)
       .jscode <- DT::JS("$.fn.dataTable.render.ellipsis( 30 )")
-      #isolate({
+
       dt <- DT::datatable(
         data(), 
         escape = FALSE,
@@ -137,10 +136,8 @@ mod_format_DT_server <- function(id,
             backgroundColor = DT::styleEqual(hc_style()$unique, hc_style()$pal)
           )
       }
-      #})
-      
+
       dt
-      
     })
     
     initComplete <- function(){

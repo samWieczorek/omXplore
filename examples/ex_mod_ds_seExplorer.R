@@ -5,7 +5,9 @@ library(DaparViz)
 
 
 
-ui <- mod_ds_seExplorer_ui("plot")
+ui <- fluidPage(
+  mod_ds_seExplorer_ui("plot")
+)
 
 server <- function(input, output, session) {
   data(ft, package='DaparToolshed')

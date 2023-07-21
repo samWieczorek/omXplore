@@ -22,7 +22,7 @@ server <- function(input, output, session) {
  tags <- GetMetacellTags(vData@metacell, 
                           level = vData@type, 
                           onlyPresent = TRUE)
-     
+  
   # Use the default color palette
   mod_colorLegend_server("plot1", tags)
 

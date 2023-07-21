@@ -20,8 +20,8 @@ server <- function(input, output, session) {
   # vList_na <- convert2viz(ft_na)
   
   # Example with a QFeatures dataset
-  data(Exp1_R25_prot, package='DaparToolshedData')
-  vList <- convert2viz(Exp1_R25_prot)
+  data(Exp1_R25_pept, package='DaparToolshedData')
+  vList <- convert2viz(Exp1_R25_pept)
   
   # Example with a series of MSnSet datasets
   # data(Exp1_R25_prot, package='DAPARdata')

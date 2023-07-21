@@ -9,10 +9,7 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
-  
   vList <- BuildExampleDataset('QFeatures')
-  #vList <- BuildExampleDataset('MSnbase')
-  #vList <- BuildExampleDataset('list')
   vData <- vList@ll.vizData[[1]]
   
   mod_ds_cc_server("plot", reactive({vData}))

@@ -46,8 +46,7 @@ mod_ds_corrmatrix_server <- function(id,
 
         
         observe({
-          
-          req(vizData())
+           req(vizData())
             stopifnot(inherits(vizData(), 'VizData'))
         })
         

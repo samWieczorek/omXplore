@@ -19,24 +19,19 @@ NULL
 mod_ds_seExplorer_ui <- function(id) {
     ns <- NS(id)
     tagList(
-        shinyBS::bsCollapse(id = "infos",
-            open = "",
-            multiple = TRUE,
+      mod_colorLegend_ui(ns("legend")),
+      shinyBS::bsCollapse(id = "infos", open = "", multiple = TRUE,
             shinyBS::bsCollapsePanel("Quantitative data",
                 DT::DTOutput(ns("qdata_ui")),
-                style = "info"
-            ),
+                style = "info"),
             shinyBS::bsCollapsePanel("Metadata",
                 DT::DTOutput(ns("metadata_ui")),
-                style = "info"
-            ),
+                style = "info"),
             shinyBS::bsCollapsePanel("quantitative Metadata",
                 DT::DTOutput(ns("qMetacell_ui")),
-                style = "info"
+                style = "info")
             )
-        ),
-        mod_colorLegend_ui("legend")
-    )
+      )
 }
 
 #' @param id A `character(1)` which is the id of the shiny module.
@@ -53,16 +48,16 @@ mod_ds_seExplorer_ui <- function(id) {
 #'
 #' @rdname SE-explorer
 mod_ds_seExplorer_server <- function(id,
-                                     vData,
+                                     vizData = reactive({NULL}),
                                      digits = reactive({3})) {
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
 
         observe({
-          req(vData())
-          stopifnot(inherits(vData(), "VizData"))
-            tags <- GetMetacellTags(vData()@metacell, 
-                                    level = vData()@type, 
+          req(vizData())
+          stopifnot(inherits(vizData(), "VizData"))
+            tags <- GetMetacellTags(vizData()@metacell, 
+                                    level = vizData()@type, 
                                     onlyPresent = TRUE)
             mod_colorLegend_server("legend", tags)
         })
@@ -104,9 +99,9 @@ mod_ds_seExplorer_server <- function(id,
 
         output$metadata_ui <- DT::renderDT({
           
-            req(vData())
+            req(vizData())
 
-            dat <- DT::datatable(tibble::as_tibble(vData()@metadata),
+            dat <- DT::datatable(tibble::as_tibble(vizData()@metadata),
                 rownames = TRUE,
                 extensions = c("Scroller", "Buttons", "FixedColumns"),
                 options = list(
@@ -133,7 +128,7 @@ mod_ds_seExplorer_server <- function(id,
                 )
             )
 
-            if ("Significant" %in% colnames(vData()@metadata)) {
+            if ("Significant" %in% colnames(vizData()@metadata)) {
                 dat <- dat %>%
                     DT::formatStyle(
                         columns = "Significant",
@@ -147,12 +142,12 @@ mod_ds_seExplorer_server <- function(id,
 
 
         output$qdata_ui <- DT::renderDataTable(server = TRUE, {
-            req(vData())
+            req(vizData())
             
            df <- cbind(
-                keyId = (vData()@metadata)[, vData()@colID],
-                round(vData()@qdata, digits = digits()),
-                vData()@metacell)
+                keyId = (vizData()@metadata)[, vizData()@colID],
+                round(vizData()@qdata, digits = digits()),
+                vizData()@metacell)
 
             colors <- custom_metacell_colors()
 
@@ -190,8 +185,8 @@ mod_ds_seExplorer_server <- function(id,
         })
 
         output$qMetacell_ui <- DT::renderDataTable(server = TRUE, {
-            req(vData())
-          df <- vData()@metacell
+            req(vizData())
+          df <- vizData()@metacell
             colors <- custom_metacell_colors()
 
             DT::datatable(df,
