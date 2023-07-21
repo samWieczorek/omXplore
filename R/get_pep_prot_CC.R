@@ -72,10 +72,10 @@ plotJitter <- function(list.of.cc = NULL) {
 #' @export
 #'
 buildGraph <- function(cc) {
-  nb.prot <- ncol(The.CC)
-  nb.pep <- nrow(The.CC)
-  subX <- The.CC
-  colnames(subX) <- colnames(The.CC)
+  nb.prot <- ncol(cc)
+  nb.pep <- nrow(cc)
+  subX <- cc
+  colnames(subX) <- colnames(cc)
   subX <- as.matrix(subX)
   nb.pep.shared <- length(which(rowSums(subX) > 1))
   nb.pep.spec <- length(which(rowSums(subX) == 1))

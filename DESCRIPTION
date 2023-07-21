@@ -30,7 +30,8 @@ Imports:
     shinyjs,
     grDevices,
     stats,
-    utils
+    utils,
+    htmlwidgets
 biocViews: 
     Proteomics,
     Normalization,
@@ -79,6 +80,8 @@ Collate:
     mod_plots_tracking.R
     mod_metacell_tree.R
     get_pep_prot_CC.R
+    mod_dl.R
+    mod_format_DT.R
 RoxygenNote: 7.2.3
 Packaged: 2017-10-13 11:13:04 UTC; sw175264
 Encoding: UTF-8
@@ -93,6 +96,7 @@ Suggests:
     testthat,
     MSnbase,
     QFeatures,
+    PSMatch,
     Matrix,
     graphics,
     FactoMineR,

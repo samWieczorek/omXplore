@@ -5,8 +5,8 @@ library(DaparViz)
 library(Matrix)
 
 # Convert a QFeatures object to an instance of VizList class
-data(ft, package='DaparToolshed')
-test <- convert2viz(ft)
+data(Exp1_R25_pept, package='DaparToolshedData')
+test <- convert2viz(Exp1_R25_pept)
 
 # Convert a list of MSnSet objects to an instance of VizList class
 data(Exp1_R25_prot, package='DAPARdata')

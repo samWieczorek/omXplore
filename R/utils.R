@@ -6,8 +6,8 @@ BuildExampleDataset <- function(type){
   return(
     switch(type,
          QFeatures = {
-           data(Exp1_R25_prot, package='DaparToolshedData')
-           convert2viz(Exp1_R25_prot)
+           data(Exp1_R25_pept, package='DaparToolshedData')
+           convert2viz(Exp1_R25_pept)
            },
          MSnbase = {
            data(Exp1_R25_prot, package='DAPARdata')
@@ -169,4 +169,60 @@ customChart <- function(hc,
         'color': 'black'});",
         "}"
     ))
+}
+
+
+
+
+#' @title
+#' xxxx
+#'
+#' @description
+#' xxxx
+#'
+#' @param vizData xx
+#' @param digits xxx
+#'
+#' @export
+#'
+getDataForExprs <- function(vizData, digits = NULL) {
+  if (is.null(digits))  
+    digits <- 2
+  
+  test.table <- as.data.frame(round(vizData@qdata))
+  if (!is.null(names(vizData@metacell))) { # agregated dataset
+    test.table <- cbind(round(vizData@qdata, digits = digits), vizData@metacell)
+  } else {
+    test.table <- cbind(
+      test.table,
+      as.data.frame(
+        matrix(rep(NA, ncol(test.table) * nrow(test.table)), nrow = nrow(test.table))
+      )
+    )
+  }
+  return(test.table)
+}
+
+
+
+
+
+#' @title
+#' xxxx
+#'
+#' @description
+#' xxxx
+#'
+#' @param obj xx
+#'
+#' @export
+BuildColorStyles <- function(vizData) {
+  styles <- list(tags = NULL,
+                 colors = NULL)
+  
+  mc <- metacell.def(vizData@type)
+  
+  styles$tags <- mc$node
+  styles$colors <- mc$color
+  styles
 }

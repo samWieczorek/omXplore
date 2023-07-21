@@ -167,11 +167,14 @@ setMethod("initialize" , "VizData" ,
 setMethod("Convert2VizList", signature = "QFeatures",
   function(object) {
     require(PSMatch)
-    
+    require(QFeatures)
     ll <- list()
     for (i in 1:length(object)){
       metacell.backup <- qMetacell(object[[i]])
       mdata <- rowData(object[[i]])
+      X <- matrix()
+      cc <- list()
+      
       if ("qMetacell" %in% names(mdata))
         mdata <- mdata[, -which(names(mdata)=="qMetacell")]
       if ("adjacencyMatrix" %in% names(mdata))
@@ -185,7 +188,7 @@ setMethod("Convert2VizList", signature = "QFeatures",
         
         
         # Create the connected components
-        connectedComp <- PSMatch::ConnectedComponents(X)
+        cc <- PSMatch::ConnectedComponents(X)@adjMatrices
       }
       
       ll[[names(object[i])]] <- new(Class ="VizData",
@@ -196,7 +199,7 @@ setMethod("Convert2VizList", signature = "QFeatures",
                                     conds = colData(object)$Condition,
                                     type = typeDataset(object[[i]]),
                                     adjMat = as.matrix(X),
-                                    cc = as.list(connectedComp@adjMatrices)
+                                    cc = as.list(cc)
                                     )
 
     }
@@ -213,7 +216,7 @@ setMethod("Convert2VizList", signature = "QFeatures",
 #' @return An instance of 'VizData' class
 setMethod("Convert2VizData", signature = "MSnSet",
   function(object, ...) {
-    
+    require(MSnbase)
     X <- matrix()
     cc <- list()
     if (object@experimentData@other$typeOfData == 'peptide'){

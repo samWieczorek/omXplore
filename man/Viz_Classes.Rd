@@ -14,7 +14,7 @@
 \usage{
 \S4method{show}{VizData}(object)
 
-\S4method{initialize}{VizData}(.Object, qdata, metacell, metadata, colID, conds, type, cc, matAdj)
+\S4method{initialize}{VizData}(.Object, qdata, metacell, metadata, colID, conds, type, adjMat, cc)
 
 \S4method{Convert2VizList}{QFeatures}(object)
 
@@ -112,10 +112,11 @@ library(MSnbase)
 library(DaparToolshed)
 library(SummarizedExperiment)
 library(DaparViz)
+library(Matrix)
 
 # Convert a QFeatures object to an instance of VizList class
-data(ft, package='DaparToolshed')
-test <- convert2viz(ft)
+data(Exp1_R25_pept, package='DaparToolshedData')
+test <- convert2viz(Exp1_R25_pept)
 
 # Convert a list of MSnSet objects to an instance of VizList class
 data(Exp1_R25_prot, package='DAPARdata')
@@ -130,13 +131,19 @@ test <- convert2viz(ll.tmp)
 
 data(Exp1_R25_pept, package='DAPARdata')
 msnset <- Exp1_R25_pept
+X <- PSMatch::makeAdjacencyMatrix(fData(msnset)[, msnset@experimentData@other$proteinId])
+rownames(X) <- rownames(fData(msnset))
+connectedComp <- PSMatch::ConnectedComponents(X)
+
 ll.Exp1_R25_pept <- list(
   qdata = exprs(msnset),
   metacell = fData(msnset)[ , msnset@experimentData@other$names_metacell],
   mdata = fData(msnset),
   colID = msnset@experimentData@other$keyId,
   conds = pData(msnset)[, 'Condition'],
-  type = msnset@experimentData@other$typeOfData
+  type = msnset@experimentData@other$typeOfData,
+  adjMat = as.matrix(X),
+  cc = as.list(connectedComp@adjMatrices)
   )
 
 data(Exp1_R25_prot, package='DAPARdata')
@@ -152,13 +159,20 @@ ll.Exp1_R25_prot <- list(
 
 data(Exp1_R2_pept, package='DAPARdata')
 msnset <- Exp1_R2_pept
+X <- PSMatch::makeAdjacencyMatrix(fData(msnset)[, msnset@experimentData@other$proteinId])
+rownames(X) <- rownames(fData(msnset))
+connectedComp <- PSMatch::ConnectedComponents(X)
+
 ll.Exp1_R2_pept <- list(
   qdata = exprs(msnset),
   metacell = fData(msnset)[ , msnset@experimentData@other$names_metacell],
   mdata = fData(msnset),
   colID = msnset@experimentData@other$keyId,
   conds = pData(msnset)[, 'Condition'],
-  type = msnset@experimentData@other$typeOfData
+  type = msnset@experimentData@other$typeOfData,
+  adjMat = as.matrix(X),
+  cc = as.list(connectedComp@adjMatrices)
+  
 )
 
 
@@ -173,10 +187,11 @@ library(MSnbase)
 library(DaparToolshed)
 library(SummarizedExperiment)
 library(DaparViz)
+library(Matrix)
 
 # Convert a QFeatures object to an instance of VizList class
-data(ft, package='DaparToolshed')
-test <- convert2viz(ft)
+data(Exp1_R25_pept, package='DaparToolshedData')
+test <- convert2viz(Exp1_R25_pept)
 
 # Convert a list of MSnSet objects to an instance of VizList class
 data(Exp1_R25_prot, package='DAPARdata')
@@ -191,13 +206,19 @@ test <- convert2viz(ll.tmp)
 
 data(Exp1_R25_pept, package='DAPARdata')
 msnset <- Exp1_R25_pept
+X <- PSMatch::makeAdjacencyMatrix(fData(msnset)[, msnset@experimentData@other$proteinId])
+rownames(X) <- rownames(fData(msnset))
+connectedComp <- PSMatch::ConnectedComponents(X)
+
 ll.Exp1_R25_pept <- list(
   qdata = exprs(msnset),
   metacell = fData(msnset)[ , msnset@experimentData@other$names_metacell],
   mdata = fData(msnset),
   colID = msnset@experimentData@other$keyId,
   conds = pData(msnset)[, 'Condition'],
-  type = msnset@experimentData@other$typeOfData
+  type = msnset@experimentData@other$typeOfData,
+  adjMat = as.matrix(X),
+  cc = as.list(connectedComp@adjMatrices)
   )
 
 data(Exp1_R25_prot, package='DAPARdata')
@@ -213,13 +234,20 @@ ll.Exp1_R25_prot <- list(
 
 data(Exp1_R2_pept, package='DAPARdata')
 msnset <- Exp1_R2_pept
+X <- PSMatch::makeAdjacencyMatrix(fData(msnset)[, msnset@experimentData@other$proteinId])
+rownames(X) <- rownames(fData(msnset))
+connectedComp <- PSMatch::ConnectedComponents(X)
+
 ll.Exp1_R2_pept <- list(
   qdata = exprs(msnset),
   metacell = fData(msnset)[ , msnset@experimentData@other$names_metacell],
   mdata = fData(msnset),
   colID = msnset@experimentData@other$keyId,
   conds = pData(msnset)[, 'Condition'],
-  type = msnset@experimentData@other$typeOfData
+  type = msnset@experimentData@other$typeOfData,
+  adjMat = as.matrix(X),
+  cc = as.list(connectedComp@adjMatrices)
+  
 )
 
 

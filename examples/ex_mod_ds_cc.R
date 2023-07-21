@@ -1,23 +1,17 @@
+library(highcharter)
+library(shinyBS)
+library(shiny)
+library(DaparViz)
 
 
-#vList <- BuildExampleDataset('QFeatures')
-vList <- BuildExampleDataset('MSnbase')
-#vList <- BuildExampleDataset('list')
-vData <- vList@ll.vizData[[1]]
-
-corrMatrix(vData@qdata)
-
-
-#------------------------------------------
-# Shiny module
-#------------------------------------------
-
-
-ui <- mod_ds_cc_ui("plot")
+ui <- fluidPage(
+  mod_ds_cc_ui("plot")
+)
 
 server <- function(input, output, session) {
-  #vList <- BuildExampleDataset('QFeatures')
-  vList <- BuildExampleDataset('MSnbase')
+  
+  vList <- BuildExampleDataset('QFeatures')
+  #vList <- BuildExampleDataset('MSnbase')
   #vList <- BuildExampleDataset('list')
   vData <- vList@ll.vizData[[1]]
   

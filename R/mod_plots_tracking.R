@@ -76,9 +76,7 @@ mod_plots_tracking_server <- function(input, output, session,
 
 
     observeEvent(req(obj()), {
-        if (class(obj()) != "MSnSet") {
-            return(NULL)
-        }
+        req(inherits(obj(), "MSnSet"))
     })
 
 
