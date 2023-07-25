@@ -21,9 +21,11 @@ Plots variables of PCA
 library(highcharter)
 library(DaparViz)
 
-data(ft, package='DaparToolshed')
-vList <- convert2viz(ft)
+data(Exp1_R25_pept, package='DaparToolshedData')
+vList <- convert2viz(Exp1_R25_pept)
 vData <- vList@ll.vizData[[1]]
+
+
 res.pca <- wrapper_pca(vData, ncp = 6)
 plotPCA_Var(res.pca)
 plotPCA_Ind(res.pca)
@@ -35,14 +37,14 @@ plotPCA_Eigen_hc(res.pca)
 ui <- mod_ds_pca_ui("plot")
 
 server <- function(input, output, session) {
-  data(ft, package='DaparToolshed')
-  vList <- convert2viz(ft)
+  data(Exp1_R25_pept, package='DaparToolshedData')
+  vList <- convert2viz(Exp1_R25_pept)
   vData <- vList@ll.vizData[[1]]
   
   mod_ds_pca_server("plot", vizData = reactive({vData}))
   }
 
-    shinyApp(ui = ui, server = server)
+shinyApp(ui = ui, server = server)
 }
 \author{
 Samuel Wieczorek

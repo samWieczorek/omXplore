@@ -30,16 +30,29 @@ quantitative data in the \code{Biobase::exprs()} table of an object of
 class \code{MSnSet}
 }
 \examples{
-data(ft, package="DaparToolshed")
-obj <- Exp1_R25_pept[seq_len(10), ]
-level <- 'peptide'
-metacell.mask <- match.metacell(GetMetacell(obj), c("Missing POV", "Missing MEC"), level)
-indices <- GetIndices_WholeLine(metacell.mask)
-qData <- Biobase::exprs(obj)
-conds <- Biobase::pData(obj)[["Condition"]]
-heatmapD(qData, conds)
+
+vList <- BuildExampleDataset('MSnbase')
+vData <- vList@ll.vizData[[1]]
+heatmapD(vData)
+mv.heatmap(vData@qdata)
+
+#------------------------------------------
+# Shiny module
+#------------------------------------------
 
 
+ui <- mod_ds_heatmap_ui("plot")
+
+server <- function(input, output, session) {
+  
+  vList <- BuildExampleDataset('MSnbase')
+  vData <- vList@ll.vizData[[1]]
+  
+  mod_ds_heatmap_server("plot",
+                        reactive({vData})
+  )
+  }
+shinyApp(ui = ui, server = server)
 }
 \author{
 Florence Combes, Samuel Wieczorek, Enor Fremy

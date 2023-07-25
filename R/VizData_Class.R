@@ -45,6 +45,7 @@ VizData <- setClass(
       metacell = 'data.frame',
       metadata = 'data.frame',
       colID = "character",
+      proteinID = "character",
       conds = "vector",
       type = "character",
       adjMat = 'matrix',
@@ -57,6 +58,7 @@ VizData <- setClass(
       metacell = data.frame(),
       metadata = data.frame(),
       colID = NA_character_,
+      proteinID = NA_character_,
       conds = c(),
       type = NA_character_,
       adjMat = NULL,
@@ -98,6 +100,7 @@ VizData <- setClass(
 setMethod("show", 'VizData',
           function(object){
             cat(crayon::green(paste0('\tdim(qdata): ', dim(object@qdata), '\n')))
+            
             cat(crayon::green(paste0('\tdim(metacell): ', dim(object@metacell), '\n')))
             
             cat(crayon::green('\tconds: '))
@@ -107,9 +110,19 @@ setMethod("show", 'VizData',
             cat(crayon::green('\ttype: '))
             cat(crayon::green(object@type))
             cat(crayon::green('\n'))
+            
+            cat(crayon::green('\tcolID: '))
+            cat(crayon::green(object@colID))
+            cat(crayon::green('\n'))
+            
+            cat(crayon::green('\tproteinID: '))
+            cat(crayon::green(object@proteinID))
+            cat(crayon::green('\n'))
+            
             cat(crayon::green('\tDimensions of adjacency matriX: '))
             cat(crayon::green(paste0(dim(object@adjMat)[1], ' x ', dim(object@adjMat)[2])))
             cat(crayon::green('\n'))
+            
             cat(crayon::green('\tNumber of connected components: '))
             cat(crayon::green(length(object@cc)))
             cat(crayon::green('\n'))
@@ -131,6 +144,7 @@ setMethod("initialize" , "VizData" ,
              metacell,
              metadata,
              colID,
+             proteinID,
              conds,
              type,
              adjMat,
@@ -144,6 +158,8 @@ setMethod("initialize" , "VizData" ,
       .Object@metadata <-  if(is.null(metadata) || !inherits(metadata, 'data.frame')) data.frame() else metadata
       
       .Object@colID <- if(is.null(colID) || length(colID)==0 || !inherits(colID, 'character')) '' else colID
+      
+      .Object@proteinID <- if(is.null(proteinID) || length(proteinID)==0 || !inherits(proteinID, 'character')) '' else proteinID
       
       .Object@conds <- if(is.null(conds) || !is.vector(conds)) c() else conds
       
@@ -196,6 +212,7 @@ setMethod("Convert2VizList", signature = "QFeatures",
                                     metacell = metacell.backup,
                                     metadata = as.data.frame(mdata),
                                     colID = idcol(object[[i]]),
+                                    proteinID = parentProtId(object[[i]]),
                                     conds = colData(object)$Condition,
                                     type = typeDataset(object[[i]]),
                                     adjMat = as.matrix(X),
@@ -233,6 +250,7 @@ setMethod("Convert2VizData", signature = "MSnSet",
         metacell = fData(object)[, object@experimentData@other$names_metacell], 
         metadata = fData(object),
         colID = object@experimentData@other$keyId,
+        proteinID = object@experimentData@other$proteinId,
         conds = pData(object)$Condition,
         type = object@experimentData@other$typeOfData,
         adjMat = as.matrix(X),
@@ -252,6 +270,7 @@ setMethod("Convert2VizData", signature = "list",
                 metacell = object$metacell, 
                 metadata = object$metadata,
                 colID = object$colID,
+                proteinID = object$proteinID,
                 conds = object$conds,
                 type = object$type,
                 adjMat = object$adjMat,

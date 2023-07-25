@@ -12,7 +12,7 @@
 #' 
 #' @return NA
 #'
-#' @example examples/example_mod_metacell_tree.R
+#' @example examples/ex_mod_metacell_tree.R
 #'
 NULL
 
@@ -28,14 +28,14 @@ NULL
 #' 
 mod_metacell_tree_ui <- function(id) {
     ns <- NS(id)
-   
+   require(shinyBS)
     tagList(
         shinyjs::useShinyjs(),
         fluidRow(
             column(width=6, 
                    actionButton(ns("openModalBtn"),
                    tagList(
-                       p('Select tags'),
+                       #p('Select tags'),
                        tags$img(src = "images/metacelltree.png", height = "50px"))
                    ),
                    bsTooltip(ns("openModalBtn"), "Click to open tags selection tool",
@@ -60,10 +60,11 @@ mod_metacell_tree_ui <- function(id) {
 #' @export
 #' 
 mod_metacell_tree_server <- function(id, 
-                                     type = NULL,
+                                     type = reactive({NULL}),
                                      reset = reactive({NULL})) {
    
-    if (!requireNamespace("shinyBS", quietly = TRUE)) {
+  require(shinyBS)
+  if (!requireNamespace("shinyBS", quietly = TRUE)) {
         stop("Please install shinyBS: BiocManager::install('shinyBS')")
     }
     

@@ -2,15 +2,21 @@
 % Please edit documentation in R/utils.R
 \name{getDataForExprs}
 \alias{getDataForExprs}
-\title{xxxx}
+\title{Constructs a dataset suitable to use with the module format_DT.}
 \usage{
-getDataForExprs(vizData, digits = NULL)
+getDataForExprs(vizData, digits = 2)
 }
 \arguments{
-\item{vizData}{xx}
+\item{vizData}{An instance of the class 'VizData'}
 
-\item{digits}{xxx}
+\item{digits}{An 'integer(1)' to specify the number of digits to display
+in the tables for numerical values. Default is 2.}
+}
+\value{
+A data.frame
 }
 \description{
-xxxx
+This function builds the skeleton of a dataset which can be used by the module
+format_DT. It creates additional columns that can be used to store values
+to colors cells.
 }

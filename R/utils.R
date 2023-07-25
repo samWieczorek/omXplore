@@ -1,7 +1,18 @@
-#' @title xxx
-#' @description xxx
+#' @title Example dataset
+#' @description This function builds an example dataset as an instance of the class
+#' 'VizClass', which is the format to be used with functions in the DaparViz package.
+#' 
+#' @param type A 'character(1)' which is the type of original dataset to build an example from. 
+#' Available values are 'QFeatures' (default value), 'MSnbase' and 'list'.
+#' 
+#' @value An instance of the class 'VizClass'.
+#' 
+#' @author Samuel Wieczorek
+#' 
 #' @export
-BuildExampleDataset <- function(type){
+#' 
+BuildExampleDataset <- function(type='QFeatures'){
+  
   
   return(
     switch(type,
@@ -89,9 +100,8 @@ BuildExampleDataset <- function(type){
 #' @title Customised contextual menu of highcharts plots
 #'
 #' @param hc A highcharter object
-#'
 #' @param fname The filename under which the plot has to be saved
-#'
+#' 
 #' @return A contextual menu for highcharts plots
 #'
 #' @author Samuel Wieczorek
@@ -111,19 +121,17 @@ BuildExampleDataset <- function(type){
 #'
 customExportMenu <- function(hc, fname) {
     highcharter::hc_exporting(hc,
-        enabled = TRUE,
-        filename = fname,
-        buttons = list(
-            contextButton = list(
-                menuItems = list(
-                    "downloadPNG",
-                    "downloadSVG",
-                    "downloadPDF"
-                )
-            )
-        )
-    )
-    hc
+                              enabled = TRUE,
+                              filename = fname,
+                              buttons = list(
+                                contextButton = list(
+                                  menuItems = list("downloadPNG",
+                                                   "downloadSVG",
+                                                   "downloadPDF")
+                                  )
+                                )
+                              )
+  hc
 }
 
 
@@ -132,13 +140,9 @@ customExportMenu <- function(hc, fname) {
 #' @title Customised resetZoom Button of highcharts plots
 #'
 #' @param hc A highcharter object
-#'
 #' @param chartType The type of the plot
-#'
 #' @param zoomType The type of the zoom (one of "x", "y", "xy", "None")
-#'
 #' @param width xxx
-#'
 #' @param height xxx
 #'
 #' @return A highchart plot
@@ -194,29 +198,32 @@ customChart <- function(hc,
 
 
 
-#' @title
-#' xxxx
+#' @title Constructs a dataset suitable to use with the module format_DT.
 #'
 #' @description
-#' xxxx
+#' This function builds the skeleton of a dataset which can be used by the module
+#' format_DT. It creates additional columns that can be used to store values
+#' to colors cells.
 #'
-#' @param vizData xx
-#' @param digits xxx
+#' @param vizData An instance of the class 'VizData'
+#' @param digits An 'integer(1)' to specify the number of digits to display 
+#' in the tables for numerical values. Default is 2.
+#' 
+#' @return A data.frame
 #'
 #' @export
 #'
-getDataForExprs <- function(vizData, digits = NULL) {
-  if (is.null(digits))  
-    digits <- 2
-  
+getDataForExprs <- function(vizData, digits = 2) {
+
   test.table <- as.data.frame(round(vizData@qdata))
-  if (!is.null(names(vizData@metacell))) { # agregated dataset
+  if (!is.null(names(vizData@metacell))) {
     test.table <- cbind(round(vizData@qdata, digits = digits), vizData@metacell)
   } else {
     test.table <- cbind(
       test.table,
       as.data.frame(
-        matrix(rep(NA, ncol(test.table) * nrow(test.table)), nrow = nrow(test.table))
+        matrix(rep(NA, ncol(test.table) * nrow(test.table)),
+               nrow = nrow(test.table))
       )
     )
   }
@@ -233,7 +240,7 @@ getDataForExprs <- function(vizData, digits = NULL) {
 #' @description
 #' xxxx
 #'
-#' @param obj xx
+#' @param vizData An instance of the class 'VizData'
 #'
 #' @export
 BuildColorStyles <- function(vizData) {

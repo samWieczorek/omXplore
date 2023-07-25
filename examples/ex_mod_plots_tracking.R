@@ -8,7 +8,8 @@ options(shiny.fullstacktrace = TRUE)
 
 
 ui <- fluidPage(
-  mod_view_dataset_ui("dataset")
+  actionButton('reset', "Reset"),
+  mod_plots_tracking_ui("tracker")
 )
 
 
@@ -24,6 +25,7 @@ server <- function(input, output, session) {
   #
   data(Exp1_R25_pept, package='DaparToolshedData')
   vList <- convert2viz(Exp1_R25_pept)
+  vData <- vList@ll.vizData[[1]]
   
   #
   # Example with a series of MSnSet datasets
@@ -38,8 +40,18 @@ server <- function(input, output, session) {
   
   
   
-  mod_view_dataset_server("dataset", 
-                          ll.vizData = reactive({vList}))
+  res <- mod_plots_tracking_server("tracker",
+                            vizData = reactive({vData}),
+                            params = reactive({NULL}),
+                            reset = reactive({input$reset})
+                            )
+  
+  observe({
+    print('-------------------------------------------------')
+    print(res())
+    print('-------------------------------------------------\n\n')
+    
+  })
 }
 
 shinyApp(ui, server)

@@ -1,6 +1,16 @@
 #' @title mod_dl
 #'
 #' @description  A shiny Module.
+#' 
+#' 
+#' @param id internal
+#' @param dataIn internal
+#' @param extension Available values are `csv` (default), `RData` and `Excel`.
+#' @param widget.type Available values are `Button` and `Link` (default).
+#' @param name internal
+#' @param excel.style xxx
+#'
+#' @return NA
 #'
 #' @name dl
 #' @example examples/test_dl.R
@@ -8,7 +18,7 @@
 NULL
 
 
-#' @param id xxx
+#' @import shiny
 #'
 #' @rdname dl
 #'
@@ -25,15 +35,6 @@ dl_ui <- function(id) {
 }
 
 #' @rdname dl
-#' 
-#' @param id internal
-#' @param dataIn internal
-#' @param extension Available values are `csv` (default), `RData` and `Excel`.
-#' @param widget.type Available values are `Button` and `Link` (default).
-#' @param name internal
-#' @param excel.style xxx
-#'
-#' @return NA
 #'
 #' @export
 #'

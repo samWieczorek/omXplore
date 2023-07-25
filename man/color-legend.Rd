@@ -8,7 +8,13 @@
 \usage{
 mod_colorLegend_ui(id)
 
-mod_colorLegend_server(id, presentTags = NULL, hide.white = TRUE)
+mod_colorLegend_server(
+  id,
+  presentTags = reactive({
+     NULL
+ }),
+  hide.white = TRUE
+)
 }
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
@@ -49,7 +55,7 @@ server <- function(input, output, session) {
  tags <- GetMetacellTags(vData@metacell, 
                           level = vData@type, 
                           onlyPresent = TRUE)
-     
+  
   # Use the default color palette
   mod_colorLegend_server("plot1", tags)
 

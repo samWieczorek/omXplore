@@ -11,7 +11,9 @@ mod_metacell_tree_ui(id)
 
 mod_metacell_tree_server(
   id,
-  type = NULL,
+  type = reactive({
+     NULL
+ }),
   reset = reactive({
      NULL
  })
@@ -29,4 +31,26 @@ NA
 }
 \description{
 xxxx
+}
+\examples{
+
+# Example
+#
+ui <- fluidPage(
+  mod_metacell_tree_ui('tree')
+)
+
+server <- function(input, output) {
+  rv <- reactiveValues(
+    tags = NULL
+  )
+  
+  observe({
+    rv$tags <- mod_metacell_tree_server('tree', type = reactive({'peptide'}))
+  })
+  
+  
+}
+
+shinyApp(ui = ui, server = server)
 }

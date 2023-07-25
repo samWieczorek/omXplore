@@ -19,6 +19,8 @@
 #' @importFrom stats na.exclude
 #'
 #' @export
+#' 
+#' @example examples/ex_mod_ds_intensity.R
 #'
 #' @rdname intensity-plots
 #'

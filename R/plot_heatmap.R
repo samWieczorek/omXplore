@@ -21,15 +21,7 @@
 #'
 #' @author Florence Combes, Samuel Wieczorek, Enor Fremy
 #'
-#' @examples
-#' data(ft, package="DaparToolshed")
-#' obj <- Exp1_R25_pept[seq_len(10), ]
-#' level <- 'peptide'
-#' metacell.mask <- match.metacell(GetMetacell(obj), c("Missing POV", "Missing MEC"), level)
-#' indices <- GetIndices_WholeLine(metacell.mask)
-#' qData <- Biobase::exprs(obj)
-#' conds <- Biobase::pData(obj)[["Condition"]]
-#' heatmapD(qData, conds)
+#' @example examples/ex_mod_ds_heatmap.R
 #'
 #'
 #' @export
@@ -128,6 +120,8 @@ heatmapD <- function(vData,
 #' @export
 #'
 #' @importFrom grDevices heat.colors
+#' 
+#' @example examples/ex_mod_ds_heatmap.R
 #'
 #' @rdname heatmaps
 #'
@@ -368,15 +362,7 @@ mv.heatmap <- function(x,
 #'
 #' @author Samuel Wieczorek
 #'
-#' @examples
-#' data(Exp1_R25_prot, package="DaparToolshedData")
-#' obj <- Exp1_R25_prot[seq_len(100)]
-#' level <- 'protein'
-#' metacell.mask <- match.metacell(GetMetacell(obj), c("Missing POV", "Missing MEC"), level)
-#' indices <- GetIndices_WholeLine(metacell.mask)
-#' obj <- MetaCellFiltering(obj, indices, cmd = "delete")
-#' qData <- Biobase::exprs(obj$new)
-#' heatmapForMissingValues(qData)
+#' @example examples/ex_mod_ds_heatmap.R
 #'
 #' @export
 #'

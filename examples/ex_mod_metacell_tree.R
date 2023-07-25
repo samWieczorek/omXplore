@@ -2,10 +2,7 @@
 # Example
 #
 ui <- fluidPage(
-  tagList(
-    mod_metacell_tree_ui('tree'),
-    uiOutput('res')
-  )
+  mod_metacell_tree_ui('tree')
 )
 
 server <- function(input, output) {
@@ -14,7 +11,7 @@ server <- function(input, output) {
   )
   
   observe({
-    rv$tags <- mod_metacell_tree_server('tree', type = 'peptide')
+    rv$tags <- mod_metacell_tree_server('tree', type = reactive({'peptide'}))
   })
   
   

@@ -8,7 +8,7 @@
 #' 
 #' @return NA
 #'
-#' @example examples/example_mod_ds_metacell.R
+#' @example examples/ex_mod_ds_metacell.R
 #'
 NULL
 

@@ -2,10 +2,18 @@
 % Please edit documentation in R/utils.R
 \name{BuildExampleDataset}
 \alias{BuildExampleDataset}
-\title{xxx}
+\title{Example dataset}
 \usage{
-BuildExampleDataset(type)
+BuildExampleDataset(type = "QFeatures")
+}
+\arguments{
+\item{type}{A 'character(1)' which is the type of original dataset to build an example from.
+Available values are 'QFeatures' (default value), 'MSnbase' and 'list'.}
 }
 \description{
-xxx
+This function builds an example dataset as an instance of the class
+'VizClass', which is the format to be used with functions in the DaparViz package.
+}
+\author{
+Samuel Wieczorek
 }

@@ -14,7 +14,18 @@
 \usage{
 \S4method{show}{VizData}(object)
 
-\S4method{initialize}{VizData}(.Object, qdata, metacell, metadata, colID, conds, type, adjMat, cc)
+\S4method{initialize}{VizData}(
+  .Object,
+  qdata,
+  metacell,
+  metadata,
+  colID,
+  proteinID,
+  conds,
+  type,
+  adjMat,
+  cc
+)
 
 \S4method{Convert2VizList}{QFeatures}(object)
 

@@ -10,7 +10,9 @@ mod_ds_seExplorer_ui(id)
 
 mod_ds_seExplorer_server(
   id,
-  vData,
+  vizData = reactive({
+     NULL
+ }),
   digits = reactive({
      3
  })

@@ -8,6 +8,8 @@
 #' the results.
 #'
 #' @importFrom stats na.omit
+#' 
+#' @example examples/ex_mod_ds_pca.R
 #'
 #' @export
 #'

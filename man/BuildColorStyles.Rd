@@ -7,7 +7,7 @@
 BuildColorStyles(vizData)
 }
 \arguments{
-\item{obj}{xx}
+\item{vizData}{An instance of the class 'VizData'}
 }
 \description{
 xxxx

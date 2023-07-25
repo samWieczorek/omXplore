@@ -47,15 +47,29 @@ class \code{MSnSet}. For more information, please refer to the help
 of the heatmap.2 function.
 }
 \examples{
-data(Exp1_R25_prot, package="DaparToolshedData")
-obj <- Exp1_R25_prot[seq_len(100)]
-level <- 'protein'
-metacell.mask <- match.metacell(GetMetacell(obj), c("Missing POV", "Missing MEC"), level)
-indices <- GetIndices_WholeLine(metacell.mask)
-obj <- MetaCellFiltering(obj, indices, cmd = "delete")
-qData <- Biobase::exprs(obj$new)
-heatmapForMissingValues(qData)
 
+vList <- BuildExampleDataset('MSnbase')
+vData <- vList@ll.vizData[[1]]
+heatmapD(vData)
+mv.heatmap(vData@qdata)
+
+#------------------------------------------
+# Shiny module
+#------------------------------------------
+
+
+ui <- mod_ds_heatmap_ui("plot")
+
+server <- function(input, output, session) {
+  
+  vList <- BuildExampleDataset('MSnbase')
+  vData <- vList@ll.vizData[[1]]
+  
+  mod_ds_heatmap_server("plot",
+                        reactive({vData})
+  )
+  }
+shinyApp(ui = ui, server = server)
 }
 \author{
 Samuel Wieczorek

@@ -11,6 +11,8 @@
 #' is 'Set1'.
 #'
 #' @return A violinplot
+#' 
+#' @example examples/ex_mod_ds_intensity.R
 #'
 #'
 #' @importFrom grDevices colorRampPalette

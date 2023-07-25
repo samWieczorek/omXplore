@@ -17,7 +17,9 @@
 #' @param showValues A logical that indicates whether numeric values should be
 #' drawn above the bars.
 #' @return A bar plot
+#' 
 #' @author Florence Combes, Samuel Wieczorek
+#' 
 #' @example examples/ex_metacell_plots.R
 #' 
 #' @name metacell-plots

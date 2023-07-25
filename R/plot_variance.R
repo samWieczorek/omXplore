@@ -4,6 +4,8 @@
 #' @importFrom stats var
 #'
 #' @export
+#' 
+#' @example examples/ex_mod_ds_variance.R
 #'
 #' @rdname plot-variance
 #' 

@@ -14,6 +14,7 @@
 #'
 #' @export
 #' 
+#' @example examples/ex_mod_ds_corrmatrix.R
 #' @return NA
 #'
 #' @rdname corrmatrix
