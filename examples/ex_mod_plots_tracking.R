@@ -8,7 +8,7 @@ options(shiny.fullstacktrace = TRUE)
 
 
 ui <- fluidPage(
-  actionButton('reset', "Reset"),
+  
   mod_plots_tracking_ui("tracker")
 )
 
@@ -40,16 +40,10 @@ server <- function(input, output, session) {
   
   
   
-  res <- mod_plots_tracking_server("tracker",
-                            vizData = reactive({vData}),
-                            params = reactive({NULL}),
-                            reset = reactive({input$reset})
-                            )
+  indices <- mod_plots_tracking_server("tracker", vizData = reactive({vData}))
   
   observe({
-    print('-------------------------------------------------')
-    print(res())
-    print('-------------------------------------------------\n\n')
+    print(indices())
     
   })
 }

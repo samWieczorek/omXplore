@@ -55,19 +55,12 @@ metacellHisto_HC(
 
 \item{detailed}{'value' or 'percent'}
 
-\item{indLegend}{The indices of the column name's in \code{Biobase::pData()}
-tab}
+\item{indLegend}{xxx}
 
 \item{showValues}{A logical that indicates whether numeric values should be
 drawn above the bars.}
 
-\item{qdata}{An instance of the class \code{SummarizedExperiment}}
-
-\item{metacell}{xxx}
-
-\item{type}{xxx}
-
-\item{design}{xxx}
+\item{VizData}{An instance of the class \code{VizData}}
 }
 \value{
 NA
@@ -148,11 +141,11 @@ metacellHisto_HC(vData, pattern = "Quantified")
 metacellHisto_HC(vData, pattern = "Quant. by direct id")
 metacellHisto_HC(vData, pattern = "Quant. by recovery")
 metacellHisto_HC(vData, pattern = c("Quantified", "Quant. by direct id", "Quant. by recovery"))
-data(ft, package="DaparToolshed")
+data(Exp1_R25_pept, package = 'DaparToolshedData')
+vData <- convert2viz(Exp1_R25_pept)
 pattern <- "Missing POV"
 pal <- ExtendPalette(2, "Dark2")
-vizData <- Convert2VizData(ft, 1)
-metacellHisto_HC(vizData, pattern, showValues = TRUE, pal = pal)
+metacellHisto_HC(vData@ll.vizData[[1]], pattern, showValues = TRUE, pal = pal)
 
 }
 \author{

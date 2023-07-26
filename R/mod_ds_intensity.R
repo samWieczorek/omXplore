@@ -16,30 +16,17 @@ NULL
 #' @import shiny
 #' @import shinyjs
 #' @importFrom stats setNames
-#'
-#' @return NA
 #' @export
 #' @rdname intensity-plots
 mod_ds_intensity_ui <- function(id) {
     ns <- NS(id)
     tagList(
         shinyjs::useShinyjs(),
-        tags$div(
-            tags$div(style = "display:inline-block; vertical-align: middle;",
-                uiOutput(ns("box_ui")),
-                uiOutput(ns("violin_ui"))
-            ),
-            tags$div(
-                style = "display:inline-block; vertical-align: middle;",
-                selectInput(ns("choosePlot"),
-                    "Choose plot",
-                    choices = setNames(nm = c("violin", "box")),
-                    width = "100px"
-                ),
-                mod_seTracker_ui(ns("tracker"))
-            )
+        radioButtons(ns("choosePlot"), "",
+                    choices = setNames(nm = c("violin", "box"))),
+        highchartOutput(ns("box")),
+        shinyjs::hidden(imageOutput(ns("violin")))
         )
-    )
 }
 
 
@@ -53,41 +40,33 @@ mod_ds_intensity_ui <- function(id) {
 #'
 #' @return NA
 #'
-mod_ds_intensity_server <- function(id, vizData) {
+mod_ds_intensity_server <- function(id, 
+                                    vizData, 
+                                    track.indices = reactive({NULL})
+                                    ) {
     
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
 
-        indices <- reactiveVal()
-
-        indices <- mod_seTracker_server("tracker",
-                                        vizData = reactive({vizData()})
-                                        )
-
-        output$box_ui <- renderUI({
-            if (input$choosePlot == "box") {
-              highcharter::highchartOutput(ns("box"))
-            } else {
-                hidden(highcharter::highchartOutput(ns("box")))
-            }
+        
+        observeEvent(input$choosePlot, {
+          shinyjs::toggle('violin', condition = input$choosePlot == "violin")
+          shinyjs::toggle('box', condition = input$choosePlot == "box")
         })
-
+        
         output$box <- renderHighchart({
-            withProgress(message = "Making plot", value = 100, {
-                tmp <- boxPlot(data = vizData()@qdata, 
-                               conds = vizData()@conds, 
-                               subset = indices())
-            })
+            #withProgress(message = "Making plot", value = 100, {
+                boxPlot(data = vizData()@qdata, 
+                        conds = vizData()@conds, 
+                        subset = track.indices())
+                
+           # })
+          
         })
 
 
-        output$violin_ui <- renderUI({
-            if (input$choosePlot == "violin") {
-                imageOutput(ns("violin"))
-            } else {
-                hidden(imageOutput(ns("violin")))
-            }
-        })
+        
+        
 
         output$violin <- renderImage(
             {
@@ -101,7 +80,7 @@ mod_ds_intensity_server <- function(id, vizData) {
                     pattern <- paste0("test", ".violinplot")
                     tmp <- violinPlot(data = as.matrix(vizData()@qdata), 
                                       conds = vizData()@conds, 
-                                      subset = indices())
+                                      subset = track.indices())
                     # future(createPNGFromWidget(tmp,pattern))
                     dev.off()
                 })

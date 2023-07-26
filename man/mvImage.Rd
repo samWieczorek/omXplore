@@ -23,9 +23,9 @@ The lines have been sorted in order to vizualize easily the different
 number of missing values. A white square is plotted for missing values.
 }
 \examples{
-data(ft, package="DaparToolshed")
-vizData <- Convert2VizData(ft, 1)
-mvImage(vizData)
+data(Exp1_R25_pept, package = 'DaparToolshedData')
+vData <- convert2viz(Exp1_R25_pept)
+mvImage(vData@ll.vizData[[1]])
 
 }
 \author{

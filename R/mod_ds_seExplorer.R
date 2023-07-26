@@ -1,4 +1,4 @@
-#' @title Explore a `SummarizedExperiment` object
+#' @title Explore a `VizClass` object
 #'
 #' @description
 #' xxxx
@@ -35,7 +35,7 @@ mod_ds_seExplorer_ui <- function(id) {
 }
 
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param se An instance of the class `SummarizedExperiment`
+#' @param se An instance of the class `VizData`
 #' @param digits xxx
 #'
 #'

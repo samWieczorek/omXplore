@@ -73,7 +73,7 @@ mod_metacell_tree_server <- function(id,
     }
     
     
-   
+   require('DaparToolshed')
     
     convertWidgetName <- function(name){
         # This function implements the transformations used to

@@ -23,8 +23,9 @@ The lines have been sorted in order to vizualize easily the different
 number of missing values. A white square is plotted for missing values.
 }
 \examples{
-data(ft, package="DaparToolshed")
-vizData <- Convert2VizData(ft, 1)
+#' data(Exp1_R25_pept, package = 'DaparToolshedData')
+vData <- convert2viz(Exp1_R25_pept)
+obj <- vData@ll.vizData[[1]]
 metacell.mask <- match.metacell(GetMetacell(obj), c("Missing POV", "Missing MEC"), level)
 indices <- GetIndices_WholeMatrix(metacell.mask, op = ">=", th = 1)
 obj <- MetaCellFiltering(obj, indices, cmd = "delete")

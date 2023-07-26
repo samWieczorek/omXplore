@@ -12,7 +12,13 @@ numeric matrix.}
 \usage{
 mod_ds_intensity_ui(id)
 
-mod_ds_intensity_server(id, vizData)
+mod_ds_intensity_server(
+  id,
+  vizData,
+  track.indices = reactive({
+     NULL
+ })
+)
 
 boxPlot(data, conds, subset = NULL, pal.name = NULL)
 
@@ -36,8 +42,6 @@ package \link{RColorBrewer} from which the colors are taken. Default value
 is 'Set1'.}
 }
 \value{
-NA
-
 NA
 
 A boxplot
@@ -64,19 +68,28 @@ boxPlot(vData@qdata, vData@conds, subset = c(2, 4))
 # Shiny module
 #------------------------------------------
 
-ui <- mod_ds_intensity_ui("iplot")
+ui <- fluidPage(
+  tagList(
+    mod_plots_tracking_ui('tracker'),
+    mod_ds_intensity_ui("iplot")
+  )
+)
 
 server <- function(input, output, session) {
   data(ft, package='DaparToolshed')
   vList <- convert2viz(ft)
   vData <- vList@ll.vizData[[1]]
   
+  indices <- mod_plots_tracking_server("tracker", 
+                                       vizData = reactive({vData}))
+  
   mod_ds_intensity_server("iplot",
-                          vizData = reactive({vData})
+                          vizData = reactive({vData}),
+                          track.indices = reactive({indices()})
                           )
     }
 
-    shinyApp(ui = ui, server = server)
+shinyApp(ui = ui, server = server)
 
 vList <- BuildExampleDataset('MSnbase')
 vData <- vList@ll.vizData[[1]]
@@ -93,19 +106,28 @@ boxPlot(vData@qdata, vData@conds, subset = c(2, 4))
 # Shiny module
 #------------------------------------------
 
-ui <- mod_ds_intensity_ui("iplot")
+ui <- fluidPage(
+  tagList(
+    mod_plots_tracking_ui('tracker'),
+    mod_ds_intensity_ui("iplot")
+  )
+)
 
 server <- function(input, output, session) {
   data(ft, package='DaparToolshed')
   vList <- convert2viz(ft)
   vData <- vList@ll.vizData[[1]]
   
+  indices <- mod_plots_tracking_server("tracker", 
+                                       vizData = reactive({vData}))
+  
   mod_ds_intensity_server("iplot",
-                          vizData = reactive({vData})
+                          vizData = reactive({vData}),
+                          track.indices = reactive({indices()})
                           )
     }
 
-    shinyApp(ui = ui, server = server)
+shinyApp(ui = ui, server = server)
 }
 \author{
 Samuel Wieczorek, Anais Courtier, Enora Fremy

@@ -31,10 +31,10 @@ whereas the y-axis count the number of observed values for this entity
 and the considered condition.
 }
 \examples{
-data(ft, package="DaparToolshed")
-vizData <- Convert2VizData(ft, 1)
-pal <- ExtendPalette(length(unique(vizData@conds)), "Dark2")
-hc_mvTypePlot2(vizData, pattern = "Missing MEC", title = "POV distribution", pal = pal)
+data(Exp1_R25_pept, package = 'DaparToolshedData')
+vData <- convert2viz(Exp1_R25_pept)
+pal <- ExtendPalette(length(unique(vData@ll.vizData[[1]]@conds)), "Dark2")
+hc_mvTypePlot2(vData@ll.vizData[[1]], pattern = "Missing MEC", title = "POV distribution", pal = pal)
 
 }
 \author{

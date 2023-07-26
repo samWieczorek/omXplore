@@ -50,6 +50,7 @@ mod_colorLegend_server <- function(id,
       if (!requireNamespace("DaparToolshed", quietly = TRUE)) {
         stop("Please install DaparToolshed: BiocManager::install('DaparToolshed')")
       }
+      require('DaparToolshed')
       
       output$legend <- renderUI({
          req(presentTags)

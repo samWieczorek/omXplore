@@ -4,7 +4,7 @@
 \alias{SE-explorer}
 \alias{mod_ds_seExplorer_ui}
 \alias{mod_ds_seExplorer_server}
-\title{Explore a \code{SummarizedExperiment} object}
+\title{Explore a \code{VizClass} object}
 \usage{
 mod_ds_seExplorer_ui(id)
 
@@ -23,7 +23,7 @@ mod_ds_seExplorer_server(
 
 \item{digits}{xxx}
 
-\item{se}{An instance of the class \code{SummarizedExperiment}}
+\item{se}{An instance of the class \code{VizData}}
 }
 \value{
 NA

@@ -6,14 +6,10 @@
 #' This method plots a bar plot which represents the distribution of the
 #' number of missing values (NA) per lines (ie proteins).
 #'
-#' @param qdata An instance of the class `SummarizedExperiment`
-#' @param metacell xxx
-#' @param type xxx
-#' @param design xxx
+#' @param VizData An instance of the class `VizData`
 #' @param pattern xxx
 #' @param detailed 'value' or 'percent'
-#' @param indLegend The indices of the column name's in \code{Biobase::pData()} 
-#' tab
+#' @param indLegend xxx
 #' @param showValues A logical that indicates whether numeric values should be
 #' drawn above the bars.
 #' @return A bar plot
@@ -36,12 +32,7 @@ metacellPerLinesHisto_HC <- function(vizData,
                                      detailed = FALSE,
                                      indLegend = "auto",
                                      showValues = FALSE) {
-  # if (missing(object)) {
-  #   stop("'object' is missing.")
-  # } else if (is.null(object)) {
-  #   stop("'object' is NULL. Abort...")
-  # }
-  #stopifnot(inherits(object, "SummarizedExperiment"))
+  stopifnot(inherits(vizData, "VizData"))
   
   if(missing(pattern) || is.null(pattern))
     return(NULL)
@@ -117,12 +108,7 @@ metacellPerLinesHistoPerCondition_HC <- function(vizData,
                                                  indLegend = "auto",
                                                  showValues = FALSE,
                                                  pal = NULL) {
-  # if (missing(object)) {
-  #   stop("'object' is missing.")
-  # } else if (is.null(object)) {
-  #   stop("'object' is NULL. Abort...")
-  # }
-  # stopifnot(inherits(object, "SummarizedExperiment"))
+  stopifnot(inherits(vizData, "VizData"))
   
   if(missing(pattern) || is.null(pattern))
     return(NULL)
@@ -221,11 +207,11 @@ metacellPerLinesHistoPerCondition_HC <- function(vizData,
 #' @import highcharter
 #'
 #' @examples
-#' data(ft, package="DaparToolshed")
+#' data(Exp1_R25_pept, package = 'DaparToolshedData')
+#' vData <- convert2viz(Exp1_R25_pept)
 #' pattern <- "Missing POV"
 #' pal <- ExtendPalette(2, "Dark2")
-#' vizData <- Convert2VizData(ft, 1)
-#' metacellHisto_HC(vizData, pattern, showValues = TRUE, pal = pal)
+#' metacellHisto_HC(vData@ll.vizData[[1]], pattern, showValues = TRUE, pal = pal)
 #'
 #' @export
 #'
@@ -234,15 +220,11 @@ metacellHisto_HC <- function(vizData,
                              indLegend = "auto",
                              showValues = FALSE,
                              pal = NULL) {
-  # if (missing(object)) {
-  #   stop("'object' is missing.")
-  # } else if (is.null(object)) {
-  #   stop("'object' is NULL. Abort...")
-  # }
+  stopifnot(inherits(vizData, "VizData"))
+  
   if(missing(pattern) || is.null(pattern))
     return(NULL)
   
-  #stopifnot(inherits(object, "SummarizedExperiment"))
   
   u_conds <- unique(vizData@conds)
   myColors <- NULL
@@ -319,8 +301,9 @@ metacellHisto_HC <- function(vizData,
 #' @return A heatmap
 #' @author Alexia Dorffer
 #' @examples
-#' data(ft, package="DaparToolshed")
-#' vizData <- Convert2VizData(ft, 1)
+#' #' data(Exp1_R25_pept, package = 'DaparToolshedData')
+#' vData <- convert2viz(Exp1_R25_pept)
+#' obj <- vData@ll.vizData[[1]]
 #' metacell.mask <- match.metacell(GetMetacell(obj), c("Missing POV", "Missing MEC"), level)
 #' indices <- GetIndices_WholeMatrix(metacell.mask, op = ">=", th = 1)
 #' obj <- MetaCellFiltering(obj, indices, cmd = "delete")
@@ -376,9 +359,9 @@ wrapper.mvImage <- function(vizData, pattern = "Missing MEC") {
 #' @return A heatmap
 #' @author Samuel Wieczorek, Thomas Burger
 #' @examples
-#' data(ft, package="DaparToolshed")
-#' vizData <- Convert2VizData(ft, 1)
-#' mvImage(vizData)
+#' data(Exp1_R25_pept, package = 'DaparToolshedData')
+#' vData <- convert2viz(Exp1_R25_pept)
+#' mvImage(vData@ll.vizData[[1]])
 #'
 #' @export
 #'
@@ -459,10 +442,10 @@ mvImage <- function(vizData) {
 #' @author Samuel Wieczorek
 #'
 #' @examples
-#' data(ft, package="DaparToolshed")
-#' vizData <- Convert2VizData(ft, 1)
-#' pal <- ExtendPalette(length(unique(vizData@conds)), "Dark2")
-#' hc_mvTypePlot2(vizData, pattern = "Missing MEC", title = "POV distribution", pal = pal)
+#' data(Exp1_R25_pept, package = 'DaparToolshedData')
+#' vData <- convert2viz(Exp1_R25_pept)
+#' pal <- ExtendPalette(length(unique(vData@ll.vizData[[1]]@conds)), "Dark2")
+#' hc_mvTypePlot2(vData@ll.vizData[[1]], pattern = "Missing MEC", title = "POV distribution", pal = pal)
 #'
 #' @import highcharter
 #'

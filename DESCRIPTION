@@ -18,7 +18,7 @@ Description: This package contains a collection of functions (shiny modules)
     for the visualisation and the statistical analysis of proteomic data. These
     plots can be displayed individually or embedded in a global Shiny module.
 License: Artistic-2.0
-Depends: R (>= 4.3.0), DaparToolshed
+Depends: R (>= 4.3.0)
 Imports:
     DT,
     RColorBrewer,
@@ -31,7 +31,8 @@ Imports:
     grDevices,
     stats,
     utils,
-    htmlwidgets
+    htmlwidgets,
+    DaparToolshed
 biocViews: 
     Proteomics,
     Normalization,
@@ -50,7 +51,6 @@ Collate:
     VizList_Class.R
     plots_volcano.R
     adjacencyMatrixInfos.R
-    ConnectedComps.R
     plots_compare_assays.R
     global.R
     mod_view_dataset.R
@@ -71,7 +71,6 @@ Collate:
     plot_variance.R
     plot_density.R
     plot_heatmap.R
-    plots_mv_for_impute.R
     plot_pca.R
     plot_metacell.R
     plot_violin.R
@@ -93,6 +92,8 @@ Suggests:
     BiocStyle,
     testthat,
     MSnbase,
+    DAPARdata,
+    DaparToolshedData,
     QFeatures,
     PSMatch,
     Matrix,
