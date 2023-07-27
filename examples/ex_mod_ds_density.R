@@ -1,3 +1,6 @@
+library(MSnbase)
+library(shiny)
+
 vList <- BuildExampleDataset('MSnbase')
 vData <- vList@ll.vizData[[1]]
 
@@ -9,7 +12,7 @@ densityPlot(vData@qdata, conds = vData@conds)
 #------------------------------------------
 
 
-ui <- shinyUI(mod_ds_density_ui("plot"))
+ui <- fluidPage(mod_ds_density_ui("plot"))
 
 server <- shinyServer(function(input, output, session) {
   vList <- BuildExampleDataset('MSnbase')
@@ -17,4 +20,5 @@ server <- shinyServer(function(input, output, session) {
   mod_ds_density_server("plot", vizData = reactive({vData}))
   })
 
-shinyApp(ui, server)
+if (interactive())
+  shinyApp(ui, server)

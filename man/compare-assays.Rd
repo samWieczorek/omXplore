@@ -5,9 +5,9 @@
 \title{Compare two assays}
 \usage{
 plotCompareAssays(
-  assay1,
-  assay2,
-  conds,
+  vList,
+  i,
+  j,
   info = NULL,
   pal.name = NULL,
   subset.view = NULL,
@@ -17,13 +17,12 @@ plotCompareAssays(
 )
 }
 \arguments{
-\item{assay1}{A numeric matrix containing quantitative data before
+\item{vList}{An instance of the class \code{VizList}.}
+
+\item{i}{A numeric matrix containing quantitative data after
 normalization.}
 
-\item{assay2}{A numeric matrix containing quantitative data after
-normalization.}
-
-\item{conds}{A vector of the conditions (one condition per sample).}
+\item{j}{xxx}
 
 \item{info}{xxx}
 
@@ -33,7 +32,7 @@ normalization.}
 
 \item{n}{xxx}
 
-\item{type}{scatter or line}
+\item{type}{The type of plot. Available values are 'scatter' (default) or 'line'}
 
 \item{FUN}{xxx}
 }
@@ -48,16 +47,9 @@ process.
 The comparison is made with the division operator.
 }
 \examples{
-data(ft, package='DaparViz')
-assay1 <- assay(ft, 1)
-assay2 <- 3 * assay(ft, 1)
-conds <- colData(ft)$Condition
-
-## -----------------------------------------------------------------
-##
-## -----------------------------------------------------------------
-
-plotCompareAssays(assay1, assay2, conds, n = 5)
+data(Exp1_R25_prot, package='DaparToolshedData')
+vList <- convert2viz(Exp1_R25_prot)
+plotCompareAssays(vList, 1, 1, n = 5)
 
 }
 \author{

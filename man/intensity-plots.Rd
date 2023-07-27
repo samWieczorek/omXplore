@@ -29,6 +29,8 @@ violinPlot(data, conds, subset = NULL, pal.name)
 
 \item{vizData}{A instance of the class \code{VizData}}
 
+\item{track.indices}{xxx}
+
 \item{data}{An instance of the class \code{matrix}}
 
 \item{conds}{A \code{character()} of the name of conditions
@@ -52,6 +54,8 @@ A violinplot
 xxxx
 }
 \examples{
+library(shiny)
+
 
 vList <- BuildExampleDataset('MSnbase')
 vData <- vList@ll.vizData[[1]]
@@ -89,7 +93,10 @@ server <- function(input, output, session) {
                           )
     }
 
-shinyApp(ui = ui, server = server)
+if (interactive())
+  shinyApp(ui = ui, server = server)
+library(shiny)
+
 
 vList <- BuildExampleDataset('MSnbase')
 vData <- vList@ll.vizData[[1]]
@@ -127,7 +134,8 @@ server <- function(input, output, session) {
                           )
     }
 
-shinyApp(ui = ui, server = server)
+if (interactive())
+  shinyApp(ui = ui, server = server)
 }
 \author{
 Samuel Wieczorek, Anais Courtier, Enora Fremy

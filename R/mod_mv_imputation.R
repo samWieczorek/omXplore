@@ -28,45 +28,17 @@
 #' @name plot-mv
 #' @return A plot
 #'
+#' @param id A `character(1)` which is the 'id' of the shiny module.
+#' @param vData An instance of a class `VizData`.
+#' @param pal.name  A `character(1)` which is the name of the palette (from
+#' the package [RColorBrewer] to use.
 #' @author Samuel Wieczorek, Enora Fremy
 #'
-#' @examples
-#' data(ft_na, package='DaparViz')
-#' data <- assay(ft_na, 1)
-#' conds <- colData(ft_na)$Condition
-#'
-#' #-----------------------------
-#' # xxx
-#' #-----------------------------
-#'
-#' mv.density(ft_na[[1]], conds, pattern = "missing MEC")
-#'
-#' mv.mec.heatmap(ft_na[[1]], conds)
-#'
-#' #-----------------------------
-#' # xxx
-#' #-----------------------------
-#'
-#' if (interactive()) {
-#'     data(ft_na, package='DaparViz')
-#'
-#'     ui <- mod_mv_imputation_ui("plot")
-#'
-#'     server <- function(input, output, session) {
-#'         mod_mv_imputation_server("plot",
-#'             se = reactive({
-#'                 ft_na[[1]]
-#'             }),
-#'             conds = colData(ft_na)$Condition
-#'         )
-#'     }
-#'
-#'     shinyApp(ui = ui, server = server)
-#' }
+#' @example example/ex_mod_mv_imputation.R
+#' 
 NULL
 
 
-#' @param id A `character(1)` which is the id of the shiny module.
 #' @rdname plot-mv
 #' @export
 #' @importFrom shiny NS tagList plotOutput
@@ -77,67 +49,48 @@ mod_mv_imputation_ui <- function(id) {
     tagList(
         tags$div(
             tags$div(
-                style = "display:inline-block; vertical-align: top;
-                       padding-right: 20px;",
+                style = "display:inline-block; vertical-align: top; padding-right: 20px;",
                 highcharter::highchartOutput(ns("nabyMean_ui"), width = "600px")
             ),
             tags$div(
-                style = "display:inline-block; vertical-align: top;
-                       padding-right: 20px;",
+                style = "display:inline-block; vertical-align: top; padding-right: 20px;",
                 plotOutput(ns("imageNA_ui"), width = "600px")
             )
         )
     )
 }
 
-#' @param id A `character(1)` which is the 'id' of the shiny module.
-#' @param se An instance of a class `SummarizedExperiment`.
-#' @param conds A `character()` of the name of conditions
-#' (one condition per sample). The number of conditions must be equal to
-#' the number of samples (number of columns) of [assay(se)].
-#' @param pal.name  A `character(1)` which is the name of the palette (from
-#' the package [RColorBrewer] to use.
 #'
 #' @rdname plot-mv
 #' @export
 #' @importFrom highcharter renderHighchart
 #'
 mod_mv_imputation_server <- function(id,
-    se = reactive({NULL}),
-    conds = NULL,
-    pal.name = reactive({NULL})) {
+                                     vData = reactive({NULL}),
+                                     pal.name = reactive({NULL})) {
     
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
 
         # Initialisation of the module
         observe({
-            req(se())
-            stopifnot(inherits(se(), "SummarizedExperiment"))
+            stopifnot(inherits(vData(), "VizData"))
         })
 
 
         output$nabyMean_ui <- renderHighchart({
-            req(se())
+            req(vData())
 
             withProgress(message = "Making MV Intensity plot", value = 100, {
-                mv.density(
-                    se = assay(se()),
-                    conds = conds,
-                    pal.name = pal.name(),
-                    pattern = "missing POV"
-                )
+              hc_mvTypePlot2(vizData = vData(), pattern = "Missing POV")
             })
         })
 
 
         output$imageNA_ui <- renderPlot({
-            req(se())
+            req(vData())
             withProgress(message = "Making MV Heatmap plot", value = 100, {
-                mv.mec.heatmap(
-                    se = se(),
-                    conds = conds
-                )
+                mv.image(vizData = vData())
             })
         })
     })

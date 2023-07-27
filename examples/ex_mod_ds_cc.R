@@ -15,4 +15,5 @@ server <- function(input, output, session) {
   mod_ds_cc_server("plot", reactive({vData}))
 }
 
-shinyApp(ui = ui, server = server)
+if (interactive())
+  shinyApp(ui = ui, server = server)

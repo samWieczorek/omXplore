@@ -22,7 +22,7 @@ mod_view_dataset_server(
 \item{id}{A \code{character(1)} for the 'id' of the shiny module. It must be
 the same as for the '*_ui' function.}
 
-\item{object}{A instance of the class \code{QFeatures}.}
+\item{ll.vizData}{A instance of the class \code{VizList}.}
 }
 \value{
 A plot
@@ -61,69 +61,51 @@ number of missing values (NA) per lines (ie proteins) and per conditions,
 }
 
 \examples{
-data(ft, package='DaparViz')
-data(ft_na, package='DaparViz')
-
-qData <- assay(ft, 1)
-conds <- design(ft)$Condition
-pal <- "Dark2"
-
-data(ft, package='DaparViz')
-qData <- assay(ft, 1)
-conds <- design(ft)$Condition
-densityPlot(qData, conds)
-
-legend <- design(ft)$Sample.name
-densityPlot(qData, conds, pal.name = "Dark2")
-
-CVDist(qData, conds)
-
-#----------------------------------------------
-# Plots a heatmap for generic quantitative data
-#----------------------------------------------
-
-heatmapD(assay(ft, 1), conds)
-
-#----------------------------------------------
-# Plots a heatmap for missing values visualization
-#----------------------------------------------
+library(DaparViz)
+library(highcharter)
+library(MSnbase)
+library(shiny)
 
 
-#' #----------------------------------------
-# Plots a histogram of missing values
-#----------------------------------------
+options(shiny.fullstacktrace = TRUE)
 
-mvPerLinesHisto(qData)
 
-#----------------------------------------
-# Plots a histogram of missing values
-#----------------------------------------
 
-mvHisto(qData, conds, pal.name = pal)
+ui <- fluidPage(
+  mod_view_dataset_ui("dataset")
+)
 
-#----------------------------------------
-# Plots a histogram of missing values
-#----------------------------------------
 
-data(ft, package='DaparViz')
-mv.heatmap(assay(ft, 1))
-
-#----------------------------------------
-# Launch a the shiny module for all plots
-# Here, an example with the density plot
-#----------------------------------------
-
-if (interactive()) {
-data(ft, package='DaparViz')
-data(ft_na, package='DaparViz')
-ui <- mod_all_ds_ui("plot")
 
 server <- function(input, output, session) {
-    mod_all_ds_server("plot", object = reactive({ft_na}))
+  # data(Exp1_R25_prot, package='DaparToolshedData')
+  # vList <- convert2viz(ft)
+  # vList_na <- convert2viz(ft_na)
+  
+  #
+  # Example with a QFeatures dataset
+  #
+  data(Exp1_R25_pept, package='DaparToolshedData')
+  vList <- convert2viz(Exp1_R25_pept)
+  
+  #
+  # Example with a series of MSnSet datasets
+  #
+  # data(Exp1_R25_prot, package='DAPARdata')
+  # data(Exp1_R25_pept, package='DAPARdata')
+  # data(Exp1_R2_pept, package='DAPARdata')
+  # ll.tmp <- setNames(c(Exp1_R25_prot, Exp1_R25_pept, Exp1_R2_pept),
+  #                    nm = c('Exp1_R25_prot', 'Exp1_R25_pept', 'Exp1_R2_pept'))
+  # 
+  # vList <- convert2viz(ll.tmp)
+  
+  
+  
+  mod_view_dataset_server("dataset", ll.vizData = reactive({vList}))
 }
 
-shinyApp(ui, server)
-}
+if (interactive())
+  shinyApp(ui, server)
 }
 \author{
 Samuel Wieczorek, Enora Fremy

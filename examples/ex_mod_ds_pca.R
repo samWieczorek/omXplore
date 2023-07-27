@@ -1,5 +1,6 @@
 library(highcharter)
 library(DaparViz)
+library(shiny)
 
 data(Exp1_R25_pept, package='DaparToolshedData')
 vList <- convert2viz(Exp1_R25_pept)
@@ -24,4 +25,5 @@ server <- function(input, output, session) {
   mod_ds_pca_server("plot", vizData = reactive({vData}))
   }
 
-shinyApp(ui = ui, server = server)
+if (interactive())
+  shinyApp(ui = ui, server = server)

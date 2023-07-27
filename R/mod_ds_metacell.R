@@ -6,6 +6,12 @@
 #'
 #' @name metacell-plots
 #' 
+#' @param id xxx
+#' @param vizData xxx
+#' @param pal xxx
+#' @param pattern xxx
+#' @param showSelect xxx 
+#' 
 #' @return NA
 #'
 #' @example examples/ex_mod_ds_metacell.R

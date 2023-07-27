@@ -1,39 +1,47 @@
-#' @title VizData class definition
+#' @title VizData class
 #'
 #' @description
 #'
-#' This class is used to store the configuration of any process
-#' used with MagellanNTK It contains a validity function to ensure
-#' that the format is correct.
-#' 
-#' Validity:
-#' * The first step must be called 'Description', it is a mandatory step. Thus, 
-#' the first item of the mandatory vector is TRUE.
-#' To be continued...
-#' 
-#' ## Initialization
-#'  ### Generic process
+#'  Conceptually, a `VizData` object is a standard representation of all
+#'  elements from quantitative other structured data used in proteomics, such
+#'  as `MSnset` or `QFeatures`. It allows to use it as a generic converter.
 #'  
-#'  A generic process
-#'  * Generic pipeline : xxxx
-#'  * Description pipeline: This case is for a process -called 'Description' which is 
-#'  the first process module of a pipeline
+#'  `VizData` objects are not usually created by hand but are created from the `VizList` 
+#'  which is the class accessible by the user.
+#'  
+#'  The recommended way to create `VizData` objects is the use the
+#' `xxxx()` function of the class `VizList`
+#' 
+#' @params vData An instance of class [VizData]
+#' @param .Object xxx
+#' @param qdata xxx
+#' @param metacell xxx
+#' @param metadata xxx
+#' @param colID xxx
+#' @param proteinID xxx
+#' @param conds xxx
+#' @param type xxx
+#' @param adjMat xxx
+#' @param cc xxx
 #'
-#' @name Viz_Classes
+#' @name VizData-class
 #' 
 NULL
 
 
-
-
 #' @slot qdata xxx
 #' @slot metacell xxx
+#' @slot metadata xxx
+#' @slot colID xxx
+#' @slot proteinID xxx
 #' @slot conds xxx
 #' @slot type xxx
+#' @slot adjMat xxx
+#' @slot cc xxx
 #' 
 #' @example examples/ex_VizData_Class.R
 #'
-#' @rdname Viz_Classes
+#' @rdname VizData-class
 #' @export VizData
 #' @exportClass VizData
 VizData <- setClass(
@@ -92,53 +100,48 @@ VizData <- setClass(
 
 
 
-#' @title xxx
-#' @description xxx
-#' @param object xxx
-#' @rdname Viz_Classes
+
+#' @exportMethod show
+#' @rdname VizData-class
 #' 
 setMethod("show", 'VizData',
-          function(object){
-            cat(crayon::green(paste0('\tdim(qdata): ', dim(object@qdata), '\n')))
+          function(vData){
+            cat(crayon::green(paste0('\tdim(qdata): ', dim(vData@qdata), '\n')))
             
-            cat(crayon::green(paste0('\tdim(metacell): ', dim(object@metacell), '\n')))
+            cat(crayon::green(paste0('\tdim(metacell): ', dim(vData@metacell), '\n')))
             
             cat(crayon::green('\tconds: '))
-            cat(crayon::green(object@conds))
+            cat(crayon::green(vData@conds))
             cat(crayon::green('\n'))
             
             cat(crayon::green('\ttype: '))
-            cat(crayon::green(object@type))
+            cat(crayon::green(vData@type))
             cat(crayon::green('\n'))
             
             cat(crayon::green('\tcolID: '))
-            cat(crayon::green(object@colID))
+            cat(crayon::green(vData@colID))
             cat(crayon::green('\n'))
             
             cat(crayon::green('\tproteinID: '))
-            cat(crayon::green(object@proteinID))
+            cat(crayon::green(vData@proteinID))
             cat(crayon::green('\n'))
             
             cat(crayon::green('\tDimensions of adjacency matriX: '))
-            cat(crayon::green(paste0(dim(object@adjMat)[1], ' x ', dim(object@adjMat)[2])))
+            cat(crayon::green(paste0(dim(vData@adjMat)[1], ' x ', dim(vData@adjMat)[2])))
             cat(crayon::green('\n'))
             
             cat(crayon::green('\tNumber of connected components: '))
-            cat(crayon::green(length(object@cc)))
+            cat(crayon::green(length(vData@cc)))
             cat(crayon::green('\n'))
 
               }
 )
 
 #' @title Initialization method for the class `VizData`
-#' @rdname Viz_Classes
+#' @rdname VizData-class
 #' 
 setMethod("initialize" , "VizData" ,
-    #' @param .Object xxx
-    #' @param qdata xxx
-    #' @param metacell xxx
-    #' @param conds xxx
-    #' @param type xxx
+          
     function(.Object,
              qdata,
              metacell,
@@ -175,15 +178,18 @@ setMethod("initialize" , "VizData" ,
 
 
 
-#' @title xxx
-#' @description xxx
+
+
 #' @exportMethod Convert2VizList
-#' @rdname Viz_Classes
-#' @return NA
+#' 
+#' @rdname VizData-class
+#' 
 setMethod("Convert2VizList", signature = "QFeatures",
+          
   function(object) {
     require(PSMatch)
     require(QFeatures)
+    
     ll <- list()
     for (i in 1:length(object)){
       metacell.backup <- qMetacell(object[[i]])
@@ -227,11 +233,15 @@ setMethod("Convert2VizList", signature = "QFeatures",
 
 
 
-#' @title xxx
-#' @description xxx
-#' @export Convert2VizData
-#' @return An instance of 'VizData' class
+
+
+#' @exportMethod Convert2VizData
+#' 
+#' @rdname VizData-class
+#' 
 setMethod("Convert2VizData", signature = "MSnSet",
+          #' @param object xxx
+          #' @param ... xxx
   function(object, ...) {
     require(MSnbase)
     X <- matrix()
@@ -259,11 +269,15 @@ setMethod("Convert2VizData", signature = "MSnSet",
   }
 )
 
-#' @title xxx
-#' @description xxx
-#' @export Convert2VizData
-#' @return An instance of 'VizData' class
+
+
+
+#' @rdname VizData-class
+#' 
 setMethod("Convert2VizData", signature = "list",
+          #' @param object xxx
+          #' @param ... xxxx
+          
           function(object, ...) {
             new(Class ="VizData",
                 qdata = object$qdata,
@@ -282,6 +296,7 @@ setMethod("Convert2VizData", signature = "list",
 
 #' @title xxx
 #' @description xxx
+#' @param ll xxx
 CheckClass <- function(ll){
   ll.class <- NULL
   if (inherits(ll, 'QFeatures'))
@@ -297,6 +312,10 @@ CheckClass <- function(ll){
 }
 
 
+#' @title xxx
+#' @description xxx
+#' @param obj xxx
+#' @rdname VizData-class
 #' @export
 convert2viz <- function(obj){
   # Checks if each item is an instance of 'MSnSet' class

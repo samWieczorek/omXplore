@@ -30,12 +30,14 @@ A plot
 Display a CC
 }
 \examples{
+\dontrun{
 data(Exp1_R25_pept, package="DAPARdata")
 obj <- Exp1_R25_pept[seq_len(100)]
 X <- BuildAdjacencyMatrix(obj, "Protein_group_IDs", FALSE)
 ll <- get.pep.prot.cc(X)
 g <- buildGraph(ll[[1]], X)
 display.CC.visNet(gg)
+}
 
 }
 \author{

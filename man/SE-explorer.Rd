@@ -21,13 +21,13 @@ mod_ds_seExplorer_server(
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
-\item{digits}{xxx}
+\item{vizData}{An instance of the class \code{VizData}}
 
-\item{se}{An instance of the class \code{VizData}}
+\item{digits}{xxx}
 }
 \value{
 NA
 }
 \description{
-xxxx
+Explore a \code{VizClass} object
 }

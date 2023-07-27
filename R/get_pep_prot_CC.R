@@ -11,11 +11,13 @@
 #' @author Thomas Burger
 #'
 #' @examples
+#' \dontrun{
 #' data(Exp1_R25_pept, package="DAPARdata")
 #' obj <- Exp1_R25_pept[seq_len(100)]
 #' X <- BuildAdjacencyMatrix(obj, "Protein_group_IDs", TRUE)
 #' ll <- get.pep.prot.cc(X)
 #' plotJitter(ll)
+#' }
 #'
 #' @export
 #'
@@ -54,20 +56,19 @@ plotJitter <- function(list.of.cc = NULL) {
 
 #' @title Display a CC
 #'
-#' @param The.CC A cc (a list)
-#'
-#' @param X xxxxx
-#'
+#' @param cc A cc (a list)
 #' @return A plot
 #'
 #' @author Thomas Burger, Samuel Wieczorek
 #'
 #' @examples
+#' \dontrun{
 #' data(Exp1_R25_pept, package="DAPARdata")
 #' obj <- Exp1_R25_pept[seq_len(100)]
 #' X <- BuildAdjacencyMatrix(obj, "Protein_group_IDs", FALSE)
 #' ll <- get.pep.prot.cc(X)
 #' g <- buildGraph(ll[[1]], X)
+#' }
 #'
 #' @export
 #'
@@ -126,12 +127,14 @@ buildGraph <- function(cc) {
 #' @author Thomas Burger, Samuel Wieczorek
 #'
 #' @examples
+#' \dontrun{
 #' data(Exp1_R25_pept, package="DAPARdata")
 #' obj <- Exp1_R25_pept[seq_len(100)]
 #' X <- BuildAdjacencyMatrix(obj, "Protein_group_IDs", FALSE)
 #' ll <- get.pep.prot.cc(X)
 #' g <- buildGraph(ll[[1]], X)
 #' display.CC.visNet(gg)
+#' }
 #'
 #' @export
 #'
@@ -182,6 +185,7 @@ display.CC.visNet <- function(g,
 #' @export
 #' 
 #' @examples 
+#' \dontrun{
 #' data(Exp1_R25_pept, package="DAPARdata")
 #' obj <- Exp1_R25_pept[seq_len(100)]
 #' X <- BuildAdjacencyMatrix(obj, "Protein_group_IDs", TRUE)
@@ -194,6 +198,7 @@ display.CC.visNet <- function(g,
 #' index = seq_len(length(ll))
 #' )
 #' plotJitter_rCharts(df)
+#' }
 #'
 plotJitter_rCharts <- function(df, clickFunction = NULL) {
   xtitle <- "TO DO"

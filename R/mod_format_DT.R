@@ -15,9 +15,10 @@
 #' * cols: a vector of colnames of columns to show,
 #' * vals: a vector of colnames of columns that contain values,
 #' * unique: unique(conds),
-#' * pal: RColorBrewer::brewer.pal(3, "Dark2")[seq_len(2)]
+#' * pal: xxxxx
 #' @param filename xxx
 #' @param hideCols xxx
+#' @param selection xxx
 #'
 #' @name mod_format_DT
 #' 

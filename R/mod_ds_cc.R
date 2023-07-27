@@ -9,11 +9,8 @@
 #'
 #' @return NA
 #'
-#' @name connected-components
+#' @name connected_components
 #'
-#' @examples
-#'
-#' xxx
 #'
 NULL
 
@@ -25,6 +22,7 @@ NULL
 #'
 #' @export
 #' @rdname connected_components
+#' 
 mod_ds_cc_ui <- function(id) {
   require(visNetwork)
   require(shinyBS)

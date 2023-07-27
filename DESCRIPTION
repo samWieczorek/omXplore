@@ -94,7 +94,6 @@ Suggests:
     MSnbase,
     DAPARdata,
     DaparToolshedData,
-    QFeatures,
     PSMatch,
     Matrix,
     graphics,

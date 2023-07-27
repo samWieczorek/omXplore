@@ -33,9 +33,9 @@ NA
 xxxx
 }
 \examples{
+library(shiny)
 
-# Example
-#
+
 ui <- fluidPage(
   mod_metacell_tree_ui('tree')
 )
@@ -52,5 +52,6 @@ server <- function(input, output) {
   
 }
 
-shinyApp(ui = ui, server = server)
+if (interactive())
+  shinyApp(ui = ui, server = server)
 }

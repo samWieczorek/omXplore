@@ -2,38 +2,23 @@
 #'
 #' @description
 #'
-#' This class is used to store the configuration of any process
-#' used with MagellanNTK It contains a validity function to ensure
-#' that the format is correct.
+#' @param ll.vizData xxx
 #' 
-#' Validity:
-#' * The first step must be called 'Description', it is a mandatory step. Thus, 
-#' the first item of the mandatory vector is TRUE.
-#' To be continued...
-#' 
-#' ## Initialization
-#'  ### Generic process
-#'  
-#'  A generic process
-#'  * Generic pipeline : xxxx
-#'  * Description pipeline: This case is for a process -called 'Description' which is 
-#'  the first process module of a pipeline
+#' @example examples/ex_VizData_Class.R
 #'
-#' @name Viz_Classes
+#' @name VizList-class
 #' 
 NULL
 
 
 
-#' 
-#' @slot ll.vizData xxx
-#' 
-#' @example examples/ex_VizData_Class.R
-#'
-#' @rdname Viz_Classes
-#' @export VizList
+
+#' @rdname VizList-class
 #' @exportClass VizList
+#' 
 VizList <- setClass(
+ 
+  #' @slot ll.vizData xxx
   
   "VizList",
   
@@ -66,20 +51,7 @@ VizList <- setClass(
 
 
 
-#' @title xxx
-#' @description xxx
-#' @param object xxx
-#' @rdname Viz_Classes
-#' 
-# setMethod("show", 'VizList',
-#           function(object){
-#             #browser()
-#             lapply(object, function(x) x)
-#           }
-# )
-
-#' @title Initialization method for the class `VizList`
-#' @rdname Viz_Classes
+#' @rdname VizList-class
 #' 
 setMethod("initialize" , "VizList" ,
           #' @param .Object xxx
@@ -92,9 +64,10 @@ setMethod("initialize" , "VizList" ,
 )
 
 
-#' @title xxx
-#' @description xxx
+
+
 #' @export 
+#' @rdname VizList-class
 #' @return An instance of 'VizList' class
 VizList <- function(ll.vizData = NULL){
   new(Class ="VizList",
@@ -106,11 +79,13 @@ VizList <- function(ll.vizData = NULL){
 
 #' @title xxx
 #' @description xxx
-#' @export GetVizData
-#' @return NA
-setMethod("GetVizData", signature = "VizList",
-          function(object, i, ...) {
-            return(object@ll.vizData[[i]])
-          }
-)
+#' @param object An instance of the class `VizList`
+#' @param i An `integer(1)`
+#' @export
+#' @rdname VizList-class
+#' @return An instance of the class `VizData`
+GetVizData <- function(object, i) {
+  return(object@ll.vizData[[i]])
+}
+
 

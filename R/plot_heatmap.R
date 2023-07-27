@@ -5,16 +5,11 @@
 #' quantitative data in the \code{Biobase::exprs()} table of an object of
 #' class \code{MSnSet}
 #'
-#' @param qData A dataframe that contains quantitative data.
-#'
-#' @param conds A vector containing the conditions
-#'
+#' @param vData A dataframe that contains quantitative data.
 #' @param distance The distance used by the clustering algorithm to compute
 #' the dendrogram. See \code{help(heatmap.2)}
-#'
 #' @param cluster the clustering algorithm used to build the dendrogram.
 #' See \code{help(heatmap.2)}
-#'
 #' @param dendro A boolean to indicate fi the dendrogram has to be displayed
 #'
 #' @return A heatmap

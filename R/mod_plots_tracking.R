@@ -16,6 +16,8 @@
 #'
 #' @example examples/ex_mod_plots_tracking.R
 #' 
+#' @name mod_plots_tracking
+#' 
 NULL
 
 

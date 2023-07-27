@@ -1,7 +1,8 @@
 library(DaparViz)
 library(highcharter)
 library(MSnbase)
-library(SummarizedExperiment)
+library(shiny)
+
 
 options(shiny.fullstacktrace = TRUE)
 
@@ -14,8 +15,7 @@ ui <- fluidPage(
 
 
 server <- function(input, output, session) {
-  # data(ft, package='DaparToolshed')
-  # data(ft_na, package='DaparToolshed')
+  # data(Exp1_R25_prot, package='DaparToolshedData')
   # vList <- convert2viz(ft)
   # vList_na <- convert2viz(ft_na)
   
@@ -38,8 +38,8 @@ server <- function(input, output, session) {
   
   
   
-  mod_view_dataset_server("dataset", 
-                          ll.vizData = reactive({vList}))
+  mod_view_dataset_server("dataset", ll.vizData = reactive({vList}))
 }
 
-shinyApp(ui, server)
+if (interactive())
+  shinyApp(ui, server)

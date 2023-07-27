@@ -18,6 +18,7 @@ A plot
 Display a a jitter plot for CC
 }
 \examples{
+\dontrun{
 data(Exp1_R25_pept, package="DAPARdata")
 obj <- Exp1_R25_pept[seq_len(100)]
 X <- BuildAdjacencyMatrix(obj, "Protein_group_IDs", TRUE)
@@ -30,6 +31,7 @@ y = jitter(n.prot),
 index = seq_len(length(ll))
 )
 plotJitter_rCharts(df)
+}
 
 }
 \author{

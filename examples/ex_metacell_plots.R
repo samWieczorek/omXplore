@@ -1,5 +1,7 @@
 library(MSnbase)
 library(DaparToolshed)
+library(QFeatures)
+library(DaparViz)
 
 #vList <- BuildExampleDataset('QFeatures')
 vList <- BuildExampleDataset('MSnbase')

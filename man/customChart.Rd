@@ -4,7 +4,13 @@
 \alias{customChart}
 \title{Customised resetZoom Button of highcharts plots}
 \usage{
-customChart(hc, chartType, zoomType = "None", width = 0, height = 0)
+customChart(
+  hc,
+  chartType = "scatter",
+  zoomType = "None",
+  width = 0,
+  height = 0
+)
 }
 \arguments{
 \item{hc}{A highcharter object}
@@ -28,7 +34,7 @@ library("highcharter")
 hc <- highchart()
 hc_chart(hc, type = "line")
 hc_add_series(hc, data = c(29, 71, 40))
-customChart(hc, filename = "foo")
+customChart(hc)
 
 }
 \author{

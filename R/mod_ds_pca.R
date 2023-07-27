@@ -5,6 +5,9 @@
 #' This method plots a bar plot which represents the distribution of the
 #' number of missing values (NA) per lines (ie proteins).
 #' @name ds-pca
+#' 
+#' @param id A `character(1)` which is the id of the shiny module.
+#' @param vizData xxx
 #'
 #' @return A plot
 #'
@@ -15,8 +18,6 @@
 NULL
 
 
-#' @param id A `character(1)` which is the id of the shiny module.
-#'
 #' @rdname ds-pca
 #'
 #' @importFrom shiny NS tagList uiOutput
@@ -32,12 +33,6 @@ mod_ds_pca_ui <- function(id) {
     )
 }
 
-#' @param id A `character(1)` which is the id of the shiny module.
-#' @param data xxx
-#' @param conds A `character()` of the name of conditions
-#' (one condition per sample). The number of conditions must be equal to
-#' the number of samples (number of columns) of the parameter 'data'.
-#' It is not a reactive value.
 #'
 #' @rdname ds-pca
 #'

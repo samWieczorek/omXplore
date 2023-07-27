@@ -6,6 +6,12 @@
 #'
 #' @name plot-variance
 #' 
+#' @param id A `character(1)` which is the id of the shiny module.
+#' @param vData xxx
+#' @param pal.name A `character(1)` which is the name of the palette from the 
+#' package [RColorBrewer] from which the colors are taken. 
+#' Default value is 'Set1'.
+#' 
 #' @return NA
 #'
 #' @example examples/ex_mod_ds_variance.R
@@ -13,7 +19,6 @@
 NULL
 
 
-#' @param id A `character(1)` which is the id of the shiny module.
 #' @importFrom shiny NS tagList
 #' @rdname plot-variance
 #' @export
@@ -30,11 +35,6 @@ mod_ds_variance_ui <- function(id) {
 
 
 
-#' @param id A `character(1)` which is the id of the shiny module.
-#' @param vData xxx
-#' @param pal.name A `character(1)` which is the name of the palette from the 
-#' package [RColorBrewer] from which the colors are taken. 
-#' Default value is 'Set1'.
 #'
 #' @importFrom shiny NS tagList
 #' @rdname plot-variance

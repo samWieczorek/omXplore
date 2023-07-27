@@ -12,8 +12,7 @@
 #' @export
 #' 
 BuildExampleDataset <- function(type='QFeatures'){
-  
-  
+
   return(
     switch(type,
          QFeatures = {
@@ -109,10 +108,11 @@ BuildExampleDataset <- function(type='QFeatures'){
 #' @rdname customExportMenu_HC
 #'
 #' @examples
+#' library(highcharter)
 #' hc <- highchart() %>%
 #'     hc_chart(type = "line") %>%
 #'     hc_add_series(data = c(29, 71, 40))
-#' customExportMenu(hc, fname = "foo")
+#' hc <- customExportMenu(hc, fname = "foo")
 #' hc
 #'
 #' @export
@@ -120,6 +120,7 @@ BuildExampleDataset <- function(type='QFeatures'){
 #' @importFrom highcharter hc_exporting
 #'
 customExportMenu <- function(hc, fname) {
+  require(highcharter)
     highcharter::hc_exporting(hc,
                               enabled = TRUE,
                               filename = fname,
@@ -154,17 +155,18 @@ customExportMenu <- function(hc, fname) {
 #' hc <- highchart()
 #' hc_chart(hc, type = "line")
 #' hc_add_series(hc, data = c(29, 71, 40))
-#' customChart(hc, filename = "foo")
+#' customChart(hc)
 #'
 #' @export
 #'
 #' @importFrom highcharter hc_chart
 #'
 customChart <- function(hc,
-    chartType,
-    zoomType = "None",
-    width = 0,
-    height = 0) {
+                        chartType = 'scatter',
+                        zoomType = "None",
+                        width = 0,
+                        height = 0) {
+  require(highcharter)
     hc %>%
         hc_chart(
             type = chartType,

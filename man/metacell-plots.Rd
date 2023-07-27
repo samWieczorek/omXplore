@@ -7,6 +7,9 @@
 \alias{metacellPerLinesHisto_HC}
 \alias{metacellPerLinesHistoPerCondition_HC}
 \alias{metacellHisto_HC}
+\alias{wrapper.mvImage}
+\alias{mvImage}
+\alias{hc_mvTypePlot2}
 \title{Displays a correlation matrix of the quantitative data of a
 numeric matrix.}
 \usage{
@@ -49,9 +52,23 @@ metacellHisto_HC(
   showValues = FALSE,
   pal = NULL
 )
+
+wrapper.mvImage(vizData, pattern = "Missing MEC")
+
+mvImage(vizData)
+
+hc_mvTypePlot2(vizData, pal = NULL, pattern, typeofMV = NULL, title = NULL)
 }
 \arguments{
+\item{id}{xxx}
+
+\item{vizData}{xxx}
+
+\item{pal}{The different colors for conditions}
+
 \item{pattern}{xxx}
+
+\item{showSelect}{xxx}
 
 \item{detailed}{'value' or 'percent'}
 
@@ -60,25 +77,56 @@ metacellHisto_HC(
 \item{showValues}{A logical that indicates whether numeric values should be
 drawn above the bars.}
 
-\item{VizData}{An instance of the class \code{VizData}}
+\item{typeofMV}{xxx}
+
+\item{title}{The title of the plot}
 }
 \value{
 NA
 
 A bar plot
+
+A heatmap
+
+A heatmap
+
+Density plots
 }
 \description{
 xxxx
 
 This method plots a bar plot which represents the distribution of the
 number of missing values (NA) per lines (ie proteins).
+
+Plots a heatmap of the quantitative data. Each column represent one of
+the conditions in the object of class \link{VizData} and
+the color is proportional to the mean of intensity for each line of
+the dataset.
+The lines have been sorted in order to vizualize easily the different
+number of missing values. A white square is plotted for missing values.
+
+#' Plots a heatmap of the quantitative data. Each column represent one of
+the conditions in the object of class \code{MSnSet} and
+the color is proportional to the mean of intensity for each line of
+the dataset.
+The lines have been sorted in order to vizualize easily the different
+number of missing values. A white square is plotted for missing values.
+
+This method shows density plots which represents the repartition of
+Partial Observed Values for each replicate in the dataset.
+The colors correspond to the different conditions (slot Condition in in the
+dataset of class \code{MSnSet}).
+The x-axis represent the mean of intensity for one condition and one
+entity in the dataset (i. e. a protein)
+whereas the y-axis count the number of observed values for this entity
+and the considered condition.
 }
 \examples{
 library(MSnbase)
 library(DaparToolshed)
-library(SummarizedExperiment)
 library(highcharter)
 library(shinyBS)
+library(shiny)
 
 ui <- fluidPage(
   mod_ds_metacell_ui('test')
@@ -106,10 +154,13 @@ server <- function(input, output) {
   
 }
 
-shinyApp(ui = ui, server = server)
+if (interactive())
+  shinyApp(ui = ui, server = server)
 
 library(MSnbase)
 library(DaparToolshed)
+library(QFeatures)
+library(DaparViz)
 
 #vList <- BuildExampleDataset('QFeatures')
 vList <- BuildExampleDataset('MSnbase')
@@ -147,7 +198,22 @@ pattern <- "Missing POV"
 pal <- ExtendPalette(2, "Dark2")
 metacellHisto_HC(vData@ll.vizData[[1]], pattern, showValues = TRUE, pal = pal)
 
+data(Exp1_R25_pept, package = 'DaparToolshedData')
+vData <- convert2viz(Exp1_R25_pept)
+mvImage(vData@ll.vizData[[1]])
+
+data(Exp1_R25_pept, package = 'DaparToolshedData')
+vData <- convert2viz(Exp1_R25_pept)
+pal <- ExtendPalette(length(unique(vData@ll.vizData[[1]]@conds)), "Dark2")
+hc_mvTypePlot2(vData@ll.vizData[[1]], pattern = "Missing MEC", title = "POV distribution", pal = pal)
+
 }
 \author{
 Florence Combes, Samuel Wieczorek
+
+Samuel Wieczorek, Alexia Dorffer
+
+Samuel Wieczorek, Thomas Burger
+
+Samuel Wieczorek
 }

@@ -1,8 +1,5 @@
 
-#' @param data An instance of the class `VizData`.
-#' @param conds A `character()` of the name of conditions
-#' (one condition per sample). The number of conditions must be equal to
-#' the number of samples (number of columns) of the parameter 'data'.
+#' @param vizData An instance of the class `VizData`.
 #' @param var.scaling The dimensions to plot
 #' @param ncp A `integer(1)` which represents the umber of dimensions kept in 
 #' the results.

@@ -6,13 +6,18 @@
 #'
 #' @name corrmatrix
 #' 
+#' @param id A `character(1)` which is the id of the shiny module.
+#' @param vizData xxx
+#' @param rate xxx. Default value is 0.9
+#' @param showValues Default is FALSE.
+#'
+#' 
 #' @return NA
 #'
 #' @example examples/example_mod_ds_corrmatrix.R
 #'
 NULL
 
-#' @param id A `character(1)` which is the id of the shiny module.
 #' @export
 #' @importFrom shiny NS tagList
 #' @rdname corrmatrix
@@ -25,12 +30,6 @@ mod_ds_corrmatrix_ui <- function(id) {
     )
 }
 
-#' @param id A `character(1)` which is the id of the shiny module.
-#' @param object xxx
-#' @param data xxx
-#' @param rate xxx. Default value is 0.9
-#' @param showValues Default is FALSE.
-#'
 #' @export
 #' @rdname corrmatrix
 #'

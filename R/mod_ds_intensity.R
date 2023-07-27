@@ -4,8 +4,10 @@
 #' @description
 #' xxxx
 #'
-#'@param id A `character(1)` which is the id of the shiny module.
+#' @param id A `character(1)` which is the id of the shiny module.
 #' @param vizData A instance of the class `VizData`
+#' @param track.indices xxx
+#' 
 #' @name intensity-plots
 #'
 #' @example examples/example_mod_ds_intensity.R

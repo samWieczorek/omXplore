@@ -6,7 +6,7 @@
 #' This method plots a bar plot which represents the distribution of the
 #' number of missing values (NA) per lines (ie proteins).
 #'
-#' @param VizData An instance of the class `VizData`
+#' @param vizData An instance of the class `VizData`
 #' @param pattern xxx
 #' @param detailed 'value' or 'percent'
 #' @param indLegend xxx
@@ -285,34 +285,27 @@ metacellHisto_HC <- function(vizData,
 
 
 
-#' @title Heatmap of missing values from a \code{MSnSet} object
+#' @title Heatmap of missing values from an object of class [VizData]
 #' @description 
-#' #' Plots a heatmap of the quantitative data. Each column represent one of
-#' the conditions in the object of class \code{MSnSet} and
+#' Plots a heatmap of the quantitative data. Each column represent one of
+#' the conditions in the object of class [VizData] and
 #' the color is proportional to the mean of intensity for each line of
 #' the dataset.
 #' The lines have been sorted in order to vizualize easily the different
 #' number of missing values. A white square is plotted for missing values.
 #' 
-#' @param object An object of class \code{MSnSet}.
-#'
+#' @param vizData An object of class [VizData.
 #' @param pattern xxx
 #'
 #' @return A heatmap
-#' @author Alexia Dorffer
-#' @examples
-#' #' data(Exp1_R25_pept, package = 'DaparToolshedData')
-#' vData <- convert2viz(Exp1_R25_pept)
-#' obj <- vData@ll.vizData[[1]]
-#' metacell.mask <- match.metacell(GetMetacell(obj), c("Missing POV", "Missing MEC"), level)
-#' indices <- GetIndices_WholeMatrix(metacell.mask, op = ">=", th = 1)
-#' obj <- MetaCellFiltering(obj, indices, cmd = "delete")
-#' wrapper.mvImage(vizData)
+#' @author Samuel Wieczorek, Alexia Dorffer
 #'
+#' @rdname metacell-plots
 #' @export
 #'
 #'
-wrapper.mvImage <- function(vizData, pattern = "Missing MEC") {
+wrapper.mvImage <- function(vizData, 
+                            pattern = "Missing MEC") {
   if (missing(vizData)) {
     stop("'vizData' is required.")
   } else if (is.null(object)) {
@@ -354,8 +347,6 @@ wrapper.mvImage <- function(vizData, pattern = "Missing MEC") {
 #' The lines have been sorted in order to vizualize easily the different
 #' number of missing values. A white square is plotted for missing values.
 #' 
-#' @param qdata A dataframe that contains quantitative data.
-#' @param conds A vector of the conditions (one condition per sample).
 #' @return A heatmap
 #' @author Samuel Wieczorek, Thomas Burger
 #' @examples
@@ -365,6 +356,7 @@ wrapper.mvImage <- function(vizData, pattern = "Missing MEC") {
 #'
 #' @export
 #'
+#' @rdname metacell-plots
 #'
 mvImage <- function(vizData) {
   
@@ -425,14 +417,10 @@ mvImage <- function(vizData) {
 #' whereas the y-axis count the number of observed values for this entity
 #' and the considered condition.
 #'
-#' @param object xxx
-#'
+#' @param vizData xxx
 #' @param pal The different colors for conditions
-#'
 #' @param pattern xxx
-#'
 #' @param typeofMV xxx
-#'
 #' @param title The title of the plot
 #'
 #' @import highcharter
@@ -448,6 +436,7 @@ mvImage <- function(vizData) {
 #' hc_mvTypePlot2(vData@ll.vizData[[1]], pattern = "Missing MEC", title = "POV distribution", pal = pal)
 #'
 #' @import highcharter
+#' @rdname metacell-plots
 #'
 #' @export
 #'

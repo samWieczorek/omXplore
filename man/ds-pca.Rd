@@ -19,18 +19,14 @@ plotPCA_Eigen(res.pca)
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
+\item{vizData}{An instance of the class \code{VizData}.}
+
 \item{var.scaling}{The dimensions to plot}
 
 \item{ncp}{A \code{integer(1)} which represents the umber of dimensions kept in
 the results.}
 
 \item{res.pca}{Result of FactoMineR::PCA}
-
-\item{data}{An instance of the class \code{VizData}.}
-
-\item{conds}{A \code{character()} of the name of conditions
-(one condition per sample). The number of conditions must be equal to
-the number of samples (number of columns) of the parameter 'data'.}
 }
 \value{
 A plot
@@ -42,6 +38,7 @@ number of missing values (NA) per lines (ie proteins).
 \examples{
 library(highcharter)
 library(DaparViz)
+library(shiny)
 
 data(Exp1_R25_pept, package='DaparToolshedData')
 vList <- convert2viz(Exp1_R25_pept)
@@ -66,9 +63,11 @@ server <- function(input, output, session) {
   mod_ds_pca_server("plot", vizData = reactive({vData}))
   }
 
-shinyApp(ui = ui, server = server)
+if (interactive())
+  shinyApp(ui = ui, server = server)
 library(highcharter)
 library(DaparViz)
+library(shiny)
 
 data(Exp1_R25_pept, package='DaparToolshedData')
 vList <- convert2viz(Exp1_R25_pept)
@@ -93,9 +92,11 @@ server <- function(input, output, session) {
   mod_ds_pca_server("plot", vizData = reactive({vData}))
   }
 
-shinyApp(ui = ui, server = server)
+if (interactive())
+  shinyApp(ui = ui, server = server)
 library(highcharter)
 library(DaparViz)
+library(shiny)
 
 data(Exp1_R25_pept, package='DaparToolshedData')
 vList <- convert2viz(Exp1_R25_pept)
@@ -120,7 +121,8 @@ server <- function(input, output, session) {
   mod_ds_pca_server("plot", vizData = reactive({vData}))
   }
 
-shinyApp(ui = ui, server = server)
+if (interactive())
+  shinyApp(ui = ui, server = server)
 }
 \author{
 Samuel Wieczorek, Enora Fremy

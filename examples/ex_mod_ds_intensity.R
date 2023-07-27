@@ -1,3 +1,5 @@
+library(shiny)
+
 
 vList <- BuildExampleDataset('MSnbase')
 vData <- vList@ll.vizData[[1]]
@@ -35,4 +37,5 @@ server <- function(input, output, session) {
                           )
     }
 
-shinyApp(ui = ui, server = server)
+if (interactive())
+  shinyApp(ui = ui, server = server)

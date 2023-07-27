@@ -28,14 +28,14 @@ corrMatrix(data, rate = 0.5, showValues = FALSE)
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
+\item{vizData}{xxx}
+
 \item{rate}{The rate parameter to control the exponential law for
 the gradient of colors}
 
 \item{showValues}{xxx}
 
 \item{data}{An object of class 'matrix'}
-
-\item{object}{xxx}
 }
 \value{
 NA
@@ -46,7 +46,8 @@ NA
 xxxx
 }
 \examples{
-
+library(shiny)
+library(DaparViz)
 
 #vList <- BuildExampleDataset('QFeatures')
 vList <- BuildExampleDataset('MSnbase')
@@ -59,18 +60,18 @@ corrMatrix(vData@qdata)
 #------------------------------------------
 # Shiny module
 #------------------------------------------
+ui <- fluidPage(
+  mod_ds_corrmatrix_ui("plot")
+)
 
+server <- function(input, output, session) {
+  #vList <- BuildExampleDataset('QFeatures')
+  vList <- BuildExampleDataset('MSnbase')
+  #vList <- BuildExampleDataset('list')
+  vData <- vList@ll.vizData[[1]]
+  mod_ds_corrmatrix_server("plot", reactive({vData}))
+  }
 
-    ui <- mod_ds_corrmatrix_ui("plot")
-
-    server <- function(input, output, session) {
-      #vList <- BuildExampleDataset('QFeatures')
-      vList <- BuildExampleDataset('MSnbase')
-      #vList <- BuildExampleDataset('list')
-      vData <- vList@ll.vizData[[1]]
-      
-      mod_ds_corrmatrix_server("plot", reactive({vData}))
-    }
-
-    shinyApp(ui = ui, server = server)
+if (interactive())
+  shinyApp(ui = ui, server = server)
 }

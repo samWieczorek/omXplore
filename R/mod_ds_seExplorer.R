@@ -1,7 +1,11 @@
 #' @title Explore a `VizClass` object
 #'
 #' @description
-#' xxxx
+#' 
+#' @param id A `character(1)` which is the id of the shiny module.
+#' @param vizData An instance of the class `VizData`
+#' @param digits xxx
+#'
 #'
 #' @name SE-explorer
 #'
@@ -10,7 +14,6 @@
 NULL
 
 
-#' @param id A `character(1)` which is the id of the shiny module.
 #' @export
 #' @import shiny
 #' @rdname SE-explorer
@@ -34,10 +37,6 @@ mod_ds_seExplorer_ui <- function(id) {
       )
 }
 
-#' @param id A `character(1)` which is the id of the shiny module.
-#' @param se An instance of the class `VizData`
-#' @param digits xxx
-#'
 #'
 #' @export
 #'

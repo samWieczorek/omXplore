@@ -1,4 +1,5 @@
-
+library(shiny)
+library(DaparViz)
 
 #vList <- BuildExampleDataset('QFeatures')
 vList <- BuildExampleDataset('MSnbase')
@@ -11,17 +12,17 @@ corrMatrix(vData@qdata)
 #------------------------------------------
 # Shiny module
 #------------------------------------------
+ui <- fluidPage(
+  mod_ds_corrmatrix_ui("plot")
+)
 
+server <- function(input, output, session) {
+  #vList <- BuildExampleDataset('QFeatures')
+  vList <- BuildExampleDataset('MSnbase')
+  #vList <- BuildExampleDataset('list')
+  vData <- vList@ll.vizData[[1]]
+  mod_ds_corrmatrix_server("plot", reactive({vData}))
+  }
 
-    ui <- mod_ds_corrmatrix_ui("plot")
-
-    server <- function(input, output, session) {
-      #vList <- BuildExampleDataset('QFeatures')
-      vList <- BuildExampleDataset('MSnbase')
-      #vList <- BuildExampleDataset('list')
-      vData <- vList@ll.vizData[[1]]
-      
-      mod_ds_corrmatrix_server("plot", reactive({vData}))
-    }
-
-    shinyApp(ui = ui, server = server)
+if (interactive())
+  shinyApp(ui = ui, server = server)

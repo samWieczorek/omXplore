@@ -9,6 +9,8 @@ class \code{MSnSet}}
 heatmapD(vData, distance = "euclidean", cluster = "complete", dendro = FALSE)
 }
 \arguments{
+\item{vData}{A dataframe that contains quantitative data.}
+
 \item{distance}{The distance used by the clustering algorithm to compute
 the dendrogram. See \code{help(heatmap.2)}}
 
@@ -16,10 +18,6 @@ the dendrogram. See \code{help(heatmap.2)}}
 See \code{help(heatmap.2)}}
 
 \item{dendro}{A boolean to indicate fi the dendrogram has to be displayed}
-
-\item{qData}{A dataframe that contains quantitative data.}
-
-\item{conds}{A vector containing the conditions}
 }
 \value{
 A heatmap
@@ -30,6 +28,7 @@ quantitative data in the \code{Biobase::exprs()} table of an object of
 class \code{MSnSet}
 }
 \examples{
+library(shiny)
 
 vList <- BuildExampleDataset('MSnbase')
 vData <- vList@ll.vizData[[1]]
@@ -41,18 +40,21 @@ mv.heatmap(vData@qdata)
 #------------------------------------------
 
 
-ui <- mod_ds_heatmap_ui("plot")
+ui <- fluidPage(
+  mod_ds_heatmap_ui("plot")
+)
 
 server <- function(input, output, session) {
   
   vList <- BuildExampleDataset('MSnbase')
   vData <- vList@ll.vizData[[1]]
   
-  mod_ds_heatmap_server("plot",
-                        reactive({vData})
+  mod_ds_heatmap_server("plot", reactive({vData})
   )
   }
-shinyApp(ui = ui, server = server)
+
+if (interactive())
+  shinyApp(ui = ui, server = server)
 }
 \author{
 Florence Combes, Samuel Wieczorek, Enor Fremy

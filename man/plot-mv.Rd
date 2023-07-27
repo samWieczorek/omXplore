@@ -10,10 +10,9 @@ mod_mv_imputation_ui(id)
 
 mod_mv_imputation_server(
   id,
-  se = reactive({
+  vData = reactive({
      NULL
  }),
-  conds = NULL,
   pal.name = reactive({
      NULL
  })
@@ -22,11 +21,7 @@ mod_mv_imputation_server(
 \arguments{
 \item{id}{A \code{character(1)} which is the 'id' of the shiny module.}
 
-\item{se}{An instance of a class \code{SummarizedExperiment}.}
-
-\item{conds}{A \code{character()} of the name of conditions
-(one condition per sample). The number of conditions must be equal to
-the number of samples (number of columns) of \link{assay(se)}.}
+\item{vData}{An instance of a class \code{VizData}.}
 
 \item{pal.name}{A \code{character(1)} which is the name of the palette (from
 the package \link{RColorBrewer} to use.}
@@ -60,40 +55,6 @@ The lines have been sorted in order to visualize easily the different
 number of missing values. A white square is plotted for missing values.
 }
 
-\examples{
-data(ft_na, package='DaparViz')
-data <- assay(ft_na, 1)
-conds <- colData(ft_na)$Condition
-
-#-----------------------------
-# xxx
-#-----------------------------
-
-mv.density(ft_na[[1]], conds, pattern = "missing MEC")
-
-mv.mec.heatmap(ft_na[[1]], conds)
-
-#-----------------------------
-# xxx
-#-----------------------------
-
-if (interactive()) {
-    data(ft_na, package='DaparViz')
-
-    ui <- mod_mv_imputation_ui("plot")
-
-    server <- function(input, output, session) {
-        mod_mv_imputation_server("plot",
-            se = reactive({
-                ft_na[[1]]
-            }),
-            conds = colData(ft_na)$Condition
-        )
-    }
-
-    shinyApp(ui = ui, server = server)
-}
-}
 \seealso{
 The package \code{DaparToolshed} for the 'qMetadata' metadata.
 }

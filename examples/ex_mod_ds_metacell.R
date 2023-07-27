@@ -1,8 +1,8 @@
 library(MSnbase)
 library(DaparToolshed)
-library(SummarizedExperiment)
 library(highcharter)
 library(shinyBS)
+library(shiny)
 
 ui <- fluidPage(
   mod_ds_metacell_ui('test')
@@ -30,5 +30,6 @@ server <- function(input, output) {
   
 }
 
-shinyApp(ui = ui, server = server)
+if (interactive())
+  shinyApp(ui = ui, server = server)
 

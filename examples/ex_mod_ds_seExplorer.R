@@ -2,6 +2,7 @@ library(MSnbase)
 library(DaparToolshed)
 library(highcharter)
 library(DaparViz)
+library(shiny)
 
 
 
@@ -18,4 +19,5 @@ server <- function(input, output, session) {
   
     }
 
-shinyApp(ui = ui, server = server)
+if (interactive())
+  shinyApp(ui = ui, server = server)

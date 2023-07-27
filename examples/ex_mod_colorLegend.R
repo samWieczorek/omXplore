@@ -3,6 +3,7 @@ library(DaparToolshedData)
 library(highcharter)
 library(shinyBS)
 library(DaparViz)
+library(shiny)
 
 #-------------------------------------------------------------------
 ui <- fluidPage(
@@ -33,4 +34,5 @@ server <- function(input, output, session) {
   mod_colorLegend_server("plot3", tags)
   }
 
-shinyApp(ui, server)
+if (interactive())
+  shinyApp(ui, server)

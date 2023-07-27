@@ -16,11 +16,13 @@ A plot
 Jitter plot of CC
 }
 \examples{
+\dontrun{
 data(Exp1_R25_pept, package="DAPARdata")
 obj <- Exp1_R25_pept[seq_len(100)]
 X <- BuildAdjacencyMatrix(obj, "Protein_group_IDs", TRUE)
 ll <- get.pep.prot.cc(X)
 plotJitter(ll)
+}
 
 }
 \author{

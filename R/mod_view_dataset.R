@@ -41,75 +41,18 @@
 #' - Histogram of missing values.
 #'
 #' @name ds-plots
+#' 
+#' @param id A `character(1)` for the 'id' of the shiny module. It must be
+#' the same as for the '*_ui' function.
+#' @param ll.vizData A instance of the class `VizList`.
+
 #'
 #' @return A plot
 #'
 #' @author Samuel Wieczorek, Enora Fremy
 #'
-#' @examples
-#' data(ft, package='DaparViz')
-#' data(ft_na, package='DaparViz')
-#'
-#' qData <- assay(ft, 1)
-#' conds <- design(ft)$Condition
-#' pal <- "Dark2"
-#'
-#' data(ft, package='DaparViz')
-#' qData <- assay(ft, 1)
-#' conds <- design(ft)$Condition
-#' densityPlot(qData, conds)
-#'
-#' legend <- design(ft)$Sample.name
-#' densityPlot(qData, conds, pal.name = "Dark2")
-#'
-#' CVDist(qData, conds)
-#'
-#' #----------------------------------------------
-#' # Plots a heatmap for generic quantitative data
-#' #----------------------------------------------
-#'
-#' heatmapD(assay(ft, 1), conds)
-#'
-#' #----------------------------------------------
-#' # Plots a heatmap for missing values visualization
-#' #----------------------------------------------
-#'
-#'
-#' #' #----------------------------------------
-#' # Plots a histogram of missing values
-#' #----------------------------------------
-#'
-#' mvPerLinesHisto(qData)
-#'
-#' #----------------------------------------
-#' # Plots a histogram of missing values
-#' #----------------------------------------
-#'
-#' mvHisto(qData, conds, pal.name = pal)
-#'
-#' #----------------------------------------
-#' # Plots a histogram of missing values
-#' #----------------------------------------
-#'
-#' data(ft, package='DaparViz')
-#' mv.heatmap(assay(ft, 1))
-#'
-#' #----------------------------------------
-#' # Launch a the shiny module for all plots
-#' # Here, an example with the density plot
-#' #----------------------------------------
-#'
-#' if (interactive()) {
-#' data(ft, package='DaparViz')
-#' data(ft_na, package='DaparViz')
-#' ui <- mod_all_ds_ui("plot")
+#' @example examples/ex_mod_view_dataset.R
 #' 
-#' server <- function(input, output, session) {
-#'     mod_all_ds_server("plot", object = reactive({ft_na}))
-#' }
-#' 
-#' shinyApp(ui, server)
-#' }
 NULL
 
 
@@ -132,9 +75,6 @@ listPlotModules <- function() {
 
 
 
-#' @param id A `character(1)` for the 'id' of the shiny module. It must be
-#' the same as for the server function.
-#'
 #' @import shiny
 #' @importFrom shinyjs useShinyjs
 #' @rdname ds-plots
@@ -155,10 +95,6 @@ mod_view_dataset_ui <- function(id) {
     )
 }
 
-#' @param id A `character(1)` for the 'id' of the shiny module. It must be
-#' the same as for the '*_ui' function.
-#'
-#' @param object A instance of the class `QFeatures`.
 #'
 #' @importFrom shinyjs show hide hidden
 #' @import shiny

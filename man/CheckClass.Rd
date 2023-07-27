@@ -6,6 +6,9 @@
 \usage{
 CheckClass(ll)
 }
+\arguments{
+\item{ll}{xxx}
+}
 \description{
 xxx
 }
