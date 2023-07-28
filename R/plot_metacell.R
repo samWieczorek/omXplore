@@ -306,13 +306,7 @@ metacellHisto_HC <- function(vizData,
 #'
 wrapper.mvImage <- function(vizData, 
                             pattern = "Missing MEC") {
-  if (missing(vizData)) {
-    stop("'vizData' is required.")
-  } else if (is.null(object)) {
-    warning("'vizData' is NULL. Return NULL.")
-    return(NULL)
-  }
-  
+  stopifnot(inherits(vizData, 'VizData'))
   
   indices <- which(apply(match.metacell(vizData@metacell, 
                                         pattern, 
@@ -433,7 +427,8 @@ mvImage <- function(vizData) {
 #' data(Exp1_R25_pept, package = 'DaparToolshedData')
 #' vData <- convert2viz(Exp1_R25_pept)
 #' pal <- ExtendPalette(length(unique(vData@ll.vizData[[1]]@conds)), "Dark2")
-#' hc_mvTypePlot2(vData@ll.vizData[[1]], pattern = "Missing MEC", title = "POV distribution", pal = pal)
+#' pattern <- "Missing MEC"
+#' hc_mvTypePlot2(vData@ll.vizData[[1]], pattern = pattern, pal = pal)
 #'
 #' @import highcharter
 #' @rdname metacell-plots

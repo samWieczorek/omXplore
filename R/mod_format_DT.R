@@ -29,6 +29,7 @@ NULL
 
 
 #' @importFrom shiny NS tagList
+#' @import DT
 #'
 #' @export
 #' @rdname mod_format_DT

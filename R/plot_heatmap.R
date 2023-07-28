@@ -27,6 +27,7 @@ heatmapD <- function(vData,
                      dendro = FALSE) {
   
   pkgs.require(c('stats', 'dendextend', "gplots", 'grDevices', 'RColorBrewer'))
+  require(dendextend)
   
   qdata <- vData@qdata
   conds <- vData@conds

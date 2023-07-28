@@ -28,7 +28,7 @@ corrMatrix <- function(data,
     if (!requireNamespace("tidyr", quietly = TRUE)) {
         stop("Please install tidyr: BiocManager::install('tidyr')")
     }
-
+    
 
     stopifnot(inherits(data, "matrix"))
 

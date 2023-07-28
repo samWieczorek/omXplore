@@ -6,10 +6,7 @@
 \alias{VizData}
 \alias{show,VizData-method}
 \alias{initialize,VizData-method}
-\alias{Convert2VizList,QFeatures-method}
-\alias{Convert2VizData,MSnSet-method}
-\alias{Convert2VizData,list-method}
-\alias{convert2viz}
+\alias{[,VizData,numeric,missing,ANY-method}
 \title{VizData class}
 \usage{
 \S4method{show}{VizData}(object)
@@ -27,17 +24,9 @@
   cc
 )
 
-\S4method{Convert2VizList}{QFeatures}(object)
-
-\S4method{Convert2VizData}{MSnSet}(object, ...)
-
-\S4method{Convert2VizData}{list}(object, ...)
-
-convert2viz(obj)
+\S4method{[}{VizData,numeric,missing,ANY}(x, i, j = NA, k = NA, l = NA, ..., drop)
 }
 \arguments{
-\item{object}{xxx}
-
 \item{.Object}{xxx}
 
 \item{qdata}{xxx}
@@ -57,10 +46,6 @@ convert2viz(obj)
 \item{adjMat}{xxx}
 
 \item{cc}{xxx}
-
-\item{...}{xxxx}
-
-\item{obj}{xxx}
 }
 \description{
 Conceptually, a \code{VizData} object is a standard representation of all
@@ -72,8 +57,6 @@ which is the class accessible by the user.
 
 The recommended way to create \code{VizData} objects is the use the
 \code{xxxx()} function of the class \code{VizList}
-
-xxx
 }
 \section{Slots}{
 

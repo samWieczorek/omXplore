@@ -89,6 +89,7 @@ Suggests:
     knitr,
     methods,
     rmarkdown,
+    crayon,
     BiocStyle,
     testthat,
     MSnbase,

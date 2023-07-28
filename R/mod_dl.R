@@ -12,15 +12,15 @@
 #'
 #' @return NA
 #'
-#' @name dl
-#' @example examples/test_dl.R
+#' @name mod_dl
+#' @example examples/ex_mod_dl.R
 #'
 NULL
 
 
 #' @import shiny
 #'
-#' @rdname dl
+#' @rdname mod_dl
 #'
 #' @export
 #'
@@ -34,7 +34,7 @@ dl_ui <- function(id) {
   )
 }
 
-#' @rdname dl
+#' @rdname mod_dl
 #'
 #' @export
 #'
@@ -44,8 +44,7 @@ dl_server <- function(id,
                       widget.type = 'Link',
                       name = 'foo', 
                       excel.style = NULL) {
-  moduleServer(
-    id, function(input, output, session) {
+  moduleServer(id, function(input, output, session) {
       ns <- session$ns
       
       rv <- reactiveValues(
@@ -133,17 +132,3 @@ dl_server <- function(id,
 
 
 
-
-
-ui <- dl_ui("dl")
-
-    server <- function(input, output, session) {
-        data(Exp1_R25_prot, package='DaparToolshedData')
-      
-      dl_server("dl",
-            dataIn = reactive({Exp1_R25_prot}),
-            extension = c('csv', 'xlsx', 'RData')
-        )
-    }
-
-    shinyApp(ui = ui, server = server)

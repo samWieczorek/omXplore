@@ -36,7 +36,7 @@ mod_ds_cc_ui <- function(id) {
                tagList(
                  fluidRow(
                    column(width = 4, tagList(
-                     DaparViz::dl_ui(ns("OneOneDT_DL_btns")),
+                     dl_ui(ns("OneOneDT_DL_btns")),
                      uiOutput(ns("OneOneDT_UI"))
                    )),
                    column(width = 8, uiOutput(ns("OneOneDTDetailed_UI"))
@@ -51,7 +51,7 @@ mod_ds_cc_ui <- function(id) {
                  fluidRow(
                    column(width = 4,
                      tagList(
-                       DaparViz::dl_ui(ns("OneMultiDT_DL_btns")),
+                       dl_ui(ns("OneMultiDT_DL_btns")),
                        uiOutput(ns("OneMultiDT_UI"))
                      )
                    ),
@@ -270,28 +270,7 @@ mod_ds_cc_server <- function(id, vizData) {
         rvCC$selectedCC <- rvCC$CCMultiMulti_rows_selected()
       })
       
-      
-      
-      # output$CCMultiMulti <- DT::renderDataTable(server = TRUE, {
-      #   dat <- DT::datatable(GetDataFor_CCMultiMulti(),
-      #                        selection = "single",
-      #                        rownames = FALSE,
-      #                        extensions = c("Scroller"),
-      #                        options = list(
-      #                          initComplete = initComplete(),
-      #                          dom = "frt",
-      #                          scrollX = 400,
-      #                          scrollY = 400,
-      #                          displayLength = 10,
-      #                          scroller = TRUE
-      #                          )
-      #                        )
-      #   
-      #   return(dat)
-      # })
-      
-      
-      
+
       observeEvent(c(rvCC$selectedNeighbors, input$node_selected, rvCC$selectedCCgraph), {
         local <- (vizData()@cc)[Get_CC_Multi2Any()]
         rvCC$selectedNeighbors
@@ -383,7 +362,7 @@ mod_ds_cc_server <- function(id, vizData) {
         
         
         ind <- 1:ncol(vizData()@qdata)
-        data <- getDataForExprs(vizData())
+        data <- FormatDataForDT(vizData())
         .n <- ncol(data)
         pepLine <- rvCC$detailedselectedNode$sharedPepLabels
         indices <- unlist(lapply(pepLine, function(x) {which(rownames(data) == x)}))
@@ -424,7 +403,7 @@ mod_ds_cc_server <- function(id, vizData) {
       #   
       #   
       #   ind <- 1:ncol(vizData()@qdata)
-      #   data <- getDataForExprs(vizData(), rv$settings_nDigits)
+      #   data <- FormatDataForDT(vizData(), rv$settings_nDigits)
       #   .n <- ncol(data)
       #   pepLine <- rvCC$detailedselectedNode$sharedPepLabels
       #   indices <- unlist(lapply(pepLine, function(x) {
@@ -481,7 +460,7 @@ mod_ds_cc_server <- function(id, vizData) {
         req(rvCC$detailedselectedNode$specPepLabels)
         
         ind <- 1:ncol(vizData()@qdata)
-        data <- getDataForExprs(vizData())
+        data <- FormatDataForDT(vizData())
         .n <- ncol(data)
         pepLine <- rvCC$detailedselectedNode$specPepLabels
         indices <- unlist(lapply(pepLine, function(x) {which(rownames(data) == x)}))
@@ -522,7 +501,7 @@ mod_ds_cc_server <- function(id, vizData) {
       #   req(rvCC$detailedselectedNode$specPepLabels)
       #   
       #   ind <- 1:ncol(vizData()@qdata)
-      #   data <- getDataForExprs(vizData(), rv$settings_nDigits)
+      #   data <- FormatDataForDT(vizData(), rv$settings_nDigits)
       #   .n <- ncol(data)
       #   pepLine <- rvCC$detailedselectedNode$specPepLabels
       #   indices <- unlist(lapply(pepLine, function(x) {which(rownames(data) == x)}))
@@ -673,7 +652,7 @@ mod_ds_cc_server <- function(id, vizData) {
         
         line <- rvCC$OneMultiDT_rows_selected()
         ind <- 1:ncol(vizData()@qdata)
-        data <- getDataForExprs(vizData(), 2)
+        data <- FormatDataForDT(vizData(), 2)
         .n <- ncol(data)
         .pep <- input$pepInfo
         pepLine <- unlist(strsplit(unlist(BuildOne2MultiTab()[line, "peptides"]), split = ","))
@@ -752,7 +731,7 @@ mod_ds_cc_server <- function(id, vizData) {
         .pep <- input$pepInfo
         line <- rvCC$OneOneDT_rows_selected()
         ind <- 1:ncol(vizData()@qdata)
-        data <- getDataForExprs(vizData())
+        data <- FormatDataForDT(vizData())
         .n <- ncol(data)
         
         pepLine <- BuildOne2OneTab()[line, 2]

@@ -175,7 +175,8 @@ metacellPerLinesHisto_HC(vData)
 metacellPerLinesHisto_HC(vData, pattern = "Quantified")
 metacellPerLinesHisto_HC(vData, pattern = "Quant. by direct id")
 metacellPerLinesHisto_HC(vData, pattern = "Quant. by recovery")
-metacellPerLinesHisto_HC(vData, pattern = c("Quantified", "Quant. by direct id", "Quant. by recovery"))
+pattern <- c("Quantified", "Quant. by direct id", "Quant. by recovery")
+metacellPerLinesHisto_HC(vData, pattern = pattern)
 
 
 metacellPerLinesHistoPerCondition_HC(vData, pattern = "Missing POV")
@@ -183,7 +184,8 @@ metacellPerLinesHistoPerCondition_HC(vData)
 metacellPerLinesHistoPerCondition_HC(vData, pattern = "Quantified")
 metacellPerLinesHistoPerCondition_HC(vData, pattern = "Quant. by direct id")
 metacellPerLinesHistoPerCondition_HC(vData, pattern = "Quant. by recovery")
-metacellPerLinesHistoPerCondition_HC(vData, pattern = c("Quantified", "Quant. by direct id", "Quant. by recovery"))
+pattern <- c("Quantified", "Quant. by direct id", "Quant. by recovery")
+metacellPerLinesHistoPerCondition_HC(vData, pattern = pattern)
 
 
 metacellHisto_HC(vData, pattern = "Missing POV")
@@ -191,7 +193,8 @@ metacellHisto_HC(vData)
 metacellHisto_HC(vData, pattern = "Quantified")
 metacellHisto_HC(vData, pattern = "Quant. by direct id")
 metacellHisto_HC(vData, pattern = "Quant. by recovery")
-metacellHisto_HC(vData, pattern = c("Quantified", "Quant. by direct id", "Quant. by recovery"))
+pattern <- c("Quantified", "Quant. by direct id", "Quant. by recovery")
+metacellHisto_HC(vData, pattern = pattern)
 data(Exp1_R25_pept, package = 'DaparToolshedData')
 vData <- convert2viz(Exp1_R25_pept)
 pattern <- "Missing POV"
@@ -205,7 +208,8 @@ mvImage(vData@ll.vizData[[1]])
 data(Exp1_R25_pept, package = 'DaparToolshedData')
 vData <- convert2viz(Exp1_R25_pept)
 pal <- ExtendPalette(length(unique(vData@ll.vizData[[1]]@conds)), "Dark2")
-hc_mvTypePlot2(vData@ll.vizData[[1]], pattern = "Missing MEC", title = "POV distribution", pal = pal)
+pattern <- "Missing MEC"
+hc_mvTypePlot2(vData@ll.vizData[[1]], pattern = pattern, pal = pal)
 
 }
 \author{

@@ -11,21 +11,24 @@
 #' 
 #' @export
 #' 
+#' @import utils
+#' 
 BuildExampleDataset <- function(type='QFeatures'){
-
-  return(
-    switch(type,
+require(utils)
+  
+  dataset <- switch(type,
+                    
          QFeatures = {
-           data(Exp1_R25_pept, package = 'DaparToolshedData')
+           data(Exp1_R25_pept, package = 'DaparToolshedData', envir = environment())
            convert2viz(Exp1_R25_pept)
            },
          
          
          
          MSnbase = {
-           data(Exp1_R25_pept, package = 'DAPARdata')
-           data(Exp1_R25_prot, package = 'DAPARdata')
-           data(Exp1_R2_pept, package = 'DAPARdata')
+           data(Exp1_R25_pept, package = 'DAPARdata', envir = environment())
+           data(Exp1_R25_prot, package = 'DAPARdata', envir = environment())
+           data(Exp1_R2_pept, package = 'DAPARdata', envir = environment())
            ll.tmp <- setNames(c(Exp1_R25_pept, Exp1_R25_prot, Exp1_R2_pept),
                               nm = c('Exp1_R25_pept', 'Exp1_R25_prot', 'Exp1_R2_pept'))
            
@@ -36,7 +39,7 @@ BuildExampleDataset <- function(type='QFeatures'){
          
          
          list = {
-           data(Exp1_R25_pept, package='DAPARdata')
+           data(Exp1_R25_pept, package='DAPARdata', envir = environment())
            msnset <- Exp1_R25_pept
            X <- PSMatch::makeAdjacencyMatrix(fData(msnset)[, msnset@experimentData@other$proteinId])
            rownames(X) <- rownames(fData(msnset))
@@ -53,7 +56,7 @@ BuildExampleDataset <- function(type='QFeatures'){
              cc = as.list(connectedComp@adjMatrices)
            )
            
-           data(Exp1_R25_prot, package='DAPARdata')
+           data(Exp1_R25_prot, package='DAPARdata', envir = environment())
            msnset <- Exp1_R25_prot
            ll.Exp1_R25_prot <- list(
              qdata = exprs(msnset),
@@ -64,7 +67,7 @@ BuildExampleDataset <- function(type='QFeatures'){
              type = msnset@experimentData@other$typeOfData
            )
            
-           data(Exp1_R2_pept, package='DAPARdata')
+           data(Exp1_R2_pept, package='DAPARdata', envir = environment())
            msnset <- Exp1_R2_pept
            X <- PSMatch::makeAdjacencyMatrix(fData(msnset)[, msnset@experimentData@other$proteinId])
            rownames(X) <- rownames(fData(msnset))
@@ -93,7 +96,9 @@ BuildExampleDataset <- function(type='QFeatures'){
          },
          default = NULL
          )
-  )
+  
+  return(dataset)
+  
 }
 
 #' @title Customised contextual menu of highcharts plots
@@ -204,7 +209,7 @@ customChart <- function(hc,
 #'
 #' @description
 #' This function builds the skeleton of a dataset which can be used by the module
-#' format_DT. It creates additional columns that can be used to store values
+#' format_DT. It creates additional columns to be used to style the table.
 #' to colors cells.
 #'
 #' @param vizData An instance of the class 'VizData'
@@ -215,7 +220,7 @@ customChart <- function(hc,
 #'
 #' @export
 #'
-getDataForExprs <- function(vizData, digits = 2) {
+FormatDataForDT <- function(vizData, digits = 2) {
 
   test.table <- as.data.frame(round(vizData@qdata))
   if (!is.null(names(vizData@metacell))) {

@@ -27,7 +27,7 @@ mod_colorLegend_ui <- function(id) {
     if (!requireNamespace("shinyBS", quietly = TRUE)) {
         stop("Please install shinyBS: BiocManager::install('shinyBS')")
     }
-
+    require(shinyBS)
     bsCollapse(id = "collapseExample",
                open = "",
                bsCollapsePanel(title = "Legend of colors",

@@ -16,11 +16,13 @@ NULL
 
 #' @export
 #' @import shiny
+#' @import DT
 #' @rdname SE-explorer
 #' @import shinyBS
 #' 
 mod_ds_seExplorer_ui <- function(id) {
     ns <- NS(id)
+    require(shinyBS)
     tagList(
       mod_colorLegend_ui(ns("legend")),
       shinyBS::bsCollapse(id = "infos", open = "", multiple = TRUE,

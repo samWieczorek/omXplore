@@ -106,6 +106,7 @@ VizData <- setClass(
 #' 
 setMethod("show", 'VizData',
           function(vData){
+            require(crayon)
             cat(crayon::green(paste0('\tdim(qdata): ', dim(vData@qdata), '\n')))
             
             cat(crayon::green(paste0('\tdim(metacell): ', dim(vData@metacell), '\n')))
@@ -176,24 +177,36 @@ setMethod("initialize" , "VizData" ,
     }
 )
 
-
-
+#' @rdname VizData-class
+#' 
+#' @export
+#' 
+setMethod('[', signature = c('VizData', 'numeric', 'missing'),
+          function(x, i, j = NA, k = NA, l = NA, ..., drop) {
+            #browser()
+            vData@qdata <- (vData@qdata)[i, ]
+            vData@metadata <- (vData@metadata)[i, ]
+            vData@metacell <- (vData@metacell)[i, ]
+            
+            return(vData)  
+          })
 
 
 #' @exportMethod Convert2VizList
 #' 
-#' @rdname VizData-class
+#' @rdname Convert2VizList
 #' 
 setMethod("Convert2VizList", signature = "QFeatures",
           
   function(object) {
     require(PSMatch)
     require(QFeatures)
+    require(SummarizedExperiment)
     
     ll <- list()
     for (i in 1:length(object)){
       metacell.backup <- qMetacell(object[[i]])
-      mdata <- rowData(object[[i]])
+      mdata <- SummarizedExperiment::rowData(object[[i]])
       X <- matrix()
       cc <- list()
       
@@ -205,8 +218,9 @@ setMethod("Convert2VizList", signature = "QFeatures",
 
       if (typeDataset(object[[i]]) == 'peptide'){
         # Create the adjacency matrix
-        X <- PSMatch::makeAdjacencyMatrix(rowData(object[[i]])[, parentProtId(object[[i]])])
-        rownames(X) <- rownames(rowData(object[[i]]))
+        X <- PSMatch::makeAdjacencyMatrix(
+          SummarizedExperiment::rowData(object[[i]])[, parentProtId(object[[i]])])
+        rownames(X) <- rownames(SummarizedExperiment::rowData(object[[i]]))
         
         
         # Create the connected components
@@ -214,12 +228,12 @@ setMethod("Convert2VizList", signature = "QFeatures",
       }
       
       ll[[names(object[i])]] <- new(Class ="VizData",
-                                    qdata = assay(object[[i]]),
+                                    qdata = SummarizedExperiment::assay(object[[i]]),
                                     metacell = metacell.backup,
                                     metadata = as.data.frame(mdata),
                                     colID = idcol(object[[i]]),
                                     proteinID = parentProtId(object[[i]]),
-                                    conds = colData(object)$Condition,
+                                    conds = SummarizedExperiment::colData(object)$Condition,
                                     type = typeDataset(object[[i]]),
                                     adjMat = as.matrix(X),
                                     cc = as.list(cc)
@@ -237,7 +251,7 @@ setMethod("Convert2VizList", signature = "QFeatures",
 
 #' @exportMethod Convert2VizData
 #' 
-#' @rdname VizData-class
+#' @rdname Convert2VizList
 #' 
 setMethod("Convert2VizData", signature = "MSnSet",
           #' @param object xxx
@@ -272,7 +286,7 @@ setMethod("Convert2VizData", signature = "MSnSet",
 
 
 
-#' @rdname VizData-class
+#' @rdname Convert2VizList
 #' 
 setMethod("Convert2VizData", signature = "list",
           #' @param object xxx
@@ -297,6 +311,8 @@ setMethod("Convert2VizData", signature = "list",
 #' @title xxx
 #' @description xxx
 #' @param ll xxx
+#' @rdname Convert2VizList
+#' 
 CheckClass <- function(ll){
   ll.class <- NULL
   if (inherits(ll, 'QFeatures'))
@@ -312,10 +328,15 @@ CheckClass <- function(ll){
 }
 
 
-#' @title xxx
-#' @description xxx
+#' @title Convert a dataset to an instance of class [VizList]
+#' @description
+#' Actually, three types of dataset can be converted:
+#' * A `list` which must be formatted in the correct format. See xxx
+#' * A list of instances of class `MSnset`
+#' * An instance of class `QFeatures` (which is already a list)
 #' @param obj xxx
-#' @rdname VizData-class
+#' @rdname Convert2VizList
+#' @return An instance of class [VizList]
 #' @export
 convert2viz <- function(obj){
   # Checks if each item is an instance of 'MSnSet' class
@@ -328,7 +349,7 @@ convert2viz <- function(obj){
          
          MSnSet = {
            ll.tmp <- NULL
-           for (i in 1:length(obj))
+         for (i in 1:length(obj))
              ll.tmp[[names(obj)[i]]] <- Convert2VizData(obj[[i]])
            ll <- VizList(ll.tmp)
          },
