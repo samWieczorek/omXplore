@@ -23,5 +23,4 @@ setGeneric("Convert2VizList", function(object, ...) standardGeneric("Convert2Viz
 setGeneric("Convert2VizData", function(object, ...) standardGeneric("Convert2VizData"))
 
 
-#setGeneric("[", function(object, ...) standardGeneric("["))
 

@@ -177,19 +177,45 @@ setMethod("initialize" , "VizData" ,
     }
 )
 
-#' @rdname VizData-class
-#' 
-#' @export
-#' 
-setMethod('[', signature = c('VizData', 'numeric', 'missing'),
+setMethod('[', signature = c('VizList', "ANY", "ANY", "ANY"),
           function(x, i, j = NA, k = NA, l = NA, ..., drop) {
-            #browser()
-            vData@qdata <- (vData@qdata)[i, ]
-            vData@metadata <- (vData@metadata)[i, ]
-            vData@metacell <- (vData@metacell)[i, ]
-            
-            return(vData)  
+
+            lapply(x@ll.vizData, function(obj){
+              obj <- obj[i, ]
+            })
           })
+
+
+setMethod('[', signature = c('VizData', "ANY", "ANY", "ANY"),
+          function(x, i, j = NA, k = NA, l = NA, ..., drop) {
+            if (length(i) == 1){
+              tmp <- as.matrix(t((x@qdata)[i, ]))
+              rownames(tmp) <- (rownames(x@qdata))[i]
+              x@qdata <- tmp
+              x@metadata <- as.data.frame((x@metadata)[i, ])
+              
+              x@metacell <- as.data.frame((x@metacell)[i, ])
+            } else if (length(i) > 1){
+              x@qdata <- (x@qdata)[i, ]
+            }
+            
+             x@metadata <- as.data.frame((x@metadata)[i, ])
+             x@metacell <- as.data.frame((x@metacell)[i, ])
+             
+             # Update adjacency matrix and connected components
+             if (x@type == 'peptide'){
+               
+               X <- PSMatch::makeAdjacencyMatrix((x@metadata)[, x@proteinID])
+               rownames(X) <- rownames(x@metadata)
+               
+               # Create the connected components
+               cc <- PSMatch::ConnectedComponents(X)@adjMatrices
+               
+               x@adjMat <- as.matrix(X)
+               x@cc <- as.list(cc)
+             }
+            return(x)  
+})
 
 
 #' @exportMethod Convert2VizList

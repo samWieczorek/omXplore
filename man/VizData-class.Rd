@@ -6,7 +6,6 @@
 \alias{VizData}
 \alias{show,VizData-method}
 \alias{initialize,VizData-method}
-\alias{[,VizData,numeric,missing,ANY-method}
 \title{VizData class}
 \usage{
 \S4method{show}{VizData}(object)
@@ -23,8 +22,6 @@
   adjMat,
   cc
 )
-
-\S4method{[}{VizData,numeric,missing,ANY}(x, i, j = NA, k = NA, l = NA, ..., drop)
 }
 \arguments{
 \item{.Object}{xxx}
