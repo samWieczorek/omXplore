@@ -17,6 +17,22 @@
 NULL
 
 
+#' @export
+#' @rdname color-legend
+#' 
+custom_metacell_colors <- function()
+  list("Any" = "white",
+       "Missing" = "#CF8205",
+       "Missing POV" = "#E5A947",
+       "Missing MEC" = "#F1CA8A",
+       "Quantified" = "#0A31D0",
+       "Quant. by recovery" = "#B9C4F2",
+       "Quant. by direct id" = "#6178D9",
+       "Combined tags" = "#1E8E05",
+       "Imputed" = "#A40C0C",
+       "Imputed POV" = "#E34343",
+       "Imputed MEC" = "#F59898")
+
 #' @import shiny
 #' @import shinyBS
 #' @rdname color-legend
@@ -39,7 +55,6 @@ mod_colorLegend_ui <- function(id) {
 
 
 #' @export
-#' @import DaparToolshed
 #' @rdname color-legend
 mod_colorLegend_server <- function(id, 
                                    presentTags = reactive({NULL}), 
@@ -47,10 +62,10 @@ mod_colorLegend_server <- function(id,
   moduleServer(id, function(input, output, session) {
       ns <- session$ns
       
-      if (!requireNamespace("DaparToolshed", quietly = TRUE)) {
-        stop("Please install DaparToolshed: BiocManager::install('DaparToolshed')")
-      }
-      require('DaparToolshed')
+      # if (!requireNamespace("DaparToolshed", quietly = TRUE)) {
+      #   stop("Please install DaparToolshed: BiocManager::install('DaparToolshed')")
+      # }
+      # require('DaparToolshed')
       
       output$legend <- renderUI({
          req(presentTags)

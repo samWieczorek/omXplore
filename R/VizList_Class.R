@@ -1,6 +1,6 @@
 #' @title DaparVizData class definition
 #'
-#' @description
+#' @description xxx
 #'
 #' @param ll.vizData xxx
 #' 

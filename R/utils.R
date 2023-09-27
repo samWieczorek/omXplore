@@ -5,7 +5,7 @@
 #' @param type A 'character(1)' which is the type of original dataset to build an example from. 
 #' Available values are 'QFeatures' (default value), 'MSnbase' and 'list'.
 #' 
-#' @value An instance of the class 'VizClass'.
+#' @return An instance of the class 'VizClass'.
 #' 
 #' @author Samuel Wieczorek
 #' 
@@ -23,8 +23,6 @@ require(utils)
            convert2viz(Exp1_R25_pept)
            },
          
-         
-         
          MSnbase = {
            data(Exp1_R25_pept, package = 'DAPARdata', envir = environment())
            data(Exp1_R25_prot, package = 'DAPARdata', envir = environment())
@@ -34,23 +32,21 @@ require(utils)
            
            convert2viz(ll.tmp)
          },
-         
-         
-         
-         
+
          list = {
-           data(Exp1_R25_pept, package='DAPARdata', envir = environment())
+           pkgs.require('Msnbase')
+           data(Exp1_R25_pept, package = 'DAPARdata', envir = environment())
            msnset <- Exp1_R25_pept
-           X <- PSMatch::makeAdjacencyMatrix(fData(msnset)[, msnset@experimentData@other$proteinId])
-           rownames(X) <- rownames(fData(msnset))
+           X <- PSMatch::makeAdjacencyMatrix(MSnbase::fData(msnset)[, msnset@experimentData@other$proteinId])
+           rownames(X) <- rownames(MSnbase::fData(msnset))
            connectedComp <- PSMatch::ConnectedComponents(X)
            
            ll.Exp1_R25_pept <- list(
-             qdata = exprs(msnset),
-             metacell = fData(msnset)[ , msnset@experimentData@other$names_metacell],
-             mdata = fData(msnset),
+             qdata = MSnbase::exprs(msnset),
+             metacell = MSnbase::fData(msnset)[ , msnset@experimentData@other$names_metacell],
+             mdata = MSnbase::fData(msnset),
              colID = msnset@experimentData@other$keyId,
-             conds = pData(msnset)[, 'Condition'],
+             conds = MSnbase::pData(msnset)[, 'Condition'],
              type = msnset@experimentData@other$typeOfData,
              adjMat = as.matrix(X),
              cc = as.list(connectedComp@adjMatrices)
@@ -59,26 +55,26 @@ require(utils)
            data(Exp1_R25_prot, package='DAPARdata', envir = environment())
            msnset <- Exp1_R25_prot
            ll.Exp1_R25_prot <- list(
-             qdata = exprs(msnset),
-             metacell = fData(msnset)[ , msnset@experimentData@other$names_metacell],
-             mdata = fData(msnset),
+             qdata = MSnbase::exprs(msnset),
+             metacell = MSnbase::fData(msnset)[ , msnset@experimentData@other$names_metacell],
+             mdata = MSnbase::fData(msnset),
              colID = msnset@experimentData@other$keyId,
-             conds = pData(msnset)[, 'Condition'],
+             conds = MSnbase::pData(msnset)[, 'Condition'],
              type = msnset@experimentData@other$typeOfData
            )
            
            data(Exp1_R2_pept, package='DAPARdata', envir = environment())
            msnset <- Exp1_R2_pept
-           X <- PSMatch::makeAdjacencyMatrix(fData(msnset)[, msnset@experimentData@other$proteinId])
+           X <- PSMatch::makeAdjacencyMatrix(MSnbase::fData(msnset)[, msnset@experimentData@other$proteinId])
            rownames(X) <- rownames(fData(msnset))
            connectedComp <- PSMatch::ConnectedComponents(X)
            
            ll.Exp1_R2_pept <- list(
-             qdata = exprs(msnset),
-             metacell = fData(msnset)[ , msnset@experimentData@other$names_metacell],
-             mdata = fData(msnset),
+             qdata = MSnbase::exprs(msnset),
+             metacell = MSnbase::fData(msnset)[ , msnset@experimentData@other$names_metacell],
+             mdata = MSnbase::fData(msnset),
              colID = msnset@experimentData@other$keyId,
-             conds = pData(msnset)[, 'Condition'],
+             conds = MSnbase::pData(msnset)[, 'Condition'],
              type = msnset@experimentData@other$typeOfData,
              adjMat = as.matrix(X),
              cc = as.list(connectedComp@adjMatrices)
@@ -259,4 +255,27 @@ BuildColorStyles <- function(vizData) {
   styles$tags <- mc$node
   styles$colors <- mc$color
   styles
+}
+
+
+
+#' @title Loads packages
+#' 
+#' @description Checks if a package is available to load it
+#' 
+#' @param ll.deps A `character()` vector which contains packages names
+#' 
+#' @examples 
+#' pkgs.require('DAPAR')
+#' 
+#' @export
+#' 
+#' @author Samuel Wieczorek
+#' 
+pkgs.require <- function(ll.deps){
+  lapply(ll.deps, function(x) {
+    if (!requireNamespace(x, quietly = TRUE)) {
+      stop(paste0("Please install ", x, ": BiocManager::install('", x, "')"))
+    }
+  })
 }

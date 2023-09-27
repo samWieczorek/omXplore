@@ -3,7 +3,7 @@ library(DaparViz)
 library(shiny)
 
 
-data(ft, package='DaparToolshed')
+data(ft)
 vList <- convert2viz(ft)
 vData <- vList@ll.vizData[[1]]
 
@@ -18,7 +18,7 @@ CVDist(vData)
 ui <- fluidPage(mod_ds_variance_ui("plot"))
 
 server <- shinyServer(function(input, output, session) {
-  data(ft, package='DaparToolshed')
+  data(ft)
   vList <- convert2viz(ft)
   vData <- vList@ll.vizData[[1]]
   

@@ -31,6 +31,8 @@ An instance of the class \code{VizData}
 }
 \description{
 xxx
+
+xxx
 }
 \section{Slots}{
 
@@ -40,7 +42,7 @@ xxx
 
 \examples{
 library(MSnbase)
-library(DaparToolshed)
+#library(DaparToolshed)
 library(DaparViz)
 library(Matrix)
 
@@ -61,16 +63,16 @@ test <- convert2viz(ll.tmp)
 
 data(Exp1_R25_pept, package='DAPARdata')
 msnset <- Exp1_R25_pept
-X <- PSMatch::makeAdjacencyMatrix(fData(msnset)[, msnset@experimentData@other$proteinId])
-rownames(X) <- rownames(fData(msnset))
+X <- PSMatch::makeAdjacencyMatrix(MSnbase::fData(msnset)[, msnset@experimentData@other$proteinId])
+rownames(X) <- rownames(MSnbase::fData(msnset))
 connectedComp <- PSMatch::ConnectedComponents(X)
 
 ll.Exp1_R25_pept <- list(
   qdata = exprs(msnset),
-  metacell = fData(msnset)[ , msnset@experimentData@other$names_metacell],
-  mdata = fData(msnset),
+  metacell = MSnbase::fData(msnset)[ , msnset@experimentData@other$names_metacell],
+  mdata = MSnbase::fData(msnset),
   colID = msnset@experimentData@other$keyId,
-  conds = pData(msnset)[, 'Condition'],
+  conds = MSnbase::pData(msnset)[, 'Condition'],
   type = msnset@experimentData@other$typeOfData,
   adjMat = as.matrix(X),
   cc = as.list(connectedComp@adjMatrices)
@@ -80,25 +82,25 @@ data(Exp1_R25_prot, package='DAPARdata')
 msnset <- Exp1_R25_prot
 ll.Exp1_R25_prot <- list(
    qdata = exprs(msnset),
-  metacell = fData(msnset)[ , msnset@experimentData@other$names_metacell],
-  mdata = fData(msnset),
+  metacell = MSnbase::fData(msnset)[ , msnset@experimentData@other$names_metacell],
+  mdata = MSnbase::fData(msnset),
   colID = msnset@experimentData@other$keyId,
-  conds = pData(msnset)[, 'Condition'],
+  conds = MSnbase::pData(msnset)[, 'Condition'],
   type = msnset@experimentData@other$typeOfData
 )
 
 data(Exp1_R2_pept, package='DAPARdata')
 msnset <- Exp1_R2_pept
-X <- PSMatch::makeAdjacencyMatrix(fData(msnset)[, msnset@experimentData@other$proteinId])
-rownames(X) <- rownames(fData(msnset))
+X <- PSMatch::makeAdjacencyMatrix(MSnbase::fData(msnset)[, msnset@experimentData@other$proteinId])
+rownames(X) <- rownames(MSnbase::fData(msnset))
 connectedComp <- PSMatch::ConnectedComponents(X)
 
 ll.Exp1_R2_pept <- list(
   qdata = exprs(msnset),
-  metacell = fData(msnset)[ , msnset@experimentData@other$names_metacell],
-  mdata = fData(msnset),
+  metacell = MSnbase::fData(msnset)[ , msnset@experimentData@other$names_metacell],
+  mdata = MSnbase::fData(msnset),
   colID = msnset@experimentData@other$keyId,
-  conds = pData(msnset)[, 'Condition'],
+  conds = MSnbase::pData(msnset)[, 'Condition'],
   type = msnset@experimentData@other$typeOfData,
   adjMat = as.matrix(X),
   cc = as.list(connectedComp@adjMatrices)

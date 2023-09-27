@@ -10,6 +10,9 @@ BuildExampleDataset(type = "QFeatures")
 \item{type}{A 'character(1)' which is the type of original dataset to build an example from.
 Available values are 'QFeatures' (default value), 'MSnbase' and 'list'.}
 }
+\value{
+An instance of the class 'VizClass'.
+}
 \description{
 This function builds an example dataset as an instance of the class
 'VizClass', which is the format to be used with functions in the DaparViz package.

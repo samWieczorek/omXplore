@@ -2,10 +2,13 @@
 % Please edit documentation in R/mod_colorLegend.R
 \name{color-legend}
 \alias{color-legend}
+\alias{custom_metacell_colors}
 \alias{mod_colorLegend_ui}
 \alias{mod_colorLegend_server}
 \title{Color legend for DaparToolshed}
 \usage{
+custom_metacell_colors()
+
 mod_colorLegend_ui(id)
 
 mod_colorLegend_server(
@@ -31,7 +34,7 @@ NA
 Shows xxx based on the tags in the package 'DaparToolshed'
 }
 \examples{
-library(DaparToolshed)
+#library(DaparToolshed)
 library(DaparToolshedData)
 library(highcharter)
 library(shinyBS)

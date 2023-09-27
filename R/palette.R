@@ -99,3 +99,52 @@ ExtendPalette <- function(n, pal.name = "Set1") {
     }
     extended.pal
 }
+
+
+#' @title Builds a complete color palette for the conditions given in argument
+#'
+#' @description xxxx
+#'
+#' @param conds The extended vector of samples conditions
+#'
+#' @param pal A vector of HEX color code that form the basis palette from which
+#' to build the complete color vector for the conditions.
+#'
+#' @return A vector composed of HEX color code for the conditions
+#'
+#' @author Samuel Wieczorek
+#'
+#' @examples
+#' \dontrun{
+#' data(Exp1_R25_pept, package="DAPARdata")
+#' conditions <- Biobase::pData(Exp1_R25_pept)$Condition
+#' GetColorsForConditions(conditions, ExtendPalette(2))
+#' }
+#'
+#' @export
+#'
+#'
+GetColorsForConditions <- function(conds, pal = NULL) {
+  
+  pkgs.require('RColorBrewer')
+  
+  
+  if (missing(conds)) {
+    stop("'conds' is required")
+  }
+  
+  if (!is.null(pal) && length(unique(conds)) != length(pal)) {
+    stop("The length of `conds` must be equal to the length 
+            of `base_palette`.")
+  }
+  
+  if (is.null(pal)) {
+    pal <- ExtendPalette(length(unique(conds)))
+  }
+  
+  myColors <- NULL
+  for (i in seq_len(length(conds))) {
+    myColors[i] <- pal[which(conds[i] == unique(conds))]
+  }
+  return(myColors)
+}

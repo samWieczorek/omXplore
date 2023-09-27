@@ -64,13 +64,24 @@ NULL
 #' @rdname ds-plots
 #' @export
 listPlotModules <- function() {
-    ll <- ls("package:DaparViz")
-    ll <- ll[grep("mod_ds_", ll)]
-    ll <- gsub("_server", "", ll)
-    ll <- gsub("_ui", "", ll)
-    ll <- unique(ll)
-    ll
+  # Lists module in the package `DaparViz`
+  ll.daparViz <- ls("package:DaparViz")
+  ll.daparViz <- ll.daparViz[grep("mod_ds_", ll.daparViz)]
+  ll.daparViz <- gsub("_server", "", ll.daparViz)
+  ll.daparViz <- gsub("_ui", "", ll.daparViz)
+  ll.daparViz <- unique(ll.daparViz)
+  ll.daparViz
+  
+  # Lists module in the global environment
+  ll.env <- lsf.str()
+  ll.env <- ll.env[grep("mod_ds_", ll.env)]
+  ll.env <- gsub("_server", "", ll.env)
+  ll.env <- gsub("_ui", "", ll.env)
+  ll.env <- unique(ll.env)
+  
+  c(ll.daparViz, ll.env)
 }
+
 
 
 
@@ -80,7 +91,7 @@ listPlotModules <- function() {
 #' @rdname ds-plots
 #' @export
 #' 
-#' @example examples/example_mod_view_dataset.R
+#' @example examples/ex_mod_view_dataset.R
 #' 
 mod_view_dataset_ui <- function(id) {
     ns <- NS(id)

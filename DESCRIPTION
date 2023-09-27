@@ -31,60 +31,7 @@ Imports:
     grDevices,
     stats,
     utils,
-    htmlwidgets,
-    DaparToolshed
-biocViews: 
-    Proteomics,
-    Normalization,
-    Preprocessing,
-    MassSpectrometry,
-    QualityControl,
-    GO,
-    DataImport
-NeedsCompilation: no
-Collate:
-    zzz.R
-    palette.R
-    utils.R
-    AllGenerics.R
-    VizData_Class.R
-    VizList_Class.R
-    plots_volcano.R
-    adjacencyMatrixInfos.R
-    plots_compare_assays.R
-    global.R
-    mod_view_dataset.R
-    mod_explore_graphs.R
-    mod_ds_corrmatrix.R
-    mod_ds_density.R
-    mod_ds_seExplorer.R
-    mod_ds_heatmap.R
-    mod_ds_intensity.R
-    mod_ds_metacell.R
-    mod_mv_imputation.R
-    mod_ds_pca.R
-    mod_ds_cc.R
-    mod_ds_variance.R
-    mod_colorLegend.R
-    plot_boxplot.R
-    plot_corrmatrix.R
-    plot_variance.R
-    plot_density.R
-    plot_heatmap.R
-    plot_pca.R
-    plot_metacell.R
-    plot_violin.R
-    mod_plots_tracking.R
-    mod_metacell_tree.R
-    get_pep_prot_CC.R
-    mod_dl.R
-    mod_format_DT.R
-RoxygenNote: 7.2.3
-Packaged: 2017-10-13 11:13:04 UTC; sw175264
-Encoding: UTF-8
-LazyData: false
-URL: https://github.com/prostarproteomics/DaparViz
-BugReports: https://github.com/prostarproteomics/DaparViz/issues
+    htmlwidgets
 Suggests: 
     knitr,
     methods,
@@ -106,5 +53,55 @@ Suggests:
     vioplot,
     dplyr,
     tidyr
+biocViews: 
+    Proteomics,
+    Normalization,
+    Preprocessing,
+    MassSpectrometry,
+    QualityControl,
+    GO,
+    DataImport
+NeedsCompilation: no
+Collate:
+    zzz.R
+    doc-data.R
+    palette.R
+    utils.R
+    AllGenerics.R
+    VizData_Class.R
+    VizList_Class.R
+    plots_volcano.R
+    adjacencyMatrixInfos.R
+    plots_compare_assays.R
+    global.R
+    mod_view_dataset.R
+    mod_explore_graphs.R
+    mod_ds_corrmatrix.R
+    mod_ds_density.R
+    mod_ds_seExplorer.R
+    mod_ds_heatmap.R
+    mod_ds_intensity.R
+    mod_mv_imputation.R
+    mod_ds_pca.R
+    mod_ds_cc.R
+    mod_ds_variance.R
+    mod_colorLegend.R
+    plot_boxplot.R
+    plot_corrmatrix.R
+    plot_variance.R
+    plot_density.R
+    plot_heatmap.R
+    plot_pca.R
+    plot_violin.R
+    mod_plots_tracking.R
+    get_pep_prot_CC.R
+    mod_dl.R
+    mod_format_DT.R
+RoxygenNote: 7.2.3
+Packaged: 2017-10-13 11:13:04 UTC; sw175264
+Encoding: UTF-8
+LazyData: false
+URL: https://github.com/prostarproteomics/DaparViz
+BugReports: https://github.com/prostarproteomics/DaparViz/issues
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr

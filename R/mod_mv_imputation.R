@@ -23,7 +23,7 @@
 #' The lines have been sorted in order to visualize easily the different
 #' number of missing values. A white square is plotted for missing values.
 #'
-#' @seealso The package `DaparToolshed` for the 'qMetadata' metadata.
+# #' @seealso The package `DaparToolshed` for the 'qMetadata' metadata.
 #'
 #' @name plot-mv
 #' @return A plot
@@ -34,7 +34,7 @@
 #' the package [RColorBrewer] to use.
 #' @author Samuel Wieczorek, Enora Fremy
 #'
-#' @example example/ex_mod_mv_imputation.R
+#' @example examples/ex_mod_mv_imputation.R
 #' 
 NULL
 

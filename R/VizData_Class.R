@@ -12,7 +12,7 @@
 #'  The recommended way to create `VizData` objects is the use the
 #' `xxxx()` function of the class `VizList`
 #' 
-#' @params vData An instance of class [VizData]
+#' @param vData An instance of class [VizData]
 #' @param .Object xxx
 #' @param qdata xxx
 #' @param metacell xxx
@@ -231,21 +231,25 @@ setMethod("Convert2VizList", signature = "QFeatures",
     
     ll <- list()
     for (i in 1:length(object)){
-      metacell.backup <- qMetacell(object[[i]])
+      #metacell.backup <- qMetacell(object[[i]])
       mdata <- SummarizedExperiment::rowData(object[[i]])
       X <- matrix()
       cc <- list()
       
-      if ("qMetacell" %in% names(mdata))
+      if ("qMetacell" %in% names(mdata)){
+        metacell.backup <- SummarizedExperiment::rowData(object)[[i]]$qMetacell
         mdata <- mdata[, -which(names(mdata)=="qMetacell")]
+      }
+      
       if ("adjacencyMatrix" %in% names(mdata))
         mdata <- mdata[, -which(names(mdata)=="adjacencyMatrix")]
 
 
-      if (typeDataset(object[[i]]) == 'peptide'){
+      if (S4Vectors::metadata(object[[i]])$typeDataset == 'peptide'){
         # Create the adjacency matrix
+        parentProt <- S4Vectors::metadata(object[[i]])$parentProtId
         X <- PSMatch::makeAdjacencyMatrix(
-          SummarizedExperiment::rowData(object[[i]])[, parentProtId(object[[i]])])
+          SummarizedExperiment::rowData(object[[i]])[, parentProt])
         rownames(X) <- rownames(SummarizedExperiment::rowData(object[[i]]))
         
         
@@ -255,12 +259,12 @@ setMethod("Convert2VizList", signature = "QFeatures",
       
       ll[[names(object[i])]] <- new(Class ="VizData",
                                     qdata = SummarizedExperiment::assay(object[[i]]),
-                                    metacell = metacell.backup,
+                                    metacell = SummarizedExperiment::rowData(object)[[i]]$qMetacell,
                                     metadata = as.data.frame(mdata),
-                                    colID = idcol(object[[i]]),
-                                    proteinID = parentProtId(object[[i]]),
+                                    colID = SummarizedExperiment::rowData(object)[[i]]$idcol,
+                                    proteinID = S4Vectors::metadata(object[[i]])$parentProtId,
                                     conds = SummarizedExperiment::colData(object)$Condition,
-                                    type = typeDataset(object[[i]]),
+                                    type = S4Vectors::metadata(object[[i]])$typeDataset,
                                     adjMat = as.matrix(X),
                                     cc = as.list(cc)
                                     )
@@ -283,25 +287,25 @@ setMethod("Convert2VizData", signature = "MSnSet",
           #' @param object xxx
           #' @param ... xxx
   function(object, ...) {
-    require(MSnbase)
+    pkgs.require('MSnbase')
     X <- matrix()
     cc <- list()
     
     if (object@experimentData@other$typeOfData == 'peptide'){
-      X <- PSMatch::makeAdjacencyMatrix(fData(object)[, object@experimentData@other$proteinId])
-      rownames(X) <- rownames(fData(object))
+      X <- PSMatch::makeAdjacencyMatrix(MSnbase::fData(object)[, object@experimentData@other$proteinId])
+      rownames(X) <- rownames(MSnbase::fData(object))
       connectedComp <- PSMatch::ConnectedComponents(X)
       cc <- connectedComp@adjMatrices
     }
     
     
     new(Class ="VizData",
-        qdata = exprs(object),
-        metacell = fData(object)[, object@experimentData@other$names_metacell], 
-        metadata = fData(object),
+        qdata = MSnbase::exprs(object),
+        metacell = MSnbase::fData(object)[, object@experimentData@other$names_metacell], 
+        metadata = MSnbase::fData(object),
         colID = object@experimentData@other$keyId,
         proteinID = object@experimentData@other$proteinId,
-        conds = pData(object)$Condition,
+        conds = MSnbase::pData(object)$Condition,
         type = object@experimentData@other$typeOfData,
         adjMat = as.matrix(X),
         cc = as.list(cc)

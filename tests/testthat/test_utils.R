@@ -9,7 +9,7 @@ data(ft)
 #
 #
 # test_that("getNumberOfEmptyLines", {
-#     expect_equal(getNumberOfEmptyLines(exprs(Exp1_R2_pept)), 715)
+#     expect_equal(getNumberOfEmptyLines(MSnbase::exprs(Exp1_R2_pept)), 715)
 # })
 #
 #

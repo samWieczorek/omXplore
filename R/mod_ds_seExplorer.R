@@ -1,6 +1,6 @@
 #' @title Explore a `VizClass` object
 #'
-#' @description
+#' @description xxx
 #' 
 #' @param id A `character(1)` which is the id of the shiny module.
 #' @param vizData An instance of the class `VizData`
@@ -9,7 +9,7 @@
 #'
 #' @name SE-explorer
 #'
-#' @example examples/example_mod_ds_seExplorer.R
+#' @example examples/ex_mod_ds_seExplorer.R
 #' 
 NULL
 

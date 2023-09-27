@@ -1,5 +1,5 @@
 library(MSnbase)
-library(DaparToolshed)
+#library(DaparToolshed)
 library(highcharter)
 library(DaparViz)
 library(shiny)
@@ -11,7 +11,7 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
-  data(ft, package='DaparToolshed')
+  data(ft)
   vList <- convert2viz(ft)
   vData <- vList@ll.vizData[[1]]
   
