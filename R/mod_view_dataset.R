@@ -167,38 +167,23 @@ mod_view_dataset_server <- function(id,
         output$ShowVignettes_ui <- renderUI({
           
           lapply(ll.mods, function(x) {
-            print(x)
-            #browser()
             
             # By default, search image from the images directory of the DaparViz
             # package. This works for built-in plot modules. For external modules,
-            # then load correct resourcePath
+            # then load customized resource path
             img_path <- system.file('images', paste0(gsub("mod_", "", x), ".png"), package='DaparViz')
             if (file.exists(img_path))
               img_src <- paste0("images/", gsub("mod_", "", x), ".png")
             else
               img_src <- paste0("img_", gsub("mod_", "", x), "/", gsub("mod_", "", x), ".png")
             
-             # Show button
-            tags$button(
-              id = ns(x),
-              p(gsub("mod_ds_", "", x)),
-              class = "btn action-button",
-              tags$img(src = img_src, height = "50px"),
-              style = "padding: 0px; border: none; background-size: cover; background-position: center;"
-            )
-            
-            
-              # actionButton(ns(x),
-              #       label = tagList(
-              #           p(gsub("mod_ds_", "", x)), 
-              #           #img(src = paste0("images/", gsub("mod_", "", x), ".png"), height = "50px")
-              #           tags$img(src = system.file("images", "ds_cc.png", package = "DaparViz"), height = "50px")
-              #           #tags$img(src = "http://i0.wp.com/unaracnidounacamiseta.com/wp-content/uploads/2012/07/lorem.jpg", height = "50px")
-              #           
-              #       ),
-              #       style = "padding: 0px; border: none; background-size: cover; background-position: center;"
-              #   )
+             actionButton(ns(x),
+                    label = tagList(
+                        p(gsub("mod_ds_", "", x)),
+                        tags$img(src = img_src, height = "50px")
+                        ),
+                    style = "padding: 0px; border: none; background-size: cover; background-position: center;"
+                )
             })
         })
 
