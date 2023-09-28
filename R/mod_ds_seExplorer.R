@@ -57,10 +57,11 @@ mod_ds_seExplorer_server <- function(id,
         observe({
           req(vizData())
           stopifnot(inherits(vizData(), "VizData"))
-            tags <- GetMetacellTags(vizData()@metacell, 
-                                    level = vizData()@type, 
-                                    onlyPresent = TRUE)
-            mod_colorLegend_server("legend", tags)
+          
+          tags <- GetMetacellTags(vizData()@metacell, 
+                                  level = vizData()@type, 
+                                  onlyPresent = TRUE)
+          mod_colorLegend_server("legend", tags)
         })
 
 

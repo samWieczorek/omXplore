@@ -40,15 +40,15 @@ mod_ds_variance_ui <- function(id) {
 #' @rdname plot-variance
 #' @export
 mod_ds_variance_server <- function(id,
-                                   vData,
+                                   vizData,
                                    pal.name = NULL) {
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
 
         output$viewDistCV <- renderHighchart({
-          req(vData())
+          req(vizData())
           withProgress(message = "Making plot", value = 100, {
-                varDist <- CVDist(vData(), pal.name)
+                varDist <- CVDist(vvizDataData(), pal.name)
             })
         })
     })

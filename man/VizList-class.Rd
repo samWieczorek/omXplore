@@ -68,7 +68,7 @@ rownames(X) <- rownames(MSnbase::fData(msnset))
 connectedComp <- PSMatch::ConnectedComponents(X)
 
 ll.Exp1_R25_pept <- list(
-  qdata = exprs(msnset),
+  qdata = MSnbase::exprs(msnset),
   metacell = MSnbase::fData(msnset)[ , msnset@experimentData@other$names_metacell],
   mdata = MSnbase::fData(msnset),
   colID = msnset@experimentData@other$keyId,
@@ -81,7 +81,7 @@ ll.Exp1_R25_pept <- list(
 data(Exp1_R25_prot, package='DAPARdata')
 msnset <- Exp1_R25_prot
 ll.Exp1_R25_prot <- list(
-   qdata = exprs(msnset),
+   qdata = MSnbase::exprs(msnset),
   metacell = MSnbase::fData(msnset)[ , msnset@experimentData@other$names_metacell],
   mdata = MSnbase::fData(msnset),
   colID = msnset@experimentData@other$keyId,
@@ -96,7 +96,7 @@ rownames(X) <- rownames(MSnbase::fData(msnset))
 connectedComp <- PSMatch::ConnectedComponents(X)
 
 ll.Exp1_R2_pept <- list(
-  qdata = exprs(msnset),
+  qdata = MSnbase::exprs(msnset),
   metacell = MSnbase::fData(msnset)[ , msnset@experimentData@other$names_metacell],
   mdata = MSnbase::fData(msnset),
   colID = msnset@experimentData@other$keyId,

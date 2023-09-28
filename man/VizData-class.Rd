@@ -24,27 +24,7 @@
 )
 }
 \arguments{
-\item{.Object}{xxx}
-
-\item{qdata}{xxx}
-
-\item{metacell}{xxx}
-
-\item{metadata}{xxx}
-
-\item{colID}{xxx}
-
-\item{proteinID}{xxx}
-
-\item{conds}{xxx}
-
-\item{type}{xxx}
-
-\item{adjMat}{xxx}
-
-\item{cc}{xxx}
-
-\item{vData}{An instance of class \link{VizData}}
+\item{object}{xxx}
 }
 \description{
 Conceptually, a \code{VizData} object is a standard representation of all
@@ -107,7 +87,7 @@ rownames(X) <- rownames(MSnbase::fData(msnset))
 connectedComp <- PSMatch::ConnectedComponents(X)
 
 ll.Exp1_R25_pept <- list(
-  qdata = exprs(msnset),
+  qdata = MSnbase::exprs(msnset),
   metacell = MSnbase::fData(msnset)[ , msnset@experimentData@other$names_metacell],
   mdata = MSnbase::fData(msnset),
   colID = msnset@experimentData@other$keyId,
@@ -120,7 +100,7 @@ ll.Exp1_R25_pept <- list(
 data(Exp1_R25_prot, package='DAPARdata')
 msnset <- Exp1_R25_prot
 ll.Exp1_R25_prot <- list(
-   qdata = exprs(msnset),
+   qdata = MSnbase::exprs(msnset),
   metacell = MSnbase::fData(msnset)[ , msnset@experimentData@other$names_metacell],
   mdata = MSnbase::fData(msnset),
   colID = msnset@experimentData@other$keyId,
@@ -135,7 +115,7 @@ rownames(X) <- rownames(MSnbase::fData(msnset))
 connectedComp <- PSMatch::ConnectedComponents(X)
 
 ll.Exp1_R2_pept <- list(
-  qdata = exprs(msnset),
+  qdata = MSnbase::exprs(msnset),
   metacell = MSnbase::fData(msnset)[ , msnset@experimentData@other$names_metacell],
   mdata = MSnbase::fData(msnset),
   colID = msnset@experimentData@other$keyId,

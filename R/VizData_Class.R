@@ -11,18 +11,6 @@
 #'  
 #'  The recommended way to create `VizData` objects is the use the
 #' `xxxx()` function of the class `VizList`
-#' 
-#' @param vData An instance of class [VizData]
-#' @param .Object xxx
-#' @param qdata xxx
-#' @param metacell xxx
-#' @param metadata xxx
-#' @param colID xxx
-#' @param proteinID xxx
-#' @param conds xxx
-#' @param type xxx
-#' @param adjMat xxx
-#' @param cc xxx
 #'
 #' @name VizData-class
 #' 
@@ -73,6 +61,7 @@ VizData <- setClass(
       cc = list()
     ),
   
+    #' @param object xxx
     validity = function(object) {
       errors <- character()
       
@@ -223,7 +212,7 @@ setMethod('[', signature = c('VizData', "ANY", "ANY", "ANY"),
 #' @rdname Convert2VizList
 #' 
 setMethod("Convert2VizList", signature = "QFeatures",
-          
+          #' @param object xxx
   function(object) {
     require(PSMatch)
     require(QFeatures)

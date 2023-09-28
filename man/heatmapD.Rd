@@ -3,7 +3,7 @@
 \name{heatmapD}
 \alias{heatmapD}
 \title{This function is a wrapper to \code{heatmap.2} that displays
-quantitative data in the \code{Biobase::exprs()} table of an object of
+quantitative data in the \code{MSnbase::exprs()} table of an object of
 class \code{MSnSet}}
 \usage{
 heatmapD(vData, distance = "euclidean", cluster = "complete", dendro = FALSE)
@@ -24,7 +24,7 @@ A heatmap
 }
 \description{
 This function is a wrapper to \code{heatmap.2} that displays
-quantitative data in the \code{Biobase::exprs()} table of an object of
+quantitative data in the \code{MSnbase::exprs()} table of an object of
 class \code{MSnSet}
 }
 \examples{

@@ -1,0 +1,322 @@
+#' @title Quantitative metadata vocabulary for entities
+#' 
+#' @description
+#' This function gives the vocabulary used for the quantitative metadata of each entity in
+#' each condition.
+#' 
+#' @section Glossary:
+#' 
+#' Peptide-level vocabulary
+#'
+#' |-- 'Any'
+#' |    |
+#' |    |-- 1.0 'Quantified'
+#' |    |    |
+#' |    |    |-- 1.1 "Quant. by direct id" (color 4, white)
+#' |    |    |
+#' |    |    |-- 1.2 "Quant. by recovery" (color 3, lightgrey)
+#' |    |
+#' |    |-- 2.0 "Missing" (no color)
+#' |    |    |
+#' |    |    |-- 2.1 "Missing POV" (color 1)
+#' |    |    |
+#' |    |    |-- 2.2 'Missing MEC' (color 2)
+#' |    |
+#' |    |-- 3.0 'Imputed'
+#' |    |    |
+#' |    |    |-- 3.1 'Imputed POV' (color 1)
+#' |    |    |
+#' |    |    |-- 3.2 'Imputed MEC' (color 2)
+#'
+#'
+#'
+#' Protein-level vocabulary:
+#' |-- 'Any'
+#' |    |
+#' |    |-- 1.0 'Quantified'
+#' |    |    |
+#' |    |    |-- 1.1 "Quant. by direct id" (color 4, white)
+#' |    |    |
+#' |    |    |-- 1.2 "Quant. by recovery" (color 3, lightgrey)
+#' |    |
+#' |    |-- 2.0 "Missing"
+#' |    |    |
+#' |    |    |-- 2.1 "Missing POV" (color 1)
+#' |    |    |
+#' |    |    |-- 2.2 'Missing MEC' (color 2)
+#' |    |
+#' |    |-- 3.0 'Imputed'
+#' |    |    |
+#' |    |    |-- 3.1 'Imputed POV' (color 1)
+#' |    |    |
+#' |    |    |-- 3.2 'Imputed MEC' (color 2)
+#' |    |
+#' |    |-- 4.0 'Combined tags' (color 3bis, lightgrey)
+#'
+#' 
+#' @section Conversion to the glossary:
+#' 
+#' A generic conversion
+#' 
+#' Conversion for Proline datasets
+#' 
+#' Conversion from Maxquant datasets
+#' 
+#' 
+#' @name q_metadata
+#' 
+#' @examples 
+#' 
+#' metacell.def('protein')
+#' metacell.def('peptide')
+#' 
+#' #-----------------------------------------------
+#' # A shiny app to view color legends 
+#' #-----------------------------------------------
+#' if(interactive()){
+#' data(ft)
+#' ui <- mod_qMetacellLegend_ui("legend")
+#' 
+#' server <- function(input, output, session) {
+#'   mod_qMetacellLegend_server('legend',
+#'                                 object = reactive({ft[[1]]}))
+#'   }
+#'   
+#'  shinyApp(ui = ui, server = server)
+#'   
+#'   
+#' }
+NULL
+
+
+
+#' @param level A string designing the type of entity/pipeline. 
+#' Available values are: `peptide`, `protein`
+#' 
+#' @return A data.frame containing the different tags and corresponding colors for the level
+#' given in parameter
+#' 
+#' @author Thomas Burger, Samuel Wieczorek
+#'
+#' @export
+#'
+#' @rdname q_metadata
+#' 
+metacell.def <- function(level){
+  if(missing(level))
+    stop("'level' is required.")
+  
+  def <- switch(level,
+                peptide = {
+                  node <- c(
+                    "Any",
+                    "Quantified",
+                    "Quant. by direct id",
+                    "Quant. by recovery",
+                    "Missing",
+                    "Missing POV",
+                    "Missing MEC",
+                    "Imputed",
+                    "Imputed POV",
+                    "Imputed MEC"
+                  )
+                  parent <- c(
+                    "",
+                    "Any",
+                    "Quantified",
+                    "Quantified",
+                    "Any",
+                    "Missing",
+                    "Missing",
+                    "Any",
+                    "Imputed",
+                    "Imputed"
+                  )
+                  data.frame(
+                    node = node,
+                    parent = parent
+                  )
+                },
+                protein = {
+                  node <- c(
+                    "Any",
+                    "Quantified",
+                    "Quant. by direct id",
+                    "Quant. by recovery",
+                    "Missing",
+                    "Missing POV",
+                    "Missing MEC",
+                    "Imputed",
+                    "Imputed POV",
+                    "Imputed MEC",
+                    "Combined tags"
+                  )
+                  parent <- c(
+                    "",
+                    "Any",
+                    "Quantified",
+                    "Quantified",
+                    "Any",
+                    "Missing",
+                    "Missing",
+                    "Any",
+                    "Imputed",
+                    "Imputed",
+                    "Any"
+                  )
+                  
+                  data.frame(
+                    node = node,
+                    parent = parent
+                  )
+                }
+  )
+  
+  
+  colors <- custom_metacell_colors()
+  
+  def <- cbind(def, color = rep("white", nrow(def)))
+  
+  for (n in seq_len(nrow(def))) {
+    def[n, "color"] <- colors[[def[n, "node"]]]
+  }
+  
+  return(def)
+}
+
+
+
+#' @export
+#' @rdname q_metadata
+custom_metacell_colors <- function()
+  list("Any" = "white",
+       "Missing" = "#CF8205",
+       "Missing POV" = "#E5A947",
+       "Missing MEC" = "#F1CA8A",
+       "Quantified" = "#0A31D0",
+       "Quant. by recovery" = "#B9C4F2",
+       "Quant. by direct id" = "#6178D9",
+       "Combined tags" = "#1E8E05",
+       "Imputed" = "#A40C0C",
+       "Imputed POV" = "#E34343",
+       "Imputed MEC" = "#F59898")
+
+
+
+#' @title Parent name of a node
+#' @description xxx
+#' @param level xxx
+#' @param node xxx
+#' 
+#' #' @examples 
+#' Parent('protein', 'Missing')
+#' Parent('protein', 'Missing POV')
+#' Parent('protein', c('Missing POV', 'Missing MEC'))
+#' Parent('protein', c('Missing', 'Missing POV', 'Missing MEC'))
+#' 
+#' 
+#' @export
+Parent <- function(level, node=NULL){
+  parents <- NULL
+  tags <- metacell.def(level)
+  
+  if (!is.null(node) && length(node) > 0){
+    for (p in node){
+      ind <- match(p, tags$node)
+      if (length(ind) > 0)
+        parents <- unique(c(parents, tags$parent[ind]))
+    }
+  }
+  
+  
+  return(parents)
+}
+
+#' @title Names of all chidren of a node
+#' @description xxx
+#' @param level xxx
+#' @param parent xxx
+#' 
+#' @examples 
+#' Children('protein', 'Missing')
+#' Children('protein', 'Missing POV')
+#' Children('protein', c('Missing POV', 'Missing MEC'))
+#' Children('protein', c('Missing', 'Missing POV', 'Missing MEC'))
+#' @export
+Children <- function(level, parent = NULL){
+  childrens <- NULL
+  tags <- metacell.def(level)
+  if (!is.null(parent) && length(parent) > 0){
+    for (p in parent){
+      ind <- grepl(p, tags$parent)
+      if (length(ind) > 0)
+        childrens <- unique(c(childrens, tags$node[ind]))
+    }
+  }
+  return(childrens)
+}
+
+
+#' @title Get metacell tags
+#' 
+#' @description xxx
+#' 
+#' @param object xxx
+#' @param level xxx
+#' @param onlyPresent 
+#' 
+#' @examples 
+#' NULL
+#' 
+#' @export
+#' 
+#' @author Samuel Wieczorek
+#' 
+GetMetacellTags <- function(object = NULL,
+                            level = NULL,
+                            onlyPresent = FALSE) {
+  
+  if (is.null(object))
+    stop('object in NULL')
+  
+  if (is.null(level))
+    stop('level in NULL')
+  
+  if (is.null(level) && all)
+    stop("level must be defined is 'onlyPresent' equals to FALSE")
+  
+  
+  ll <- NULL
+  if(onlyPresent) {
+    # Compute unique tags
+    tmp <- sapply(colnames(object), function(x) unique(object[,x]))
+    ll <- unique(as.vector(tmp))
+    
+    # Check if parent must be added
+    test <- match (Children(level, 'Any'), ll)
+    if (length(test) == length(Children(level, 'Any')) && !all(is.na(test)))
+      ll <- c(ll, 'Any')
+    
+    test <- match (Children(level, 'Quantified'), ll)
+    if (length(test) == length(Children(level, 'Quantified')) && !all(is.na(test)))
+      ll <- c(ll, 'Quantified')
+    
+    test <- match (Children(level, 'Missing'), ll)
+    if (length(test) == length(Children(level, 'Missing')) && !all(is.na(test)))
+      ll <- c(ll, 'Missing')
+    
+    test <- match (Children(level, 'Imputed'), ll)
+    if (length(test) == length(Children(level, 'Imputed')) && !all(is.na(test)))
+      ll <- c(ll, 'Imputed')
+    
+    test <- match (Children(level, 'Combined tags'), ll)
+    if (length(test) == length(Children(level, 'Combined tags')) && !all(is.na(test)))
+      ll <- c(ll, 'Combined tags')
+    
+  } else {
+    ll <- metacell.def(level)$node[-which(metacell.def(level)$node =='Any')]
+  }
+  
+  return(ll)
+  
+}
