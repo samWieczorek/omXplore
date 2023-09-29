@@ -17,7 +17,8 @@ ui <- fluidPage(mod_ds_density_ui("plot"))
 server <- shinyServer(function(input, output, session) {
   vList <- BuildExampleDataset('MSnbase')
   vData <- vList@ll.vizData[[1]]
-  mod_ds_density_server("plot", vizData = reactive({vData}))
+  mod_ds_density_server("plot", 
+                        vizData = reactive({Exp1_R25_prot}))
   })
 
 if (interactive())

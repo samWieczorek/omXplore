@@ -7,9 +7,9 @@
 #' @name plot-variance
 #' 
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param vData xxx
+#' @param vizData xxx
 #' @param pal.name A `character(1)` which is the name of the palette from the 
-#' package [RColorBrewer] from which the colors are taken. 
+#' package `RColorBrewer` from which the colors are taken. 
 #' Default value is 'Set1'.
 #' 
 #' @return NA

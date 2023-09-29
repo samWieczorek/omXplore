@@ -17,15 +17,6 @@
 NULL
 
 
-#' @slot qdata xxx
-#' @slot metacell xxx
-#' @slot metadata xxx
-#' @slot colID xxx
-#' @slot proteinID xxx
-#' @slot conds xxx
-#' @slot type xxx
-#' @slot adjMat xxx
-#' @slot cc xxx
 #' 
 #' @example inst/extadata/examples/ex_VizData_Class.R
 #'
@@ -35,6 +26,15 @@ NULL
 VizData <- setClass(
   
   "VizData",
+  #' @slot qdata xxx
+  #' @slot metacell xxx
+  #' @slot metadata xxx
+  #' @slot colID xxx
+  #' @slot proteinID xxx
+  #' @slot conds xxx
+  #' @slot type xxx
+  #' @slot adjMat xxx
+  #' @slot cc xxx
   
   representation(
       qdata = "matrix",
@@ -361,7 +361,11 @@ CheckClass <- function(ll){
 #' @rdname Convert2VizList
 #' @return An instance of class `VizList`
 #' @export
-convert2viz <- function(obj){
+convert2viz <- function(obj=NULL){
+  
+  if (is.null(obj) || length(obj) == 0)
+    return(NULL)
+  
   # Checks if each item is an instance of 'MSnSet' class
   ll.class <- CheckClass(obj)
   ll <- NULL

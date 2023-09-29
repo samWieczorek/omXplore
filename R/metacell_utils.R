@@ -186,22 +186,6 @@ metacell.def <- function(level){
 
 
 
-#' @export
-#' @rdname q_metadata
-custom_metacell_colors <- function()
-  list("Any" = "white",
-       "Missing" = "#CF8205",
-       "Missing POV" = "#E5A947",
-       "Missing MEC" = "#F1CA8A",
-       "Quantified" = "#0A31D0",
-       "Quant. by recovery" = "#B9C4F2",
-       "Quant. by direct id" = "#6178D9",
-       "Combined tags" = "#1E8E05",
-       "Imputed" = "#A40C0C",
-       "Imputed POV" = "#E34343",
-       "Imputed MEC" = "#F59898")
-
-
 
 #' @title Parent name of a node
 #' @description xxx
@@ -263,7 +247,7 @@ Children <- function(level, parent = NULL){
 #' 
 #' @param object xxx
 #' @param level xxx
-#' @param onlyPresent 
+#' @param onlyPresent xxx
 #' 
 #' @examples 
 #' NULL

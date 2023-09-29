@@ -6,6 +6,7 @@
 \alias{mod_ds_pca_server}
 \alias{wrapper_pca}
 \alias{plotPCA_Eigen}
+\alias{plotPCA_Var}
 \alias{plotPCA_Ind}
 \alias{plotPCA_Eigen_hc}
 \title{Bar plot of missing values per lines using highcharter.}
@@ -17,6 +18,8 @@ mod_ds_pca_server(id, vizData)
 wrapper_pca(vizData, var.scaling = TRUE, ncp = NULL)
 
 plotPCA_Eigen(res.pca)
+
+plotPCA_Var(res.pca, chosen.axes = c(1, 2))
 
 plotPCA_Ind(res.pca, chosen.axes = c(1, 2))
 
@@ -37,6 +40,8 @@ the results.}
 \item{chosen.axes}{The dimensions to plot}
 }
 \value{
+A plot
+
 A plot
 }
 \description{

@@ -127,7 +127,7 @@ plotPCA_Eigen <- function(res.pca) {
 
 #' @return A plot
 #'
-#' @author Samuel Wieczorek
+#' @rdname ds-pca
 #'
 #' @export
 #'
@@ -146,7 +146,7 @@ plotPCA_Var <- function(res.pca, chosen.axes = c(1, 2)) {
     axes = chosen.axes, 
     col.var = "cos2",
     gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
-    repel = TRUE # ?vite le chevauchement de texte
+    repel = TRUE # Evite le chevauchement de texte
   )
 }
 

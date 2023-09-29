@@ -20,8 +20,6 @@ CVDist(vizData, pal.name = NULL)
 \item{vizData}{xxx}
 
 \item{pal.name}{xxx}
-
-\item{vData}{xxx}
 }
 \value{
 NA

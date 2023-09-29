@@ -3,12 +3,9 @@
 \name{q_metadata}
 \alias{q_metadata}
 \alias{metacell.def}
-\alias{custom_metacell_colors}
 \title{Quantitative metadata vocabulary for entities}
 \usage{
 metacell.def(level)
-
-custom_metacell_colors()
 }
 \arguments{
 \item{level}{A string designing the type of entity/pipeline.

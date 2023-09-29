@@ -11,7 +11,7 @@ GetMetacellTags(object = NULL, level = NULL, onlyPresent = FALSE)
 
 \item{level}{xxx}
 
-\item{onlyPresent}{}
+\item{onlyPresent}{xxx}
 }
 \description{
 xxx

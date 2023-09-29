@@ -44,14 +44,14 @@
 #' 
 #' @param id A `character(1)` for the 'id' of the shiny module. It must be
 #' the same as for the '*_ui' function.
-#' @param object May be an instance of the class `VizList`, xxxx
+#' @param ll.vizData A instance of the class `VizList`.
 
 #'
 #' @return A plot
 #'
 #' @author Samuel Wieczorek, Enora Fremy
 #'
-#' @example inst/extadata/examples/ex_mod_view_dataset.R
+#' @example examples/ex_mod_view_dataset.R
 #' 
 NULL
 
@@ -91,13 +91,18 @@ listPlotModules <- function() {
 #' @rdname ds-plots
 #' @export
 #' 
-#' @example inst/extadata/examples/ex_mod_view_dataset.R
+#' @example examples/ex_mod_view_dataset.R
 #' 
 mod_view_dataset_ui <- function(id) {
     ns <- NS(id)
     tagList(
         shinyjs::useShinyjs(),
         fluidPage(
+            shinyjs::hidden(
+              div(id = ns('badFormatMsg'), 
+                  h3('Dataset in not in correct format.')
+                  )
+              ),
             div(style = general_style,  uiOutput(ns("chooseDataset_ui"))),
             div(style = general_style, uiOutput(ns("ShowVignettes_ui"))),
             br(), br(), br(),
@@ -114,7 +119,7 @@ mod_view_dataset_ui <- function(id) {
 #' @export
 #'
 mod_view_dataset_server <- function(id, 
-                                    object = reactive({NULL})
+                                    ll.vizData = reactive({NULL})
                                     ) {
 
     moduleServer(id, function(input, output, session) {
@@ -123,18 +128,24 @@ mod_view_dataset_server <- function(id,
         .width <- .height <- 40
 
         ll.mods <- listPlotModules()
+        
         rv <- reactiveValues(
+          data = NULL,
           conds = NULL,
           current.se = NULL,
-          btns.history  = rep(0, length(ll.mods)),
-          ll.vizData = NULL
-          )
-
+          btns.history = listPlotModules()
+        )
+        
 
         observe({
-            req(length(object()) > 0)
-            rv$ll.vizData <- convert2viz(object())
-            rv$conds <- rv$ll.vizData@ll.vizData[[1]]@conds
+            req(ll.vizData())
+          #browser()
+          if(inherits(ll.vizData(), "VizList")){
+            rv$data <- ll.vizData()
+            conds <- rv$data@ll.vizData[[1]]@conds
+          }
+          
+          shinyjs::toggle('badFormatMsg', condition = !inherits(ll.vizData(), "VizList"))
         }, priority = 1000)
 
 
@@ -154,6 +165,7 @@ mod_view_dataset_server <- function(id,
 
 
         output$ShowPlots_ui <- renderUI({
+          req(rv$data)
             lapply(ll.mods, function(x) {
                 shinyjs::hidden(
                     div(id = ns(paste0("div_", x, "_large")),
@@ -167,7 +179,7 @@ mod_view_dataset_server <- function(id,
 
 
         output$ShowVignettes_ui <- renderUI({
-          
+          req(rv$data)
           lapply(ll.mods, function(x) {
             
             # By default, search image from the images directory of the DaparViz
@@ -189,22 +201,22 @@ mod_view_dataset_server <- function(id,
             })
         })
 
-        observeEvent(req(rv$ll.vizData, input$chooseDataset), ignoreNULL = TRUE,{
-            rv$current.se <- rv$ll.vizData@ll.vizData[[input$chooseDataset]]
+        observeEvent(req(rv$data, input$chooseDataset), ignoreNULL = TRUE,{
+            rv$current.se <- rv$data@ll.vizData[[input$chooseDataset]]
         })
 
         output$chooseDataset_ui <- renderUI({
-            req(rv$ll.vizData)
+            req(rv$data)
 
-            if (length(rv$ll.vizData@ll.vizData) == 0) {
+            if (length(rv$data@ll.vizData) == 0) {
                 choices <- list(" " = character(0))
             } else {
-                choices <- names(rv$ll.vizData@ll.vizData)
+                choices <- names(rv$data@ll.vizData)
             }
 
             selectInput(ns("chooseDataset"), "Dataset",
                 choices = choices,
-                selected = names(rv$ll.vizData@ll.vizData)[length(rv$ll.vizData)],
+                selected = names(rv$data@ll.vizData)[length(rv$data)],
                 width = 200
             )
         })

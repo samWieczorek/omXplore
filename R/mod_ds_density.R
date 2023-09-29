@@ -39,19 +39,24 @@ mod_ds_density_server <- function(id,
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
 
+        rv <- reactiveValues(
+          data = NULL
+        )
+        
         observe({
             req(vizData())
-            stopifnot(inherits(vizData(), "VizData"))
+            if(inherits(vizData(), "VizData"))
+              rv$data <- vizData()
         })
 
 
         output$plot_ui <- renderHighchart({
-            req(vizData())
+            req(rv$data)
             tmp <- NULL
             isolate({
                 withProgress(message = "Making plot", value = 100, {
-                    tmp <- densityPlot(data = vizData()@qdata,
-                                       conds = vizData()@conds,
+                    tmp <- densityPlot(data = rv$data@qdata,
+                                       conds = rv$data@conds,
                                        pal.name = pal.name()
                                        )
                 })
