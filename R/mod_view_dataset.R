@@ -44,7 +44,7 @@
 #' 
 #' @param id A `character(1)` for the 'id' of the shiny module. It must be
 #' the same as for the '*_ui' function.
-#' @param ll.vizData A instance of the class `VizList`.
+#' @param object May be an instance of the class `VizList`, xxxx
 
 #'
 #' @return A plot
@@ -114,7 +114,7 @@ mod_view_dataset_ui <- function(id) {
 #' @export
 #'
 mod_view_dataset_server <- function(id, 
-                                    ll.vizData = reactive({NULL})
+                                    object = reactive({NULL})
                                     ) {
 
     moduleServer(id, function(input, output, session) {
@@ -123,27 +123,29 @@ mod_view_dataset_server <- function(id,
         .width <- .height <- 40
 
         ll.mods <- listPlotModules()
-        conds <- reactiveVal()
-        current.se <- reactiveVal()
-        btns.history <- reactiveVal(rep(0, length(ll.mods)))
+        rv <- reactiveValues(
+          conds = NULL,
+          current.se = NULL,
+          btns.history  = rep(0, length(ll.mods)),
+          ll.vizData = NULL
+          )
 
 
         observe({
-            req(length(ll.vizData()) > 0)
-            stopifnot(inherits(ll.vizData(), "VizList"))
-            #browser()
-            conds(ll.vizData()@ll.vizData[[1]]@conds)
-        })
+            req(length(object()) > 0)
+            rv$ll.vizData <- convert2viz(object())
+            rv$conds <- rv$ll.vizData@ll.vizData[[1]]@conds
+        }, priority = 1000)
 
 
         observeEvent(GetVignettesBtns(), ignoreInit = TRUE, {
-            clicked <- which(btns.history() != GetVignettesBtns())
+            clicked <- which(rv$btns.history != GetVignettesBtns())
             shinyjs::show(paste0("div_", ll.mods[clicked], "_large"))
             
             lapply(ll.mods[-clicked], function(y) {
                 shinyjs::hide(paste0("div_", y, "_large"))
             })
-            btns.history(GetVignettesBtns())
+            rv$btns.history <- GetVignettesBtns()
         })
 
         GetVignettesBtns <- reactive({
@@ -187,32 +189,32 @@ mod_view_dataset_server <- function(id,
             })
         })
 
-        observeEvent(req(ll.vizData(), input$chooseDataset), ignoreNULL = TRUE,{
-            current.se(ll.vizData()@ll.vizData[[input$chooseDataset]])
+        observeEvent(req(rv$ll.vizData, input$chooseDataset), ignoreNULL = TRUE,{
+            rv$current.se <- rv$ll.vizData@ll.vizData[[input$chooseDataset]]
         })
 
         output$chooseDataset_ui <- renderUI({
-            req(ll.vizData())
+            req(rv$ll.vizData)
 
-            if (length(ll.vizData()@ll.vizData) == 0) {
+            if (length(rv$ll.vizData@ll.vizData) == 0) {
                 choices <- list(" " = character(0))
             } else {
-                choices <- names(ll.vizData()@ll.vizData)
+                choices <- names(rv$ll.vizData@ll.vizData)
             }
 
             selectInput(ns("chooseDataset"), "Dataset",
                 choices = choices,
-                selected = names(ll.vizData()@ll.vizData)[length(ll.vizData())],
+                selected = names(rv$ll.vizData@ll.vizData)[length(rv$ll.vizData)],
                 width = 200
             )
         })
 
   observe({
-    req(current.se())
+    req(rv$current.se)
     for (mod in listPlotModules())
       do.call(paste0(mod, '_server'), 
               list(id = paste0(mod, '_large'),
-                   vizData = reactive({current.se()})
+                   vizData = reactive({rv$current.se})
                   )
               )
     })

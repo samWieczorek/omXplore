@@ -48,7 +48,7 @@ mod_ds_variance_server <- function(id,
         output$viewDistCV <- renderHighchart({
           req(vizData())
           withProgress(message = "Making plot", value = 100, {
-                varDist <- CVDist(vvizDataData(), pal.name)
+                varDist <- CVDist(vizData(), pal.name)
             })
         })
     })
