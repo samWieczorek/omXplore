@@ -8,7 +8,7 @@
 #' @param vizData xxx
 #' @param pal.name xxx
 #' 
-#' @example examples/ex_mod_ds_variance.R
+#' @example inst/extdata/examples/ex_mod_ds_variance.R
 #'
 #' @rdname plot-variance
 #' 

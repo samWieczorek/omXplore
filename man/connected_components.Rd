@@ -13,7 +13,7 @@ mod_ds_cc_server(id, vizData)
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
-\item{cc}{xxx}
+\item{vizData}{An instance of \code{VizData} class}
 }
 \value{
 NA

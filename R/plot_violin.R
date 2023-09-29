@@ -12,7 +12,7 @@
 #'
 #' @return A violinplot
 #' 
-#' @example examples/ex_mod_ds_intensity.R
+#' @example inst/extdata/examples/ex_mod_ds_intensity.R
 #'
 #'
 #' @importFrom grDevices colorRampPalette

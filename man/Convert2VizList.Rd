@@ -25,10 +25,10 @@ convert2viz(obj)
 
 \item{ll}{xxx}
 
-\item{obj}{xxx}
+\item{obj}{An instance of class \code{VizList}}
 }
 \value{
-An instance of class \link{VizList}
+An instance of class \code{VizList}
 }
 \description{
 xxx

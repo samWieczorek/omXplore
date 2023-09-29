@@ -51,7 +51,7 @@
 #'
 #' @author Samuel Wieczorek, Enora Fremy
 #'
-#' @example examples/ex_mod_view_dataset.R
+#' @example inst/extadata/examples/ex_mod_view_dataset.R
 #' 
 NULL
 
@@ -91,7 +91,7 @@ listPlotModules <- function() {
 #' @rdname ds-plots
 #' @export
 #' 
-#' @example examples/ex_mod_view_dataset.R
+#' @example inst/extadata/examples/ex_mod_view_dataset.R
 #' 
 mod_view_dataset_ui <- function(id) {
     ns <- NS(id)

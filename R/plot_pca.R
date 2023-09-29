@@ -1,13 +1,35 @@
-
+#' @title xxx
+#' @description xxx
+#' 
+#' * `wrapper_pca()`: xxx
+#' * `plotPCA_Eigen_hc()`: plots the eigen values of PCA with the highcharts library
+#' * `plotPCA_Eigen()`: plots the eigen values of PCA
+#' * `plotPCA_Var()`: 
+#' * `plotPCA_Ind()`: 
+#' 
+#' 
+#' 
+#' 
+#' @name ds-pca
+#' 
 #' @param vizData An instance of the class `VizData`.
 #' @param var.scaling The dimensions to plot
 #' @param ncp A `integer(1)` which represents the umber of dimensions kept in 
 #' the results.
+#' @param res.pca Result of FactoMineR::PCA
+#' @param chosen.axes The dimensions to plot
+#'
+#' @author Samuel Wieczorek, Enora Fremy
+
+#' 
+#' @example inst/extadata/examples/ex_mod_ds_pca.R
+#'
+NULL
+
+
 #'
 #' @importFrom stats na.omit
 #' 
-#' @example examples/ex_mod_ds_pca.R
-#'
 #' @export
 #'
 #' @rdname ds-pca
@@ -55,13 +77,8 @@ wrapper_pca <- function(vizData,
 
 
 
-#' @param res.pca Result of FactoMineR::PCA
-#'
-#' @author Samuel Wieczorek, Enora Fremy
-#'
+
 #' @export
-#' @example examples/ex_mod_ds_pca.R
-#'
 #' @import highcharter
 #'
 #' @rdname ds-pca
@@ -108,18 +125,9 @@ plotPCA_Eigen <- function(res.pca) {
 
 
 
-#' @title Plots variables of PCA
-#'
-#' @param res.pca xxx
-#'
-#' @param chosen.axes The dimensions to plot
-#'
 #' @return A plot
 #'
 #' @author Samuel Wieczorek
-#'
-#' @example examples/ex_mod_ds_pca.R
-#' 
 #'
 #' @export
 #'
@@ -144,19 +152,9 @@ plotPCA_Var <- function(res.pca, chosen.axes = c(1, 2)) {
 
 
 
-#' @title Plots individuals of PCA
-#'
-#' @param res.pca xxx
-#'
-#' @param chosen.axes The dimensions to plot
-#'
-#' @return A plot
-#'
-#' @author Samuel Wieczorek
-#'
-#' @example examples/ex_mod_ds_pca.R
-#'
+
 #' @export
+#' @rdname ds-pca
 #'
 plotPCA_Ind <- function(res.pca, chosen.axes = c(1, 2)) {
   pkgs.require('factoextra')
@@ -174,17 +172,9 @@ plotPCA_Ind <- function(res.pca, chosen.axes = c(1, 2)) {
 
 
 
-#' @title Plots the eigen values of PCA with the highcharts library
-#'
-#' @param res.pca xxx
-#'
-#' @return A histogram
-#'
-#' @author Samuel Wieczorek
-#'
-#' @example examples/ex_mod_ds_pca.R
-#'
+
 #' @import highcharter
+#' @rdname ds-pca
 #'
 #' @export
 #'

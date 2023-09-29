@@ -14,7 +14,7 @@
 #' 
 #' @return NA
 #'
-#' @example examples/ex_dv_mod_ds_metacell.R
+#' @example inst/extdata/examples/ex_dv_mod_ds_metacell.R
 #'
 NULL
 

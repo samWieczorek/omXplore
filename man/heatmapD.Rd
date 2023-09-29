@@ -27,35 +27,6 @@ This function is a wrapper to \code{heatmap.2} that displays
 quantitative data in the \code{MSnbase::exprs()} table of an object of
 class \code{MSnSet}
 }
-\examples{
-library(shiny)
-
-vList <- BuildExampleDataset('MSnbase')
-vData <- vList@ll.vizData[[1]]
-heatmapD(vData)
-mv.heatmap(vData@qdata)
-
-#------------------------------------------
-# Shiny module
-#------------------------------------------
-
-
-ui <- fluidPage(
-  mod_ds_heatmap_ui("plot")
-)
-
-server <- function(input, output, session) {
-  
-  vList <- BuildExampleDataset('MSnbase')
-  vData <- vList@ll.vizData[[1]]
-  
-  mod_ds_heatmap_server("plot", reactive({vData})
-  )
-  }
-
-if (interactive())
-  shinyApp(ui = ui, server = server)
-}
 \author{
 Florence Combes, Samuel Wieczorek, Enor Fremy
 }

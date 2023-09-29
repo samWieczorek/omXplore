@@ -27,7 +27,7 @@ NULL
 #' @slot adjMat xxx
 #' @slot cc xxx
 #' 
-#' @example examples/ex_VizData_Class.R
+#' @example inst/extadata/examples/ex_VizData_Class.R
 #'
 #' @rdname VizData-class
 #' @export VizData

@@ -3,7 +3,7 @@
 #' @description  A shiny Module.
 #'
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param cc xxx
+#' @param vizData An instance of `VizData` class
 #'
 #' @keywords internal
 #'

@@ -13,7 +13,7 @@
 #'
 #' @export
 #' 
-#' @example examples/ex_mod_ds_density.R
+#' @example inst/extadata/examples/ex_mod_ds_density.R
 #'
 #' @rdname density-plot
 #' 

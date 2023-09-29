@@ -10,18 +10,18 @@ numeric matrix.}
 \usage{
 mod_ds_variance_ui(id)
 
-mod_ds_variance_server(id, vData, pal.name = NULL)
+mod_ds_variance_server(id, vizData, pal.name = NULL)
 
 CVDist(vizData, pal.name = NULL)
 }
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
-\item{vData}{xxx}
+\item{vizData}{xxx}
 
 \item{pal.name}{xxx}
 
-\item{vizData}{xxx}
+\item{vData}{xxx}
 }
 \value{
 NA
@@ -32,35 +32,6 @@ NA
 xxxx
 }
 \examples{
-library(highcharter)
-library(DaparViz)
-library(shiny)
-
-
-data(ft)
-vList <- convert2viz(ft)
-vData <- vList@ll.vizData[[1]]
-
-
-CVDist(vData)
-
-
-#------------------------------------------
-# Shiny module
-#------------------------------------------
-
-ui <- fluidPage(mod_ds_variance_ui("plot"))
-
-server <- shinyServer(function(input, output, session) {
-  data(ft)
-  vList <- convert2viz(ft)
-  vData <- vList@ll.vizData[[1]]
-  
-  mod_ds_variance_server("plot", vData = reactive({vData}))
-})
-
-if (interactive())
-  shinyApp(ui, server)
 library(highcharter)
 library(DaparViz)
 library(shiny)

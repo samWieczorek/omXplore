@@ -9,7 +9,7 @@
 #'
 #' @name SE-explorer
 #'
-#' @example examples/ex_mod_ds_seExplorer.R
+#' @example inst/extadata/examples/ex_mod_ds_seExplorer.R
 #' 
 NULL
 

@@ -14,7 +14,7 @@
 #' 
 #' @return A `list` (same structure as the parameter 'params")
 #'
-#' @example examples/ex_mod_plots_tracking.R
+#' @example inst/extadata/examples/ex_mod_plots_tracking.R
 #' 
 #' @name mod_plots_tracking
 #' 

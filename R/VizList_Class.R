@@ -4,7 +4,7 @@
 #'
 #' @param ll.vizData xxx
 #' 
-#' @example examples/ex_VizData_Class.R
+#' @example inst/extadata/examples/ex_VizData_Class.R
 #'
 #' @name VizList-class
 #' 

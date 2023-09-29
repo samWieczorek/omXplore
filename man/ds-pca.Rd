@@ -6,6 +6,8 @@
 \alias{mod_ds_pca_server}
 \alias{wrapper_pca}
 \alias{plotPCA_Eigen}
+\alias{plotPCA_Ind}
+\alias{plotPCA_Eigen_hc}
 \title{Bar plot of missing values per lines using highcharter.}
 \usage{
 mod_ds_pca_ui(id)
@@ -15,6 +17,10 @@ mod_ds_pca_server(id, vizData)
 wrapper_pca(vizData, var.scaling = TRUE, ncp = NULL)
 
 plotPCA_Eigen(res.pca)
+
+plotPCA_Ind(res.pca, chosen.axes = c(1, 2))
+
+plotPCA_Eigen_hc(res.pca)
 }
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
@@ -27,6 +33,8 @@ plotPCA_Eigen(res.pca)
 the results.}
 
 \item{res.pca}{Result of FactoMineR::PCA}
+
+\item{chosen.axes}{The dimensions to plot}
 }
 \value{
 A plot
@@ -34,95 +42,15 @@ A plot
 \description{
 This method plots a bar plot which represents the distribution of the
 number of missing values (NA) per lines (ie proteins).
+
+xxx
+\itemize{
+\item \code{wrapper_pca()}: xxx
+\item \code{plotPCA_Eigen_hc()}: plots the eigen values of PCA with the highcharts library
+\item \code{plotPCA_Eigen()}: plots the eigen values of PCA
+\item \code{plotPCA_Var()}:
+\item \code{plotPCA_Ind()}:
 }
-\examples{
-library(highcharter)
-library(DaparViz)
-library(shiny)
-
-data(Exp1_R25_pept, package='DaparToolshedData')
-vList <- convert2viz(Exp1_R25_pept)
-vData <- vList@ll.vizData[[1]]
-
-
-res.pca <- wrapper_pca(vData, ncp = 6)
-plotPCA_Var(res.pca)
-plotPCA_Ind(res.pca)
-plotPCA_Eigen_hc(res.pca)
-
-
-
-
-ui <- mod_ds_pca_ui("plot")
-
-server <- function(input, output, session) {
-  data(Exp1_R25_pept, package='DaparToolshedData')
-  vList <- convert2viz(Exp1_R25_pept)
-  vData <- vList@ll.vizData[[1]]
-  
-  mod_ds_pca_server("plot", vizData = reactive({vData}))
-  }
-
-if (interactive())
-  shinyApp(ui = ui, server = server)
-library(highcharter)
-library(DaparViz)
-library(shiny)
-
-data(Exp1_R25_pept, package='DaparToolshedData')
-vList <- convert2viz(Exp1_R25_pept)
-vData <- vList@ll.vizData[[1]]
-
-
-res.pca <- wrapper_pca(vData, ncp = 6)
-plotPCA_Var(res.pca)
-plotPCA_Ind(res.pca)
-plotPCA_Eigen_hc(res.pca)
-
-
-
-
-ui <- mod_ds_pca_ui("plot")
-
-server <- function(input, output, session) {
-  data(Exp1_R25_pept, package='DaparToolshedData')
-  vList <- convert2viz(Exp1_R25_pept)
-  vData <- vList@ll.vizData[[1]]
-  
-  mod_ds_pca_server("plot", vizData = reactive({vData}))
-  }
-
-if (interactive())
-  shinyApp(ui = ui, server = server)
-library(highcharter)
-library(DaparViz)
-library(shiny)
-
-data(Exp1_R25_pept, package='DaparToolshedData')
-vList <- convert2viz(Exp1_R25_pept)
-vData <- vList@ll.vizData[[1]]
-
-
-res.pca <- wrapper_pca(vData, ncp = 6)
-plotPCA_Var(res.pca)
-plotPCA_Ind(res.pca)
-plotPCA_Eigen_hc(res.pca)
-
-
-
-
-ui <- mod_ds_pca_ui("plot")
-
-server <- function(input, output, session) {
-  data(Exp1_R25_pept, package='DaparToolshedData')
-  vList <- convert2viz(Exp1_R25_pept)
-  vData <- vList@ll.vizData[[1]]
-  
-  mod_ds_pca_server("plot", vizData = reactive({vData}))
-  }
-
-if (interactive())
-  shinyApp(ui = ui, server = server)
 }
 \author{
 Samuel Wieczorek, Enora Fremy

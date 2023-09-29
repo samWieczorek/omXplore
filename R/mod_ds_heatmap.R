@@ -13,7 +13,7 @@
 #' 
 #' @return NA
 #'
-#' @example examples/ex_mod_ds_heatmap.R
+#' @example inst/extadata/examples/ex_mod_ds_heatmap.R
 #'
 NULL
 

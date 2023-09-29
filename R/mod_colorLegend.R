@@ -12,7 +12,7 @@
 #' 
 #' @return NA
 #'
-#' @example examples/ex_mod_colorLegend.R
+#' @example inst/extadata/examples/ex_mod_colorLegend.R
 #' 
 NULL
 

@@ -20,7 +20,7 @@
 #'
 #' @export
 #' 
-#' @example examples/ex_mod_ds_intensity.R
+#' @example inst/extadata/examples/ex_mod_ds_intensity.R
 #'
 #' @rdname intensity-plots
 #'
