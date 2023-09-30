@@ -1,5 +1,3 @@
-#library(DaparToolshed)
-library(DaparToolshedData)
 library(highcharter)
 library(shinyBS)
 library(DaparViz)
@@ -16,8 +14,8 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   
-  data(Exp1_R25_prot, package='DaparToolshedData')
-  vList <- convert2viz(Exp1_R25_prot)
+  data(ft)
+  vList <- convert2viz(ft)
   vData <- vList@ll.vizData[[1]]
   
  tags <- GetMetacellTags(vData@metacell, 

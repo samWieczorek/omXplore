@@ -47,8 +47,8 @@ process.
 The comparison is made with the division operator.
 }
 \examples{
-data(Exp1_R25_prot, package='DaparToolshedData')
-vList <- convert2viz(Exp1_R25_prot)
+data(ft)
+vList <- convert2viz(ft)
 plotCompareAssays(vList, 1, 1, n = 5)
 
 }

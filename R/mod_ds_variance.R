@@ -25,11 +25,10 @@ NULL
 mod_ds_variance_ui <- function(id) {
     ns <- NS(id)
     tagList(
-        helpText("Display the condition-wise distributions of the log-intensity 
-        CV (Coefficient of Variation) of the protein/peptides."),
-        helpText("For better visualization, it is possible to zoom in by
-            click-and-drag."),
-        highcharter::highchartOutput(ns("viewDistCV"), width = 600, height = 600)
+      shinyjs::useShinyjs(),
+      shinyjs::hidden(div(id = ns('badFormatMsg'), h3(bad_format_txt))),
+      uiOutput(ns('helpTxt')),
+      highcharter::highchartOutput(ns("viewDistCV"), width = 600, height = 600)
     )
 }
 
@@ -44,12 +43,31 @@ mod_ds_variance_server <- function(id,
                                    pal.name = NULL) {
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
+        
+        rv <- reactiveValues(data = NULL)
+        
+        observe({
+          if(inherits(vizData(), "VizData"))
+            rv$data <- vizData()
+          
+          shinyjs::toggle('badFormatMsg', condition = is.null(rv$data))
+        }, priority = 1000)
 
         output$viewDistCV <- renderHighchart({
-          req(vizData())
+          req(rv$data)
           withProgress(message = "Making plot", value = 100, {
-                varDist <- CVDist(vizData(), pal.name)
+                varDist <- CVDist(rv$data, pal.name)
             })
+        })
+        
+        output$helpTxt <- renderUI({
+          req(rv$data)
+          tagList(
+          helpText("Display the condition-wise distributions of the log-intensity 
+        CV (Coefficient of Variation) of the protein/peptides."),
+          helpText("For better visualization, it is possible to zoom in by
+            click-and-drag.")
+          )
         })
     })
 }

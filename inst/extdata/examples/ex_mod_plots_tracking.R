@@ -23,8 +23,8 @@ server <- function(input, output, session) {
   #
   # Example with a QFeatures dataset
   #
-  data(Exp1_R25_pept, package='DaparToolshedData')
-  vList <- convert2viz(Exp1_R25_pept)
+  data(ft)
+  vList <- convert2viz(ft)
   vData <- vList@ll.vizData[[1]]
   
   #
@@ -38,7 +38,7 @@ server <- function(input, output, session) {
   # 
   # vList <- convert2viz(ll.tmp)
   
-  data(Exp1_R25_pept, package='DaparToolshedData')
+  data(ft)
   #vData <- Exp1_R25_pept
   
   

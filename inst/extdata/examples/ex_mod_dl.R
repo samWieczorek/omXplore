@@ -5,10 +5,10 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
-  data(Exp1_R25_prot, package='DaparToolshedData', envir = environment())
+  data(ft, envir = environment())
   
   dl_server("dl",
-            dataIn = reactive({Exp1_R25_prot}),
+            dataIn = reactive({ft}),
             extension = c('csv', 'xlsx', 'RData')
   )
 }

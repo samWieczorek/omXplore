@@ -24,7 +24,7 @@ mod_ds_intensity_ui <- function(id) {
     ns <- NS(id)
     tagList(
         shinyjs::useShinyjs(),
-        hidden(div(id = ns('badFormatMsg'), h3(bad_format_txt))),
+        shinyjs::hidden(div(id = ns('badFormatMsg'), h3(bad_format_txt))),
         hidden(radioButtons(ns("choosePlot"), "",
                     choices = setNames(nm = c("violin", "box")))),
         highchartOutput(ns("box")),

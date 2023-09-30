@@ -24,8 +24,8 @@ server <- shinyServer(function(input, output, session) {
   
   # Example with a QFeatures dataset
   #
-  data(Exp1_R25_pept, package='DaparToolshedData')
-  obj <- convert2viz(Exp1_R25_pept)@ll.vizData[[1]]
+  data(ft)
+  obj <- convert2viz(ft)@ll.vizData[[1]]
   
   
   mod_ds_density_server("plot", 

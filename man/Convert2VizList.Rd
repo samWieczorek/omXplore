@@ -16,7 +16,7 @@
 
 CheckClass(ll)
 
-convert2viz(obj)
+convert2viz(obj = NULL)
 }
 \arguments{
 \item{object}{xxx}

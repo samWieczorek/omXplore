@@ -22,7 +22,9 @@ server <- shinyServer(function(input, output, session) {
   vList <- convert2viz(ft)
   vData <- vList@ll.vizData[[1]]
   
-  mod_ds_variance_server("plot", vData = reactive({vData}))
+  #vData <- ft
+  
+  mod_ds_variance_server("plot", vizData = reactive({vData}))
 })
 
 if (interactive())

@@ -24,8 +24,12 @@ mod_ds_seExplorer_ui <- function(id) {
     ns <- NS(id)
     require(shinyBS)
     tagList(
-      mod_colorLegend_ui(ns("legend")),
-      shinyBS::bsCollapse(id = "infos", open = "", multiple = TRUE,
+      shinyjs::useShinyjs(),
+      shinyjs::hidden(div(id = ns('badFormatMsg'), h3(bad_format_txt))),
+      shinyjs::hidden(div(id=ns('div_legend'),mod_colorLegend_ui(ns("legend")))),
+      shinyjs::hidden(
+        div(id = ns('div_infos'),
+        shinyBS::bsCollapse(id = "infos", open = "", multiple = TRUE,
             shinyBS::bsCollapsePanel("Quantitative data",
                 DT::DTOutput(ns("qdata_ui")),
                 style = "info"),
@@ -36,6 +40,8 @@ mod_ds_seExplorer_ui <- function(id) {
                 DT::DTOutput(ns("qMetacell_ui")),
                 style = "info")
             )
+        )
+      )
       )
 }
 
@@ -54,12 +60,22 @@ mod_ds_seExplorer_server <- function(id,
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
 
+        rv <- reactiveValues(data = NULL)
+        
         observe({
-          req(vizData())
-          stopifnot(inherits(vizData(), "VizData"))
+          if(inherits(vizData(), "VizData"))
+            rv$data <- vizData()
           
-          tags <- GetMetacellTags(vizData()@metacell, 
-                                  level = vizData()@type, 
+          shinyjs::toggle('badFormatMsg', condition = is.null(rv$data))
+          shinyjs::toggle('div_infos', condition = !is.null(rv$data))
+          shinyjs::toggle('div_legend', condition = !is.null(rv$data))
+        }, priority = 1000)
+        
+        
+        observe({
+          req(rv$data)
+          tags <- GetMetacellTags(rv$data@metacell, 
+                                  level = rv$data@type, 
                                   onlyPresent = TRUE)
           mod_colorLegend_server("legend", tags)
         })
@@ -67,7 +83,7 @@ mod_ds_seExplorer_server <- function(id,
 
         #
         #     output$viewDesign <- DT::renderDT({
-        #       req(se())
+        #       req(rv$data)
         #
         #       data <- tibble::as_tibble(colData(se()))
         #
@@ -101,9 +117,9 @@ mod_ds_seExplorer_server <- function(id,
 
         output$metadata_ui <- DT::renderDT({
           
-            req(vizData())
+            req(rv$data)
 
-            dat <- DT::datatable(tibble::as_tibble(vizData()@metadata),
+            dat <- DT::datatable(tibble::as_tibble(rv$data@metadata),
                 rownames = TRUE,
                 extensions = c("Scroller", "Buttons", "FixedColumns"),
                 options = list(
@@ -130,7 +146,7 @@ mod_ds_seExplorer_server <- function(id,
                 )
             )
 
-            if ("Significant" %in% colnames(vizData()@metadata)) {
+            if ("Significant" %in% colnames(rv$data@metadata)) {
                 dat <- dat %>%
                     DT::formatStyle(
                         columns = "Significant",
@@ -144,10 +160,10 @@ mod_ds_seExplorer_server <- function(id,
 
 
         output$qdata_ui <- DT::renderDataTable(server = TRUE, {
-            req(vizData())
+            req(rv$data)
             
            df <- cbind(
-                keyId = (vizData()@metadata)[, vizData()@colID],
+                keyId = (rv$data@metadata)[ , rv$data@colID],
                 round(vizData()@qdata, digits = digits()),
                 vizData()@metacell)
 
@@ -187,8 +203,8 @@ mod_ds_seExplorer_server <- function(id,
         })
 
         output$qMetacell_ui <- DT::renderDataTable(server = TRUE, {
-            req(vizData())
-          df <- vizData()@metacell
+            req(rv$data)
+          df <- rv$data@metacell
             colors <- custom_metacell_colors()
 
             DT::datatable(df,

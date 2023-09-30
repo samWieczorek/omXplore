@@ -13,7 +13,7 @@ mod_view_dataset_ui(id)
 
 mod_view_dataset_server(
   id,
-  object = reactive({
+  ll.vizData = reactive({
      NULL
  })
 )
@@ -22,7 +22,7 @@ mod_view_dataset_server(
 \item{id}{A \code{character(1)} for the 'id' of the shiny module. It must be
 the same as for the '*_ui' function.}
 
-\item{object}{May be an instance of the class \code{VizList}, xxxx}
+\item{ll.vizData}{A instance of the class \code{VizList}.}
 }
 \value{
 A plot

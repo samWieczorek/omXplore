@@ -26,10 +26,10 @@ NULL
 #'
 mod_ds_pca_ui <- function(id) {
     ns <- NS(id)
-    require(shinyjs)
+    #require(shinyjs)
     tagList(
       shinyjs::useShinyjs(),
-      hidden(div(id = ns('badFormatMsg'), h3(bad_format_txt))),
+      shinyjs::hidden(div(id = ns('badFormatMsg'), h3(bad_format_txt))),
       uiOutput(ns("WarningNA_PCA")),
       uiOutput(ns("pcaOptions")),
       uiOutput(ns("pcaPlots"))
@@ -64,7 +64,6 @@ mod_ds_pca_server <- function(id,
             rv.pca$data <- as.matrix(vizData()@qdata)
           
           shinyjs::toggle('badFormatMsg', condition = is.null(rv.pca$data))
-          shinyjs::toggle('choosePlot', condition = !is.null(rv.pca$data))
         }, priority = 1000)
         
        output$WarningNA_PCA <- renderUI({

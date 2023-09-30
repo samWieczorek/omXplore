@@ -84,6 +84,7 @@ server <- function(input, output, session) {
   vList <- convert2viz(ft)
   vData <- vList@ll.vizData[[1]]
   
+  z
   indices <- mod_plots_tracking_server("tracker", 
                                        vizData = reactive({vData}))
   

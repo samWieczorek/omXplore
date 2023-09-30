@@ -19,8 +19,8 @@ server <- function(input, output, session) {
   vList <- BuildExampleDataset('MSnbase')
   vData <- vList@ll.vizData[[1]]
   
-  data(Exp1_R25_pept, package='DaparToolshedData')
-  vData <- Exp1_R25_pept
+  data(ft)
+  vData <- ft
   
   mod_ds_heatmap_server("plot", reactive({vData})
   )

@@ -19,8 +19,8 @@ server <- function(input, output, session) {
   #
   # Example with a QFeatures dataset
   #
-  data(Exp1_R25_pept, package='DaparToolshedData')
-  obj <- Exp1_R25_pept
+  data(ft)
+  obj <- ft
   
   #
   # Example with a series of MSnSet datasets

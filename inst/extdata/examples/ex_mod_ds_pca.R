@@ -2,8 +2,8 @@ library(highcharter)
 library(DaparViz)
 library(shiny)
 
-data(Exp1_R25_pept, package='DaparToolshedData')
-vList <- convert2viz(Exp1_R25_pept)
+data(ft)
+vList <- convert2viz(ft)
 vData <- vList@ll.vizData[[1]]
 
 
@@ -18,13 +18,13 @@ plotPCA_Eigen_hc(res.pca)
 ui <- mod_ds_pca_ui("plot")
 
 server <- function(input, output, session) {
-  data(Exp1_R25_pept, package='DaparToolshedData')
-  vList <- convert2viz(Exp1_R25_pept)
-  vData <- convert2viz(Exp1_R25_pept)@ll.vizData[[1]]
+  data(ft)
+  vList <- convert2viz(ft)
+  vData <- convert2viz(ft)@ll.vizData[[1]]
+  data(ft)
+  vData <- ft
   
-  #vData <- Exp1_R25_pept
-  
-  mod_ds_pca_server("plot", vizData = reactive({vData}))
+  mod_ds_pca_server("plot", vizData = reactive({convert2viz(ft)@ll.vizData[[1]]}))
   }
 
 if (interactive())

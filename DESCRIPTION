@@ -40,8 +40,6 @@ Suggests:
     BiocStyle,
     testthat,
     MSnbase,
-    DAPARdata,
-    DaparToolshedData,
     PSMatch,
     Matrix,
     graphics,
