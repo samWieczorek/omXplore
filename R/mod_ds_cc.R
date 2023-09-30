@@ -27,6 +27,13 @@ mod_ds_cc_ui <- function(id) {
   require(visNetwork)
   require(shinyBS)
   ns <- NS(id)
+  tagList(
+    useShinyjs(),
+    shinyjs::hidden(
+      div(id = ns('badFormatMsg'), 
+          h3('Dataset in not in correct format.')
+      )
+    ),
   tabPanel("Peptide-Protein Graph",
            value = "graphTab",
            tabsetPanel(id = "graphsPanel",
@@ -82,6 +89,7 @@ mod_ds_cc_ui <- function(id) {
              )
            )
   )
+  )
 }
 
 
@@ -95,11 +103,9 @@ mod_ds_cc_server <- function(id, vizData) {
   moduleServer(id, function(input, output, session) {
       ns <- session$ns
       
-      # 
-      # observeEvent(id, {
-      # 
-      #   browser()
-      # })
+      rv <- reactiveValues(
+        data = NULL
+      )
       
       
       rvCC <- reactiveValues(
@@ -122,7 +128,12 @@ mod_ds_cc_server <- function(id, vizData) {
         CCMultiMulti_rows_selected = reactive({NULL})
       )
       
-      
+      observe({
+        if(inherits(vizData(), "VizData"))
+          rv$data <- vizData()
+        
+        shinyjs::toggle('badFormatMsg', condition = !inherits(vizData(), "VizData"))
+      }, priority = 1000)
       
       ##//////////////////////////////////////////////////////////////////
       ##
@@ -170,8 +181,8 @@ mod_ds_cc_server <- function(id, vizData) {
       output$visNetCC <- renderVisNetwork({
         
         req(rvCC$selectedCC)
-        local <- (vizData()@cc)[Get_CC_Multi2Any()]
-        #X <- vizData()@adjMat
+        local <- (rv$data@cc)[Get_CC_Multi2Any()]
+        #X <- rv$data@adjMat
         rvCC$selectedCCgraph <- buildGraph(local[[rvCC$selectedCC]])
         
         display.CC.visNet(rvCC$selectedCCgraph) %>%
@@ -200,7 +211,7 @@ mod_ds_cc_server <- function(id, vizData) {
         tooltip <- NULL
         
         isolate({
-          local <- (vizData()@cc)[Get_CC_Multi2Any()]
+          local <- (rv$data@cc)[Get_CC_Multi2Any()]
           n.prot <- unlist(lapply(local, function(x) {ncol(x)}))
           n.pept <- unlist(lapply(local, function(x) {nrow(x)}))
           df <- tibble::tibble(x = jitter(n.pept),
@@ -231,10 +242,10 @@ mod_ds_cc_server <- function(id, vizData) {
         
         df <- cbind(
           id = 1:length(Get_CC_Multi2Any()),
-          nProt = cbind(lapply((vizData()@cc)[Get_CC_Multi2Any()], function(x) {ncol(x)} )),
-          nPep = cbind(lapply((vizData()@cc)[Get_CC_Multi2Any()], function(x) {nrow(x)})),
-          proteins = cbind(lapply((vizData()@cc)[Get_CC_Multi2Any()],  function(x) {paste(colnames(x), collapse = ",")})),
-          peptides = cbind(lapply((vizData()@cc)[Get_CC_Multi2Any()], function(x) {paste(colnames(x), collapse = ",")}))
+          nProt = cbind(lapply((rv$data@cc)[Get_CC_Multi2Any()], function(x) {ncol(x)} )),
+          nPep = cbind(lapply((rv$data@cc)[Get_CC_Multi2Any()], function(x) {nrow(x)})),
+          proteins = cbind(lapply((rv$data@cc)[Get_CC_Multi2Any()],  function(x) {paste(colnames(x), collapse = ",")})),
+          peptides = cbind(lapply((rv$data@cc)[Get_CC_Multi2Any()], function(x) {paste(colnames(x), collapse = ",")}))
         )
         
         colnames(df) <- c("id", "nProt", "nPep", "Proteins Ids", "Peptides Ids")
@@ -272,7 +283,7 @@ mod_ds_cc_server <- function(id, vizData) {
       
 
       observeEvent(c(rvCC$selectedNeighbors, input$node_selected, rvCC$selectedCCgraph), {
-        local <- (vizData()@cc)[Get_CC_Multi2Any()]
+        local <- (rv$data@cc)[Get_CC_Multi2Any()]
         rvCC$selectedNeighbors
         
         nodes <- rvCC$selectedCCgraph$nodes
@@ -361,21 +372,21 @@ mod_ds_cc_server <- function(id, vizData) {
         req(rvCC$detailedselectedNode$sharedPepLabels)
         
         
-        ind <- 1:ncol(vizData()@qdata)
-        data <- FormatDataForDT(vizData())
+        ind <- 1:ncol(rv$data@qdata)
+        data <- FormatDataForDT(rv$data)
         .n <- ncol(data)
         pepLine <- rvCC$detailedselectedNode$sharedPepLabels
         indices <- unlist(lapply(pepLine, function(x) {which(rownames(data) == x)}))
         data <- data[indices, c(ind, (ind + .n / 2))]
         
         if (!is.null(input$pepInfo)) {
-          data <- cbind(data, (vizData()@metadata)[pepLine, input$pepInfo])
+          data <- cbind(data, (rv$data@metadata)[pepLine, input$pepInfo])
           colnames(data)[(1 + .n - length(input$pepInfo)):.n] <- input$pepInfo
         }
         
         offset <- length(input$pepInfo)
-        c.tags <- BuildColorStyles(vizData())$tags
-        c.colors <- BuildColorStyles(vizData())$colors
+        c.tags <- BuildColorStyles(rv$data)$tags
+        c.colors <- BuildColorStyles(rv$data)$colors
         
         hcStyle <- list(
           cols = colnames(data)[1:((.n - offset) / 2)],
@@ -402,8 +413,8 @@ mod_ds_cc_server <- function(id, vizData) {
       #   req(rvCC$detailedselectedNode$sharedPepLabels)
       #   
       #   
-      #   ind <- 1:ncol(vizData()@qdata)
-      #   data <- FormatDataForDT(vizData(), rv$settings_nDigits)
+      #   ind <- 1:ncol(rv$data@qdata)
+      #   data <- FormatDataForDT(rv$data, rv$settings_nDigits)
       #   .n <- ncol(data)
       #   pepLine <- rvCC$detailedselectedNode$sharedPepLabels
       #   indices <- unlist(lapply(pepLine, function(x) {
@@ -412,13 +423,13 @@ mod_ds_cc_server <- function(id, vizData) {
       #   data <- data[indices, c(ind, (ind + .n / 2))]
       #   
       #   if (!is.null(input$pepInfo)) {
-      #     data <- cbind(data, (vizData()@metadata)[pepLine, input$pepInfo])
+      #     data <- cbind(data, (rv$data@metadata)[pepLine, input$pepInfo])
       #     colnames(data)[(1 + .n - length(input$pepInfo)):.n] <- input$pepInfo
       #   }
       #   
       #   offset <- length(input$pepInfo)
-      #   c.tags <- BuildColorStyles(vizData())$tags
-      #   c.colors <- BuildColorStyles(vizData())$colors
+      #   c.tags <- BuildColorStyles(rv$data)$tags
+      #   c.colors <- BuildColorStyles(rv$data)$colors
       #   
       #   dt <- DT::datatable(data,
       #                       extensions = c("Scroller"),
@@ -459,22 +470,22 @@ mod_ds_cc_server <- function(id, vizData) {
         input$pepInfo
         req(rvCC$detailedselectedNode$specPepLabels)
         
-        ind <- 1:ncol(vizData()@qdata)
-        data <- FormatDataForDT(vizData())
+        ind <- 1:ncol(rv$data@qdata)
+        data <- FormatDataForDT(rv$data)
         .n <- ncol(data)
         pepLine <- rvCC$detailedselectedNode$specPepLabels
         indices <- unlist(lapply(pepLine, function(x) {which(rownames(data) == x)}))
         data <- data[indices, c(ind, (ind + .n / 2))]
         
         if (!is.null(input$pepInfo)) {
-          data <- cbind(data, (vizData()@metadata)[pepLine, input$pepInfo])
+          data <- cbind(data, (rv$data@metadata)[pepLine, input$pepInfo])
           colnames(data)[(1 + .n - length(input$pepInfo)):.n] <- input$pepInfo
         }
         
         offset <- length(input$pepInfo)
         
-        c.tags <- BuildColorStyles(vizData())$tags
-        c.colors <- BuildColorStyles(vizData())$colors
+        c.tags <- BuildColorStyles(rv$data)$tags
+        c.colors <- BuildColorStyles(rv$data)$colors
         
         hcStyle <- list(
           cols = colnames(data)[1:((.n - offset) / 2)],
@@ -500,22 +511,22 @@ mod_ds_cc_server <- function(id, vizData) {
       #   input$pepInfo
       #   req(rvCC$detailedselectedNode$specPepLabels)
       #   
-      #   ind <- 1:ncol(vizData()@qdata)
-      #   data <- FormatDataForDT(vizData(), rv$settings_nDigits)
+      #   ind <- 1:ncol(rv$data@qdata)
+      #   data <- FormatDataForDT(rv$data, rv$settings_nDigits)
       #   .n <- ncol(data)
       #   pepLine <- rvCC$detailedselectedNode$specPepLabels
       #   indices <- unlist(lapply(pepLine, function(x) {which(rownames(data) == x)}))
       #   data <- data[indices, c(ind, (ind + .n / 2))]
       #   
       #   if (!is.null(input$pepInfo)) {
-      #     data <- cbind(data, (vizData()@metadata)[pepLine, input$pepInfo])
+      #     data <- cbind(data, (rv$data@metadata)[pepLine, input$pepInfo])
       #     colnames(data)[(1 + .n - length(input$pepInfo)):.n] <- input$pepInfo
       #   }
       #   
       #   offset <- length(input$pepInfo)
       #   
-      #   c.tags <- BuildColorStyles(vizData())$tags
-      #   c.colors <- BuildColorStyles(vizData())$colors
+      #   c.tags <- BuildColorStyles(rv$data)$tags
+      #   c.colors <- BuildColorStyles(rv$data)$colors
       #   
       #   dt <- DT::datatable(data,
       #                       extensions = c("Scroller"),
@@ -555,9 +566,9 @@ mod_ds_cc_server <- function(id, vizData) {
       
       
       Get_CC_One2One <- reactive({
-        #vizData()@cc
-        ll.prot <- lapply(vizData()@cc, function(x) {ncol(x)})
-        ll.pept <- lapply(vizData()@cc, function(x) {nrow(x)})
+        #rv$data@cc
+        ll.prot <- lapply(rv$data@cc, function(x) {ncol(x)})
+        ll.pept <- lapply(rv$data@cc, function(x) {nrow(x)})
         ll.prot.one2one <- intersect(which(ll.prot == 1), which(ll.pept == 1))
         ll.prot.one2one
       })
@@ -565,18 +576,18 @@ mod_ds_cc_server <- function(id, vizData) {
       
       
       Get_CC_One2multi <- reactive({
-        #vizData()@cc
-        ll.prot <- lapply(vizData()@cc, function(x) {ncol(x)})
-        ll.pept <- lapply(vizData()@cc, function(x) {nrow(x)})
+        #rv$data@cc
+        ll.prot <- lapply(rv$data@cc, function(x) {ncol(x)})
+        ll.pept <- lapply(rv$data@cc, function(x) {nrow(x)})
         ll.prot.one2multi <- intersect(which(ll.prot == 1),  which(ll.pept > 1))
         ll.prot.one2multi
       })
       
       
       Get_CC_Multi2Any <- reactive({
-        #vizData()@cc
-        ll.prot <- lapply(vizData()@cc, function(x) {ncol(x)})
-        ll.pept <- lapply(vizData()@cc, function(x) {nrow(x)})
+        #rv$data@cc
+        ll.prot <- lapply(rv$data@cc, function(x) {ncol(x)})
+        ll.pept <- lapply(rv$data@cc, function(x) {nrow(x)})
         ll.prot.multi2any <- which(ll.prot > 1)
         ll.prot.multi2any
       })
@@ -584,22 +595,22 @@ mod_ds_cc_server <- function(id, vizData) {
       
       
       BuildOne2OneTab <- reactive({
-        #vizData()@cc
+        #rv$data@cc
         df <- cbind(
-          cbind(lapply((vizData()@cc)[Get_CC_One2One()], function(x) {colnames(x)})),
-          cbind(lapply((vizData()@cc)[Get_CC_One2One()], function(x) {rownames(x)}))
+          cbind(lapply((rv$data@cc)[Get_CC_One2One()], function(x) {colnames(x)})),
+          cbind(lapply((rv$data@cc)[Get_CC_One2One()], function(x) {rownames(x)}))
         )
         colnames(df) <- c("proteins", "peptides")
         df
       })
       
       BuildOne2MultiTab <- reactive({
-        #vizData()@cc
+        #rv$data@cc
         
         df <- cbind(
-          proteins = cbind(lapply((vizData()@cc)[Get_CC_One2multi()], function(x) {colnames(x)})),
-          nPep = cbind(lapply((vizData()@cc)[Get_CC_One2multi()], function(x) {nrow(x)})),
-          peptides = cbind(lapply((vizData()@cc)[Get_CC_One2multi()],function(x) {paste(rownames(x), collapse = ",")}))
+          proteins = cbind(lapply((rv$data@cc)[Get_CC_One2multi()], function(x) {colnames(x)})),
+          nPep = cbind(lapply((rv$data@cc)[Get_CC_One2multi()], function(x) {nrow(x)})),
+          peptides = cbind(lapply((rv$data@cc)[Get_CC_One2multi()],function(x) {paste(rownames(x), collapse = ",")}))
         )
         colnames(df) <- c("proteins", "nPep", "peptides")
         
@@ -608,12 +619,12 @@ mod_ds_cc_server <- function(id, vizData) {
       
       
       BuildMulti2AnyTab <- reactive({
-        #vizData()@cc
+        #rv$data@cc
         df <- cbind(id = 1:length(Get_CC_Multi2Any()),
-          proteins = cbind(lapply((vizData()@cc)[Get_CC_Multi2Any()], function(x) {colnames(x)})),
-          nProt = cbind(lapply((vizData()@cc)[Get_CC_Multi2Any()], function(x) {ncol(x)})),
-          nPep = cbind(lapply((vizData()@cc)[Get_CC_Multi2Any()], function(x) {nrow(x)})),
-          peptides = cbind(lapply((vizData()@cc)[Get_CC_Multi2Any()], function(x) {paste(rownames(x), collapse = ",")}))
+          proteins = cbind(lapply((rv$data@cc)[Get_CC_Multi2Any()], function(x) {colnames(x)})),
+          nProt = cbind(lapply((rv$data@cc)[Get_CC_Multi2Any()], function(x) {ncol(x)})),
+          nPep = cbind(lapply((rv$data@cc)[Get_CC_Multi2Any()], function(x) {nrow(x)})),
+          peptides = cbind(lapply((rv$data@cc)[Get_CC_Multi2Any()], function(x) {paste(rownames(x), collapse = ",")}))
         )
         colnames(df) <- c("proteins", "nPep", "peptides")
         
@@ -635,7 +646,7 @@ mod_ds_cc_server <- function(id, vizData) {
       
       
       output$OneMultiDT_UI <- renderUI({
-        req(vizData()@cc)
+        req(rv$data@cc)
         df <- BuildOne2MultiTab()
         colnames(df) <- c("Proteins Ids", "nPep", "Peptides Ids")
         
@@ -651,8 +662,8 @@ mod_ds_cc_server <- function(id, vizData) {
         req(rvCC$OneMultiDT_rows_selected())
         
         line <- rvCC$OneMultiDT_rows_selected()
-        ind <- 1:ncol(vizData()@qdata)
-        data <- FormatDataForDT(vizData(), 2)
+        ind <- 1:ncol(rv$data@qdata)
+        data <- FormatDataForDT(rv$data, 2)
         .n <- ncol(data)
         .pep <- input$pepInfo
         pepLine <- unlist(strsplit(unlist(BuildOne2MultiTab()[line, "peptides"]), split = ","))
@@ -662,7 +673,7 @@ mod_ds_cc_server <- function(id, vizData) {
         data <- data[indices, c(ind, (ind + .n / 2))]
         
         if (!is.null(.pep)) {
-          data <- cbind(data, (vizData()@metadata)[pepLine, .pep])
+          data <- cbind(data, (rv$data@metadata)[pepLine, .pep])
           colnames(data)[(1 + .n - length(.pep)):.n] <- .pep
         }
         
@@ -678,8 +689,8 @@ mod_ds_cc_server <- function(id, vizData) {
         .n <- ncol(data)
         offset <- length(input$pepInfo)
         
-        c.tags <- BuildColorStyles(vizData())$tags
-        c.colors <- BuildColorStyles(vizData())$colors
+        c.tags <- BuildColorStyles(rv$data)$tags
+        c.colors <- BuildColorStyles(rv$data)$colors
         
         hcStyle <- list(
           cols = colnames(data)[1:((.n - offset) / 2)],
@@ -711,7 +722,7 @@ mod_ds_cc_server <- function(id, vizData) {
       
       
       output$OneOneDT_UI <- renderUI({
-        req(vizData()@cc)
+        req(rv$data@cc)
         df <- BuildOne2OneTab()
         colnames(df) <- c("Proteins Ids", "Peptides Ids")
         rvCC$OneOneDT_rows_selected <- DaparViz::mod_format_DT_server('OneOneDT', 
@@ -725,13 +736,13 @@ mod_ds_cc_server <- function(id, vizData) {
       
       
       GetDataFor_OneOneDTDetailed <- reactive({
-        req(vizData()@cc)
+        req(rv$data@cc)
         req(rvCC$OneOneDT_rows_selected())
         input$pepInfo
         .pep <- input$pepInfo
         line <- rvCC$OneOneDT_rows_selected()
-        ind <- 1:ncol(vizData()@qdata)
-        data <- FormatDataForDT(vizData())
+        ind <- 1:ncol(rv$data@qdata)
+        data <- FormatDataForDT(rv$data)
         .n <- ncol(data)
         
         pepLine <- BuildOne2OneTab()[line, 2]
@@ -741,7 +752,7 @@ mod_ds_cc_server <- function(id, vizData) {
         }))
         data <- data[indices, c(ind, (ind + .n / 2))]
         if (!is.null(.pep)) {
-          data <- cbind(data, (vizData()@metadata)[pepLine, .pep])
+          data <- cbind(data, (rv$data@metadata)[pepLine, .pep])
           colnames(data)[(1 + .n - length(.pep)):.n] <- .pep
         }
         
@@ -750,14 +761,14 @@ mod_ds_cc_server <- function(id, vizData) {
       
       
       output$OneOneDTDetailed_UI <- renderUI({
-        req(vizData()@cc)
+        req(rv$data@cc)
         req(rvCC$OneOneDT_rows_selected())
         data <- GetDataFor_OneOneDTDetailed()
         .n <- ncol(data)
         offset <- length(input$pepInfo)
         
-        c.tags <- BuildColorStyles(vizData())$tags
-        c.colors <- BuildColorStyles(vizData())$colors
+        c.tags <- BuildColorStyles(rv$data)$tags
+        c.colors <- BuildColorStyles(rv$data)$colors
         
         hcStyle <- list(
           cols = colnames(data)[1:((.n - offset) / 2)],

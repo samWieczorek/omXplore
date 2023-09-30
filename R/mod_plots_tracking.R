@@ -27,16 +27,18 @@ NULL
 #' @importFrom shiny NS tagList
 #'
 mod_plots_tracking_ui <- function(id) {
+  require(shinyjs)
   ns <- NS(id)
   tagList(
     shinyjs::useShinyjs(),
-    shinyjs::hidden(actionButton(ns('reset'), "Reset")),
-    selectInput(ns("typeSelect"), "Type of selection",
+    hidden(div(id = ns('badFormatMsg'), h3(bad_format_txt))),
+    hidden(actionButton(ns('reset'), "Reset")),
+    hidden(selectInput(ns("typeSelect"), "Type of selection",
                 choices = character(0),
                 selected = character(0),
-                width = "130px"),
+                width = "130px")),
     
-    shinyjs::hidden(
+    hidden(
       selectizeInput(inputId = ns("listSelect"),
                    label = "Select protein",
                    choices = character(0),
@@ -69,7 +71,8 @@ mod_plots_tracking_server <- function(id,
     ns <- session$ns
     
     rv.track <- reactiveValues(
-      type = character(0))
+      type = character(0),
+      data = NULL)
     
     
     dataOut <- reactiveValues(
@@ -78,8 +81,28 @@ mod_plots_tracking_server <- function(id,
   
   
   observe({
-    stopifnot(inherits(vizData(), "VizData"))
+    if(inherits(vizData(), "VizData"))
+      rv.track$data <- vizData()
+
+    shinyjs::toggle('badFormatMsg', condition = is.null(rv.track$data))
+    shinyjs::toggle('typeSelect', condition = !is.null(rv.track$data))
+  }, priority = 1000)
+  
+  
+  
+  # observe({
+  #   req(rv.track$data)
+  #   shinyjs::toggle('reset', condition = isTRUE(resetBtn()))
+  #   
+  #   
+  # })
+  
+  
+  observe({
+    req(rv.track$data)
+    
     shinyjs::toggle('reset', condition = isTRUE(resetBtn()))
+    
     
     if (length(Get_LogicalCols_in_Dataset()) > 0)
       updateSelectInput(session, "typeSelect", 
@@ -87,11 +110,15 @@ mod_plots_tracking_server <- function(id,
                                     "Random" = "Random", "Column" = "Column"))
     else
       updateSelectInput(session, "typeSelect", 
-                        choices = c("None" = "None", "Protein list" = "List",
+                        choices = c("None" = "None", 
+                                    "Protein list" = "List",
                                     "Random" = "Random"))
     
+    if(!is.null(rv.track$data@colID) && 
+       rv.track$data@colID != "" && 
+       length(rv.track$data@colID) > 0)
     updateSelectizeInput(session, "listSelect",
-                         choices = (vizData()@metadata)[, vizData()@colID], 
+                         choices = (rv.track$data@metadata)[, rv.track$data@colID], 
                          selected = character(0),
                          server=TRUE)
     
@@ -107,9 +134,9 @@ mod_plots_tracking_server <- function(id,
   
   
   Get_LogicalCols_in_Dataset <- reactive({
-    logical.cols <- lapply(colnames(vizData()@metadata),
+    logical.cols <- lapply(colnames(rv.track$data@metadata),
                            function(x)
-                             is.logical((vizData()@metadata)[, x])
+                             is.logical((rv.track$data@metadata)[, x])
                            )
     logical.cols <- which(unlist(logical.cols))
     logical.cols
@@ -148,13 +175,14 @@ mod_plots_tracking_server <- function(id,
   
   observeEvent(req(length(input$listSelect) > 0), ignoreNULL = FALSE, {
     
-    dataOut$indices <- match(input$listSelect, (vizData()@metadata)[, vizData()@colID])
+    dataOut$indices <- match(input$listSelect, 
+                             (rv.track$data@metadata)[, rv.track$data@colID])
     })
 
   
   observeEvent(req(!is.null(input$randSelect) && input$randSelect != ""), ignoreNULL = FALSE, {
     
-    dataOut$indices <- sample(1:nrow(vizData()@metadata), 
+    dataOut$indices <- sample(1:nrow(rv.track$data@metadata), 
                               as.numeric(input$randSelect), 
                               replace = FALSE)
     })
@@ -163,7 +191,7 @@ mod_plots_tracking_server <- function(id,
   
 
   observeEvent(req(input$colSelect), {
-    dataOut$indices <- which((vizData()@metadata)[, input$colSelect] == TRUE)
+    dataOut$indices <- which((rv.track$data@metadata)[, input$colSelect] == TRUE)
     })
   
   

@@ -24,7 +24,9 @@ NULL
 mod_ds_corrmatrix_ui <- function(id) {
     ns <- NS(id)
     tagList(
-        uiOutput(ns("showValues_ui")),
+      useShinyjs(),
+      hidden(div(id = ns('badFormatMsg'), h3(bad_format_txt))),
+      uiOutput(ns("showValues_ui")),
         uiOutput(ns("rate_ui")),
         highcharter::highchartOutput(ns("plot"), width = "600px", height = "500px")
     )
@@ -43,21 +45,21 @@ mod_ds_corrmatrix_server <- function(id,
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
 
-        
-        observe({
-           req(vizData())
-            stopifnot(inherits(vizData(), 'VizData'))
-        })
-        
-
         rv.corr <- reactiveValues(
+          data = NULL,
           rate = NULL,
           showValues = FALSE
         )
 
+        observe({
+          if(inherits(vizData(), "VizData"))
+            rv.corr$data <- vizData()
+          
+          shinyjs::toggle('badFormatMsg', condition = !inherits(vizData(), "VizData"))
+        }, priority = 1000)
 
         output$rate_ui <- renderUI({
-            req(rv.corr$rate)
+            req(rv.corr$rate, rv.corr$data)
             sliderInput(ns("rate"),
                 "Tune to modify the color gradient",
                 min = 0,
@@ -69,6 +71,7 @@ mod_ds_corrmatrix_server <- function(id,
 
 
         output$showValues_ui <- renderUI({
+          req(rv.corr$data)
             checkboxInput(ns("showLabels"),
                 "Show labels",
                 value = rv.corr$showValues
@@ -89,11 +92,11 @@ mod_ds_corrmatrix_server <- function(id,
         })
 
         output$plot <- renderHighchart({
-            req(vizData())
+            req(rv.corr$data)
 
             withProgress(message = "Making plot", value = 100, {
                 tmp <- corrMatrix(
-                    data = vizData()@qdata,
+                    data = rv.corr$data@qdata,
                     rate = rv.corr$rate,
                     showValues = rv.corr$showValues
                 )

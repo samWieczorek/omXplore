@@ -281,5 +281,23 @@ pkgs.require <- function(ll.deps){
 }
 
 
-
-
+#' @title Add resource path for image
+#' 
+#' @description # This line allows to extend the resource path to a different directory
+# than the one in 'inst/' which is given by default when loading a package.
+#' 
+#' @param prefix A `character()` vector which contains packages names
+#' @param path xxx
+#' 
+#' @examples 
+#' addImgPath('mod_foo', system.file('.', package='DaparViz'))
+#' 
+#' @export
+#' 
+#' @author Samuel Wieczorek
+#' 
+addImgPath <- function(prefix, path){
+  myPath <- gsub('mod_', '', path)
+  addResourcePath(prefix = paste0("img_", myPath),
+                  directoryPath = "my_location")
+}

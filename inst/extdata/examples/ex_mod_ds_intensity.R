@@ -28,6 +28,10 @@ server <- function(input, output, session) {
   vList <- convert2viz(ft)
   vData <- vList@ll.vizData[[1]]
   
+  
+  data(Exp1_R25_pept, package='DaparToolshedData')
+  vData <- Exp1_R25_pept
+  
   indices <- mod_plots_tracking_server("tracker", 
                                        vizData = reactive({vData}))
   

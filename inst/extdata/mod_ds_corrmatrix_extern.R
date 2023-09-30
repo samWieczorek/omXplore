@@ -2,7 +2,8 @@
 #' numeric matrix.
 #'
 #' @description
-#' xxxx
+#' This module is a show case to demonstrate the automatic integration of a plot
+#' in the GUI of DaparViz.
 #'
 #' @param id A `character(1)` which is the id of the shiny module.
 #' @param vizData xxx
@@ -38,9 +39,10 @@ mod_ds_plot_extern_server <- function(id,
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
         
-        addResourcePath(prefix = "img_ds_plot_extern", 
-                        directoryPath = "C:\\Users\\sw175264\\Documents\\")
         
+        # addResourcePath(prefix = "img_ds_plot_extern", 
+        #                 directoryPath = "my_location")
+        addImgPath('mod_ds_plot_extern', "my_location")
         
         observe({
            req(vizData())

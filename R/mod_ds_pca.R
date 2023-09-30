@@ -26,10 +26,13 @@ NULL
 #'
 mod_ds_pca_ui <- function(id) {
     ns <- NS(id)
+    require(shinyjs)
     tagList(
-        uiOutput(ns("WarningNA_PCA")),
-        uiOutput(ns("pcaOptions")),
-        uiOutput(ns("pcaPlots"))
+      shinyjs::useShinyjs(),
+      hidden(div(id = ns('badFormatMsg'), h3(bad_format_txt))),
+      uiOutput(ns("WarningNA_PCA")),
+      uiOutput(ns("pcaOptions")),
+      uiOutput(ns("pcaPlots"))
     )
 }
 
@@ -42,32 +45,29 @@ mod_ds_pca_ui <- function(id) {
 #' @export
 mod_ds_pca_server <- function(id,
                               vizData) {
-    if (!requireNamespace("factoextra", quietly = TRUE)) {
-        stop("Package 'factoextra' must be installed to use this function.",
-            call. = FALSE
-        )
-    }
+    pkgs.require('factoextra')
+  
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
-
         
-        observe({
-            req(vizData())
-   
-            stopifnot(inherits(vizData()@qdata, "matrix"))
-            rv.pca$data <- as.matrix(vizData()@qdata)
-
-        })
-
         rv.pca <- reactiveValues(
           data = NULL,
           PCA_axes = NULL,
           res.pca = NULL,
           PCA_varScale = NULL
         )
-
-
-        output$WarningNA_PCA <- renderUI({
+        
+        
+        observe({
+          
+          if(inherits(vizData(), "VizData"))
+            rv.pca$data <- as.matrix(vizData()@qdata)
+          
+          shinyjs::toggle('badFormatMsg', condition = is.null(rv.pca$data))
+          shinyjs::toggle('choosePlot', condition = !is.null(rv.pca$data))
+        }, priority = 1000)
+        
+       output$WarningNA_PCA <- renderUI({
             req(rv.pca$data)
             req(length(which(is.na(rv.pca$data))) > 0)
 

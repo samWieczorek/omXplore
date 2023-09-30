@@ -25,18 +25,20 @@ NULL
 mod_ds_heatmap_ui <- function(id) {
     ns <- NS(id)
     tagList(
-        div( style = "display:inline-block; vertical-align: middle; padding-right: 20px;",
+      useShinyjs(),
+      hidden(div(id = ns('badFormatMsg'), h3(bad_format_txt))),
+      hidden(div( style = "display:inline-block; vertical-align: middle; padding-right: 20px;",
                 selectInput(ns("distance"), "Distance",
                     choices = setNames(nm = c("euclidean", "manhattan")),
                     selected = "euclidean",
                     width = "150px")
-            ),
-            div(style = "display:inline-block; vertical-align: middle; padding-right: 20px;",
+            )),
+      hidden(div(style = "display:inline-block; vertical-align: middle; padding-right: 20px;",
                 selectInput(ns("linkage"), "Linkage",
                     choices = setNames(nm = c("complete", "ward.D", "average")),
                     selected = "complete",
                     width = "150px")
-            ),
+            )),
             tags$hr(),
             uiOutput(ns("DS_PlotHeatmap"))
         )
@@ -54,10 +56,16 @@ mod_ds_heatmap_server <- function(id,
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
 
+        rv <- reactiveValues(data = NULL)
+        
         observe({
-            req(vizData())
-            stopifnot(inherits(vizData(), "VizData"))
-        })
+          if(inherits(vizData(), "VizData"))
+            rv$data <- vizData()
+          
+          shinyjs::toggle('badFormatMsg', condition = !inherits(vizData(), "VizData"))
+          shinyjs::toggle('linkage', condition = !inherits(vizData(), "VizData"))
+          shinyjs::toggle('distance', condition = !inherits(vizData(), "VizData"))
+        }, priority = 1000)
 
 
         limitHeatmap <- 20000
@@ -65,27 +73,24 @@ mod_ds_heatmap_server <- function(id,
         width <- paste0(width, "px")
 
         output$DS_PlotHeatmap <- renderUI({
-            req(vizData())
-          #browser()
-            if (nrow(vizData()@qdata) > limitHeatmap) {
-                tags$p("The dataset is too big to compute the heatmap in a reasonable time.")
-            } else {
-                tagList(
-                    plotOutput(ns("heatmap_ui"), width = width, height = height)
-                )
-            }
+            req(rv$data)
+          if (nrow(rv$data@qdata) > limitHeatmap)
+                tags$p("The dataset is too large to compute the heatmap in a reasonable time.")
+            else
+                plotOutput(ns("heatmap_ui"), width = width, height = height)
         })
 
 
 
         output$heatmap_ui <- renderPlot({
+          req(rv$data)
             input$linkage
             input$distance
 
                 withProgress(message = "Making plot", value = 100, {
                   
                     DaparViz::heatmapD(
-                        vData = vizData(),
+                        vData = rv$data,
                         distance = input$distance,
                         cluster = input$linkage
                     )

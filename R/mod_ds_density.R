@@ -23,7 +23,11 @@ NULL
 mod_ds_density_ui <- function(id) {
     ns <- NS(id)
     tagList(
-      highcharter::highchartOutput(ns("plot_ui"))
+      shinyjs::useShinyjs(),
+      fluidPage(
+        shinyjs::hidden(div(id = ns('badFormatMsg'), h3(bad_format_txt))),
+        highcharter::highchartOutput(ns("plot_ui"))
+    )
     )
 }
 
@@ -44,10 +48,11 @@ mod_ds_density_server <- function(id,
         )
         
         observe({
-            req(vizData())
-            if(inherits(vizData(), "VizData"))
-              rv$data <- vizData()
-        })
+          if(inherits(vizData(), "VizData"))
+            rv$data <- vizData()
+
+          shinyjs::toggle('badFormatMsg', condition = !inherits(vizData(), "VizData"))
+        }, priority = 1000)
 
 
         output$plot_ui <- renderHighchart({

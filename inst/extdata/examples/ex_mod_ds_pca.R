@@ -20,7 +20,9 @@ ui <- mod_ds_pca_ui("plot")
 server <- function(input, output, session) {
   data(Exp1_R25_pept, package='DaparToolshedData')
   vList <- convert2viz(Exp1_R25_pept)
-  vData <- vList@ll.vizData[[1]]
+  vData <- convert2viz(Exp1_R25_pept)@ll.vizData[[1]]
+  
+  #vData <- Exp1_R25_pept
   
   mod_ds_pca_server("plot", vizData = reactive({vData}))
   }

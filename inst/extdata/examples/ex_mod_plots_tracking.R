@@ -38,9 +38,12 @@ server <- function(input, output, session) {
   # 
   # vList <- convert2viz(ll.tmp)
   
+  data(Exp1_R25_pept, package='DaparToolshedData')
+  #vData <- Exp1_R25_pept
   
   
-  indices <- mod_plots_tracking_server("tracker", vizData = reactive({vData}))
+  indices <- mod_plots_tracking_server("tracker", 
+                                       vizData = reactive({vData}))
   
   observe({
     print(indices())

@@ -24,8 +24,9 @@ mod_ds_intensity_ui <- function(id) {
     ns <- NS(id)
     tagList(
         shinyjs::useShinyjs(),
-        radioButtons(ns("choosePlot"), "",
-                    choices = setNames(nm = c("violin", "box"))),
+        hidden(div(id = ns('badFormatMsg'), h3(bad_format_txt))),
+        hidden(radioButtons(ns("choosePlot"), "",
+                    choices = setNames(nm = c("violin", "box")))),
         highchartOutput(ns("box")),
         shinyjs::hidden(imageOutput(ns("violin")))
         )
@@ -50,48 +51,54 @@ mod_ds_intensity_server <- function(id,
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
 
+        rv <- reactiveValues(data = NULL)
+        
+        observe({
+          if(inherits(vizData(), "VizData"))
+            rv$data <- vizData()
+          
+          shinyjs::toggle('badFormatMsg', condition = is.null(rv$data))
+          shinyjs::toggle('choosePlot', condition = !is.null(rv$data))
+        }, priority = 1000)
+        
         
         observeEvent(input$choosePlot, {
+          req(rv$data)
           shinyjs::toggle('violin', condition = input$choosePlot == "violin")
           shinyjs::toggle('box', condition = input$choosePlot == "box")
         })
         
         output$box <- renderHighchart({
+          req(rv$data)
             #withProgress(message = "Making plot", value = 100, {
-                boxPlot(data = vizData()@qdata, 
-                        conds = vizData()@conds, 
+                boxPlot(data = rv$data@qdata, 
+                        conds = rv$data@conds, 
                         subset = track.indices())
                 
            # })
           
         })
 
-
-        
-        
-
-        output$violin <- renderImage(
-            {
-                req(vizData()@qdata)
-                # A temp file to save the output. It will be deleted after 
-                # renderImage sends it, because deleteFile=TRUE.
-                outfile <- tempfile(fileext = ".png")
-                # Generate a png
-                withProgress(message = "Making plot", value = 100, {
-                    png(outfile)
-                    pattern <- paste0("test", ".violinplot")
-                    tmp <- violinPlot(data = as.matrix(vizData()@qdata), 
-                                      conds = vizData()@conds, 
-                                      subset = track.indices())
-                    # future(createPNGFromWidget(tmp,pattern))
-                    dev.off()
-                })
-                tmp
-
-                # Return a list
-                list(src = outfile,
-                     alt = "This is alternate text")
-            },
+        output$violin <- renderImage({
+          req(rv$data)
+          # A temp file to save the output. It will be deleted after 
+          # renderImage sends it, because deleteFile=TRUE.
+          outfile <- tempfile(fileext = ".png")
+          # Generate a png
+          withProgress(message = "Making plot", value = 100, {
+              png(outfile)
+              pattern <- paste0("test", ".violinplot")
+              tmp <- violinPlot(data = as.matrix(rv$data@qdata), 
+                                conds = rv$data@conds, 
+                                subset = track.indices())
+              # future(createPNGFromWidget(tmp,pattern))
+              dev.off()
+          })
+          tmp
+          # Return a list
+          list(src = outfile,
+               alt = "This is alternate text")
+        },
             deleteFile = TRUE
         )
     })

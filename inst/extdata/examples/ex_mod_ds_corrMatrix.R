@@ -21,6 +21,13 @@ server <- function(input, output, session) {
   vList <- BuildExampleDataset('MSnbase')
   #vList <- BuildExampleDataset('list')
   vData <- vList@ll.vizData[[1]]
+  
+  # Example with a QFeatures dataset
+  #
+  data(Exp1_R25_pept, package='DaparToolshedData')
+  vData <- Exp1_R25_pept
+  
+  
   mod_ds_corrmatrix_server("plot", reactive({vData}))
   }
 

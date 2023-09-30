@@ -139,7 +139,6 @@ mod_view_dataset_server <- function(id,
 
         observe({
             req(ll.vizData())
-          #browser()
           if(inherits(ll.vizData(), "VizList")){
             rv$data <- ll.vizData()
             conds <- rv$data@ll.vizData[[1]]@conds
