@@ -194,6 +194,8 @@ setMethod("initialize" , "VizData" ,
 #' @param ... xxx
 #' @param drop xxx
 #' 
+#' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
+#' 
 setMethod('[', signature = c('VizData', "ANY", "ANY", "ANY"),
           function(x, i, j = NA, k = NA, l = NA, ..., drop) {
             if (length(i) == 1){
@@ -229,13 +231,11 @@ setMethod('[', signature = c('VizData', "ANY", "ANY", "ANY"),
 #' 
 #' @rdname VizList-class
 #' @import QFeatures
+#' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
 #' 
 setMethod("Convert2VizList", signature = "QFeatures",
   #' @param object An instance of class `QFeatures`.
   function(object) {
-    library(QFeatures)
-    pkgs.require(c('PSMatch'))
-    
     
     ll <- list()
     for (i in 1:length(object)){
@@ -291,6 +291,7 @@ setMethod("Convert2VizList", signature = "QFeatures",
 #' 
 #' @rdname Convert2VizList
 #' @import MSnbase
+#' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
 #' 
 setMethod("Convert2VizData", signature = "MSnSet",
           #' @param object An instance of class `MSnSet`.

@@ -89,7 +89,7 @@ mod_ds_heatmap_server <- function(id,
 
                 withProgress(message = "Making plot", value = 100, {
                   
-                    DaparViz::heatmapD(
+                    heatmapD(
                         vData = rv$data,
                         distance = input$distance,
                         cluster = input$linkage

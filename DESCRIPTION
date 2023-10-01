@@ -16,14 +16,14 @@ Description: This package contains a collection of functions (shiny modules)
     plots can be displayed individually or embedded in a global Shiny module.
 License: Artistic-2.0
 Depends:
-    R (>= 4.3.0), 
+    R (>= 4.3.0)
+Imports:
     shiny, 
     MSnbase,
     PSMatch,
     QFeatures,
     shinyBS,
-    shinyjs
-Imports:
+    shinyjs,
     DT,
     RColorBrewer,
     gplots,

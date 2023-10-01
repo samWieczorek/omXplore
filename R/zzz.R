@@ -1,5 +1,7 @@
 .onLoad <- function(libname, pkgname) {
-    #library(shiny)
+    library(shiny)
+  library(MSnbase)
+  library(QFeatures)
   
   shiny::addResourcePath(
         prefix = "images",

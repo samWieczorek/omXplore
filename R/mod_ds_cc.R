@@ -266,11 +266,11 @@ mod_ds_cc_server <- function(id, vizData) {
       
       
       output$CCMultiMulti_UI <- renderUI({
-        rvCC$CCMultiMulti_rows_selected <- DaparViz::mod_format_DT_server("CCMultiMulti", 
+        rvCC$CCMultiMulti_rows_selected <- mod_format_DT_server("CCMultiMulti", 
                                                                           data = reactive({GetDataFor_CCMultiMulti()}))
         
         
-        DaparViz::mod_format_DT_ui(ns("CCMultiMulti"))
+        mod_format_DT_ui(ns("CCMultiMulti"))
       })
       
       
@@ -358,8 +358,8 @@ mod_ds_cc_server <- function(id, vizData) {
         df <- data.frame(proteinId = unlist(.protLabels))
         colnames(df) <- c("Proteins Ids")
         
-        DaparViz::mod_format_DT_server('CCDetailedProt', data = reactive({df}))
-        DaparViz::mod_format_DT_ui(ns('CCDetailedProt'))
+        mod_format_DT_server('CCDetailedProt', data = reactive({df}))
+        mod_format_DT_ui(ns('CCDetailedProt'))
       })
       
       
@@ -394,12 +394,12 @@ mod_ds_cc_server <- function(id, vizData) {
           pal = c.colors
         )
         
-        DaparViz::mod_format_DT_server('CCDetailedSharedPep', 
+        mod_format_DT_server('CCDetailedSharedPep', 
                                        data = reactive({data}),
                                        hc_style = reactive({hcStyle})
                                        )
         
-        DaparViz::mod_format_DT_ui(ns('CCDetailedSharedPep'))
+        mod_format_DT_ui(ns('CCDetailedSharedPep'))
         
       })
       
@@ -493,7 +493,7 @@ mod_ds_cc_server <- function(id, vizData) {
           pal = c.colors
         )
         
-        DaparViz::mod_format_DT_server('CCDetailedSpecPep', 
+        mod_format_DT_server('CCDetailedSpecPep', 
                                        data = reactive({data}),
                                        hc_style = reactive({hcStyle})
                                        )
@@ -650,7 +650,7 @@ mod_ds_cc_server <- function(id, vizData) {
         colnames(df) <- c("Proteins Ids", "nPep", "Peptides Ids")
         
         
-        rvCC$OneMultiDT_rows_selected <- DaparViz::mod_format_DT_server('OneMultiDT', 
+        rvCC$OneMultiDT_rows_selected <- mod_format_DT_server('OneMultiDT', 
                                                                         data = reactive({df}))
         mod_format_DT_ui(ns('OneMultiDT'))
       })
@@ -698,7 +698,7 @@ mod_ds_cc_server <- function(id, vizData) {
           pal = c.colors
         )
         
-        DaparViz::mod_format_DT_server('OneMultiDTDetailed', 
+        mod_format_DT_server('OneMultiDTDetailed', 
                                        data = reactive({data}),
                                        hc_style = reactive({hcStyle})
                                        )
@@ -724,7 +724,7 @@ mod_ds_cc_server <- function(id, vizData) {
         req(rv$data@cc)
         df <- BuildOne2OneTab()
         colnames(df) <- c("Proteins Ids", "Peptides Ids")
-        rvCC$OneOneDT_rows_selected <- DaparViz::mod_format_DT_server('OneOneDT', 
+        rvCC$OneOneDT_rows_selected <- mod_format_DT_server('OneOneDT', 
                                                                       data = reactive({df}),
                                                                       hc_style = reactive({NULL})
                                                                       )
@@ -776,7 +776,7 @@ mod_ds_cc_server <- function(id, vizData) {
           pal = c.colors
         )
         
-        DaparViz::mod_format_DT_server('OneOneDTDetailed', 
+        mod_format_DT_server('OneOneDTDetailed', 
                                        data = reactive({data}),
                                        hc_style = reactive({hcStyle})
                                        )

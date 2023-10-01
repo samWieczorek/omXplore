@@ -1,6 +1,7 @@
 library(DaparViz)
 library(Matrix)
 
+
 # Convert a QFeatures object to an instance of VizList class
 data(ft1)
 vData_ft1 <- convert2viz(ft1)

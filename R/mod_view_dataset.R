@@ -62,6 +62,7 @@ NULL
 
 
 #' @rdname ds-plots
+#' @importFrom utils lsf.str
 #' @export
 listPlotModules <- function() {
   # Lists module in the package `DaparViz`
@@ -73,7 +74,7 @@ listPlotModules <- function() {
   ll.daparViz
   
   # Lists module in the global environment
-  ll.env <- lsf.str(envir = globalenv())
+  ll.env <- utils::lsf.str(envir = globalenv())
   ll.env <- ll.env[grep("mod_ds_", ll.env)]
   ll.env <- gsub("_server", "", ll.env)
   ll.env <- gsub("_ui", "", ll.env)
