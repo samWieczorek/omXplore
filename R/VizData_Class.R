@@ -290,13 +290,14 @@ setMethod("Convert2VizList", signature = "QFeatures",
 #' @exportMethod Convert2VizData
 #' 
 #' @rdname Convert2VizList
+#' @import MSnbase
 #' 
 setMethod("Convert2VizData", signature = "MSnSet",
           #' @param object An instance of class `MSnSet`.
           #' @param ... xxx
   function(object, ...) {
     pkgs.require('PSMatch')
-    library(MSnbase)
+    
     X <- matrix()
     cc <- list()
     
