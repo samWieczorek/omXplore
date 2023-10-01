@@ -9,7 +9,7 @@
 #'
 #' @name SE-explorer
 #'
-#' @example inst/extadata/examples/ex_mod_ds_seExplorer.R
+#' @example inst/extdata/examples/ex_mod_ds_seExplorer.R
 #' 
 NULL
 
@@ -22,7 +22,7 @@ NULL
 #' 
 mod_ds_seExplorer_ui <- function(id) {
     ns <- NS(id)
-    require(shinyBS)
+    pkgs.require('shinyBS')
     tagList(
       shinyjs::useShinyjs(),
       shinyjs::hidden(div(id = ns('badFormatMsg'), h3(bad_format_txt))),

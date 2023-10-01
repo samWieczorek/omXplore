@@ -1,14 +1,15 @@
-library(shiny)
+library(DaparViz)
 
 ui <- fluidPage(
   dl_ui("dl")
 )
 
 server <- function(input, output, session) {
-  data(ft, envir = environment())
+  data(vData_ft)
+  obj <- vData_ft[1]
   
   dl_server("dl",
-            dataIn = reactive({ft}),
+            dataIn = reactive({obj}),
             extension = c('csv', 'xlsx', 'RData')
   )
 }

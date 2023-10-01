@@ -50,9 +50,9 @@ plotCompareAssays <- function(vList,
     }
     stopifnot(inherits(vList, "VizList"))
     
-    qdata1 <- vList@ll.vizData[[i]]@qdata
-    qdata2 <- vList@ll.vizData[[j]]@qdata
-    conds <- vList@ll.vizData[[i]]@conds
+    qdata1 <- vList[i]@qdata
+    qdata2 <- vList[j]@qdata
+    conds <- vList[i]@conds
     
     if (!all.equal(dim(qdata1), dim(qdata2))) {
         stop("Assays must have the same dimensions.")

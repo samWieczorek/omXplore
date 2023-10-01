@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_pep_prot_CC.R
 \name{plotJitter_rCharts}
 \alias{plotJitter_rCharts}
-\title{Display a a jitter plot for CC}
+\title{Display a jitter plot for connected components}
 \usage{
 plotJitter_rCharts(df, clickFunction = NULL)
 }
@@ -15,14 +15,13 @@ plotJitter_rCharts(df, clickFunction = NULL)
 A plot
 }
 \description{
-Display a a jitter plot for CC
+Display a jitter plot for connected components
 }
 \examples{
 \dontrun{
-data(Exp1_R25_pept, package="DAPARdata")
-obj <- Exp1_R25_pept[seq_len(100)]
-X <- BuildAdjacencyMatrix(obj, "Protein_group_IDs", TRUE)
-ll <- get.pep.prot.cc(X)[1:4]
+data(vData_ms)
+obj <- vData_ms[1]
+ll <- obj@cc[1:4]
 n.prot <- unlist(lapply(ll, function(x) {length(x$proteins)}))
 n.pept <- unlist(lapply(ll, function(x) {length(x$peptides)}))
 df <- tibble::tibble(

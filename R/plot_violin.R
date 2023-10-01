@@ -21,18 +21,14 @@
 #' @export
 #'
 #' @rdname intensity-plots
+#' 
+#' @import vioplot
+#' @import graphics
 #'
 violinPlot <- function(data,
                        conds,
                        subset = NULL,
                        pal.name) {
-    if (!requireNamespace("graphics", quietly = TRUE)) {
-        stop("Please install graphics: BiocManager::install('graphics')")
-    }
-
-    if (!requireNamespace("vioplot", quietly = TRUE)) {
-        stop("Please install vioplot: BiocManager::install('vioplot')")
-    }
 
     stopifnot(inherits(data, "matrix"))
 

@@ -91,7 +91,7 @@
 #' #' @author Alexia Dorffer, Samuel Wieczorek
 #' #'
 #' #' @examples
-#' #' require(QFeatures)
+#' #' pkgs.require('QFeatures')
 #' #' data(ft)
 #' #' X <- adjacencyMatrix(ft[[1]])
 #' #' GraphPepProt_hc(X)

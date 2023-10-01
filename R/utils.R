@@ -1,101 +1,3 @@
-#' @title Example dataset
-#' @description This function builds an example dataset as an instance of the class
-#' 'VizClass', which is the format to be used with functions in the DaparViz package.
-#' 
-#' @param type A 'character(1)' which is the type of original dataset to build an example from. 
-#' Available values are 'QFeatures' (default value), 'MSnbase' and 'list'.
-#' 
-#' @return An instance of the class 'VizClass'.
-#' 
-#' @author Samuel Wieczorek
-#' 
-#' @export
-#' 
-#' @import utils
-#' 
-BuildExampleDataset <- function(type='QFeatures'){
-require(utils)
-  
-  dataset <- switch(type,
-                    
-         QFeatures = {
-           data(Exp1_R25_pept, package = 'DaparToolshedData', envir = environment())
-           convert2viz(Exp1_R25_pept)
-           },
-         
-         MSnbase = {
-           data(Exp1_R25_pept, package = 'DAPARdata', envir = environment())
-           data(Exp1_R25_prot, package = 'DAPARdata', envir = environment())
-           data(Exp1_R2_pept, package = 'DAPARdata', envir = environment())
-           ll.tmp <- setNames(c(Exp1_R25_pept, Exp1_R25_prot, Exp1_R2_pept),
-                              nm = c('Exp1_R25_pept', 'Exp1_R25_prot', 'Exp1_R2_pept'))
-           
-           convert2viz(ll.tmp)
-         },
-
-         list = {
-           pkgs.require('Msnbase')
-           data(Exp1_R25_pept, package = 'DAPARdata', envir = environment())
-           msnset <- Exp1_R25_pept
-           X <- PSMatch::makeAdjacencyMatrix(MSnbase::fData(msnset)[, msnset@experimentData@other$proteinId])
-           rownames(X) <- rownames(MSnbase::fData(msnset))
-           connectedComp <- PSMatch::ConnectedComponents(X)
-           
-           ll.Exp1_R25_pept <- list(
-             qdata = MSnbase::exprs(msnset),
-             metacell = MSnbase::fData(msnset)[ , msnset@experimentData@other$names_metacell],
-             mdata = MSnbase::fData(msnset),
-             colID = msnset@experimentData@other$keyId,
-             conds = MSnbase::pData(msnset)[, 'Condition'],
-             type = msnset@experimentData@other$typeOfData,
-             adjMat = as.matrix(X),
-             cc = as.list(connectedComp@adjMatrices)
-           )
-           
-           data(Exp1_R25_prot, package='DAPARdata', envir = environment())
-           msnset <- Exp1_R25_prot
-           ll.Exp1_R25_prot <- list(
-             qdata = MSnbase::exprs(msnset),
-             metacell = MSnbase::fData(msnset)[ , msnset@experimentData@other$names_metacell],
-             mdata = MSnbase::fData(msnset),
-             colID = msnset@experimentData@other$keyId,
-             conds = MSnbase::pData(msnset)[, 'Condition'],
-             type = msnset@experimentData@other$typeOfData
-           )
-           
-           data(Exp1_R2_pept, package='DAPARdata', envir = environment())
-           msnset <- Exp1_R2_pept
-           X <- PSMatch::makeAdjacencyMatrix(MSnbase::fData(msnset)[, msnset@experimentData@other$proteinId])
-           rownames(X) <- rownames(fData(msnset))
-           connectedComp <- PSMatch::ConnectedComponents(X)
-           
-           ll.Exp1_R2_pept <- list(
-             qdata = MSnbase::exprs(msnset),
-             metacell = MSnbase::fData(msnset)[ , msnset@experimentData@other$names_metacell],
-             mdata = MSnbase::fData(msnset),
-             colID = msnset@experimentData@other$keyId,
-             conds = MSnbase::pData(msnset)[, 'Condition'],
-             type = msnset@experimentData@other$typeOfData,
-             adjMat = as.matrix(X),
-             cc = as.list(connectedComp@adjMatrices)
-             
-           )
-           
-           
-           
-           ll.tmp <- list(Exp1_R25_pept = ll.Exp1_R25_pept,
-                          Exp1_R25_prot = ll.Exp1_R25_prot,
-                          Exp1_R2_pept = ll.Exp1_R2_pept
-                          )
-           
-           convert2viz(ll.tmp)
-         },
-         default = NULL
-         )
-  
-  return(dataset)
-  
-}
 
 #' @title Customised contextual menu of highcharts plots
 #'
@@ -118,10 +20,8 @@ require(utils)
 #'
 #' @export
 #'
-#' @importFrom highcharter hc_exporting
-#'
 customExportMenu <- function(hc, fname) {
-  require(highcharter)
+  pkgs.require('highcharter')
     highcharter::hc_exporting(hc,
                               enabled = TRUE,
                               filename = fname,
@@ -160,14 +60,12 @@ customExportMenu <- function(hc, fname) {
 #'
 #' @export
 #'
-#' @importFrom highcharter hc_chart
-#'
 customChart <- function(hc,
                         chartType = 'scatter',
                         zoomType = "None",
                         width = 0,
                         height = 0) {
-  require(highcharter)
+  pkgs.require('highcharter')
     hc %>%
         hc_chart(
             type = chartType,
@@ -283,14 +181,16 @@ pkgs.require <- function(ll.deps){
 
 #' @title Add resource path for image
 #' 
-#' @description # This line allows to extend the resource path to a different directory
-# than the one in 'inst/' which is given by default when loading a package.
+#' @description This line allows to extend the resource path to a different directory
+#' than the one in 'inst/' which is given by default when loading a package.
 #' 
 #' @param prefix A `character()` vector which contains packages names
 #' @param path xxx
 #' 
 #' @examples 
+#' \dontrun{
 #' addImgPath('mod_foo', system.file('.', package='DaparViz'))
+#' }
 #' 
 #' @export
 #' 

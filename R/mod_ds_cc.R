@@ -24,8 +24,7 @@ NULL
 #' @rdname connected_components
 #' 
 mod_ds_cc_ui <- function(id) {
-  require(visNetwork)
-  require(shinyBS)
+  pkgs.require(c('visNetwork', 'shinyBS'))
   ns <- NS(id)
   tagList(
     useShinyjs(),
@@ -99,7 +98,7 @@ mod_ds_cc_ui <- function(id) {
 #' @export
 #' @rdname connected_components
 mod_ds_cc_server <- function(id, vizData) {
-  require(visNetwork)
+  pkgs.require('visNetwork')
   moduleServer(id, function(input, output, session) {
       ns <- session$ns
       

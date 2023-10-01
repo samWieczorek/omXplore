@@ -51,7 +51,7 @@
 #'
 #' @author Samuel Wieczorek, Enora Fremy
 #'
-#' @example examples/ex_mod_view_dataset.R
+#' @example inst/extdata/examples/ex_mod_view_dataset.R
 #' 
 NULL
 
@@ -91,7 +91,7 @@ listPlotModules <- function() {
 #' @rdname ds-plots
 #' @export
 #' 
-#' @example examples/ex_mod_view_dataset.R
+#' @example inst/extdata/examples/ex_mod_view_dataset.R
 #' 
 mod_view_dataset_ui <- function(id) {
     ns <- NS(id)
@@ -141,7 +141,7 @@ mod_view_dataset_server <- function(id,
             req(ll.vizData())
           if(inherits(ll.vizData(), "VizList")){
             rv$data <- ll.vizData()
-            conds <- rv$data@ll.vizData[[1]]@conds
+            conds <- rv$data[1]@conds
           }
           
           shinyjs::toggle('badFormatMsg', condition = !inherits(ll.vizData(), "VizList"))
@@ -177,23 +177,27 @@ mod_view_dataset_server <- function(id,
         })
 
 
+        FindImgSrc <- function(x){
+          # By default, search image from the images directory of the DaparViz
+          # package. This works for built-in plot modules. For external modules,
+          # then load customized resource path
+          img_path <- system.file('images', paste0(gsub("mod_", "", x), ".png"), package='DaparViz')
+          if (file.exists(img_path))
+            img_src <- paste0("images/", gsub("mod_", "", x), ".png")
+          else
+            img_src <- paste0("img_", gsub("mod_", "", x), "/", gsub("mod_", "", x), ".png")
+          
+          img_src
+        }
+        
+        
         output$ShowVignettes_ui <- renderUI({
           req(rv$data)
           lapply(ll.mods, function(x) {
-            
-            # By default, search image from the images directory of the DaparViz
-            # package. This works for built-in plot modules. For external modules,
-            # then load customized resource path
-            img_path <- system.file('images', paste0(gsub("mod_", "", x), ".png"), package='DaparViz')
-            if (file.exists(img_path))
-              img_src <- paste0("images/", gsub("mod_", "", x), ".png")
-            else
-              img_src <- paste0("img_", gsub("mod_", "", x), "/", gsub("mod_", "", x), ".png")
-            
-             actionButton(ns(x),
+            actionButton(ns(x),
                     label = tagList(
                         p(gsub("mod_ds_", "", x)),
-                        tags$img(src = img_src, height = "50px")
+                        tags$img(src = FindImgSrc(x), height = "50px")
                         ),
                     style = "padding: 0px; border: none; background-size: cover; background-position: center;"
                 )
@@ -201,21 +205,21 @@ mod_view_dataset_server <- function(id,
         })
 
         observeEvent(req(rv$data, input$chooseDataset), ignoreNULL = TRUE,{
-            rv$current.se <- rv$data@ll.vizData[[input$chooseDataset]]
+            rv$current.se <- rv$data[input$chooseDataset]
         })
 
         output$chooseDataset_ui <- renderUI({
             req(rv$data)
 
-            if (length(rv$data@ll.vizData) == 0) {
+            if (length(rv$data) == 0) {
                 choices <- list(" " = character(0))
             } else {
-                choices <- names(rv$data@ll.vizData)
+                choices <- names(rv$data)
             }
 
             selectInput(ns("chooseDataset"), "Dataset",
                 choices = choices,
-                selected = names(rv$data@ll.vizData)[length(rv$data)],
+                selected = names(rv$data)[length(rv$data)],
                 width = 200
             )
         })

@@ -12,7 +12,7 @@
 #' 
 #' @return NA
 #'
-#' @example inst/extadata/examples/ex_mod_colorLegend.R
+#' @example inst/extdata/examples/ex_mod_colorLegend.R
 #' 
 NULL
 
@@ -40,10 +40,7 @@ custom_metacell_colors <- function()
 #' 
 mod_colorLegend_ui <- function(id) {
     ns <- NS(id)
-    if (!requireNamespace("shinyBS", quietly = TRUE)) {
-        stop("Please install shinyBS: BiocManager::install('shinyBS')")
-    }
-    require(shinyBS)
+    pkgs.require('shinyBS')
     bsCollapse(id = "collapseExample",
                open = "",
                bsCollapsePanel(title = "Legend of colors",
@@ -62,11 +59,7 @@ mod_colorLegend_server <- function(id,
   moduleServer(id, function(input, output, session) {
       ns <- session$ns
       
-      # if (!requireNamespace("DaparToolshed", quietly = TRUE)) {
-      #   stop("Please install DaparToolshed: BiocManager::install('DaparToolshed')")
-      # }
-      # require('DaparToolshed')
-      
+
       output$legend <- renderUI({
          req(presentTags)
        

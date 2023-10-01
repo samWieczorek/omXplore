@@ -14,7 +14,7 @@
 #' 
 #' @return A `list` (same structure as the parameter 'params")
 #'
-#' @example inst/extadata/examples/ex_mod_plots_tracking.R
+#' @example inst/extdata/examples/ex_mod_plots_tracking.R
 #' 
 #' @name mod_plots_tracking
 #' 
@@ -27,7 +27,7 @@ NULL
 #' @importFrom shiny NS tagList
 #'
 mod_plots_tracking_ui <- function(id) {
-  require(shinyjs)
+  pkgs.require('shinyjs')
   ns <- NS(id)
   tagList(
     shinyjs::useShinyjs(),

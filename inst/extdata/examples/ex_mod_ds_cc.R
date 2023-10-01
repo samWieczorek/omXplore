@@ -1,6 +1,3 @@
-library(highcharter)
-library(shinyBS)
-library(shiny)
 library(DaparViz)
 
 
@@ -9,10 +6,10 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
-  vList <- BuildExampleDataset('QFeatures')
-  vData <- vList@ll.vizData[[1]]
+  data(vData_ft)
+  obj <- vData_ft[1]
   
-  mod_ds_cc_server("plot", reactive({vData}))
+  mod_ds_cc_server("plot", reactive({obj}))
 }
 
 if (interactive())

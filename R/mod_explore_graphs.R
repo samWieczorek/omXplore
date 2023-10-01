@@ -10,9 +10,7 @@
 #' mod_explore_graphs_ui <- function(id) {
 #'     ns <- NS(id)
 #' 
-#'     if (!requireNamespace("visNetwork", quietly = TRUE)) {
-#'         stop("Please install visNetwork: BiocManager::install('visNetwork')")
-#'     }
+#'     pkgs.require('visNetwork')
 #' 
 #'     fluidPage(
 #'         tabPanel("Peptide-Protein Graph",
@@ -106,10 +104,7 @@
 #'                                       settings) {
 #' 
 #' 
-#'     if (!requireNamespace("visNetwork", quietly = TRUE)) {
-#'         stop("Please install visNetwork: 
-#'             BiocManager::install('visNetwork')")
-#'     }
+#'     pkgs.require('visNetwork')
 #' 
 #'     moduleServer(id, function(input, output, session) {
 #'         ns <- session$ns

@@ -3,16 +3,13 @@ Type: Package
 Title: Vizualization tools for the Differential Analysis of Proteins Abundance 
     with R
 Version: 0.99.1
-Date: 2022-07-21
+Date: 2023-10-01
 Authors@R: c(person(given = "Samuel", family = "Wieczorek",
-    email = "samuel.wieczorek@cea.fr",
-    role = c("aut","cre")),
+    email = "samuel.wieczorek@cea.fr", role = c("aut","cre")),
     person(given = "Thomas", family ="Burger",
-    email = "thomas.burger@cea.fr",
-    role = c("aut")),
+    email = "thomas.burger@cea.fr", role = c("aut")),
     person(given = "Enora", family ="Fremy",
-    email = "enora.fremy@cea.fr",
-    role = c("ctb"))
+    email = "enora.fremy@cea.fr", role = c("ctb"))
     )
 Description: This package contains a collection of functions (shiny modules) 
     for the visualisation and the statistical analysis of proteomic data. These
@@ -20,10 +17,14 @@ Description: This package contains a collection of functions (shiny modules)
 License: Artistic-2.0
 Depends: R (>= 4.3.0)
 Imports:
+    MSnbase,
+    QFeatures,
+    PSMatch,
     DT,
     RColorBrewer,
     gplots,
     highcharter,
+    visNetwork,
     tibble,
     shiny,
     shinyBS,
@@ -31,7 +32,9 @@ Imports:
     grDevices,
     stats,
     utils,
-    htmlwidgets
+    htmlwidgets,
+    vioplot,
+    graphics
 Suggests: 
     knitr,
     methods,
@@ -39,16 +42,10 @@ Suggests:
     crayon,
     BiocStyle,
     testthat,
-    MSnbase,
-    PSMatch,
     Matrix,
-    graphics,
     FactoMineR,
     factoextra,
     graph,
-    QFeatures,
-    visNetwork,
-    vioplot,
     dplyr,
     tidyr
 biocViews: 

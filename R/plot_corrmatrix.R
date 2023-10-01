@@ -14,21 +14,14 @@
 #'
 #' @export
 #' 
-#' @example inst/extadata/examples/ex_mod_ds_corrmatrix.R
+#' @example inst/extdata/examples/ex_mod_ds_corrmatrix.R
 #' @return NA
 #'
 #' @rdname corrmatrix
 corrMatrix <- function(data,
-    rate = 0.5,
-    showValues = FALSE) {
-    if (!requireNamespace("dplyr", quietly = TRUE)) {
-        stop("Please install dplyr: BiocManager::install('dplyr')")
-    }
-
-    if (!requireNamespace("tidyr", quietly = TRUE)) {
-        stop("Please install tidyr: BiocManager::install('tidyr')")
-    }
-    
+                       rate = 0.5,
+                       showValues = FALSE) {
+    pkgs.require(c('dplyr', 'tidyr'))
 
     stopifnot(inherits(data, "matrix"))
 

@@ -34,7 +34,7 @@
 #' the package [RColorBrewer] to use.
 #' @author Samuel Wieczorek, Enora Fremy
 #'
-#' @example inst/extadata/examples/ex_mod_mv_imputation.R
+#' @example inst/extdata/examples/ex_mod_mv_imputation.R
 #' 
 NULL
 

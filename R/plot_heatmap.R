@@ -1,23 +1,21 @@
 
 
 
-#' @title This function is a wrapper to \code{heatmap.2} that displays
-#' quantitative data in the \code{MSnbase::exprs()} table of an object of
-#' class \code{MSnSet}
+#' @title This function is a wrapper to `heatmap.2()` that displays
+#' quantitative data in the `MSnbase::exprs()` table of an object of
+#' class `MSnSet`. For more details, see `heatmap.2()`.
 #'
-#' @param vData A dataframe that contains quantitative data.
+#' @param vData An instance of a class `VizData`.
 #' @param distance The distance used by the clustering algorithm to compute
-#' the dendrogram. See \code{help(heatmap.2)}
+#' the dendrogram.
 #' @param cluster the clustering algorithm used to build the dendrogram.
-#' See \code{help(heatmap.2)}
 #' @param dendro A boolean to indicate fi the dendrogram has to be displayed
 #'
 #' @return A heatmap
 #'
 #' @author Florence Combes, Samuel Wieczorek, Enor Fremy
 #'
-#' @example inst/extadata/examples/ex_mod_ds_heatmap.R
-#'
+#' @example inst/extdata/examples/ex_mod_ds_heatmap.R
 #'
 #' @export
 #'
@@ -27,7 +25,6 @@ heatmapD <- function(vData,
                      dendro = FALSE) {
   
   pkgs.require(c('stats', 'dendextend', "gplots", 'grDevices', 'RColorBrewer'))
-  require(dendextend)
   
   qdata <- vData@qdata
   conds <- vData@conds
@@ -53,11 +50,9 @@ heatmapD <- function(vData,
   
   cols_branches <- pal
   dend1 <- stats::as.dendrogram(hcluster)
-  dend1 <- dendextend::color_branches(
-    dend1, 
-    k = length(conds), 
-    col = cols_branches
-  )
+  dend1 <- dendextend::color_branches(dend1,
+                                      k = length(conds),
+                                      col = cols_branches)
   col_labels <- dendextend::get_leaves_branches_col(dend1)
   
   if (dendro) {
@@ -117,22 +112,20 @@ heatmapD <- function(vData,
 #'
 #' @importFrom grDevices heat.colors
 #' 
-#' @example inst/extadata/examples/ex_mod_ds_heatmap.R
+#' @example inst/extdata/examples/ex_mod_ds_heatmap.R
 #'
 #' @rdname heatmaps
 #'
 mv.heatmap <- function(x,
-    col = grDevices::heat.colors(100),
-    srtCol = NULL,
-    labCol = NULL,
-    labRow = NULL,
-    key = TRUE,
-    key.title = NULL,
-    main = NULL,
-    ylab = NULL) {
-    if (!requireNamespace("graphics", quietly = TRUE)) {
-        stop("Please install graphics: BiocManager::install('graphics')")
-    }
+                       col = grDevices::heat.colors(100),
+                       srtCol = NULL,
+                       labCol = NULL,
+                       labRow = NULL,
+                       key = TRUE,
+                       key.title = NULL,
+                       main = NULL,
+                       ylab = NULL) {
+    pkgs.require('graphics')
 
 
     stopifnot(inherits(x, "matrix"))
@@ -358,7 +351,7 @@ mv.heatmap <- function(x,
 #'
 #' @author Samuel Wieczorek
 #'
-#' @example inst/extadata/examples/ex_mod_ds_heatmap.R
+#' @example inst/extdata/examples/ex_mod_ds_heatmap.R
 #'
 #' @export
 #'

@@ -45,3 +45,55 @@ NA
 \description{
 xxxx
 }
+\examples{
+library(MSnbase)
+library(shiny)
+
+data(vData_ft)
+obj <- vData_ft[1]
+
+densityPlot(obj@qdata, conds = obj@conds)
+
+
+#------------------------------------------
+# Shiny module
+#------------------------------------------
+
+
+ui <- fluidPage(mod_ds_density_ui("plot"))
+
+server <- shinyServer(function(input, output, session) {
+  data(vData_ft)
+  obj <- vData_ft[1]
+  mod_ds_density_server("plot", 
+                        vizData = reactive({obj}))
+  })
+
+if (interactive())
+  shinyApp(ui, server)
+library(MSnbase)
+library(shiny)
+
+data(vData_ft)
+obj <- vData_ft[1]
+
+densityPlot(obj@qdata, conds = obj@conds)
+
+
+#------------------------------------------
+# Shiny module
+#------------------------------------------
+
+
+ui <- fluidPage(mod_ds_density_ui("plot"))
+
+server <- shinyServer(function(input, output, session) {
+  data(vData_ft)
+  obj <- vData_ft[1]
+  mod_ds_density_server("plot", 
+                        vizData = reactive({obj}))
+  })
+
+if (interactive())
+  shinyApp(ui, server)
+}

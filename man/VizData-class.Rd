@@ -24,7 +24,27 @@
 )
 }
 \arguments{
-\item{object}{xxx}
+\item{object}{An instance of the class \code{VizData}}
+
+\item{.Object}{xxx}
+
+\item{qdata}{xxx}
+
+\item{metacell}{xxx}
+
+\item{metadata}{xxx}
+
+\item{colID}{xxx}
+
+\item{proteinID}{xxx}
+
+\item{conds}{xxx}
+
+\item{type}{xxx}
+
+\item{adjMat}{xxx}
+
+\item{cc}{xxx}
 }
 \description{
 Conceptually, a \code{VizData} object is a standard representation of all
@@ -36,6 +56,10 @@ which is the class accessible by the user.
 
 The recommended way to create \code{VizData} objects is the use the
 \code{xxxx()} function of the class \code{VizList}
+
+xxx
+
+xxx
 }
 \section{Slots}{
 
@@ -59,3 +83,56 @@ The recommended way to create \code{VizData} objects is the use the
 \item{\code{cc}}{xxx}
 }}
 
+\examples{
+library(DaparViz)
+library(Matrix)
+
+# Convert a QFeatures object to an instance of VizList class
+data(ft1)
+vData_ft1 <- convert2viz(ft1)
+vData_ft1
+
+# Convert a list of MSnSet objects to an instance of VizList class
+data(ms1)
+data(ms2)
+ll.tmp <- setNames(c(ms1, ms2), nm = c('ms1', 'ms2'))
+
+convert2viz(ll.tmp)
+
+
+# Convert a list of lists of specific items to an instance of VizList class
+
+data(ms1)
+msnset <- ms1
+X <- PSMatch::makeAdjacencyMatrix(MSnbase::fData(msnset)[, msnset@experimentData@other$proteinId])
+rownames(X) <- rownames(MSnbase::fData(msnset))
+connectedComp <- PSMatch::ConnectedComponents(X)
+
+ll.ms1 <- list(
+  qdata = MSnbase::exprs(msnset),
+  metacell = MSnbase::fData(msnset)[ , msnset@experimentData@other$names_metacell],
+  mdata = MSnbase::fData(msnset),
+  colID = msnset@experimentData@other$keyId,
+  conds = MSnbase::pData(msnset)[, 'Condition'],
+  type = msnset@experimentData@other$typeOfData,
+  adjMat = as.matrix(X),
+  cc = as.list(connectedComp@adjMatrices)
+  )
+
+data(ms2)
+msnset <- ms2
+ll.ms2 <- list(
+   qdata = MSnbase::exprs(msnset),
+  metacell = MSnbase::fData(msnset)[ , msnset@experimentData@other$names_metacell],
+  mdata = MSnbase::fData(msnset),
+  colID = msnset@experimentData@other$keyId,
+  conds = MSnbase::pData(msnset)[, 'Condition'],
+  type = msnset@experimentData@other$typeOfData
+)
+
+
+ll.tmp <- list(ms1 = ll.ms1,
+               ms2 = ll.ms2)
+
+convert2viz(ll.tmp)
+}

@@ -2,20 +2,19 @@
 % Please edit documentation in R/plot_heatmap.R
 \name{heatmapD}
 \alias{heatmapD}
-\title{This function is a wrapper to \code{heatmap.2} that displays
+\title{This function is a wrapper to \code{heatmap.2()} that displays
 quantitative data in the \code{MSnbase::exprs()} table of an object of
-class \code{MSnSet}}
+class \code{MSnSet}. For more details, see \code{heatmap.2()}.}
 \usage{
 heatmapD(vData, distance = "euclidean", cluster = "complete", dendro = FALSE)
 }
 \arguments{
-\item{vData}{A dataframe that contains quantitative data.}
+\item{vData}{An instance of a class \code{VizData}.}
 
 \item{distance}{The distance used by the clustering algorithm to compute
-the dendrogram. See \code{help(heatmap.2)}}
+the dendrogram.}
 
-\item{cluster}{the clustering algorithm used to build the dendrogram.
-See \code{help(heatmap.2)}}
+\item{cluster}{the clustering algorithm used to build the dendrogram.}
 
 \item{dendro}{A boolean to indicate fi the dendrogram has to be displayed}
 }
@@ -23,9 +22,29 @@ See \code{help(heatmap.2)}}
 A heatmap
 }
 \description{
-This function is a wrapper to \code{heatmap.2} that displays
+This function is a wrapper to \code{heatmap.2()} that displays
 quantitative data in the \code{MSnbase::exprs()} table of an object of
-class \code{MSnSet}
+class \code{MSnSet}. For more details, see \code{heatmap.2()}.
+}
+\examples{
+library(shiny)
+
+
+ui <- fluidPage(
+  mod_ds_heatmap_ui("plot")
+)
+
+server <- function(input, output, session) {
+  
+  data(vData_ft)
+  obj <- vData_ft[1]
+  
+  mod_ds_heatmap_server("plot", reactive({obj})
+  )
+  }
+
+if (interactive())
+  shinyApp(ui = ui, server = server)
 }
 \author{
 Florence Combes, Samuel Wieczorek, Enor Fremy

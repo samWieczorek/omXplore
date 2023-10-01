@@ -14,7 +14,7 @@
 #' 
 #' @return NA
 #'
-#' @example inst/extadata/examples/ex_mod_ds_variance.R
+#' @example inst/extdata/examples/ex_mod_ds_variance.R
 #'
 NULL
 

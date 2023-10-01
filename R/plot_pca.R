@@ -22,7 +22,7 @@
 #' @author Samuel Wieczorek, Enora Fremy
 
 #' 
-#' @example inst/extadata/examples/ex_mod_ds_pca.R
+#' @example inst/extdata/examples/ex_mod_ds_pca.R
 #'
 NULL
 
@@ -37,9 +37,8 @@ NULL
 wrapper_pca <- function(vizData,
                         var.scaling = TRUE,
                         ncp = NULL) {
-    if (!requireNamespace("FactoMineR", quietly = TRUE)) {
-        stop("Package \"FactoMineR\" must be installed to use this function.", call. = FALSE)
-    }
+   
+  pkgs.require('FactoMineR')
 
     if (missing(vizData)) {
         stop("'vizData' is missing.")

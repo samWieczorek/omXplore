@@ -4,7 +4,7 @@
 #'
 #' @param ll.vizData xxx
 #' 
-#' @example inst/extadata/examples/ex_VizData_Class.R
+#' @example inst/extdata/examples/ex_VizData_Class.R
 #'
 #' @name VizList-class
 #' 
@@ -75,17 +75,41 @@ VizList <- function(ll.vizData = NULL){
 }
 
 
+#' @title xxx
+#' @description xxx
+#' @param x xxx
+#' @param i xxx
+#' @param j xxx
+#' @param k xxx
+#' @param l xxx
+#' @param ... xxx
+#' @param drop xxx
+#' 
+#' @rdname VizList-class
+#' 
+setMethod('[', signature = c('VizList', "ANY", "ANY", "ANY"),
+          function(x, i, j = NA, k = NA, l = NA, ..., drop) {
+            x@ll.vizData[[i]]
+          })
 
 
 #' @title xxx
 #' @description xxx
-#' @param object An instance of the class `VizList`
-#' @param i An `integer(1)`
-#' @export
+#' @param x xxx
 #' @rdname VizList-class
-#' @return An instance of the class `VizData`
-GetVizData <- function(object, i) {
-  return(object@ll.vizData[[i]])
-}
+#' 
+setMethod('length', signature = c('VizList'),
+          function(x) {
+            length(x@ll.vizData)
+          })
 
 
+#' @title xxx
+#' @description xxx
+#' @param x xxx
+#' @rdname VizList-class
+#' 
+setMethod('names', signature = c('VizList'),
+          function(x) {
+            names(x@ll.vizData)
+          })

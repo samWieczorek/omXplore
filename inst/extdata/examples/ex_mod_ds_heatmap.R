@@ -1,14 +1,5 @@
-library(shiny)
 
-vList <- BuildExampleDataset('MSnbase')
-vData <- vList@ll.vizData[[1]]
-heatmapD(vData)
-mv.heatmap(vData@qdata)
-
-#------------------------------------------
-# Shiny module
-#------------------------------------------
-
+library(DaparViz)
 
 ui <- fluidPage(
   mod_ds_heatmap_ui("plot")
@@ -16,13 +7,10 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   
-  vList <- BuildExampleDataset('MSnbase')
-  vData <- vList@ll.vizData[[1]]
+  data(vData_ft)
+  obj <- vData_ft[1]
   
-  data(ft)
-  vData <- ft
-  
-  mod_ds_heatmap_server("plot", reactive({vData})
+  mod_ds_heatmap_server("plot", reactive({obj})
   )
   }
 

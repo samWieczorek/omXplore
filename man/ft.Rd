@@ -7,9 +7,6 @@
 \format{
 An object of class \code{QFeatures}
 }
-\usage{
-data(ft)
-}
 \description{
 xxx
 }

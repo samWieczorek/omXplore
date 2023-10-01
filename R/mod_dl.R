@@ -13,7 +13,7 @@
 #' @return NA
 #'
 #' @name mod_dl
-#' @example inst/extadata/examples/ex_mod_dl.R
+#' @example inst/extdata/examples/ex_mod_dl.R
 #'
 NULL
 

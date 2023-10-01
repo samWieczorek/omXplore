@@ -12,11 +12,8 @@
 #'
 #' @examples
 #' \dontrun{
-#' data(Exp1_R25_pept, package="DAPARdata")
-#' obj <- Exp1_R25_pept[seq_len(100)]
-#' X <- BuildAdjacencyMatrix(obj, "Protein_group_IDs", TRUE)
-#' ll <- get.pep.prot.cc(X)
-#' plotJitter(ll)
+#' data(vData_ms)
+#' plotJitter(vData_ms[1]@cc)
 #' }
 #'
 #' @export
@@ -63,11 +60,9 @@ plotJitter <- function(list.of.cc = NULL) {
 #'
 #' @examples
 #' \dontrun{
-#' data(Exp1_R25_pept, package="DAPARdata")
-#' obj <- Exp1_R25_pept[seq_len(100)]
-#' X <- BuildAdjacencyMatrix(obj, "Protein_group_IDs", FALSE)
-#' ll <- get.pep.prot.cc(X)
-#' g <- buildGraph(ll[[1]], X)
+#' data(vData_ms)
+#' obj <- vData_ms[1]
+#' g <- buildGraph(obj@cc[[1]], obj@adjMat)
 #' }
 #'
 #' @export
@@ -113,13 +108,9 @@ buildGraph <- function(cc) {
 #' @title Display a CC
 #'
 #' @param g A cc (a list)
-#'
 #' @param layout xxxxx
-#'
 #' @param obj xxx
-#'
 #' @param prot.tooltip xxx
-#'
 #' @param pept.tooltip xxx
 #'
 #' @return A plot
@@ -128,17 +119,15 @@ buildGraph <- function(cc) {
 #'
 #' @examples
 #' \dontrun{
-#' data(Exp1_R25_pept, package="DAPARdata")
-#' obj <- Exp1_R25_pept[seq_len(100)]
-#' X <- BuildAdjacencyMatrix(obj, "Protein_group_IDs", FALSE)
-#' ll <- get.pep.prot.cc(X)
-#' g <- buildGraph(ll[[1]], X)
-#' display.CC.visNet(gg)
+#' data(vData_ms)
+#' obj <- vData_ms[1]
+#' display.CC.visNet(obj@cc[[1]], obj@adjMat)
 #' }
 #'
 #' @export
 #'
-#'
+#' @import highcharter
+#' @import visNetwork
 #'
 display.CC.visNet <- function(g,
                               layout = layout_nicely,
@@ -146,36 +135,33 @@ display.CC.visNet <- function(g,
                               prot.tooltip = NULL,
                               pept.tooltip = NULL) {
   
-  pkgs.require('visNetwork')
-  
   col.prot <- "#ECB57C"
   col.spec <- "#5CA3F7"
   col.shared <- "#0EA513"
   
   
-  visNetwork::visNetwork(g$nodes, g$edges, width = "100%", 
+  visNetwork(g$nodes, g$edges, width = "100%", 
                          height = "100%") %>%
-    visNetwork::visNodes(shape = "dot") %>% # square for all nodes
-    visNetwork::visGroups(groupname = "spec.peptide", 
+    visNodes(shape = "dot") %>% # square for all nodes
+    visGroups(groupname = "spec.peptide", 
                           color = col.spec) %>% # darkblue for group "A"
-    visNetwork::visGroups(groupname = "shared.peptide", 
+    visGroups(groupname = "shared.peptide", 
                           color = col.shared) %>% # darkblue for group "A"
-    visNetwork::visGroups(groupname = "protein", 
+    visGroups(groupname = "protein", 
                           color = col.prot, shape = "dot") %>%
-    visNetwork::visOptions(highlightNearest = FALSE) %>%
+    visOptions(highlightNearest = FALSE) %>%
     # visLegend()
     # visPhysics(stabilization = FALSE)%>%
-    visNetwork::visEdges(color = "#A9A9A9", width = 2)
+    visEdges(color = "#A9A9A9", width = 2)
   # %>%
   # visIgraphLayout(layout = "layout_with_fr")
 }
 
 
 
-#' @title Display a a jitter plot for CC
+#' @title Display a jitter plot for connected components
 #'
 #' @param df xxxx
-#'
 #' @param clickFunction xxxx
 #'
 #' @return A plot
@@ -183,13 +169,13 @@ display.CC.visNet <- function(g,
 #' @author Thomas Burger, Samuel Wieczorek
 #'
 #' @export
+#' @import highcharter
 #' 
 #' @examples 
 #' \dontrun{
-#' data(Exp1_R25_pept, package="DAPARdata")
-#' obj <- Exp1_R25_pept[seq_len(100)]
-#' X <- BuildAdjacencyMatrix(obj, "Protein_group_IDs", TRUE)
-#' ll <- get.pep.prot.cc(X)[1:4]
+#' data(vData_ms)
+#' obj <- vData_ms[1]
+#' ll <- obj@cc[1:4]
 #' n.prot <- unlist(lapply(ll, function(x) {length(x$proteins)}))
 #' n.pept <- unlist(lapply(ll, function(x) {length(x$peptides)}))
 #' df <- tibble::tibble(
@@ -200,7 +186,8 @@ display.CC.visNet <- function(g,
 #' plotJitter_rCharts(df)
 #' }
 #'
-plotJitter_rCharts <- function(df, clickFunction = NULL) {
+plotJitter_rCharts <- function(df, 
+                               clickFunction = NULL) {
   xtitle <- "TO DO"
   
   if (is.null(clickFunction)) {

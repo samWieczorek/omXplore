@@ -35,10 +35,7 @@ NULL
 #' @rdname mod_format_DT
 #'
 mod_format_DT_ui <- function(id) {
-    if (!requireNamespace("DT", quietly = TRUE)) {
-        stop("Please install DT: BiocManager::install('DT')")
-    }
-    
+    pkgs.require('DT')
   ns <- NS(id)
   tagList(
     useShinyjs(),
@@ -77,7 +74,7 @@ mod_format_DT_server <- function(id,
   
   moduleServer(id, function(input, output, session){
     ns <- session$ns
-    require(DT)
+    pkgs.require('DT')
     proxy = DT::dataTableProxy(session$ns('StaticDataTable'), session)
     
     rv <- reactiveValues(

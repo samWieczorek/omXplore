@@ -46,6 +46,26 @@ object of
 class \code{MSnSet}. For more information, please refer to the help
 of the heatmap.2 function.
 }
+\examples{
+library(shiny)
+
+
+ui <- fluidPage(
+  mod_ds_heatmap_ui("plot")
+)
+
+server <- function(input, output, session) {
+  
+  data(vData_ft)
+  obj <- vData_ft[1]
+  
+  mod_ds_heatmap_server("plot", reactive({obj})
+  )
+  }
+
+if (interactive())
+  shinyApp(ui = ui, server = server)
+}
 \author{
 Samuel Wieczorek
 }

@@ -13,7 +13,7 @@
 #'
 #' @author Samuel Wieczorek, Enora Fremy
 #'
-#' @example inst/extadata/examples/ex_mod_ds_pca.R
+#' @example inst/extdata/examples/ex_mod_ds_pca.R
 #'
 NULL
 
@@ -26,7 +26,6 @@ NULL
 #'
 mod_ds_pca_ui <- function(id) {
     ns <- NS(id)
-    #require(shinyjs)
     tagList(
       shinyjs::useShinyjs(),
       shinyjs::hidden(div(id = ns('badFormatMsg'), h3(bad_format_txt))),
