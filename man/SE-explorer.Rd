@@ -32,12 +32,7 @@ NA
 xxx
 }
 \examples{
-library(MSnbase)
-#library(DaparToolshed)
-library(highcharter)
 library(DaparViz)
-library(shiny)
-
 
 
 ui <- fluidPage(
@@ -45,11 +40,10 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
-  data(ft)
-  vList <- convert2viz(ft)
-  vData <- vList[1]
+  data(vData_ft)
+  obj <- vData_ft[1]
   
-  mod_ds_seExplorer_server("plot", reactive({vData}))
+  mod_ds_seExplorer_server("plot", reactive({obj}))
   
     }
 

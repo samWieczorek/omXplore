@@ -15,18 +15,19 @@ Description: This package contains a collection of functions (shiny modules)
     for the visualisation and the statistical analysis of proteomic data. These
     plots can be displayed individually or embedded in a global Shiny module.
 License: Artistic-2.0
-Depends: R (>= 4.3.0)
-Imports:
+Depends:
+    R (>= 4.3.0), 
+    shiny, 
     MSnbase,
-    QFeatures,
     PSMatch,
+    QFeatures
+Imports:
     DT,
     RColorBrewer,
     gplots,
     highcharter,
     visNetwork,
     tibble,
-    shiny,
     shinyBS,
     shinyjs,
     grDevices,
@@ -37,6 +38,7 @@ Imports:
     graphics
 Suggests: 
     knitr,
+    dendextend,
     methods,
     rmarkdown,
     crayon,

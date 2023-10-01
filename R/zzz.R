@@ -1,5 +1,7 @@
 .onLoad <- function(libname, pkgname) {
-    shiny::addResourcePath(
+    #library(shiny)
+  
+  shiny::addResourcePath(
         prefix = "images",
         directoryPath = system.file("images", package = "DaparViz")
     )

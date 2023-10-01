@@ -47,8 +47,8 @@ class \code{MSnSet}. For more information, please refer to the help
 of the heatmap.2 function.
 }
 \examples{
-library(shiny)
 
+library(DaparViz)
 
 ui <- fluidPage(
   mod_ds_heatmap_ui("plot")

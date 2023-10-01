@@ -34,10 +34,8 @@ NA
 Shows xxx based on the tags in the package 'DaparToolshed'
 }
 \examples{
-library(highcharter)
-library(shinyBS)
 library(DaparViz)
-library(shiny)
+
 
 #-------------------------------------------------------------------
 ui <- fluidPage(
@@ -50,12 +48,11 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   
-  data(ft)
-  vList <- convert2viz(ft)
-  vData <- vList[1]
+  data(vData_ft)
+  obj <- vData_ft[1]
   
- tags <- GetMetacellTags(vData@metacell, 
-                          level = vData@type, 
+ tags <- GetMetacellTags(obj@metacell, 
+                          level = obj@type, 
                           onlyPresent = TRUE)
   
   # Use the default color palette

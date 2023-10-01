@@ -253,9 +253,9 @@ setMethod("Convert2VizList", signature = "QFeatures",
         mdata <- mdata[, -which(names(mdata)=="adjacencyMatrix")]
 
 
-      if (S4Vectors::metadata(object[[i]])$typeDataset == 'peptide'){
+      if (metadata(object[[i]])$typeDataset == 'peptide'){
         # Create the adjacency matrix
-        parentProt <- S4Vectors::metadata(object[[i]])$parentProtId
+        parentProt <- metadata(object[[i]])$parentProtId
         X <- PSMatch::makeAdjacencyMatrix(
           rowData(object[[i]])[, parentProt])
         rownames(X) <- rownames(rowData(object[[i]]))
@@ -269,10 +269,10 @@ setMethod("Convert2VizList", signature = "QFeatures",
                                     qdata = assay(object[[i]]),
                                     metacell = rowData(object)[[i]]$qMetacell,
                                     metadata = as.data.frame(mdata),
-                                    colID = rowData(object)[[i]]$id,
-                                    proteinID = S4Vectors::metadata(object[[i]])$parentProtId,
+                                    colID = metadata(object[[i]])$idcol,
+                                    proteinID = metadata(object[[i]])$parentProtId,
                                     conds = colData(object)$Condition,
-                                    type = S4Vectors::metadata(object[[i]])$typeDataset,
+                                    type = metadata(object[[i]])$typeDataset,
                                     adjMat = as.matrix(X),
                                     cc = as.list(cc)
                                     )

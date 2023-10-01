@@ -27,8 +27,8 @@ quantitative data in the \code{MSnbase::exprs()} table of an object of
 class \code{MSnSet}. For more details, see \code{heatmap.2()}.
 }
 \examples{
-library(shiny)
 
+library(DaparViz)
 
 ui <- fluidPage(
   mod_ds_heatmap_ui("plot")

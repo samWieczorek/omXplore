@@ -46,18 +46,7 @@ NA
 xxxx
 }
 \examples{
-library(MSnbase)
-library(shiny)
-
-data(vData_ft)
-obj <- vData_ft[1]
-
-densityPlot(obj@qdata, conds = obj@conds)
-
-
-#------------------------------------------
-# Shiny module
-#------------------------------------------
+library(DaparViz)
 
 
 ui <- fluidPage(mod_ds_density_ui("plot"))
@@ -71,18 +60,7 @@ server <- shinyServer(function(input, output, session) {
 
 if (interactive())
   shinyApp(ui, server)
-library(MSnbase)
-library(shiny)
-
-data(vData_ft)
-obj <- vData_ft[1]
-
-densityPlot(obj@qdata, conds = obj@conds)
-
-
-#------------------------------------------
-# Shiny module
-#------------------------------------------
+library(DaparViz)
 
 
 ui <- fluidPage(mod_ds_density_ui("plot"))

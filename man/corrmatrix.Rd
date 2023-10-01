@@ -46,18 +46,8 @@ NA
 xxxx
 }
 \examples{
-library(shiny)
 library(DaparViz)
 
-data(vData_ft)
-obj <- vData_ft[1]
-
-corrMatrix(obj@qdata)
-
-
-#------------------------------------------
-# Shiny module
-#------------------------------------------
 ui <- fluidPage(
   mod_ds_corrmatrix_ui("plot")
 )
@@ -71,18 +61,8 @@ server <- function(input, output, session) {
 
 if (interactive())
   shinyApp(ui = ui, server = server)
-library(shiny)
 library(DaparViz)
 
-data(vData_ft)
-obj <- vData_ft[1]
-
-corrMatrix(obj@qdata)
-
-
-#------------------------------------------
-# Shiny module
-#------------------------------------------
 ui <- fluidPage(
   mod_ds_corrmatrix_ui("plot")
 )

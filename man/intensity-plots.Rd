@@ -54,14 +54,7 @@ A violinplot
 xxxx
 }
 \examples{
-library(shiny)
-
-
-
-
-#------------------------------------------
-# Shiny module
-#------------------------------------------
+library(DaparViz)
 
 ui <- fluidPage(
   tagList(
@@ -84,14 +77,7 @@ server <- function(input, output, session) {
 
 if (interactive())
   shinyApp(ui = ui, server = server)
-library(shiny)
-
-
-
-
-#------------------------------------------
-# Shiny module
-#------------------------------------------
+library(DaparViz)
 
 ui <- fluidPage(
   tagList(
@@ -114,14 +100,7 @@ server <- function(input, output, session) {
 
 if (interactive())
   shinyApp(ui = ui, server = server)
-library(shiny)
-
-
-
-
-#------------------------------------------
-# Shiny module
-#------------------------------------------
+library(DaparViz)
 
 ui <- fluidPage(
   tagList(

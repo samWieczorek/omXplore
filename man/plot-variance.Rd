@@ -30,64 +30,32 @@ NA
 xxxx
 }
 \examples{
-library(highcharter)
 library(DaparViz)
-library(shiny)
 
-
-data(ft)
-vList <- convert2viz(ft)
-vData <- vList[1]
-
-
-CVDist(vData)
-
-
-#------------------------------------------
-# Shiny module
-#------------------------------------------
 
 ui <- fluidPage(mod_ds_variance_ui("plot"))
 
 server <- shinyServer(function(input, output, session) {
-  data(ft)
-  vList <- convert2viz(ft)
-  vData <- vList[1]
+  data(vData_ft)
+  obj <- vData_ft[1]
   
-  #vData <- ft
-  
-  mod_ds_variance_server("plot", vizData = reactive({vData}))
+  mod_ds_variance_server("plot", 
+                         vizData = reactive({obj}))
 })
 
 if (interactive())
   shinyApp(ui, server)
-library(highcharter)
 library(DaparViz)
-library(shiny)
 
-
-data(ft)
-vList <- convert2viz(ft)
-vData <- vList[1]
-
-
-CVDist(vData)
-
-
-#------------------------------------------
-# Shiny module
-#------------------------------------------
 
 ui <- fluidPage(mod_ds_variance_ui("plot"))
 
 server <- shinyServer(function(input, output, session) {
-  data(ft)
-  vList <- convert2viz(ft)
-  vData <- vList[1]
+  data(vData_ft)
+  obj <- vData_ft[1]
   
-  #vData <- ft
-  
-  mod_ds_variance_server("plot", vizData = reactive({vData}))
+  mod_ds_variance_server("plot", 
+                         vizData = reactive({obj}))
 })
 
 if (interactive())

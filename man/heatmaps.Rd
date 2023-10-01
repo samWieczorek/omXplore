@@ -63,8 +63,8 @@ NA
 xxxx
 }
 \examples{
-library(shiny)
 
+library(DaparViz)
 
 ui <- fluidPage(
   mod_ds_heatmap_ui("plot")
@@ -81,8 +81,8 @@ server <- function(input, output, session) {
 
 if (interactive())
   shinyApp(ui = ui, server = server)
-library(shiny)
 
+library(DaparViz)
 
 ui <- fluidPage(
   mod_ds_heatmap_ui("plot")

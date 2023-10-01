@@ -161,11 +161,11 @@ mod_ds_seExplorer_server <- function(id,
 
         output$qdata_ui <- DT::renderDataTable(server = TRUE, {
             req(rv$data)
-            
+           
            df <- cbind(
                 keyId = (rv$data@metadata)[ , rv$data@colID],
-                round(vizData()@qdata, digits = digits()),
-                vizData()@metacell)
+                round(rv$data@qdata, digits = digits()),
+                rv$data@metacell)
 
             colors <- custom_metacell_colors()
 
