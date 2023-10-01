@@ -272,16 +272,17 @@ GetMetacellTags <- function(object = NULL,
   
   ll <- NULL
   if(onlyPresent) {
-    # Compute unique tags
-    tmp <- sapply(colnames(object), function(x) unique(object[,x]))
-    ll <- unique(as.vector(tmp))
     
+    # Compute unique tags
+    tmp <- lapply(colnames(object), function(x) unique(object[,x]))
+    ll <- unique(unlist(tmp))
+ 
     # Check if parent must be added
     test <- match (Children(level, 'Any'), ll)
     if (length(test) == length(Children(level, 'Any')) && !all(is.na(test)))
       ll <- c(ll, 'Any')
     
-    test <- match (Children(level, 'Quantified'), ll)
+    test <- match(Children(level, 'Quantified'), ll)
     if (length(test) == length(Children(level, 'Quantified')) && !all(is.na(test)))
       ll <- c(ll, 'Quantified')
     
@@ -300,6 +301,7 @@ GetMetacellTags <- function(object = NULL,
   } else {
     ll <- metacell.def(level)$node[-which(metacell.def(level)$node =='Any')]
   }
+  
   
   return(ll)
   

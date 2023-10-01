@@ -20,7 +20,9 @@ Depends:
     shiny, 
     MSnbase,
     PSMatch,
-    QFeatures
+    QFeatures,
+    shinyBS,
+    shinyjs
 Imports:
     DT,
     RColorBrewer,
@@ -28,8 +30,6 @@ Imports:
     highcharter,
     visNetwork,
     tibble,
-    shinyBS,
-    shinyjs,
     grDevices,
     stats,
     utils,

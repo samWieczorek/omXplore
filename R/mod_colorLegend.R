@@ -41,9 +41,9 @@ custom_metacell_colors <- function()
 mod_colorLegend_ui <- function(id) {
     ns <- NS(id)
     pkgs.require('shinyBS')
-    bsCollapse(id = "collapseExample",
+    shinyBS::bsCollapse(id = "collapseExample",
                open = "",
-               bsCollapsePanel(title = "Legend of colors",
+               shinyBS::bsCollapsePanel(title = "Legend of colors",
                                uiOutput(ns("legend")),
                                style = "")
                )
@@ -62,9 +62,9 @@ mod_colorLegend_server <- function(id,
 
       output$legend <- renderUI({
          req(presentTags)
-       
          mc <- custom_metacell_colors()
-        
+         
+         
         tagList(
           lapply(presentTags, function(x) {
            if (mc[[x]] != "white" || (mc[[x]] == "white" && !isTRUE(hide.white))) {

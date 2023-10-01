@@ -63,23 +63,22 @@ mod_ds_seExplorer_server <- function(id,
         rv <- reactiveValues(data = NULL)
         
         observe({
-          if(inherits(vizData(), "VizData"))
+          
+          if(inherits(vizData(), "VizData")){
             rv$data <- vizData()
+            
+            tags <- GetMetacellTags(rv$data@metacell, 
+                                    level = rv$data@type, 
+                                    onlyPresent = TRUE)
+            
+            mod_colorLegend_server("legend", tags)
+          }
           
           shinyjs::toggle('badFormatMsg', condition = is.null(rv$data))
           shinyjs::toggle('div_infos', condition = !is.null(rv$data))
           shinyjs::toggle('div_legend', condition = !is.null(rv$data))
         }, priority = 1000)
         
-        
-        observe({
-          req(rv$data)
-          tags <- GetMetacellTags(rv$data@metacell, 
-                                  level = rv$data@type, 
-                                  onlyPresent = TRUE)
-          mod_colorLegend_server("legend", tags)
-        })
-
 
         #
         #     output$viewDesign <- DT::renderDT({
