@@ -222,6 +222,7 @@ addModules <- function(addons){
   f_assign <- function(fun, pkg, suffix){
     f_name <- paste0(fun, '_', suffix)
     f_fullname <- paste0(pkg, '::', fun, '_', suffix)
+    require(pkg, character.only=TRUE)
     if (f_name %in% ls(paste0("package:", pkg)))
       assign(f_name, eval(parse(text = f_fullname)), envir = globalenv())
   }

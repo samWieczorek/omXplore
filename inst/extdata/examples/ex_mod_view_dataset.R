@@ -15,8 +15,8 @@ server <- function(input, output, session) {
   obj <- vData_ft
   
   mod_view_dataset_server("dataset", 
-                          ll.vizData = reactive({obj})
-                         # addons = list(DaparToolshed=c('mod_ds_metacell'))
+                          ll.vizData = reactive({obj}),
+                          addons = list(DaparToolshed=c('mod_ds_metacell'))
                           )
 }
 
