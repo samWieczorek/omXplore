@@ -45,6 +45,7 @@
 #' @param id A `character(1)` for the 'id' of the shiny module. It must be
 #' the same as for the '*_ui' function.
 #' @param ll.vizData A instance of the class `VizList`.
+#' @param addons A `list`
 
 #'
 #' @return A plot

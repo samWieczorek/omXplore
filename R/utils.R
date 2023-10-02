@@ -213,9 +213,8 @@ addImgPath <- function(prefix, path){
 #' * is named by the name of a package
 #' * contains th set of modules to integrate
 #' 
-#' @name add-module
 #' @export
-addModule <- function(addons = list()){
+addModule <- function(addons){
   
   stopifnot(inherits(addons, 'list'))
   
@@ -238,7 +237,6 @@ addModule <- function(addons = list()){
 
 #' @title xxx
 #' @description xxx
-#' @rdname ds-plots
 #' @importFrom utils lsf.str
 #' @export
 listPlotModules <- function() {
