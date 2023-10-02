@@ -24,10 +24,10 @@ NULL
 #' @rdname connected_components
 #' 
 mod_ds_cc_ui <- function(id) {
-  pkgs.require(c('visNetwork', 'shinyBS'))
+  pkgs.require(c('visNetwork', 'shinyBS', 'shinyjs'))
   ns <- NS(id)
   tagList(
-    useShinyjs(),
+    shinyjs::useShinyjs(),
     shinyjs::hidden(
       div(id = ns('badFormatMsg'), 
           h3('Dataset in not in correct format.')
@@ -81,7 +81,7 @@ mod_ds_cc_ui <- function(id) {
                      uiOutput(ns("CCMultiMulti_DL_btns_ui")),
                      shinyjs::hidden(uiOutput(ns("CCMultiMulti_UI")))
                    )),
-                   column(width = 6, visNetworkOutput(ns("visNetCC"), height = "600px"))
+                   column(width = 6, visNetwork::visNetworkOutput(ns("visNetCC"), height = "600px"))
                  ),
                  uiOutput(ns("CCDetailed"))
                )
@@ -95,10 +95,11 @@ mod_ds_cc_ui <- function(id) {
 
 #' @importFrom tibble tibble
 #' @importFrom shinyjs toggle hidden
+#' @import highcharter
 #' @export
 #' @rdname connected_components
 mod_ds_cc_server <- function(id, vizData) {
-  pkgs.require('visNetwork')
+  pkgs.require(c('visNetwork', 'highcharter'))
   moduleServer(id, function(input, output, session) {
       ns <- session$ns
       
@@ -177,7 +178,7 @@ mod_ds_cc_server <- function(id, vizData) {
       })
       
       
-      output$visNetCC <- renderVisNetwork({
+      output$visNetCC <- visNetwork::renderVisNetwork({
         
         req(rvCC$selectedCC)
         local <- (rv$data@cc)[Get_CC_Multi2Any()]
@@ -206,7 +207,7 @@ mod_ds_cc_server <- function(id, vizData) {
       
       
       
-      output$jiji <- renderHighchart({
+      output$jiji <- highcharter::renderHighchart({
         tooltip <- NULL
         
         isolate({

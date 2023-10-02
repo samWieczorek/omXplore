@@ -101,6 +101,10 @@ mod_view_dataset_server <- function(id,
 
         .width <- .height <- 40
         
+        addModules(addons)
+        ll.mods <- listPlotModules()
+        
+        
         rv <- reactiveValues(
           data = NULL,
           conds = NULL,
@@ -114,8 +118,7 @@ mod_view_dataset_server <- function(id,
           if(inherits(ll.vizData(), "VizList")){
             rv$data <- ll.vizData()
             conds <- rv$data[1]@conds
-            addModules(addons)
-            rv$btns.history <- listPlotModules()
+            
           }
           
           shinyjs::toggle('badFormatMsg', condition = !inherits(ll.vizData(), "VizList"))
@@ -124,22 +127,22 @@ mod_view_dataset_server <- function(id,
 
         observeEvent(GetVignettesBtns(), ignoreInit = TRUE, {
             clicked <- which(rv$btns.history != GetVignettesBtns())
-            shinyjs::show(paste0("div_", listPlotModules()[clicked], "_large"))
+            shinyjs::show(paste0("div_", ll.mods[clicked], "_large"))
             
-            lapply(listPlotModules()[-clicked], function(y) {
+            lapply(ll.mods[-clicked], function(y) {
                 shinyjs::hide(paste0("div_", y, "_large"))
             })
             rv$btns.history <- GetVignettesBtns()
         })
 
         GetVignettesBtns <- reactive({
-            unlist(lapply(listPlotModules(), function(x) input[[x]]))
+            unlist(lapply(ll.mods, function(x) input[[x]]))
         })
 
 
         output$ShowPlots_ui <- renderUI({
           req(rv$data)
-            lapply(listPlotModules(), function(x) {
+            lapply(ll.mods, function(x) {
                 shinyjs::hidden(
                     div(id = ns(paste0("div_", x, "_large")),
                         do.call(
@@ -167,7 +170,7 @@ mod_view_dataset_server <- function(id,
         
         output$ShowVignettes_ui <- renderUI({
           req(rv$data)
-          lapply(listPlotModules(), function(x) {
+          lapply(ll.mods, function(x) {
             actionButton(ns(x),
                     label = tagList(
                         p(gsub("mod_ds_", "", x)),
@@ -200,7 +203,7 @@ mod_view_dataset_server <- function(id,
 
   observe({
     req(rv$current.se)
-    for (mod in listPlotModules())
+    for (mod in ll.mods)
       do.call(paste0(mod, '_server'), 
               list(id = paste0(mod, '_large'),
                    vizData = reactive({rv$current.se})

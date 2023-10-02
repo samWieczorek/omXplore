@@ -214,7 +214,7 @@ addImgPath <- function(prefix, path){
 #' * contains th set of modules to integrate
 #' 
 #' @export
-addModule <- function(addons){
+addModules <- function(addons){
   
   stopifnot(inherits(addons, 'list'))
   
