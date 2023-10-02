@@ -58,35 +58,6 @@ NULL
 
 
 
-
-
-
-#' @rdname ds-plots
-#' @importFrom utils lsf.str
-#' @export
-listPlotModules <- function() {
-  # Lists module in the package `DaparViz`
-  ll.daparViz <- ls("package:DaparViz")
-  ll.daparViz <- ll.daparViz[grep("mod_ds_", ll.daparViz)]
-  ll.daparViz <- gsub("_server", "", ll.daparViz)
-  ll.daparViz <- gsub("_ui", "", ll.daparViz)
-  ll.daparViz <- unique(ll.daparViz)
-  ll.daparViz
-  
-  # Lists module in the global environment
-  ll.env <- utils::lsf.str(envir = globalenv())
-  ll.env <- ll.env[grep("mod_ds_", ll.env)]
-  ll.env <- gsub("_server", "", ll.env)
-  ll.env <- gsub("_ui", "", ll.env)
-  ll.env <- unique(ll.env)
-  
-  c(ll.daparViz, ll.env)
-}
-
-
-
-
-
 #' @import shiny
 #' @importFrom shinyjs useShinyjs
 #' @rdname ds-plots
@@ -120,21 +91,20 @@ mod_view_dataset_ui <- function(id) {
 #' @export
 #'
 mod_view_dataset_server <- function(id, 
-                                    ll.vizData = reactive({NULL})
+                                    ll.vizData = reactive({NULL}),
+                                    addons = list()
                                     ) {
 
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
 
         .width <- .height <- 40
-
-        ll.mods <- listPlotModules()
         
         rv <- reactiveValues(
           data = NULL,
           conds = NULL,
           current.se = NULL,
-          btns.history = listPlotModules()
+          btns.history = NULL
         )
         
 
@@ -143,6 +113,8 @@ mod_view_dataset_server <- function(id,
           if(inherits(ll.vizData(), "VizList")){
             rv$data <- ll.vizData()
             conds <- rv$data[1]@conds
+            addModules(addons)
+            rv$btns.history <- listPlotModules()
           }
           
           shinyjs::toggle('badFormatMsg', condition = !inherits(ll.vizData(), "VizList"))
@@ -151,22 +123,22 @@ mod_view_dataset_server <- function(id,
 
         observeEvent(GetVignettesBtns(), ignoreInit = TRUE, {
             clicked <- which(rv$btns.history != GetVignettesBtns())
-            shinyjs::show(paste0("div_", ll.mods[clicked], "_large"))
+            shinyjs::show(paste0("div_", listPlotModules()[clicked], "_large"))
             
-            lapply(ll.mods[-clicked], function(y) {
+            lapply(listPlotModules()[-clicked], function(y) {
                 shinyjs::hide(paste0("div_", y, "_large"))
             })
             rv$btns.history <- GetVignettesBtns()
         })
 
         GetVignettesBtns <- reactive({
-            unlist(lapply(ll.mods, function(x) input[[x]]))
+            unlist(lapply(listPlotModules(), function(x) input[[x]]))
         })
 
 
         output$ShowPlots_ui <- renderUI({
           req(rv$data)
-            lapply(ll.mods, function(x) {
+            lapply(listPlotModules(), function(x) {
                 shinyjs::hidden(
                     div(id = ns(paste0("div_", x, "_large")),
                         do.call(
@@ -194,7 +166,7 @@ mod_view_dataset_server <- function(id,
         
         output$ShowVignettes_ui <- renderUI({
           req(rv$data)
-          lapply(ll.mods, function(x) {
+          lapply(listPlotModules(), function(x) {
             actionButton(ns(x),
                     label = tagList(
                         p(gsub("mod_ds_", "", x)),

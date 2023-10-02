@@ -15,7 +15,8 @@ server <- function(input, output, session) {
   obj <- vData_ft
   
   mod_view_dataset_server("dataset", 
-                          ll.vizData = reactive({obj}))
+                          ll.vizData = reactive({obj}),
+                          addons = list())
 }
 
 if (interactive())

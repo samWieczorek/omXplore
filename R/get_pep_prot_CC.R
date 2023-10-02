@@ -218,7 +218,7 @@ plotJitter_rCharts <- function(df,
   
   h1 <- highchart() %>%
     hc_add_series(data = df, type = "scatter") %>%
-    my_hc_chart(zoomType = "xy", chartType = "scatter") %>%
+    customChart(zoomType = "xy", chartType = "scatter") %>%
     hc_legend(enabled = FALSE) %>%
     hc_yAxis(title = list(text = "Nb of proteins ic CC")) %>%
     hc_xAxis(title = list(text = "Nb of peptides ic CC")) %>%
@@ -230,7 +230,7 @@ plotJitter_rCharts <- function(df,
         click = clickFunction
       ))
     )) %>%
-    my_hc_ExportMenu(filename = "plotCC")
+    customExportMenu(fname = "plotCC")
   
   
   return(h1)

@@ -201,3 +201,63 @@ addImgPath <- function(prefix, path){
   addResourcePath(prefix = paste0("img_", myPath),
                   directoryPath = "my_location")
 }
+
+
+
+
+
+
+#' @title Add shiny module
+#' @description xxxx
+#' @param addons A `list` in which each item is:
+#' * is named by the name of a package
+#' * contains th set of modules to integrate
+#' 
+#' @name add-module
+#' @export
+addModule <- function(addons = list()){
+  
+  stopifnot(inherits(addons, 'list'))
+  
+  for (x in names(addons)){
+    mods <- addons[[x]]
+    for (m in mods){
+      fun <- 'ui'
+      assign(paste0(m, '_', fun), 
+             eval(parse(text = paste0(x, '::', m, '_', fun))),
+             envir = globalenv())
+      
+      fun <- 'server'
+      assign(paste0(m, '_', fun), 
+             eval(parse(text = paste0(x, '::', m, '_', fun))),
+             envir = globalenv())
+    }
+  }
+}
+
+
+#' @title xxx
+#' @description xxx
+#' @rdname ds-plots
+#' @importFrom utils lsf.str
+#' @export
+listPlotModules <- function() {
+  # Lists module in the package `DaparViz`
+  ll.daparViz <- ls("package:DaparViz")
+  ll.daparViz <- ll.daparViz[grep("mod_ds_", ll.daparViz)]
+  ll.daparViz <- gsub("_server", "", ll.daparViz)
+  ll.daparViz <- gsub("_ui", "", ll.daparViz)
+  ll.daparViz <- unique(ll.daparViz)
+  ll.daparViz
+  
+  # Lists module in the global environment
+  ll.env <- utils::lsf.str(envir = globalenv())
+  ll.env <- ll.env[grep("mod_ds_", ll.env)]
+  ll.env <- gsub("_server", "", ll.env)
+  ll.env <- gsub("_ui", "", ll.env)
+  ll.env <- unique(ll.env)
+  
+  c(ll.daparViz, ll.env)
+}
+
+
