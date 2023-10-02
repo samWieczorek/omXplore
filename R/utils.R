@@ -218,29 +218,30 @@ addModules <- function(addons){
   
   stopifnot(inherits(addons, 'list'))
   
+  
+  f_assign <- function(fun, pkg, suffix){
+    f_name <- paste0(fun, '_', suffix)
+    f_fullname <- paste0(pkg, '::', fun, '_', suffix)
+    if (f_name %in% ls(paste0("package:", pkg)))
+      assign(f_name, eval(parse(text = f_fullname)), envir = globalenv())
+  }
+  
   for (x in names(addons)){
     mods <- addons[[x]]
     for (m in mods){
-      fun <- 'ui'
-      assign(paste0(m, '_', fun), 
-             eval(parse(text = paste0(x, '::', m, '_', fun))),
-             envir = globalenv())
-      
-      fun <- 'server'
-      assign(paste0(m, '_', fun), 
-             eval(parse(text = paste0(x, '::', m, '_', fun))),
-             envir = globalenv())
+      f_assign(m, x, 'ui')
+      f_assign(m, x, 'server')
     }
   }
 }
 
 
 #' @title xxx
-#' @description xxx
+#' @description Lists built-in module in the package `DaparViz`
 #' @importFrom utils lsf.str
 #' @export
 listPlotModules <- function() {
-  # Lists module in the package `DaparViz`
+  
   ll.daparViz <- ls("package:DaparViz")
   ll.daparViz <- ll.daparViz[grep("mod_ds_", ll.daparViz)]
   ll.daparViz <- gsub("_server", "", ll.daparViz)
