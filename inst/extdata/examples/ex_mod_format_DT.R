@@ -7,7 +7,7 @@ server <- function(input, output, session) {
   rv <- reactiveValues(selected = NULL)
 
   data(vData_ft)
-  obj <- vData_ft[1]
+  obj <- vData_ft[[1]]
   hcStyle = list(
     cols = colnames(obj@qdata)[1:6],
     vals = colnames(obj@qdata)[4],

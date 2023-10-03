@@ -2,13 +2,10 @@
 % Please edit documentation in R/AllGenerics.R
 \name{AllGenerics}
 \alias{AllGenerics}
-\alias{Convert2VizList}
-\alias{Convert2VizData}
+\alias{convert2Viz}
 \title{Placeholder for generics functions documentation}
 \usage{
-Convert2VizList(object, ...)
-
-Convert2VizData(object, ...)
+convert2Viz(object, ...)
 }
 \arguments{
 \item{object}{xxx}
@@ -16,7 +13,5 @@ Convert2VizData(object, ...)
 \item{...}{xxx}
 }
 \description{
-xxx
-
 xxx
 }

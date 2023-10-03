@@ -228,8 +228,7 @@ addModules <- function(addons){
   }
   
   for (x in names(addons)){
-    mods <- addons[[x]]
-    for (m in mods){
+    for (m in addons[[x]]){
       f_assign(m, x, 'ui')
       f_assign(m, x, 'server')
     }

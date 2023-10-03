@@ -7,5 +7,5 @@
 listPlotModules()
 }
 \description{
-xxx
+Lists built-in module in the package \code{DaparViz}
 }

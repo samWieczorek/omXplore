@@ -66,7 +66,6 @@ Collate:
     utils.R
     AllGenerics.R
     VizData_Class.R
-    VizList_Class.R
     plots_volcano.R
     adjacencyMatrixInfos.R
     plots_compare_assays.R

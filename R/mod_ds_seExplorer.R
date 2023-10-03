@@ -31,14 +31,14 @@ mod_ds_seExplorer_ui <- function(id) {
         div(id = ns('div_infos'),
         shinyBS::bsCollapse(id = "infos", open = "", multiple = TRUE,
             shinyBS::bsCollapsePanel("Quantitative data",
-                DT::DTOutput(ns("qdata_ui")),
-                style = "info"),
+                                     DT::DTOutput(ns("qdata_ui")),
+                                     style = "info"),
             shinyBS::bsCollapsePanel("Metadata",
-                DT::DTOutput(ns("metadata_ui")),
-                style = "info"),
+                                     DT::DTOutput(ns("metadata_ui")),
+                                     style = "info"),
             shinyBS::bsCollapsePanel("quantitative Metadata",
-                DT::DTOutput(ns("qMetacell_ui")),
-                style = "info")
+                                     DT::DTOutput(ns("qMetacell_ui")),
+                                     style = "info")
             )
         )
       )

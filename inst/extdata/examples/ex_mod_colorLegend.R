@@ -13,7 +13,7 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   
   data(vData_ft)
-  obj <- vData_ft[1]
+  obj <- vData_ft[[1]]
   
  tags <- GetMetacellTags(obj@metacell, 
                          level = obj@type, 

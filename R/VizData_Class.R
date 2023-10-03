@@ -14,11 +14,14 @@
 #'
 #' @name VizData-class
 #' 
+#'
+#' @examples
+#' NULL
+#' 
 NULL
 
 
-#' 
-#' @example inst/extdata/examples/ex_VizData_Class.R
+
 #'
 #' @rdname VizData-class
 #' @export VizData
@@ -167,7 +170,7 @@ setMethod("initialize" , "VizData" ,
 
       .Object@metadata <-  if(is.null(metadata) || !inherits(metadata, 'data.frame')) data.frame() else metadata
       
-      .Object@colID <- if(is.null(colID) || length(colID)==0 || !inherits(colID, 'character')) '' else colID
+      .Object@colID <- if(is.null(colID) || colID=="" || length(colID)==0 || !inherits(colID, 'character')) '' else colID
       
       .Object@proteinID <- if(is.null(proteinID) || length(proteinID)==0 || !inherits(proteinID, 'character')) '' else proteinID
       
@@ -227,13 +230,13 @@ setMethod('[', signature = c('VizData', "ANY", "ANY", "ANY"),
 })
 
 
-#' @exportMethod Convert2VizList
+#' @exportMethod convert2Viz
 #' 
-#' @rdname VizList-class
+#' @rdname VizData-class
 #' @import QFeatures
 #' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
 #' 
-setMethod("Convert2VizList", signature = "QFeatures",
+setMethod("convert2Viz", signature = "QFeatures",
   #' @param object An instance of class `QFeatures`.
   function(object) {
     
@@ -260,26 +263,22 @@ setMethod("Convert2VizList", signature = "QFeatures",
           rowData(object[[i]])[, parentProt])
         rownames(X) <- rownames(rowData(object[[i]]))
         
-        
         # Create the connected components
         cc <- PSMatch::ConnectedComponents(X)@adjMatrices
       }
 
-      ll[[names(object)[i]]] <- new(Class ="VizData",
-                                    qdata = assay(object[[i]]),
-                                    metacell = rowData(object)[[i]]$qMetacell,
-                                    metadata = as.data.frame(mdata),
-                                    colID = metadata(object[[i]])$idcol,
-                                    proteinID = metadata(object[[i]])$parentProtId,
-                                    conds = colData(object)$Condition,
-                                    type = metadata(object[[i]])$typeDataset,
-                                    adjMat = as.matrix(X),
-                                    cc = as.list(cc)
-                                    )
-
-    }
-    ll.vizList <- VizList(ll)
-    return(ll.vizList)
+      ll[[names(object)[i]]] <- VizData(qdata = assay(object[[i]]),
+                                        metacell = rowData(object)[[i]]$qMetacell,
+                                        metadata = as.data.frame(mdata),
+                                        colID = metadata(object[[i]])$idcol,
+                                        proteinID = metadata(object[[i]])$parentProtId,
+                                        conds = colData(object)$Condition,
+                                        type = metadata(object[[i]])$typeDataset,
+                                        adjMat = as.matrix(X),
+                                        cc = as.list(cc)
+      )
+      }
+    ll
     })
 
 
@@ -287,13 +286,12 @@ setMethod("Convert2VizList", signature = "QFeatures",
 
 
 
-#' @exportMethod Convert2VizData
 #' 
-#' @rdname Convert2VizList
+#' @rdname VizData-class
 #' @import MSnbase
 #' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
 #' 
-setMethod("Convert2VizData", signature = "MSnSet",
+setMethod("convert2Viz", signature = "MSnSet",
           #' @param object An instance of class `MSnSet`.
           #' @param ... xxx
   function(object, ...) {
@@ -309,44 +307,26 @@ setMethod("Convert2VizData", signature = "MSnSet",
       cc <- connectedComp@adjMatrices
     }
     
+    ll.tmp <- list()
+    ll.tmp[['original']] <- new(Class ="VizData",
+                                qdata = exprs(object),
+                                metacell = fData(object)[, object@experimentData@other$names_metacell],
+                                metadata = fData(object),
+                                colID = object@experimentData@other$keyId,
+                                proteinID = object@experimentData@other$proteinId,
+                                conds = pData(object)$Condition,
+                                type = object@experimentData@other$typeOfData,
+                                adjMat = as.matrix(X),
+                                cc = as.list(cc)
+                                )
+    ll.tmp
     
-    new(Class ="VizData",
-        qdata = exprs(object),
-        metacell = fData(object)[, object@experimentData@other$names_metacell], 
-        metadata = fData(object),
-        colID = object@experimentData@other$keyId,
-        proteinID = object@experimentData@other$proteinId,
-        conds = pData(object)$Condition,
-        type = object@experimentData@other$typeOfData,
-        adjMat = as.matrix(X),
-        cc = as.list(cc)
-        )
   }
 )
 
 
 
 
-#' @rdname Convert2VizList
-#' 
-setMethod("Convert2VizData", signature = "list",
-          #' @param object xxx
-          #' @param ... xxxx
-          
-          function(object, ...) {
-            new(Class ="VizData",
-                qdata = object$qdata,
-                metacell = object$metacell, 
-                metadata = object$metadata,
-                colID = object$colID,
-                proteinID = object$proteinID,
-                conds = object$conds,
-                type = object$type,
-                adjMat = object$adjMat,
-                cc = object$cc
-            )
-          }
-)
 
 #' @title Formats available in DaparViz
 #' @description
@@ -358,72 +338,72 @@ FormatAvailables <- function()
   c('QFeatures', 'MSnSet', 'list')
 
 
-#' @title Get the class of object
-#' @description This function returns the class of the object passed as argument,
-#' or the class of its items if the object is a `list`. If the class is not managed
-#' by DaparViz, then return NA For a list of managed classes.
-#' see `FormatAvailables()`.
-#' @param ll An object.
-#' @rdname Convert2VizList
+#' #' @title Get the class of object
+#' #' @description This function returns the class of the object passed as argument,
+#' #' or the class of its items if the object is a `list`. If the class is not managed
+#' #' by DaparViz, then return NA For a list of managed classes.
+#' #' see `FormatAvailables()`.
+#' #' @param ll An object.
+#' #' @rdname Convert2VizList
+#' #' 
+#' CheckClass <- function(ll){
+#'   ll.class <- NULL
+#'   if (inherits(ll, 'QFeatures'))
+#'     ll.class <- 'QFeatures'
+#'   else if (inherits(ll, 'list')){
+#'     if (sum(unlist(lapply(ll, function(x) inherits(x, 'MSnSet')))) == length(ll)
+#'              && length(names(ll)) == length(ll))
+#'       ll.class <- 'MSnSet'
+#'     else
+#'       ll.class <- 'list'
+#'     }
+#'   else if (inherits(ll, 'VizList'))
+#'     ll.class <- 'VizList'
+#'   else
+#'     ll.class <- NA
+#'   return(ll.class)
+#' }
+
 #' 
-CheckClass <- function(ll){
-  ll.class <- NULL
-  if (inherits(ll, 'QFeatures'))
-    ll.class <- 'QFeatures'
-  else if (inherits(ll, 'list')){
-    if (sum(unlist(lapply(ll, function(x) inherits(x, 'MSnSet')))) == length(ll)
-             && length(names(ll)) == length(ll))
-      ll.class <- 'MSnSet'
-    else
-      ll.class <- 'list'
-    }
-  else if (inherits(ll, 'VizList'))
-    ll.class <- 'VizList'
-  else
-    ll.class <- NA
-  return(ll.class)
-}
-
-
-#' @title Convert a dataset to an instance of class `VizList`
-#' @description
-#' Actually, three types of dataset can be converted:
-#' * A `list` which must be formatted in the correct format. See xxx
-#' * A `list` of instances of class `MSnset`
-#' * An instance of class `QFeatures` (which is already a list)
-#' @param obj An instance of class `VizList`
-#' @rdname Convert2VizList
-#' @return An instance of class `VizList`
-#' @export
-convert2viz <- function(obj = NULL){
-  
-  if (is.null(obj) || length(obj) == 0)
-    return(NULL)
-  
-  ll <- NULL
-  stopifnot(CheckClass(obj) %in% FormatAvailables())
-  stopifnot(!is.na(CheckClass(obj)))
-  
-  switch(CheckClass(obj),
-         
-         # Nothing to do
-         VizList = ll <- obj,
-         
-         QFeatures = ll <- Convert2VizList(obj),
-         
-         MSnSet = {
-           ll.tmp <- NULL
-           for (i in 1:length(obj))
-             ll.tmp[[names(obj)[i]]] <- Convert2VizData(obj[[i]])
-           ll <- VizList(ll.tmp)
-         },
-         
-         list = {
-           ll.tmp <- NULL
-           for (i in 1:length(obj))
-             ll.tmp[[names(obj)[i]]] <- Convert2VizData(obj[[i]])
-           ll <- VizList(ll.tmp)
-         }
-         )
-  return(ll)
- }
+#' #' @title Convert a dataset to an instance of class `VizList`
+#' #' @description
+#' #' Actually, three types of dataset can be converted:
+#' #' * A `list` which must be formatted in the correct format. See xxx
+#' #' * A `list` of instances of class `MSnset`
+#' #' * An instance of class `QFeatures` (which is already a list)
+#' #' @param obj An instance of class `VizList`
+#' #' @rdname Convert2VizList
+#' #' @return An instance of class `VizList`
+#' #' @export
+#' convert2viz <- function(obj = NULL){
+#'   
+#'   if (is.null(obj) || length(obj) == 0)
+#'     return(NULL)
+#'   
+#'   ll <- NULL
+#'   stopifnot(CheckClass(obj) %in% FormatAvailables())
+#'   stopifnot(!is.na(CheckClass(obj)))
+#'   
+#'   switch(CheckClass(obj),
+#'          
+#'          # Nothing to do
+#'          VizList = ll <- obj,
+#'          
+#'          QFeatures = ll <- Convert2VizList(obj),
+#'          
+#'          MSnSet = {
+#'            ll.tmp <- NULL
+#'            for (i in 1:length(obj))
+#'              ll.tmp[[names(obj)[i]]] <- Convert2VizData(obj[[i]])
+#'            ll <- VizList(ll.tmp)
+#'          },
+#'          
+#'          list = {
+#'            ll.tmp <- NULL
+#'            for (i in 1:length(obj))
+#'              ll.tmp[[names(obj)[i]]] <- Convert2VizData(obj[[i]])
+#'            ll <- VizList(ll.tmp)
+#'          }
+#'          )
+#'   return(ll)
+#'  }

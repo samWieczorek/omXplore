@@ -115,13 +115,13 @@ mod_view_dataset_server <- function(id,
 
         observe({
             req(ll.vizData())
-          if(inherits(ll.vizData(), "VizList")){
+          if(inherits(ll.vizData(), "list")){
             rv$data <- ll.vizData()
-            conds <- rv$data[1]@conds
+            conds <- rv$data[[1]]@conds
             
           }
           
-          shinyjs::toggle('badFormatMsg', condition = !inherits(ll.vizData(), "VizList"))
+          shinyjs::toggle('badFormatMsg', condition = !inherits(ll.vizData(), "list"))
         }, priority = 1000)
 
 
@@ -182,7 +182,8 @@ mod_view_dataset_server <- function(id,
         })
 
         observeEvent(req(rv$data, input$chooseDataset), ignoreNULL = TRUE,{
-            rv$current.se <- rv$data[input$chooseDataset]
+
+            rv$current.se <- rv$data[[input$chooseDataset]]
         })
 
         output$chooseDataset_ui <- renderUI({

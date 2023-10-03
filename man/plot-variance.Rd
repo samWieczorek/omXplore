@@ -37,7 +37,7 @@ ui <- fluidPage(mod_ds_variance_ui("plot"))
 
 server <- shinyServer(function(input, output, session) {
   data(vData_ft)
-  obj <- vData_ft[1]
+  obj <- vData_ft[[1]]
   
   mod_ds_variance_server("plot", 
                          vizData = reactive({obj}))
@@ -52,7 +52,7 @@ ui <- fluidPage(mod_ds_variance_ui("plot"))
 
 server <- shinyServer(function(input, output, session) {
   data(vData_ft)
-  obj <- vData_ft[1]
+  obj <- vData_ft[[1]]
   
   mod_ds_variance_server("plot", 
                          vizData = reactive({obj}))

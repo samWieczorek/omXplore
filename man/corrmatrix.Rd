@@ -54,7 +54,7 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   data(vData_ft)
-  obj <- vData_ft[1]
+  obj <- vData_ft[[1]]
   
   mod_ds_corrmatrix_server("plot", reactive({obj}))
   }
@@ -69,7 +69,7 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   data(vData_ft)
-  obj <- vData_ft[1]
+  obj <- vData_ft[[1]]
   
   mod_ds_corrmatrix_server("plot", reactive({obj}))
   }
