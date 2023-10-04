@@ -22,9 +22,6 @@ mod_format_DT_server(
   hc_style = reactive({
      NULL
  }),
-  xls_style = reactive({
-     NULL
- }),
   filename = "Prostar_export",
   hideCols = reactive({
      NULL
@@ -47,6 +44,12 @@ mod_format_DT_server(
 
 \item{hc_style}{xxx}
 
+\item{filename}{A \code{character(1)} which is the default filename for download.}
+
+\item{hideCols}{xxx}
+
+\item{selection}{xxx}
+
 \item{xls_style}{A list of four items:
 \itemize{
 \item cols: a vector of colnames of columns to show,
@@ -54,12 +57,6 @@ mod_format_DT_server(
 \item unique: unique(conds),
 \item pal: RColorBrewer::brewer.pal(3, "Dark2")\link{seq_len(2)}
 }}
-
-\item{filename}{A \code{character(1)} which is the default filename for download.}
-
-\item{hideCols}{xxx}
-
-\item{selection}{xxx}
 }
 \value{
 NA

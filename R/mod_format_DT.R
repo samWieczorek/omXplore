@@ -21,7 +21,7 @@
 #' * cols: a vector of colnames of columns to show,
 #' * vals: a vector of colnames of columns that contain values,
 #' * unique: unique(conds),
-#' * pal: RColorBrewer::brewer.pal(3, "Dark2")[seq_len(2)]
+#' * pal: RColorBrewer::brewer.pal(3, "Dark2")[1:2]
 #' @param filename A `character(1)` which is the default filename for download.
 #' @param hideCols xxx
 #' @param selection xxx
@@ -45,7 +45,7 @@ mod_format_DT_ui <- function(id) {
   ns <- NS(id)
   tagList(
     shinyjs::useShinyjs(),
-    shinyjs::hidden(div(id = ns("dl_div"), dl_ui(ns("DL_btns")))),
+    #shinyjs::hidden(div(id = ns("dl_div"), dl_ui(ns("DL_btns")))),
     fluidRow(
       column(width = 12,
              DT::dataTableOutput(ns("StaticDataTable"))
@@ -67,7 +67,7 @@ mod_format_DT_server <- function(id,
                                  showRownames = FALSE,
                                  dom = 'Bt',
                                  hc_style = reactive({NULL}),
-                                 xls_style = reactive({NULL}),
+                                 #xls_style = reactive({NULL}),
                                  filename = "Prostar_export",
                                  hideCols = reactive({NULL}),
                                  selection = 'single'

@@ -107,9 +107,13 @@ setMethod("show", 'DaparViz',
           #' 
           function(object){
             pkgs.require('crayon')
-            cat(crayon::green(paste0('\tdim(qdata): ', dim(object@qdata), '\n')))
+            cat(crayon::green(paste0('\tdim(qdata): ', 
+                                     dim(object@qdata)[1], ' x ',
+                                     dim(object@qdata)[2], '\n')))
             
-            cat(crayon::green(paste0('\tdim(metacell): ', dim(object@metacell), '\n')))
+            cat(crayon::green(paste0('\tdim(metacell): ', 
+                                     dim(object@metacell)[1],  ' x ',
+                                     dim(object@metacell)[2], '\n')))
             
             cat(crayon::green('\tconds: '))
             cat(crayon::green(object@conds))
