@@ -8,12 +8,12 @@
 \usage{
 mod_ds_cc_ui(id)
 
-mod_ds_cc_server(id, vizData)
+mod_ds_cc_server(id, DaparViz)
 }
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
-\item{vizData}{An instance of \code{VizData} class}
+\item{DaparViz}{An instance of \code{DaparViz} class}
 }
 \value{
 NA

@@ -12,7 +12,7 @@ mod_ds_heatmap_ui(id)
 
 mod_ds_heatmap_server(
   id,
-  vizData = reactive({
+  DaparViz = reactive({
      NULL
  }),
   width = 900
@@ -33,7 +33,7 @@ mv.heatmap(
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
-\item{vizData}{xxx}
+\item{DaparViz}{xxx}
 
 \item{width}{xxx}
 

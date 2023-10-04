@@ -11,7 +11,7 @@
 #' @author Thomas Burger
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' data(vData_ms)
 #' plotJitter(vData_ms[1]@cc)
 #' }
@@ -59,7 +59,7 @@ plotJitter <- function(list.of.cc = NULL) {
 #' @author Thomas Burger, Samuel Wieczorek
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' data(vData_ms)
 #' obj <- vData_ms[1]
 #' g <- buildGraph(obj@cc[[1]], obj@adjMat)
@@ -118,7 +118,7 @@ buildGraph <- function(cc) {
 #' @author Thomas Burger, Samuel Wieczorek
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' data(vData_ms)
 #' obj <- vData_ms[1]
 #' display.CC.visNet(obj@cc[[1]], obj@adjMat)
@@ -172,7 +172,7 @@ display.CC.visNet <- function(g,
 #' @import highcharter
 #' 
 #' @examples 
-#' \dontrun{
+#' \donttest{
 #' data(vData_ms)
 #' obj <- vData_ms[1]
 #' ll <- obj@cc[1:4]

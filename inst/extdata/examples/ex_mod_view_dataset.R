@@ -1,6 +1,6 @@
 library(DaparViz)
 
-options(shiny.fullstacktrace = TRUE)
+#options(shiny.fullstacktrace = TRUE)
 
 
 ui <- fluidPage(

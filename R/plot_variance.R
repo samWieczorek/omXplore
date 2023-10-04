@@ -17,7 +17,7 @@
 CVDist <- function(vizData,
                    pal.name = NULL) {
 
-  stopifnot(inherits(vizData, "VizData"))
+  stopifnot(inherits(vizData, "DaparViz"))
   
 
     if (is.null(vizData@conds)) {

@@ -5,7 +5,7 @@
 #' xxxx
 #'
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param vizData A instance of the class `VizData`
+#' @param DaparViz A instance of the class `DaparViz`
 #' @param track.indices xxx
 #' 
 #' @name intensity-plots
@@ -44,7 +44,7 @@ mod_ds_intensity_ui <- function(id) {
 #' @return NA
 #'
 mod_ds_intensity_server <- function(id, 
-                                    vizData, 
+                                    DaparViz, 
                                     track.indices = reactive({NULL})
                                     ) {
     
@@ -54,8 +54,8 @@ mod_ds_intensity_server <- function(id,
         rv <- reactiveValues(data = NULL)
         
         observe({
-          if(inherits(vizData(), "VizData"))
-            rv$data <- vizData()
+          if(inherits(DaparViz(), "DaparViz"))
+            rv$data <- DaparViz()
           
           shinyjs::toggle('badFormatMsg', condition = is.null(rv$data))
           shinyjs::toggle('choosePlot', condition = !is.null(rv$data))

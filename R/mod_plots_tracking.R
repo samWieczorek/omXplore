@@ -3,7 +3,7 @@
 #' @description This shiny module provides a tool to select
 #'
 #' @param id shiny id
-#' @param vizData internal
+#' @param DaparViz internal
 #' @param params A `list` of three items to give instructions to the module
 #' in this it is run in slave mode:
 #' * type: xxxxx
@@ -64,7 +64,7 @@ mod_plots_tracking_ui <- function(id) {
 #' @import shinyjs
 #'
 mod_plots_tracking_server <- function(id, 
-                                      vizData = reactive({NULL}),
+                                      DaparViz = reactive({NULL}),
                                       resetBtn = reactive({FALSE})){
    
   moduleServer(id, function(input, output, session) {
@@ -81,8 +81,8 @@ mod_plots_tracking_server <- function(id,
   
   
   observe({
-    if(inherits(vizData(), "VizData"))
-      rv.track$data <- vizData()
+    if(inherits(DaparViz(), "DaparViz"))
+      rv.track$data <- DaparViz()
 
     shinyjs::toggle('badFormatMsg', condition = is.null(rv.track$data))
     shinyjs::toggle('typeSelect', condition = !is.null(rv.track$data))

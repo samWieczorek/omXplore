@@ -10,7 +10,7 @@ mod_view_dataset_ui(id)
 
 mod_view_dataset_server(
   id,
-  ll.vizData = reactive({
+  ll.DaparViz = reactive({
      NULL
  }),
   addons = list()
@@ -20,7 +20,7 @@ mod_view_dataset_server(
 \item{id}{A \code{character(1)} for the 'id' of the shiny module. It must be
 the same as for the '*_ui' function.}
 
-\item{ll.vizData}{A instance of the class \code{VizList}.}
+\item{ll.DaparViz}{A instance of the class \code{VizList}.}
 
 \item{addons}{A \code{list}}
 }
@@ -63,7 +63,7 @@ number of missing values (NA) per lines (ie proteins) and per conditions,
 \examples{
 library(DaparViz)
 
-options(shiny.fullstacktrace = TRUE)
+#options(shiny.fullstacktrace = TRUE)
 
 
 ui <- fluidPage(
@@ -87,7 +87,7 @@ if (interactive())
   shinyApp(ui, server)
 library(DaparViz)
 
-options(shiny.fullstacktrace = TRUE)
+#options(shiny.fullstacktrace = TRUE)
 
 
 ui <- fluidPage(

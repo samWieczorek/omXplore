@@ -24,7 +24,7 @@
 #' @author Samuel Wieczorek, Enora Fremy
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' data(ft)
 #' vList <- convert2viz(ft)
 #' plotCompareAssays(vList, 1, 1, n = 5)

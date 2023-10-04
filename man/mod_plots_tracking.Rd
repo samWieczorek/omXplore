@@ -10,7 +10,7 @@ mod_plots_tracking_ui(id)
 
 mod_plots_tracking_server(
   id,
-  vizData = reactive({
+  DaparViz = reactive({
      NULL
  }),
   resetBtn = reactive({
@@ -21,7 +21,7 @@ mod_plots_tracking_server(
 \arguments{
 \item{id}{shiny id}
 
-\item{vizData}{internal}
+\item{DaparViz}{internal}
 
 \item{resetBtn}{A \code{boolean(1)} which indicates whether to show the 'Reset' button
 or not.}

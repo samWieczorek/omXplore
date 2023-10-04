@@ -13,13 +13,16 @@ mod_format_DT_server(
   data = reactive({
      NULL
  }),
+  dataForStyling = reactive({
+     NULL
+ }),
   withDLBtns = FALSE,
   showRownames = FALSE,
   dom = "Bt",
   hc_style = reactive({
      NULL
  }),
-  full_style = reactive({
+  xls_style = reactive({
      NULL
  }),
   filename = "Prostar_export",
@@ -32,25 +35,27 @@ mod_format_DT_server(
 \arguments{
 \item{id}{shiny id}
 
-\item{data}{xxx}
+\item{data}{A \code{data.frame}}
 
-\item{withDLBtns}{xxx}
+\item{dataForStyling}{xxx}
 
-\item{showRownames}{xxx}
+\item{withDLBtns}{A boolean to indicate whether to display download buttons or not.}
+
+\item{showRownames}{A boolean to indicate whether to show rownames.}
 
 \item{dom}{xxx}
 
 \item{hc_style}{xxx}
 
-\item{full_style}{A list of four items:
+\item{xls_style}{A list of four items:
 \itemize{
 \item cols: a vector of colnames of columns to show,
 \item vals: a vector of colnames of columns that contain values,
 \item unique: unique(conds),
-\item pal: xxxxx
+\item pal: RColorBrewer::brewer.pal(3, "Dark2")\link{seq_len(2)}
 }}
 
-\item{filename}{xxx}
+\item{filename}{A \code{character(1)} which is the default filename for download.}
 
 \item{hideCols}{xxx}
 
@@ -61,4 +66,9 @@ NA
 }
 \description{
 A shiny Module.
+
+See \code{DT} package homepage for more details about styling tables.
+If no style is precised, this module show the raw data.
+If any style is given, then the dataset must be well configured (I.e. it
+must contain the correct columns )
 }

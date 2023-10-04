@@ -1,0 +1,69 @@
+---
+title: "DaparViz User manual"
+author: 
+- name: Samuel Wieczorek
+- name: Thomas Burger
+package: DaparViz
+abstract: >
+    The package DaparViz is a R package which provides functions to vizualize quantitative data from label-free proteomics experiments. It can deal with several data formats such as MSnSet, QFeatures or event simple lists. This document covers the functionalities available in `r BiocStyle::pkg_ver('DaparViz')`.
+date: "`r Sys.Date()`"
+output:
+    BiocStyle::html_document:
+        highlight: tango
+        number_sections: yes
+        toc: true
+        toc_depth: 2
+vignette: >
+    %\VignetteIndexEntry{DaparViz User Manual}
+    %\VignetteEngine{knitr::rmarkdown}
+    %%\VignetteKeywords{Softmware, Mass Spectrometry, Quantitative }
+    %\VignetteEncoding{UTF-8}
+---
+
+\newcommand{\shellcmd}[1]{\\\indent\indent\texttt{\footnotesize\# #1}}
+
+\newcommand{\Rcmd}[1]{\\\indent\indent\texttt{\footnotesize\# #1}}
+
+\newcommand{\bordurefigure}[1]{\fbox{\includegraphics{#1}}}
+
+```{r echo=FALSE}
+BiocStyle::markdown()
+```
+
+# Introduction
+
+\section{Installation}\label{sec:install}
+
+The `DaparViz` package is a Shiny app which provides a series of plots dedicated to the analysis of proteomics data. It can 
+deal with two data structures: `MSnSet` and `QFeatures`.
+
+It has been developped as a Shiny module so as to be flexible: it can run standalone- or can be inserted in another Shiny app.
+In that sense, it can be used on its own; or as a complement to the numerous 
+Bioconductor packages (\url{https://www.bioconductor.org/}) it is compliant with; or through the `Prostar` interface.
+
+`Prostar` (Proteomics statistical analysis with R) is a 
+web interface based on Shiny technology (\url{http://shiny.rstudio.com/}) that provides GUI (Graphical User Interfaces).
+The experiment package `DaparToolshedData` contains many datasets that can be used as examples.
+`DaparViz` contains built-in plots but have the capability to show plots developped by other developper (as a Shiny app).
+
+
+\section{Installation}\label{sec:install}
+
+To install this package, start R (version "4.3") and enter:
+
+```
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("DaparViz")
+```
+
+For older versions of R, please refer to the appropriate Bioconductor release.
+
+
+
+\section{Session information}\label{sec:sessionInfo}
+
+```{r}
+sessionInfo()
+```

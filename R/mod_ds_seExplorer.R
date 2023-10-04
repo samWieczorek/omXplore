@@ -3,7 +3,7 @@
 #' @description xxx
 #' 
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param vizData An instance of the class `VizData`
+#' @param DaparViz An instance of the class `DaparViz`
 #' @param digits xxx
 #'
 #'
@@ -55,7 +55,7 @@ mod_ds_seExplorer_ui <- function(id) {
 #'
 #' @rdname SE-explorer
 mod_ds_seExplorer_server <- function(id,
-                                     vizData = reactive({NULL}),
+                                     DaparViz = reactive({NULL}),
                                      digits = reactive({3})) {
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
@@ -64,8 +64,8 @@ mod_ds_seExplorer_server <- function(id,
         
         observe({
           
-          if(inherits(vizData(), "VizData")){
-            rv$data <- vizData()
+          if(inherits(DaparViz(), "DaparViz")){
+            rv$data <- DaparViz()
             
             tags <- GetMetacellTags(rv$data@metacell, 
                                     level = rv$data@type, 

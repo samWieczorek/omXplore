@@ -16,7 +16,7 @@ A plot
 Jitter plot of CC
 }
 \examples{
-\dontrun{
+\donttest{
 data(vData_ms)
 plotJitter(vData_ms[1]@cc)
 }

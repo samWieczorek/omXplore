@@ -51,13 +51,12 @@ Suggests:
     dplyr,
     tidyr
 biocViews: 
+    Software,
+    MSnSet, 
+    QFeatures,
     Proteomics,
-    Normalization,
-    Preprocessing,
     MassSpectrometry,
-    QualityControl,
-    GO,
-    DataImport
+    QualityControl
 NeedsCompilation: no
 Collate:
     zzz.R
@@ -65,7 +64,7 @@ Collate:
     palette.R
     utils.R
     AllGenerics.R
-    VizData_Class.R
+    DaparViz-class.R
     plots_volcano.R
     adjacencyMatrixInfos.R
     plots_compare_assays.R

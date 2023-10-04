@@ -1,18 +1,18 @@
-#' @title VizData class
+#' @title DaparViz class
 #'
 #' @description
 #'
-#'  Conceptually, a `VizData` object is a standard representation of all
+#'  Conceptually, a `DaparViz` object is a standard representation of all
 #'  elements from quantitative other structured data used in proteomics, such
 #'  as `MSnset` or `QFeatures`. It allows to use it as a generic converter.
 #'  
-#'  `VizData` objects are not usually created by hand but are created from the `VizList` 
+#'  `DaparViz` objects are not usually created by hand but are created from the `VizList` 
 #'  which is the class accessible by the user.
 #'  
-#'  The recommended way to create `VizData` objects is the use the
+#'  The recommended way to create `DaparViz` objects is the use the
 #' `xxxx()` function of the class `VizList`
 #'
-#' @name VizData-class
+#' @name DaparViz-class
 #' 
 #'
 #' @examples
@@ -23,12 +23,12 @@ NULL
 
 
 #'
-#' @rdname VizData-class
-#' @export VizData
-#' @exportClass VizData
-VizData <- setClass(
+#' @rdname DaparViz-class
+#' @export DaparViz
+#' @exportClass DaparViz
+DaparViz <- setClass(
   
-  "VizData",
+  "DaparViz",
   #' @slot qdata xxx
   #' @slot metacell xxx
   #' @slot metadata xxx
@@ -95,14 +95,14 @@ VizData <- setClass(
 
 #' @title xxx
 #' @description xxx
-#' @param object An instance of the class `VizData`
+#' @param object An instance of the class `DaparViz`
 #' @exportMethod show
-#' @rdname VizData-class
+#' @rdname DaparViz-class
 #' 
-setMethod("show", 'VizData',
+setMethod("show", 'DaparViz',
           #' @title xxx
           #' @description xxx
-          #' @param object An instance of the class `VizData`
+          #' @param object An instance of the class `DaparViz`
           #' @exportMethod show
           #' 
           function(object){
@@ -138,10 +138,10 @@ setMethod("show", 'VizData',
               }
 )
 
-#' @title Initialization method for the class `VizData`
-#' @rdname VizData-class
+#' @title Initialization method for the class `DaparViz`
+#' @rdname DaparViz-class
 #' 
-setMethod("initialize" , "VizData" ,
+setMethod("initialize" , "DaparViz" ,
           #' @param .Object xxx
           #' @param qdata xxx
           #' @param metacell xxx
@@ -199,7 +199,7 @@ setMethod("initialize" , "VizData" ,
 #' 
 #' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
 #' 
-setMethod('[', signature = c('VizData', "ANY", "ANY", "ANY"),
+setMethod('[', signature = c('DaparViz', "ANY", "ANY", "ANY"),
           function(x, i, j = NA, k = NA, l = NA, ..., drop) {
             if (length(i) == 1){
               tmp <- as.matrix(t((x@qdata)[i, ]))
@@ -232,7 +232,7 @@ setMethod('[', signature = c('VizData', "ANY", "ANY", "ANY"),
 
 #' @exportMethod convert2Viz
 #' 
-#' @rdname VizData-class
+#' @rdname DaparViz-class
 #' @import QFeatures
 #' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
 #' 
@@ -267,7 +267,7 @@ setMethod("convert2Viz", signature = "QFeatures",
         cc <- PSMatch::ConnectedComponents(X)@adjMatrices
       }
 
-      ll[[names(object)[i]]] <- VizData(qdata = assay(object[[i]]),
+      ll[[names(object)[i]]] <- DaparViz(qdata = assay(object[[i]]),
                                         metacell = rowData(object)[[i]]$qMetacell,
                                         metadata = as.data.frame(mdata),
                                         colID = metadata(object[[i]])$idcol,
@@ -287,7 +287,7 @@ setMethod("convert2Viz", signature = "QFeatures",
 
 
 #' 
-#' @rdname VizData-class
+#' @rdname DaparViz-class
 #' @import MSnbase
 #' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
 #' 
@@ -308,7 +308,7 @@ setMethod("convert2Viz", signature = "MSnSet",
     }
     
     ll.tmp <- list()
-    ll.tmp[['original']] <- new(Class ="VizData",
+    ll.tmp[['original']] <- new(Class ="DaparViz",
                                 qdata = exprs(object),
                                 metacell = fData(object)[, object@experimentData@other$names_metacell],
                                 metadata = fData(object),
@@ -394,14 +394,14 @@ FormatAvailables <- function()
 #'          MSnSet = {
 #'            ll.tmp <- NULL
 #'            for (i in 1:length(obj))
-#'              ll.tmp[[names(obj)[i]]] <- Convert2VizData(obj[[i]])
+#'              ll.tmp[[names(obj)[i]]] <- Convert2DaparViz(obj[[i]])
 #'            ll <- VizList(ll.tmp)
 #'          },
 #'          
 #'          list = {
 #'            ll.tmp <- NULL
 #'            for (i in 1:length(obj))
-#'              ll.tmp[[names(obj)[i]]] <- Convert2VizData(obj[[i]])
+#'              ll.tmp[[names(obj)[i]]] <- Convert2DaparViz(obj[[i]])
 #'            ll <- VizList(ll.tmp)
 #'          }
 #'          )

@@ -47,7 +47,7 @@ process.
 The comparison is made with the division operator.
 }
 \examples{
-\dontrun{
+\donttest{
 data(ft)
 vList <- convert2viz(ft)
 plotCompareAssays(vList, 1, 1, n = 5)

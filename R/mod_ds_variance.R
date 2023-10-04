@@ -7,7 +7,7 @@
 #' @name plot-variance
 #' 
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param vizData xxx
+#' @param DaparViz xxx
 #' @param pal.name A `character(1)` which is the name of the palette from the 
 #' package `RColorBrewer` from which the colors are taken. 
 #' Default value is 'Set1'.
@@ -39,7 +39,7 @@ mod_ds_variance_ui <- function(id) {
 #' @rdname plot-variance
 #' @export
 mod_ds_variance_server <- function(id,
-                                   vizData,
+                                   DaparViz,
                                    pal.name = NULL) {
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
@@ -47,8 +47,8 @@ mod_ds_variance_server <- function(id,
         rv <- reactiveValues(data = NULL)
         
         observe({
-          if(inherits(vizData(), "VizData"))
-            rv$data <- vizData()
+          if(inherits(DaparViz(), "DaparViz"))
+            rv$data <- DaparViz()
           
           shinyjs::toggle('badFormatMsg', condition = is.null(rv$data))
         }, priority = 1000)

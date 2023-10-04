@@ -21,7 +21,7 @@ mod_mv_imputation_server(
 \arguments{
 \item{id}{A \code{character(1)} which is the 'id' of the shiny module.}
 
-\item{vData}{An instance of a class \code{VizData}.}
+\item{vData}{An instance of a class \code{DaparViz}.}
 
 \item{pal.name}{A \code{character(1)} which is the name of the palette (from
 the package \link{RColorBrewer} to use.}

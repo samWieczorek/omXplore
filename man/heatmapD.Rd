@@ -9,7 +9,7 @@ class \code{MSnSet}. For more details, see \code{heatmap.2()}.}
 heatmapD(vData, distance = "euclidean", cluster = "complete", dendro = FALSE)
 }
 \arguments{
-\item{vData}{An instance of a class \code{VizData}.}
+\item{vData}{An instance of a class \code{DaparViz}.}
 
 \item{distance}{The distance used by the clustering algorithm to compute
 the dendrogram.}

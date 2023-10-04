@@ -12,7 +12,7 @@
 #' 
 #' @name ds-pca
 #' 
-#' @param vizData An instance of the class `VizData`.
+#' @param DaparViz An instance of the class `DaparViz`.
 #' @param var.scaling The dimensions to plot
 #' @param ncp A `integer(1)` which represents the umber of dimensions kept in 
 #' the results.
@@ -34,14 +34,14 @@ NULL
 #'
 #' @rdname ds-pca
 #'
-wrapper_pca <- function(vizData,
+wrapper_pca <- function(DaparViz,
                         var.scaling = TRUE,
                         ncp = NULL) {
    
   pkgs.require('FactoMineR')
 
-    if (missing(vizData)) {
-        stop("'vizData' is missing.")
+    if (missing(DaparViz)) {
+        stop("'DaparViz' is missing.")
     }
 
     
@@ -51,21 +51,21 @@ wrapper_pca <- function(vizData,
 
   res.pca <- NULL
  
-  if (length(which(is.na(vizData@qdata))) > 0) {
+  if (length(which(is.na(DaparViz@qdata))) > 0) {
     if (is.null(ncp)) {
         nmax <- 12
-        y <- vizData@qdata
+        y <- DaparViz@qdata
         nprot <- dim(y)[1]
         n <- dim(y)[2] # If too big, take the number of conditions.
 
         if (n > nmax) {
-            n <- length(unique(vizData@conds))
+            n <- length(unique(DaparViz@conds))
         }
 
         ncp <- min(n, nmax)
     }
 
-    res.pca <- FactoMineR::PCA(vizData@qdata,
+    res.pca <- FactoMineR::PCA(DaparViz@qdata,
                                scale.unit = var.scaling,
                                ncp = ncp,
                                graph = FALSE)

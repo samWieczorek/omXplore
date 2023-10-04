@@ -106,7 +106,7 @@ customChart <- function(hc,
 #' format_DT. It creates additional columns to be used to style the table.
 #' to colors cells.
 #'
-#' @param vizData An instance of the class 'VizData'
+#' @param vizData An instance of the class `DaparViz`
 #' @param digits An 'integer(1)' to specify the number of digits to display 
 #' in the tables for numerical values. Default is 2.
 #' 
@@ -141,7 +141,7 @@ FormatDataForDT <- function(vizData, digits = 2) {
 #' @description
 #' xxxx
 #'
-#' @param vizData An instance of the class 'VizData'
+#' @param vizData An instance of the class `DaparViz`
 #'
 #' @export
 BuildColorStyles <- function(vizData) {
@@ -188,7 +188,7 @@ pkgs.require <- function(ll.deps){
 #' @param path xxx
 #' 
 #' @examples 
-#' \dontrun{
+#' \donttest{
 #' addImgPath('mod_foo', system.file('.', package='DaparViz'))
 #' }
 #' 

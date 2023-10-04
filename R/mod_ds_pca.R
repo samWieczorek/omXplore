@@ -7,7 +7,7 @@
 #' @name ds-pca
 #' 
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param vizData xxx
+#' @param DaparViz xxx
 #'
 #' @return A plot
 #'
@@ -43,7 +43,7 @@ mod_ds_pca_ui <- function(id) {
 #'
 #' @export
 mod_ds_pca_server <- function(id,
-                              vizData) {
+                              DaparViz) {
     pkgs.require('factoextra')
   
     moduleServer(id, function(input, output, session) {
@@ -59,8 +59,8 @@ mod_ds_pca_server <- function(id,
         
         observe({
           
-          if(inherits(vizData(), "VizData"))
-            rv.pca$data <- as.matrix(vizData()@qdata)
+          if(inherits(DaparViz(), "DaparViz"))
+            rv.pca$data <- as.matrix(DaparViz()@qdata)
           
           shinyjs::toggle('badFormatMsg', condition = is.null(rv.pca$data))
         }, priority = 1000)
@@ -114,7 +114,7 @@ mod_ds_pca_server <- function(id,
 
         observeEvent(input$varScale_PCA, {
             rv.pca$PCA_varScale <- input$varScale_PCA
-            rv.pca$res.pca <- wrapper_pca(vizData = vizData(),
+            rv.pca$res.pca <- wrapper_pca(DaparViz = DaparViz(),
                                           var.scaling = rv.pca$PCA_varScale,
                                           ncp = Compute_PCA_dim()
                                           )
@@ -122,7 +122,7 @@ mod_ds_pca_server <- function(id,
 
         observeEvent(rv.pca$data, {
             if (length(which(is.na(rv.pca$data))) == 0) {
-                rv.pca$res.pca <- wrapper_pca(vizData = vizData(),
+                rv.pca$res.pca <- wrapper_pca(DaparViz = DaparViz(),
                                               var.scaling = rv.pca$PCA_varScale,
                                               ncp = Compute_PCA_dim()
                                               )
@@ -151,7 +151,7 @@ mod_ds_pca_server <- function(id,
                 list(
                     cols = colnames(rv.pca$res.pca$var$coord),
                     vals = colnames(rv.pca$res.pca$var$coord),
-                    unique = unique(vizData@conds),
+                    unique = unique(DaparViz@conds),
                     pal = RColorBrewer::brewer.pal(3, "Dark2")[seq_len(2)]
                 )
             })
@@ -211,7 +211,7 @@ mod_ds_pca_server <- function(id,
             n <- dim(y)[2] # If too big, take the number of conditions.
 
             if (n > nmax)
-                n <- length(unique(vizData@conds))
+                n <- length(unique(DaparViz@conds))
 
             ncp <- min(n, nmax)
             ncp

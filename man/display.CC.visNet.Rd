@@ -30,7 +30,7 @@ A plot
 Display a CC
 }
 \examples{
-\dontrun{
+\donttest{
 data(vData_ms)
 obj <- vData_ms[1]
 display.CC.visNet(obj@cc[[1]], obj@adjMat)

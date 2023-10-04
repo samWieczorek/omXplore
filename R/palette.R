@@ -115,7 +115,7 @@ ExtendPalette <- function(n, pal.name = "Set1") {
 #' @author Samuel Wieczorek
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' data(Exp1_R25_pept, package="DAPARdata")
 #' conditions <- Biobase::pData(Exp1_R25_pept)$Condition
 #' GetColorsForConditions(conditions, ExtendPalette(2))

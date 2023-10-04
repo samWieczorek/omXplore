@@ -18,7 +18,7 @@ A plot
 Display a jitter plot for connected components
 }
 \examples{
-\dontrun{
+\donttest{
 data(vData_ms)
 obj <- vData_ms[1]
 ll <- obj@cc[1:4]

@@ -5,7 +5,7 @@
 #' quantitative data in the `MSnbase::exprs()` table of an object of
 #' class `MSnSet`. For more details, see `heatmap.2()`.
 #'
-#' @param vData An instance of a class `VizData`.
+#' @param vData An instance of a class `DaparViz`.
 #' @param distance The distance used by the clustering algorithm to compute
 #' the dendrogram.
 #' @param cluster the clustering algorithm used to build the dendrogram.

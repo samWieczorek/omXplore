@@ -7,7 +7,7 @@
 BuildColorStyles(vizData)
 }
 \arguments{
-\item{vizData}{An instance of the class 'VizData'}
+\item{vizData}{An instance of the class \code{DaparViz}}
 }
 \description{
 xxxx

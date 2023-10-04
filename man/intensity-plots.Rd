@@ -14,7 +14,7 @@ mod_ds_intensity_ui(id)
 
 mod_ds_intensity_server(
   id,
-  vizData,
+  DaparViz,
   track.indices = reactive({
      NULL
  })
@@ -27,7 +27,7 @@ violinPlot(data, conds, subset = NULL, pal.name)
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
-\item{vizData}{A instance of the class \code{VizData}}
+\item{DaparViz}{A instance of the class \code{DaparViz}}
 
 \item{track.indices}{xxx}
 

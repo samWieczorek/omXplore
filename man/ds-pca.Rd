@@ -13,9 +13,9 @@
 \usage{
 mod_ds_pca_ui(id)
 
-mod_ds_pca_server(id, vizData)
+mod_ds_pca_server(id, DaparViz)
 
-wrapper_pca(vizData, var.scaling = TRUE, ncp = NULL)
+wrapper_pca(DaparViz, var.scaling = TRUE, ncp = NULL)
 
 plotPCA_Eigen(res.pca)
 
@@ -28,7 +28,7 @@ plotPCA_Eigen_hc(res.pca)
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
-\item{vizData}{An instance of the class \code{VizData}.}
+\item{DaparViz}{An instance of the class \code{DaparViz}.}
 
 \item{var.scaling}{The dimensions to plot}
 

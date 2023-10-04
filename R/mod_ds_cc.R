@@ -3,7 +3,7 @@
 #' @description  A shiny Module.
 #'
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param vizData An instance of `VizData` class
+#' @param DaparViz An instance of `DaparViz` class
 #'
 #' @keywords internal
 #'
@@ -98,7 +98,7 @@ mod_ds_cc_ui <- function(id) {
 #' @import highcharter
 #' @export
 #' @rdname connected_components
-mod_ds_cc_server <- function(id, vizData) {
+mod_ds_cc_server <- function(id, DaparViz) {
   pkgs.require(c('visNetwork', 'highcharter'))
   moduleServer(id, function(input, output, session) {
       ns <- session$ns
@@ -129,10 +129,10 @@ mod_ds_cc_server <- function(id, vizData) {
       )
       
       observe({
-        if(inherits(vizData(), "VizData"))
-          rv$data <- vizData()
+        if(inherits(DaparViz(), "DaparViz"))
+          rv$data <- DaparViz()
         
-        shinyjs::toggle('badFormatMsg', condition = !inherits(vizData(), "VizData"))
+        shinyjs::toggle('badFormatMsg', condition = !inherits(DaparViz(), "DaparViz"))
       }, priority = 1000)
       
       ##//////////////////////////////////////////////////////////////////
@@ -149,7 +149,7 @@ mod_ds_cc_server <- function(id, vizData) {
       
       output$pepInfo_ui <- renderUI({
         selectInput(ns("pepInfo"), "Peptide Info",
-                    choices = colnames(vizData()@metadata),
+                    choices = colnames(DaparViz()@metadata),
                     multiple = TRUE)
       })
       
@@ -220,7 +220,7 @@ mod_ds_cc_server <- function(id, vizData) {
           )
           
           if (!is.null(tooltip)) {
-            df <- cbind(df, vizData@metadata[tooltip])
+            df <- cbind(df, DaparViz@metadata[tooltip])
           }
           
           colnames(df) <- gsub(".", "_", colnames(df), fixed = TRUE)

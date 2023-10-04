@@ -10,7 +10,7 @@ mod_ds_seExplorer_ui(id)
 
 mod_ds_seExplorer_server(
   id,
-  vizData = reactive({
+  DaparViz = reactive({
      NULL
  }),
   digits = reactive({
@@ -21,7 +21,7 @@ mod_ds_seExplorer_server(
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
-\item{vizData}{An instance of the class \code{VizData}}
+\item{DaparViz}{An instance of the class \code{DaparViz}}
 
 \item{digits}{xxx}
 }
@@ -41,7 +41,7 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   data(vData_ft)
-  obj <- vData_ft[[1]]
+  obj <- vData_ft[[2]]
   
   mod_ds_seExplorer_server("plot", reactive({obj}))
   

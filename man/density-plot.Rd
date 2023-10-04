@@ -12,7 +12,7 @@ mod_ds_density_ui(id)
 
 mod_ds_density_server(
   id,
-  vizData = reactive({
+  DaparViz = reactive({
      NULL
  }),
   pal.name = reactive({
@@ -25,7 +25,7 @@ densityPlot(data, conds, pal.name = NULL)
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
-\item{vizData}{An instance of the class \code{VizData}.}
+\item{DaparViz}{An instance of the class \code{DaparViz}.}
 
 \item{pal.name}{A \code{character(1)} which is the name of the palette from
 the package \link{RColorBrewer} from which the colors are taken. Default

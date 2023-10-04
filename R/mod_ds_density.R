@@ -5,7 +5,7 @@
 #' xxxx
 #' 
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param vizData An instance of the class `VizData`.
+#' @param DaparViz An instance of the class `DaparViz`.
 #' @param pal.name It is a reactive value.
 #'
 #' @name density-plot
@@ -38,7 +38,7 @@ mod_ds_density_ui <- function(id) {
 #' @importFrom highcharter renderHighchart
 #'
 mod_ds_density_server <- function(id,
-                                  vizData = reactive({NULL}),
+                                  DaparViz = reactive({NULL}),
                                   pal.name = reactive({NULL})) {
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
@@ -48,10 +48,10 @@ mod_ds_density_server <- function(id,
         )
         
         observe({
-          if(inherits(vizData(), "VizData"))
-            rv$data <- vizData()
+          if(inherits(DaparViz(), "DaparViz"))
+            rv$data <- DaparViz()
 
-          shinyjs::toggle('badFormatMsg', condition = !inherits(vizData(), "VizData"))
+          shinyjs::toggle('badFormatMsg', condition = !inherits(DaparViz(), "DaparViz"))
         }, priority = 1000)
 
 

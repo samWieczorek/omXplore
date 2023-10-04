@@ -6,7 +6,7 @@
 #' 
 #' @param id A `character(1)` which is the id of the shiny module.
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param vizData xxx
+#' @param DaparViz xxx
 #' @param width xxx
 #'
 #' @name heatmaps
@@ -51,7 +51,7 @@ mod_ds_heatmap_ui <- function(id) {
 #' @rdname heatmaps
 #'
 mod_ds_heatmap_server <- function(id,
-                                  vizData = reactive({NULL}),
+                                  DaparViz = reactive({NULL}),
                                   width = 900) {
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
@@ -59,12 +59,12 @@ mod_ds_heatmap_server <- function(id,
         rv <- reactiveValues(data = NULL)
         
         observe({
-          if(inherits(vizData(), "VizData"))
-            rv$data <- vizData()
+          if(inherits(DaparViz(), "DaparViz"))
+            rv$data <- DaparViz()
           
-          shinyjs::toggle('badFormatMsg', condition = !inherits(vizData(), "VizData"))
-          shinyjs::toggle('linkage', condition = !inherits(vizData(), "VizData"))
-          shinyjs::toggle('distance', condition = !inherits(vizData(), "VizData"))
+          shinyjs::toggle('badFormatMsg', condition = !inherits(DaparViz(), "DaparViz"))
+          shinyjs::toggle('linkage', condition = !inherits(DaparViz(), "DaparViz"))
+          shinyjs::toggle('distance', condition = !inherits(DaparViz(), "DaparViz"))
         }, priority = 1000)
 
 

@@ -29,7 +29,7 @@
 #' @return A plot
 #'
 #' @param id A `character(1)` which is the 'id' of the shiny module.
-#' @param vData An instance of a class `VizData`.
+#' @param vData An instance of a class `DaparViz`.
 #' @param pal.name  A `character(1)` which is the name of the palette (from
 #' the package [RColorBrewer] to use.
 #' @author Samuel Wieczorek, Enora Fremy
@@ -74,7 +74,7 @@ mod_mv_imputation_server <- function(id,
 
         # Initialisation of the module
         observe({
-            stopifnot(inherits(vData(), "VizData"))
+            stopifnot(inherits(vData(), "DaparViz"))
         })
 
 
@@ -82,7 +82,7 @@ mod_mv_imputation_server <- function(id,
             req(vData())
 
             withProgress(message = "Making MV Intensity plot", value = 100, {
-              hc_mvTypePlot2(vizData = vData(), pattern = "Missing POV")
+              hc_mvTypePlot2(DaparViz = vData(), pattern = "Missing POV")
             })
         })
 
@@ -90,7 +90,7 @@ mod_mv_imputation_server <- function(id,
         output$imageNA_ui <- renderPlot({
             req(vData())
             withProgress(message = "Making MV Heatmap plot", value = 100, {
-                mv.image(vizData = vData())
+                mv.image(DaparViz = vData())
             })
         })
     })

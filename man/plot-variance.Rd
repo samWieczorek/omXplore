@@ -10,16 +10,18 @@ numeric matrix.}
 \usage{
 mod_ds_variance_ui(id)
 
-mod_ds_variance_server(id, vizData, pal.name = NULL)
+mod_ds_variance_server(id, DaparViz, pal.name = NULL)
 
 CVDist(vizData, pal.name = NULL)
 }
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
-\item{vizData}{xxx}
+\item{DaparViz}{xxx}
 
 \item{pal.name}{xxx}
+
+\item{vizData}{xxx}
 }
 \value{
 NA

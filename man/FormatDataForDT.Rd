@@ -7,7 +7,7 @@
 FormatDataForDT(vizData, digits = 2)
 }
 \arguments{
-\item{vizData}{An instance of the class 'VizData'}
+\item{vizData}{An instance of the class \code{DaparViz}}
 
 \item{digits}{An 'integer(1)' to specify the number of digits to display
 in the tables for numerical values. Default is 2.}

@@ -12,7 +12,7 @@ mod_ds_corrmatrix_ui(id)
 
 mod_ds_corrmatrix_server(
   id,
-  vizData = reactive({
+  DaparViz = reactive({
      NULL
  }),
   rate = reactive({
@@ -28,7 +28,7 @@ corrMatrix(data, rate = 0.5, showValues = FALSE)
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
-\item{vizData}{xxx}
+\item{DaparViz}{xxx}
 
 \item{rate}{The rate parameter to control the exponential law for
 the gradient of colors}

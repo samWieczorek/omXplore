@@ -7,7 +7,7 @@
 #' @name corrmatrix
 #' 
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param vizData xxx
+#' @param DaparViz xxx
 #' @param rate xxx. Default value is 0.9
 #' @param showValues Default is FALSE.
 #'
@@ -36,7 +36,7 @@ mod_ds_corrmatrix_ui <- function(id) {
 #' @rdname corrmatrix
 #'
 mod_ds_corrmatrix_server <- function(id,
-                                     vizData = reactive({NULL}),
+                                     DaparViz = reactive({NULL}),
                                      rate = reactive({0.5}),
                                      showValues = reactive({FALSE})) {
   
@@ -52,10 +52,10 @@ mod_ds_corrmatrix_server <- function(id,
         )
 
         observe({
-          if(inherits(vizData(), "VizData"))
-            rv.corr$data <- vizData()
+          if(inherits(DaparViz(), "DaparViz"))
+            rv.corr$data <- DaparViz()
           
-          shinyjs::toggle('badFormatMsg', condition = !inherits(vizData(), "VizData"))
+          shinyjs::toggle('badFormatMsg', condition = !inherits(DaparViz(), "DaparViz"))
         }, priority = 1000)
 
         output$rate_ui <- renderUI({
