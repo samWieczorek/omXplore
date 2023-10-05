@@ -13,13 +13,10 @@ mod_format_DT_server(
   data = reactive({
      NULL
  }),
-  dataForStyling = reactive({
-     NULL
- }),
   withDLBtns = FALSE,
   showRownames = FALSE,
   dom = "Bt",
-  hc_style = reactive({
+  dt_style = reactive({
      NULL
  }),
   filename = "Prostar_export",
@@ -34,15 +31,17 @@ mod_format_DT_server(
 
 \item{data}{A \code{data.frame}}
 
-\item{dataForStyling}{xxx}
-
 \item{withDLBtns}{A boolean to indicate whether to display download buttons or not.}
 
 \item{showRownames}{A boolean to indicate whether to show rownames.}
 
 \item{dom}{xxx}
 
-\item{hc_style}{xxx}
+\item{dt_style}{A \code{list} composed of:
+\itemize{
+\item data : a data.frame` xxxx
+\item colors : a named vector
+}}
 
 \item{filename}{A \code{character(1)} which is the default filename for download.}
 
@@ -50,12 +49,14 @@ mod_format_DT_server(
 
 \item{selection}{xxx}
 
+\item{dataForStyling}{xxx}
+
 \item{xls_style}{A list of four items:
 \itemize{
 \item cols: a vector of colnames of columns to show,
 \item vals: a vector of colnames of columns that contain values,
 \item unique: unique(conds),
-\item pal: RColorBrewer::brewer.pal(3, "Dark2")\link{seq_len(2)}
+\item pal: RColorBrewer::brewer.pal(3, "Dark2")\link{1:2}
 }}
 }
 \value{

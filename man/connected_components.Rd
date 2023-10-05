@@ -8,7 +8,7 @@
 \usage{
 mod_ds_cc_ui(id)
 
-mod_ds_cc_server(id, DaparViz)
+mod_ds_cc_server(id, object)
 }
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}

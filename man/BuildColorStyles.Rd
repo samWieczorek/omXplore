@@ -4,7 +4,7 @@
 \alias{BuildColorStyles}
 \title{xxxx}
 \usage{
-BuildColorStyles(vizData)
+BuildColorStyles(type)
 }
 \arguments{
 \item{vizData}{An instance of the class \code{DaparViz}}
