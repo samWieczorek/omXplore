@@ -141,14 +141,15 @@ setMethod("show", 'DaparViz',
             
             if (length(object@cc) > 0){
               cc.infos <- GetCCInfos(object@cc)
-              cat(crayon::green('\t\tNumber of One -> One: '))
-              cat(crayon::green(length(cc.infos$One_One)))
+              cat(crayon::green('\t\tDetails:\n'))
+              cat(crayon::green('\t\tOne -> One: '))
+              cat(crayon::green(cc.infos$One_One))
               cat(crayon::green('\n'))
-              cat(crayon::green('\t\tNumber of One -> Multi: '))
-              cat(crayon::green(length(cc.infos$One_Multi)))
+              cat(crayon::green('\t\tOne -> Multi: '))
+              cat(crayon::green(cc.infos$One_Multi))
               cat(crayon::green('\n'))
-              cat(crayon::green('\t\tNumber of Multi -> Multi: '))
-              cat(crayon::green(length(cc.infos$Multi_Multi)))
+              cat(crayon::green('\t\tMulti -> Multi: '))
+              cat(crayon::green(cc.infos$Multi_Multi))
               cat(crayon::green('\n'))
               
             }
