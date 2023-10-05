@@ -19,12 +19,13 @@ NULL
 #' @importFrom shiny NS tagList
 #' @importFrom shinyjs toggle hidden
 #' @import shinyBS
+#' @import highcharter
 #'
 #' @export
 #' @rdname connected_components
 #' 
 mod_ds_cc_ui <- function(id) {
-  pkgs.require(c('visNetwork', 'shinyBS', 'shinyjs'))
+  pkgs.require(c('visNetwork', 'shinyBS', 'shinyjs', 'highcharter'))
   ns <- NS(id)
   tagList(
     shinyjs::useShinyjs(),
@@ -42,7 +43,7 @@ mod_ds_cc_ui <- function(id) {
                tagList(
                  fluidRow(
                    column(width = 4, tagList(
-                     dl_ui(ns("OneOneDT_DL_btns")),
+                     #dl_ui(ns("OneOneDT_DL_btns")),
                      uiOutput(ns("OneOneDT_UI"))
                    )),
                    column(width = 8, uiOutput(ns("OneOneDTDetailed_UI"))
@@ -57,7 +58,7 @@ mod_ds_cc_ui <- function(id) {
                  fluidRow(
                    column(width = 4,
                      tagList(
-                       dl_ui(ns("OneMultiDT_DL_btns")),
+                       #dl_ui(ns("OneMultiDT_DL_btns")),
                        uiOutput(ns("OneMultiDT_UI"))
                      )
                    ),
@@ -77,7 +78,7 @@ mod_ds_cc_ui <- function(id) {
                              ),
                  fluidRow(
                    column(width = 6, tagList(
-                     highchartOutput(ns("jiji")),
+                     highcharter::highchartOutput(ns("jiji")),
                      uiOutput(ns("CCMultiMulti_DL_btns_ui")),
                      shinyjs::hidden(uiOutput(ns("CCMultiMulti_UI")))
                    )),
@@ -255,7 +256,7 @@ mod_ds_cc_server <- function(id, DaparViz) {
       
       output$CCMultiMulti_DL_btns_ui <- renderUI({
         req(input$searchCC == "tabular")
-        dl_ui(ns("CCMultiMulti_DL_btns"))
+        #dl_ui(ns("CCMultiMulti_DL_btns"))
       })
       
       # dl_server("CCMultiMulti_DL_btns",
@@ -726,9 +727,7 @@ mod_ds_cc_server <- function(id, DaparViz) {
         df <- BuildOne2OneTab()
         colnames(df) <- c("Proteins Ids", "Peptides Ids")
         rvCC$OneOneDT_rows_selected <- mod_format_DT_server('OneOneDT', 
-                                                                      data = reactive({df}),
-                                                                      hc_style = reactive({NULL})
-                                                                      )
+                                                            data = reactive({df}) )
         
         mod_format_DT_ui(ns('OneOneDT'))
       })
@@ -738,49 +737,44 @@ mod_ds_cc_server <- function(id, DaparViz) {
       GetDataFor_OneOneDTDetailed <- reactive({
         req(rv$data@cc)
         req(rvCC$OneOneDT_rows_selected())
-        input$pepInfo
-        .pep <- input$pepInfo
+        
+        #browser()
+
         line <- rvCC$OneOneDT_rows_selected()
-        ind <- 1:ncol(rv$data@qdata)
-        data <- FormatDataForDT(rv$data)
-        .n <- ncol(data)
+        #ind <- 1:ncol(rv$data@qdata)
+        #data <- FormatDataForDT(rv$data)
+        #.n <- ncol(data)
         
         pepLine <- BuildOne2OneTab()[line, 2]
         
         indices <- unlist(lapply(pepLine, function(x) {
-          which(rownames(data) == x)
-        }))
-        data <- data[indices, c(ind, (ind + .n / 2))]
-        if (!is.null(.pep)) {
-          data <- cbind(data, (rv$data@metadata)[pepLine, .pep])
-          colnames(data)[(1 + .n - length(.pep)):.n] <- .pep
-        }
+          which(rownames(rv$data@qdata) == x)}))
+        qdata <- rv$data@qdata[indices, ]
+        qmetacell <- rv$data@metacell[indices, ]
+         
+        # if (!is.null(.pep)) {
+        #   data <- cbind(data, (rv$data@metadata)[pepLine, .pep])
+        #   colnames(data)[(1 + .n - length(.pep)):.n] <- .pep
+        # }
         
-        data
+        list(qdata = data.frame(as.list(qdata)), 
+             qmetacell = data.frame(as.list(qmetacell)))
       })
       
       
       output$OneOneDTDetailed_UI <- renderUI({
         req(rv$data@cc)
         req(rvCC$OneOneDT_rows_selected())
-        data <- GetDataFor_OneOneDTDetailed()
-        .n <- ncol(data)
-        offset <- length(input$pepInfo)
         
-        c.tags <- BuildColorStyles(rv$data)$tags
-        c.colors <- BuildColorStyles(rv$data)$colors
+        ll <- GetDataFor_OneOneDTDetailed()
         
-        hcStyle <- list(
-          cols = colnames(data)[1:((.n - offset) / 2)],
-          vals = colnames(data)[(((.n - offset) / 2) + 1):(.n - offset)],
-          unique = c.tags,
-          pal = c.colors
-        )
-        
-        mod_format_DT_server('OneOneDTDetailed', 
-                                       data = reactive({data}),
-                                       hc_style = reactive({hcStyle})
-                                       )
+        dt_style = list(data = ll$qmetacell,
+                        colors = BuildColorStyles(rv$data@type)
+                        )
+       mod_format_DT_server('OneOneDTDetailed', 
+                             data = reactive({ll$qdata}),
+                             dt_style = reactive({dt_style})
+                             )
         
         mod_format_DT_ui(ns('OneOneDTDetailed'))
       })

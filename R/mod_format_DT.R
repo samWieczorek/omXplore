@@ -16,7 +16,9 @@
 #' @param withDLBtns A boolean to indicate whether to display download buttons or not.
 #' @param showRownames A boolean to indicate whether to show rownames.
 #' @param dom xxx
-#' @param hc_style xxx
+#' @param dt_style A `list` composed of:
+#' * data : a data.frame` xxxx
+#' * colors : a named vector
 #' @param xls_style A list of four items:
 #' * cols: a vector of colnames of columns to show,
 #' * vals: a vector of colnames of columns that contain values,
@@ -62,12 +64,10 @@ mod_format_DT_ui <- function(id) {
 #' @rdname mod_format_DT
 mod_format_DT_server <- function(id,
                                  data = reactive({NULL}),
-                                 dataForStyling = reactive({NULL}),
                                  withDLBtns = FALSE,
                                  showRownames = FALSE,
                                  dom = 'Bt',
-                                 hc_style = reactive({NULL}),
-                                 #xls_style = reactive({NULL}),
+                                 dt_style = reactive({NULL}),
                                  filename = "Prostar_export",
                                  hideCols = reactive({NULL}),
                                  selection = 'single'
@@ -88,10 +88,10 @@ mod_format_DT_server <- function(id,
     checkValidity <- reactive({
       passed <- TRUE
       
-      passed <- passed && !is.null(dataForStyling())
-      passed <- passed && inherits(data(), 'data.frame')
-      passed <- passed && inherits(dataForStyling(), 'data.frame')
-      passed <- passed && nrow(data()) == nrow(dataForStyling())
+      passed <- passed && !is.null(dt_style()$data)
+      passed <- passed && (inherits(data(), 'data.frame') || inherits(data(), 'matrix'))
+      passed <- passed && (inherits(dt_style()$data, 'data.frame') || inherits(dt_style()$data, 'matrix'))
+      passed <- passed && nrow(data()) == nrow(dt_style()$data)
       
       passed
     })
@@ -99,11 +99,14 @@ mod_format_DT_server <- function(id,
     
     observe({
       req(data())
-      rv$data <- data()
-      
-      if(!is.null(dataForStyling()) && checkValidity()){
+      if(is.null(dt_style()))
+         rv$data <- data()
+      else {
+        
+        if(checkValidity()){
         # Check validity of dataForStyling
-        rv$data <- cbind(rv$data, dataForStyling())
+        rv$data <- cbind(data(), dt_style()$data)
+        }
       }
       
       DT::replaceData(proxy, rv$data, resetPaging = FALSE)
@@ -129,31 +132,34 @@ mod_format_DT_server <- function(id,
       
       req(length(rv$data) > 0)
       .jscode <- DT::JS("$.fn.dataTable.render.ellipsis( 30 )")
-
+      
+ 
       dt <- DT::datatable(
         rv$data, 
         escape = FALSE,
         selection = selection,
         rownames= showRownames,
         plugins = "ellipsis",
-        options = list(
-          initComplete = initComplete(),
-          dom = dom,
-          autoWidth = TRUE,
-          columnDefs = list(
-            list(targets = '_all', className = "dt-center", render = .jscode),
-            list(targets = hideCols()-1, visible = FALSE)
-          )
-          #ordering = FALSE
+        options = list(initComplete = initComplete(),
+                       dom = dom,
+                       autoWidth = TRUE,
+                       columnDefs = if (is.null(dt_style()))
+                         list(list(targets = '_all', className = "dt-center", render = .jscode))
+                       else 
+                         list(
+                           list(targets = '_all', className = "dt-center", render = .jscode),
+                           list(targets = ncol(data())-1 + 1:ncol(dt_style()$data), visible = FALSE, className = "dt-center", render = .jscode)
+                         )
         )
       )
       
-      if (!is.null(hc_style())){
+      if (!is.null(dt_style())){
         dt <- dt %>%
           DT::formatStyle(
-            columns = hc_style()$cols,
-            valueColumns = hc_style()$vals,
-            backgroundColor = DT::styleEqual(hc_style()$unique, hc_style()$pal)
+            columns = colnames(rv$data),
+            valueColumns = colnames(dt_style()$data),
+            backgroundColor = DT::styleEqual(names(dt_style()$colors),  
+                                             unique(dt_style()$colors))
           )
       }
 

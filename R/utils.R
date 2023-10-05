@@ -144,15 +144,10 @@ FormatDataForDT <- function(vizData, digits = 2) {
 #' @param vizData An instance of the class `DaparViz`
 #'
 #' @export
-BuildColorStyles <- function(vizData) {
-  styles <- list(tags = NULL,
-                 colors = NULL)
-  
-  mc <- metacell.def(vizData@type)
-  
-  styles$tags <- mc$node
-  styles$colors <- mc$color
-  styles
+BuildColorStyles <- function(type) {
+  mc <- metacell.def(type)
+  colors <- as.list(setNames(mc$color, mc$node))
+  colors
 }
 
 
