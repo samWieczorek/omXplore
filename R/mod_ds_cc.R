@@ -196,16 +196,16 @@ mod_ds_cc_server <- function(id, object) {
       output$visNetCC <- visNetwork::renderVisNetwork({
         
         req(rvCC$selectedCC)
-        local <- (rv$data@cc)[Get_CC_Multi2Any()]
+        local <- (GetCCInfos(rv$data@cc))$Multi_Multi
         
         rvCC$selectedCCgraph <- buildGraph(local[[rvCC$selectedCC]])
         
         display.CC.visNet(rvCC$selectedCCgraph) %>%
-          visEvents(click = paste0("function(nodes){Shiny.onInputChange('",
+          visNetwork::visEvents(click = paste0("function(nodes){Shiny.onInputChange('",
             ns("click"), "', nodes.nodes[0]);
                 Shiny.onInputChange('", ns("node_selected"), "', nodes.nodes.length);;}"
           )) %>%
-          visOptions(highlightNearest = TRUE)
+          visNetwork::visOptions(highlightNearest = TRUE)
       })
       
       
@@ -226,7 +226,7 @@ mod_ds_cc_server <- function(id, object) {
         tooltip <- NULL
         
         isolate({
-          local <- (rv$data@cc)[Get_CC_Multi2Any()]
+          local <- (GetCCInfos(rv$data@cc))$Multi_Multi
           n.prot <- unlist(lapply(local, function(x) {ncol(x)}))
           n.pept <- unlist(lapply(local, function(x) {nrow(x)}))
           df <- tibble::tibble(x = jitter(n.pept),
@@ -253,14 +253,15 @@ mod_ds_cc_server <- function(id, object) {
       
       
       GetDataFor_CCMultiMulti <- reactive({
-        req(length(Get_CC_Multi2Any()) > 0)
-        browser()
+        req(length((GetCCInfos(rv$data@cc))$Multi_Multi) > 0)
+        
+        ll <- (GetCCInfos(rv$data@cc))$Multi_Multi
         df <- cbind(
-          id = 1:length(Get_CC_Multi2Any()),
-          nProt = cbind(lapply((rv$data@cc)[Get_CC_Multi2Any()], function(x) {ncol(x)} )),
-          nPep = cbind(lapply((rv$data@cc)[Get_CC_Multi2Any()], function(x) {nrow(x)})),
-          proteins = cbind(lapply((rv$data@cc)[Get_CC_Multi2Any()],  function(x) {paste(colnames(x), collapse = ",")})),
-          peptides = cbind(lapply((rv$data@cc)[Get_CC_Multi2Any()], function(x) {paste(colnames(x), collapse = ",")}))
+          id = 1:length(ll),
+          nProt = cbind(lapply(ll, function(x) {ncol(x)} )),
+          nPep = cbind(lapply(ll, function(x) {nrow(x)})),
+          proteins = cbind(lapply(ll,  function(x) {paste(colnames(x), collapse = ",")})),
+          peptides = cbind(lapply(ll, function(x) {paste(rownames(x), collapse = ",")}))
         )
         
         colnames(df) <- c("id", "nProt", "nPep", "Proteins Ids", "Peptides Ids")
@@ -300,11 +301,13 @@ mod_ds_cc_server <- function(id, object) {
       observeEvent(c(rvCC$selectedNeighbors, 
                      input$node_selected, 
                      rvCC$selectedCCgraph), {
-        local <- (rv$data@cc)[Get_CC_Multi2Any()]
+        local <- (GetCCInfos(rv$data@cc))$Multi_Multi
         rvCC$selectedNeighbors
         
         nodes <- rvCC$selectedCCgraph$nodes
         
+        
+        #browser()
         if (!is.null(input$node_selected) && input$node_selected == 1) {
           sharedPepIndices <- intersect(rvCC$selectedNeighbors, which(nodes[, "group"] == "shared.peptide"))
           specPepIndices <- intersect(rvCC$selectedNeighbors, which(nodes[, "group"] == "spec.peptide"))
@@ -327,8 +330,8 @@ mod_ds_cc_server <- function(id, object) {
       
       
       output$CCDetailed <- renderUI({
-        req(rvCC$detailedselectedNode)
-        req(rvCC$selectedCC)
+        req(rvCC$detailedselectedNode, rvCC$selectedCC)
+        #req(rvCC$selectedCC)
 
         tagList(
           h4("Proteins"),
@@ -382,140 +385,83 @@ mod_ds_cc_server <- function(id, object) {
       })
       
       
-      #######
-      output$CCDetailedSharedPep_UI <- renderUI({
+      
+      
+      
+      #-----------------------------------------------
+      GetDataFor_CCDetailedSharedPep_UI <- reactive({
         rvCC$detailedselectedNode
         input$pepInfo
         
         req(rvCC$detailedselectedNode$sharedPepLabels)
         
-        
-        ind <- 1:ncol(rv$data@qdata)
-        data <- FormatDataForDT(rv$data)
-        .n <- ncol(data)
         pepLine <- rvCC$detailedselectedNode$sharedPepLabels
-        indices <- unlist(lapply(pepLine, function(x) {which(rownames(data) == x)}))
-        data <- data[indices, c(ind, (ind + .n / 2))]
+        indices <- unlist(lapply(pepLine, function(x) {which(rownames(rv$data@qdata) == x)}))
+        
+        qdata <- rv$data@qdata[indices, ]
+        qmetacell <- rv$data@metacell[indices, ]
         
         if (!is.null(input$pepInfo)) {
-          data <- cbind(data, (rv$data@metadata)[pepLine, input$pepInfo])
+          qdata <- cbind(qdata, (rv$data@metadata)[pepLine, input$pepInfo])
           colnames(data)[(1 + .n - length(input$pepInfo)):.n] <- input$pepInfo
         }
         
-        offset <- length(input$pepInfo)
-        c.tags <- BuildColorStyles(rv$data)$tags
-        c.colors <- BuildColorStyles(rv$data)$colors
-        
-        hcStyle <- list(
-          cols = colnames(data)[1:((.n - offset) / 2)],
-          vals = colnames(data)[(((.n - offset) / 2) + 1):(.n - offset)],
-          unique = c.tags,
-          pal = c.colors
+        list(qdata = convert2df(qdata), 
+             qmetacell = convert2df(qmetacell)
         )
+      })
+      
+      
+      output$CCDetailedSharedPep_UI <- renderUI({
+        req(rvCC$CCMultiMulti_rows_selected())
+        ll <- GetDataFor_CCDetailedSharedPep_UI()
+        
+        dt_style = list(data = ll$qmetacell,
+                        colors = BuildColorStyles(rv$data@type))
         
         mod_format_DT_server('CCDetailedSharedPep', 
-                                       data = reactive({data}),
-                                       hc_style = reactive({hcStyle})
-                                       )
+                             data = reactive({ll$qdata}),
+                             dt_style = reactive({dt_style})
+        )
         
         mod_format_DT_ui(ns('CCDetailedSharedPep'))
-        
       })
       
       
       
-      # output$CCDetailedSharedPep <- DT::renderDataTable(server = TRUE, {
-      #   rvCC$detailedselectedNode
-      #   input$pepInfo
-      #   
-      #   req(rvCC$detailedselectedNode$sharedPepLabels)
-      #   
-      #   
-      #   ind <- 1:ncol(rv$data@qdata)
-      #   data <- FormatDataForDT(rv$data, rv$settings_nDigits)
-      #   .n <- ncol(data)
-      #   pepLine <- rvCC$detailedselectedNode$sharedPepLabels
-      #   indices <- unlist(lapply(pepLine, function(x) {
-      #     which(rownames(data) == x)
-      #   }))
-      #   data <- data[indices, c(ind, (ind + .n / 2))]
-      #   
-      #   if (!is.null(input$pepInfo)) {
-      #     data <- cbind(data, (rv$data@metadata)[pepLine, input$pepInfo])
-      #     colnames(data)[(1 + .n - length(input$pepInfo)):.n] <- input$pepInfo
-      #   }
-      #   
-      #   offset <- length(input$pepInfo)
-      #   c.tags <- BuildColorStyles(rv$data)$tags
-      #   c.colors <- BuildColorStyles(rv$data)$colors
-      #   
-      #   dt <- DT::datatable(data,
-      #                       extensions = c("Scroller"),
-      #                       options = list(
-      #                         initComplete = initComplete(),
-      #                         dom = "rt",
-      #                         blengthChange = FALSE,
-      #                         ordering = FALSE,
-      #                         scrollX = 400,
-      #                         scrollY = 150,
-      #                         displayLength = 10,
-      #                         scroller = TRUE,
-      #                         header = FALSE,
-      #                         server = FALSE,
-      #                         columnDefs = list(
-      #                           list(
-      #                             targets = c(
-      #                               (((.n - offset) / 2) + 1):(.n - offset)
-      #                             ),
-      #                             visible = FALSE
-      #                           )
-      #                         )
-      #                       )
-      #   ) %>%
-      #     DT::formatStyle(
-      #       colnames(data)[1:((.n - offset) / 2)],
-      #       colnames(data)[(((.n - offset) / 2) + 1):(.n - offset)],
-      #       backgroundColor = DT::styleEqual(c.tags, c.colors)
-      #     )
-      #   
-      #   dt
-      # })
-      
-      
-      
-      output$CCDetailedSpecPep_UI <- renderUI({
+      GetDataFor_CCDetailedSpecPep_UI <- reactive({
         rvCC$detailedselectedNode
         input$pepInfo
+        
         req(rvCC$detailedselectedNode$specPepLabels)
         
-        ind <- 1:ncol(rv$data@qdata)
-        data <- FormatDataForDT(rv$data)
-        .n <- ncol(data)
         pepLine <- rvCC$detailedselectedNode$specPepLabels
-        indices <- unlist(lapply(pepLine, function(x) {which(rownames(data) == x)}))
-        data <- data[indices, c(ind, (ind + .n / 2))]
+        indices <- unlist(lapply(pepLine, function(x) {which(rownames(rv$data@qdata) == x)}))
+        
+        qdata <- rv$data@qdata[indices, ]
+        qmetacell <- rv$data@metacell[indices, ]
         
         if (!is.null(input$pepInfo)) {
-          data <- cbind(data, (rv$data@metadata)[pepLine, input$pepInfo])
+          qdata <- cbind(qdata, (rv$data@metadata)[pepLine, input$pepInfo])
           colnames(data)[(1 + .n - length(input$pepInfo)):.n] <- input$pepInfo
         }
         
-        offset <- length(input$pepInfo)
-        
-        c.tags <- BuildColorStyles(rv$data)$tags
-        c.colors <- BuildColorStyles(rv$data)$colors
-        
-        hcStyle <- list(
-          cols = colnames(data)[1:((.n - offset) / 2)],
-          vals = colnames(data)[(((.n - offset) / 2) + 1):(.n - offset)],
-          unique = c.tags,
-          pal = c.colors
+        list(qdata = convert2df(qdata), 
+             qmetacell = convert2df(qmetacell)
         )
+      })
+      
+      output$CCDetailedSpecPep_UI <- renderUI({
+        req(rvCC$CCMultiMulti_rows_selected())
+        ll <- GetDataFor_CCDetailedSpecPep_UI()
+        
+        dt_style = list(data = ll$qmetacell,
+                        colors = BuildColorStyles(rv$data@type))
         
         mod_format_DT_server('CCDetailedSpecPep', 
-                                       data = reactive({data}),
-                                       hc_style = reactive({hcStyle})
-                                       )
+                             data = reactive({ll$qdata}),
+                             dt_style = reactive({dt_style})
+        )
         
         mod_format_DT_ui(ns('CCDetailedSpecPep'))
         
@@ -583,40 +529,14 @@ mod_ds_cc_server <- function(id, object) {
       
       
       
-      Get_CC_One2One <- reactive({
-        #rv$data@cc
-        ll.prot <- lapply(rv$data@cc, function(x) {ncol(x)})
-        ll.pept <- lapply(rv$data@cc, function(x) {nrow(x)})
-        ll.prot.one2one <- intersect(which(ll.prot == 1), which(ll.pept == 1))
-        ll.prot.one2one
-      })
-      
-      
-      
-      Get_CC_One2multi <- reactive({
-        #rv$data@cc
-        ll.prot <- lapply(rv$data@cc, function(x) {ncol(x)})
-        ll.pept <- lapply(rv$data@cc, function(x) {nrow(x)})
-        ll.prot.one2multi <- intersect(which(ll.prot == 1),  which(ll.pept > 1))
-        ll.prot.one2multi
-      })
-      
-      
-      Get_CC_Multi2Any <- reactive({
-        #rv$data@cc
-        ll.prot <- lapply(rv$data@cc, function(x) {ncol(x)})
-        ll.pept <- lapply(rv$data@cc, function(x) {nrow(x)})
-        ll.prot.multi2any <- which(ll.prot > 1)
-        ll.prot.multi2any
-      })
-      
-      
       
       BuildOne2OneTab <- reactive({
         #rv$data@cc
+        ll <- (GetCCInfos(rv$data@cc))$One_One
+        
         df <- cbind(
-          cbind(lapply((rv$data@cc)[Get_CC_One2One()], function(x) {colnames(x)})),
-          cbind(lapply((rv$data@cc)[Get_CC_One2One()], function(x) {rownames(x)}))
+          cbind(lapply(ll, function(x) {colnames(x)})),
+          cbind(lapply(ll, function(x) {rownames(x)}))
         )
         colnames(df) <- c("proteins", "peptides")
         df
@@ -624,11 +544,11 @@ mod_ds_cc_server <- function(id, object) {
       
       BuildOne2MultiTab <- reactive({
         #rv$data@cc
-        
+        ll <- (GetCCInfos(rv$data@cc))$One_Multi
         df <- cbind(
-          proteins = cbind(lapply((rv$data@cc)[Get_CC_One2multi()], function(x) {colnames(x)})),
-          nPep = cbind(lapply((rv$data@cc)[Get_CC_One2multi()], function(x) {nrow(x)})),
-          peptides = cbind(lapply((rv$data@cc)[Get_CC_One2multi()],function(x) {paste(rownames(x), collapse = ",")}))
+          proteins = cbind(lapply(ll, function(x) {colnames(x)})),
+          nPep = cbind(lapply(ll, function(x) {nrow(x)})),
+          peptides = cbind(lapply(ll,function(x) {paste(rownames(x), collapse = ",")}))
         )
         colnames(df) <- c("proteins", "nPep", "peptides")
         
@@ -638,11 +558,14 @@ mod_ds_cc_server <- function(id, object) {
       
       BuildMulti2AnyTab <- reactive({
         #rv$data@cc
-        df <- cbind(id = 1:length(Get_CC_Multi2Any()),
-          proteins = cbind(lapply((rv$data@cc)[Get_CC_Multi2Any()], function(x) {colnames(x)})),
-          nProt = cbind(lapply((rv$data@cc)[Get_CC_Multi2Any()], function(x) {ncol(x)})),
-          nPep = cbind(lapply((rv$data@cc)[Get_CC_Multi2Any()], function(x) {nrow(x)})),
-          peptides = cbind(lapply((rv$data@cc)[Get_CC_Multi2Any()], function(x) {paste(rownames(x), collapse = ",")}))
+        
+        ll <- (GetCCInfos(rv$data@cc))$Multi_Multi
+        
+        df <- cbind(id = 1:length(ll),
+          proteins = cbind(lapply(ll, function(x) {colnames(x)})),
+          nProt = cbind(lapply(ll, function(x) {ncol(x)})),
+          nPep = cbind(lapply(ll, function(x) {nrow(x)})),
+          peptides = cbind(lapply(ll, function(x) {paste(rownames(x), collapse = ",")}))
         )
         colnames(df) <- c("proteins", "nPep", "peptides")
         

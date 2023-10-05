@@ -13,7 +13,7 @@ finalSize <- 100
 data("Exp1_R25_pept", package='DaparToolshedData')
 data("Exp1_R25_prot", package='DaparToolshedData')
 
-ft1 <- Exp1_R25_pept[1:finalSize]
+ft1 <- Exp1_R25_pept[150:170]
 ft2 <- Exp1_R25_prot[1:finalSize]
 
 vData_ft1 <- convert2Viz(ft1)
@@ -29,7 +29,7 @@ save(vData_ft, file='data/vData_ft.RData')
 data("Exp1_R25_pept", package='DAPARdata')
 data("Exp1_R25_prot", package='DAPARdata')
 
-ms1 <- Exp1_R25_pept[1:finalSize]
+ms1 <- Exp1_R25_pept[150:170]
 ms2 <- Exp1_R25_prot[1:finalSize]
 
 vData_ms1 <- convert2Viz(ms1)

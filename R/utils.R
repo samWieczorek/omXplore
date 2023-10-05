@@ -275,16 +275,18 @@ GetCCInfos <- function(cc){
                    One_Multi = list(),
                    Multi_Multi = list())
   
-  for (x in cc){
-    if (dim(x)[1] == 1 && dim(x)[2] == 1){
-      cc.infos[['One_One']] <- append(cc.infos[['One_One']], x)
-    } else if (dim(x)[1] > 1 && dim(x)[2] == 1){
-      cc.infos[['One_Multi']] <- append(cc.infos[['One_Multi']], x)
-    } else if (dim(x)[1] > 1 && dim(x)[2] > 1){
-      cc.infos[['Multi_Multi']] <- append(cc.infos[['Multi_Multi']], x)
-    }
-  }
   
+  ll.prot <- lapply(cc, function(x) {ncol(x)})
+  ll.pept <- lapply(cc, function(x) {nrow(x)})
+  ll.prot.one2one <- intersect(which(ll.prot == 1), which(ll.pept == 1))
+  ll.prot.one2multi <- intersect(which(ll.prot == 1),  which(ll.pept > 1))
+  ll.prot.multi2any <- which(ll.prot > 1)
+  
+  cc.infos[['One_One']] <- cc[ll.prot.one2one]
+  cc.infos[['One_Multi']] <- cc[ll.prot.one2multi]
+  cc.infos[['Multi_Multi']] <- cc[ll.prot.multi2any]
   
   cc.infos
+  
 }
+
