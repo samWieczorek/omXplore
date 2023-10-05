@@ -34,7 +34,12 @@ mod_ds_cc_ui <- function(id) {
           h3('Dataset in not in correct format.')
       )
     ),
-  tabPanel("Peptide-Protein Graph",
+    shinyjs::hidden(
+      div(id = ns('noCCMsg'), h3('The dataset contains no CC.'))
+    ),
+    shinyjs::hidden(
+      div(id = ns('mainUI'), 
+          tabPanel("Peptide-Protein Graph",
            value = "graphTab",
            tabsetPanel(id = "graphsPanel",
              
@@ -88,6 +93,8 @@ mod_ds_cc_ui <- function(id) {
                )
              )
            )
+          )
+      )
   )
   )
 }
@@ -99,14 +106,30 @@ mod_ds_cc_ui <- function(id) {
 #' @import highcharter
 #' @export
 #' @rdname connected_components
-mod_ds_cc_server <- function(id, DaparViz) {
+mod_ds_cc_server <- function(id, object) {
   pkgs.require(c('visNetwork', 'highcharter'))
   moduleServer(id, function(input, output, session) {
       ns <- session$ns
       
       rv <- reactiveValues(
-        data = NULL
+        data = NULL,
+        isValid = FALSE
       )
+      
+      
+      
+      observeEvent(object(), ignoreInit = FALSE,{
+        obj.valid <- inherits(object(), "DaparViz")
+        cc.exists <- length(object()@cc) > 0
+        
+        if(obj.valid && cc.exists)
+          rv$data <- object()
+          
+        shinyjs::toggle('mainUI', condition = obj.valid && cc.exists)
+        shinyjs::toggle('noCCMsg', condition = obj.valid && !cc.exists)
+        shinyjs::toggle('badFormatMsg', condition = !obj.valid)
+      }, priority = 1000)
+      
       
       
       rvCC <- reactiveValues(
@@ -117,24 +140,15 @@ mod_ds_cc_server <- function(id, DaparViz) {
         selectedCCgraph = NULL,
         
         # when the user selects a node in the graph
-        detailedselectedNode = list(
-          sharedPepLabels = NULL,
-          specPepLabels = NULL,
-          protLabels = NULL
-        ),
-        
+        detailedselectedNode = list(sharedPepLabels = NULL,
+                                    specPepLabels = NULL,
+                                    protLabels = NULL),
         
         OneOneDT_rows_selected = reactive({NULL}),
         OneMultiDT_rows_selected = reactive({NULL}),
         CCMultiMulti_rows_selected = reactive({NULL})
       )
       
-      observe({
-        if(inherits(DaparViz(), "DaparViz"))
-          rv$data <- DaparViz()
-        
-        shinyjs::toggle('badFormatMsg', condition = !inherits(DaparViz(), "DaparViz"))
-      }, priority = 1000)
       
       ##//////////////////////////////////////////////////////////////////
       ##
@@ -143,14 +157,16 @@ mod_ds_cc_server <- function(id, DaparViz) {
       ##//////////////////////////////////////////////////////////////////
       observeEvent(req(input$searchCC), {
         
-        shinyjs::toggle("jiji", condition = input$searchCC == "graphical")
-        shinyjs::toggle("CCMultiMulti_UI", condition = input$searchCC == "tabular")
+        shinyjs::toggle("jiji", 
+                        condition = rv$isValid && input$searchCC == "graphical")
+        shinyjs::toggle("CCMultiMulti_UI", 
+                        condition =  rv$isValid && input$searchCC == "tabular")
       })
       
       
       output$pepInfo_ui <- renderUI({
         selectInput(ns("pepInfo"), "Peptide Info",
-                    choices = colnames(DaparViz()@metadata),
+                    choices = colnames(rv$data@metadata),
                     multiple = TRUE)
       })
       
@@ -183,7 +199,7 @@ mod_ds_cc_server <- function(id, DaparViz) {
         
         req(rvCC$selectedCC)
         local <- (rv$data@cc)[Get_CC_Multi2Any()]
-        #X <- rv$data@adjMat
+        
         rvCC$selectedCCgraph <- buildGraph(local[[rvCC$selectedCC]])
         
         display.CC.visNet(rvCC$selectedCCgraph) %>%
@@ -647,7 +663,7 @@ mod_ds_cc_server <- function(id, DaparViz) {
       
       
       output$OneMultiDT_UI <- renderUI({
-        req(rv$data@cc)
+        #req(rv$isValid)
         df <- BuildOne2MultiTab()
         colnames(df) <- c("Proteins Ids", "nPep", "Peptides Ids")
         
@@ -723,7 +739,7 @@ mod_ds_cc_server <- function(id, DaparViz) {
       
       
       output$OneOneDT_UI <- renderUI({
-        req(rv$data@cc)
+        #req(rv$isValid)
         df <- BuildOne2OneTab()
         colnames(df) <- c("Proteins Ids", "Peptides Ids")
         rvCC$OneOneDT_rows_selected <- mod_format_DT_server('OneOneDT', 
@@ -735,7 +751,7 @@ mod_ds_cc_server <- function(id, DaparViz) {
       
       
       GetDataFor_OneOneDTDetailed <- reactive({
-        req(rv$data@cc)
+        #req(rv$isValid)
         req(rvCC$OneOneDT_rows_selected())
         
         #browser()
@@ -763,7 +779,7 @@ mod_ds_cc_server <- function(id, DaparViz) {
       
       
       output$OneOneDTDetailed_UI <- renderUI({
-        req(rv$data@cc)
+       # req(rv$isValid)
         req(rvCC$OneOneDT_rows_selected())
         
         ll <- GetDataFor_OneOneDTDetailed()
