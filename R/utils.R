@@ -141,7 +141,7 @@ FormatDataForDT <- function(vizData, digits = 2) {
 #' @description
 #' xxxx
 #'
-#' @param vizData An instance of the class `DaparViz`
+#' @param type An instance of the class `DaparViz`
 #'
 #' @export
 BuildColorStyles <- function(type) {
@@ -262,20 +262,29 @@ listPlotModules <- function() {
 #' * `One_Multi`: the number of cc composed of one protein and several peptides
 #' * `Multi_Multi`: the number of cc composed of several proteins and 
 #' several (shared) peptides.
+#' 
+#' @examples
+#' data(vData_ft)
+#' GetCCInfos(vData_ft[[1]]@cc)
+#' 
 #' @export
 GetCCInfos <- function(cc){
-  cc.infos <- list(One_One = 0,
-                   One_Multi = 0,
-                   Multi_Multi = 0)
+  
+  stopifnot(inherits(cc, 'list'))
+  cc.infos <- list(One_One = list(),
+                   One_Multi = list(),
+                   Multi_Multi = list())
   
   for (x in cc){
-    if (dim(x)[1] == 1 && dim(x)[2] == 1)
-      cc.infos[['One_One']] <- 1 + cc.infos[['One_One']]
-    else if (dim(x)[1] > 1 && dim(x)[2] == 1)
-      cc.infos[['One_Multi']] <- 1 + cc.infos[['One_Multi']]
-    else if (dim(x)[1] > 1 && dim(x)[2] > 1)
-      cc.infos[['Multi_Multi']] <- 1 + cc.infos[['Multi_Multi']]
+    if (dim(x)[1] == 1 && dim(x)[2] == 1){
+      cc.infos[['One_One']] <- append(cc.infos[['One_One']], x)
+    } else if (dim(x)[1] > 1 && dim(x)[2] == 1){
+      cc.infos[['One_Multi']] <- append(cc.infos[['One_Multi']], x)
+    } else if (dim(x)[1] > 1 && dim(x)[2] > 1){
+      cc.infos[['Multi_Multi']] <- append(cc.infos[['Multi_Multi']], x)
+    }
   }
+  
   
   cc.infos
 }
