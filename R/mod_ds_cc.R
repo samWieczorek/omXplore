@@ -84,7 +84,7 @@ mod_ds_cc_ui <- function(id) {
                  fluidRow(
                    column(width = 6, tagList(
                      highcharter::highchartOutput(ns("jiji")),
-                     uiOutput(ns("CCMultiMulti_DL_btns_ui")),
+                     #uiOutput(ns("CCMultiMulti_DL_btns_ui")),
                      shinyjs::hidden(uiOutput(ns("CCMultiMulti_UI")))
                    )),
                    column(width = 6, visNetwork::visNetworkOutput(ns("visNetCC"), height = "600px"))
@@ -157,10 +157,8 @@ mod_ds_cc_server <- function(id, object) {
       ##//////////////////////////////////////////////////////////////////
       observeEvent(req(input$searchCC), {
         
-        shinyjs::toggle("jiji", 
-                        condition = rv$isValid && input$searchCC == "graphical")
-        shinyjs::toggle("CCMultiMulti_UI", 
-                        condition =  rv$isValid && input$searchCC == "tabular")
+        shinyjs::toggle("jiji", condition = input$searchCC == "graphical")
+        shinyjs::toggle("CCMultiMulti_UI", condition =  input$searchCC == "tabular")
       })
       
       
@@ -218,7 +216,7 @@ mod_ds_cc_server <- function(id, object) {
       
       ##//////////////////////////////////////////////////////////////////
       ##
-      ##    Multi Multi Connected Components
+      ##    Multi-Multi Connected Components
       ##
       ##//////////////////////////////////////////////////////////////////
       
@@ -255,8 +253,8 @@ mod_ds_cc_server <- function(id, object) {
       
       
       GetDataFor_CCMultiMulti <- reactive({
-        Get_CC_Multi2Any()
-        
+        req(length(Get_CC_Multi2Any()) > 0)
+        browser()
         df <- cbind(
           id = 1:length(Get_CC_Multi2Any()),
           nProt = cbind(lapply((rv$data@cc)[Get_CC_Multi2Any()], function(x) {ncol(x)} )),
@@ -285,7 +283,7 @@ mod_ds_cc_server <- function(id, object) {
       
       output$CCMultiMulti_UI <- renderUI({
         rvCC$CCMultiMulti_rows_selected <- mod_format_DT_server("CCMultiMulti", 
-                                                                          data = reactive({GetDataFor_CCMultiMulti()}))
+                      data = reactive({GetDataFor_CCMultiMulti()}))
         
         
         mod_format_DT_ui(ns("CCMultiMulti"))
@@ -299,7 +297,9 @@ mod_ds_cc_server <- function(id, object) {
       })
       
 
-      observeEvent(c(rvCC$selectedNeighbors, input$node_selected, rvCC$selectedCCgraph), {
+      observeEvent(c(rvCC$selectedNeighbors, 
+                     input$node_selected, 
+                     rvCC$selectedCCgraph), {
         local <- (rv$data@cc)[Get_CC_Multi2Any()]
         rvCC$selectedNeighbors
         
@@ -370,7 +370,8 @@ mod_ds_cc_server <- function(id, object) {
       output$CCDetailedProt_UI <- renderUI({
         req(rvCC$selectedCC)
         rvCC$detailedselectedNode
-        req(!is.null(rvCC$detailedselectedNode$protLabels))
+        req(rvCC$detailedselectedNode$protLabels)
+        
         .protLabels <- rvCC$detailedselectedNode$protLabels
         
         df <- data.frame(proteinId = unlist(.protLabels))
@@ -688,12 +689,7 @@ mod_ds_cc_server <- function(id, object) {
         
         qdata <- rv$data@qdata[indices, ]
         qmetacell <- rv$data@metacell[indices, ]
-       # browser()
-        
-        #convert to a data.frame
-        qdata <- convert2df(qdata)
-        qmetacell <- convert2df(qmetacell)
-        
+       
         list(qdata = convert2df(qdata), 
              qmetacell = convert2df(qmetacell)
              )
@@ -756,11 +752,9 @@ mod_ds_cc_server <- function(id, object) {
         qdata <- rv$data@qdata[indices, ]
         qmetacell <- rv$data@metacell[indices, ]
         
-        qdata <- convert2df(qdata)
-        qmetacell <- convert2df(qmetacell)
-        
-        list(qdata = data.frame(as.list(qdata)), 
-             qmetacell = data.frame(as.list(qmetacell)))
+        list(qdata = convert2df(qdata), 
+             qmetacell = convert2df(qmetacell)
+             )
 
       })
       

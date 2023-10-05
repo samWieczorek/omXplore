@@ -6,7 +6,7 @@ library(DaparToolshedData)
 library(QFeatures)
 library(MSnbase)
 
-finalSize <- 10
+finalSize <- 100
 
 # Build data examples from DaparToolshedData (QFeatures)
 

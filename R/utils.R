@@ -254,4 +254,28 @@ listPlotModules <- function() {
   c(ll.daparViz, ll.env)
 }
 
-
+#' @title xxx
+#' @description xxxx
+#' @param cc xxx
+#' @return A `list` of three items:
+#' * `One_One`: the number of cc composed of one protein and one peptide
+#' * `One_Multi`: the number of cc composed of one protein and several peptides
+#' * `Multi_Multi`: the number of cc composed of several proteins and 
+#' several (shared) peptides.
+#' @export
+GetCCInfos <- function(cc){
+  cc.infos <- list(One_One = 0,
+                   One_Multi = 0,
+                   Multi_Multi = 0)
+  
+  for (x in cc){
+    if (dim(x)[1] == 1 && dim(x)[2] == 1)
+      cc.infos[['One_One']] <- 1 + cc.infos[['One_One']]
+    else if (dim(x)[1] > 1 && dim(x)[2] == 1)
+      cc.infos[['One_Multi']] <- 1 + cc.infos[['One_Multi']]
+    else if (dim(x)[1] > 1 && dim(x)[2] > 1)
+      cc.infos[['Multi_Multi']] <- 1 + cc.infos[['Multi_Multi']]
+  }
+  
+  cc.infos
+}
