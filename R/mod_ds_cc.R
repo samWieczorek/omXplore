@@ -678,23 +678,25 @@ mod_ds_cc_server <- function(id, object) {
         input$pepInfo
         req(rvCC$OneMultiDT_rows_selected())
         
+        
         line <- rvCC$OneMultiDT_rows_selected()
-        ind <- 1:ncol(rv$data@qdata)
-        data <- FormatDataForDT(rv$data, 2)
-        .n <- ncol(data)
-        .pep <- input$pepInfo
-        pepLine <- unlist(strsplit(unlist(BuildOne2MultiTab()[line, "peptides"]), split = ","))
+        pepLine <- unlist(strsplit(unlist(
+          BuildOne2MultiTab()[line, "peptides"]), split = ","))
         
-        indices <- unlist(lapply(pepLine, function(x) {which(rownames(data) == x)}))
+        indices <- unlist(lapply(pepLine, function(x) {
+          which(rownames(rv$data@qdata) == x)}))
         
-        data <- data[indices, c(ind, (ind + .n / 2))]
+        qdata <- rv$data@qdata[indices, ]
+        qmetacell <- rv$data@metacell[indices, ]
+       # browser()
         
-        if (!is.null(.pep)) {
-          data <- cbind(data, (rv$data@metadata)[pepLine, .pep])
-          colnames(data)[(1 + .n - length(.pep)):.n] <- .pep
-        }
+        #convert to a data.frame
+        qdata <- convert2df(qdata)
+        qmetacell <- convert2df(qmetacell)
         
-        data
+        list(qdata = convert2df(qdata), 
+             qmetacell = convert2df(qmetacell)
+             )
       })
       
       
@@ -702,24 +704,16 @@ mod_ds_cc_server <- function(id, object) {
         input$pepInfo
         req(rvCC$OneMultiDT_rows_selected())
         
-        data <- GetDataFor_OneMultiDTDetailed()
-        .n <- ncol(data)
-        offset <- length(input$pepInfo)
+        ll <- GetDataFor_OneMultiDTDetailed()
         
-        c.tags <- BuildColorStyles(rv$data)$tags
-        c.colors <- BuildColorStyles(rv$data)$colors
-        
-        hcStyle <- list(
-          cols = colnames(data)[1:((.n - offset) / 2)],
-          vals = colnames(data)[(((.n - offset) / 2) + 1):(.n - offset)],
-          unique = c.tags,
-          pal = c.colors
-        )
+        dt_style = list(data = ll$qmetacell,
+                        colors = BuildColorStyles(rv$data@type))
         
         mod_format_DT_server('OneMultiDTDetailed', 
-                                       data = reactive({data}),
-                                       hc_style = reactive({hcStyle})
-                                       )
+                             data = reactive({ll$qdata}),
+                             dt_style = reactive({dt_style})
+        )
+
         mod_format_DT_ui(ns('OneMultiDTDetailed'))
       })
       
@@ -754,30 +748,28 @@ mod_ds_cc_server <- function(id, object) {
         #req(rv$isValid)
         req(rvCC$OneOneDT_rows_selected())
         
-        #browser()
-
         line <- rvCC$OneOneDT_rows_selected()
-        #ind <- 1:ncol(rv$data@qdata)
-        #data <- FormatDataForDT(rv$data)
-        #.n <- ncol(data)
-        
-        pepLine <- BuildOne2OneTab()[line, 2]
+        pepLine <- BuildOne2OneTab()[line, "peptides"]
         
         indices <- unlist(lapply(pepLine, function(x) {
           which(rownames(rv$data@qdata) == x)}))
         qdata <- rv$data@qdata[indices, ]
         qmetacell <- rv$data@metacell[indices, ]
-         
-        # if (!is.null(.pep)) {
-        #   data <- cbind(data, (rv$data@metadata)[pepLine, .pep])
-        #   colnames(data)[(1 + .n - length(.pep)):.n] <- .pep
-        # }
+        
+        qdata <- convert2df(qdata)
+        qmetacell <- convert2df(qmetacell)
         
         list(qdata = data.frame(as.list(qdata)), 
              qmetacell = data.frame(as.list(qmetacell)))
+
       })
       
-      
+      convert2df <- function(obj){
+        if (is.vector(obj))
+          data.frame(as.list(obj))
+        else
+          obj
+      }
       output$OneOneDTDetailed_UI <- renderUI({
        # req(rv$isValid)
         req(rvCC$OneOneDT_rows_selected())
