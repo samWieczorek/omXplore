@@ -398,17 +398,20 @@ mod_ds_cc_server <- function(id, object) {
         pepLine <- rvCC$detailedselectedNode$sharedPepLabels
         indices <- unlist(lapply(pepLine, function(x) {which(rownames(rv$data@qdata) == x)}))
         
-        qdata <- rv$data@qdata[indices, ]
-        qmetacell <- rv$data@metacell[indices, ]
-        
+        qdata <- convert2df(rv$data@qdata[indices, ])
+        qmetacell <- convert2df(rv$data@metacell[indices, ])
+       
+        data.nostyle <- NULL
         if (!is.null(input$pepInfo)) {
-          qdata <- cbind(qdata, (rv$data@metadata)[pepLine, input$pepInfo])
-          colnames(data)[(1 + .n - length(input$pepInfo)):.n] <- input$pepInfo
-        }
-        
-        list(qdata = convert2df(qdata), 
-             qmetacell = convert2df(qmetacell)
-        )
+            data.nostyle <- as.data.frame((rv$data@metadata)[pepLine, input$pepInfo])
+            colnames(data.nostyle) <- input$pepInfo
+          }
+          
+          list(qdata = qdata, 
+               data.nostyle = data.nostyle,
+               qmetacell = qmetacell)
+         
+
       })
       
       
@@ -421,6 +424,7 @@ mod_ds_cc_server <- function(id, object) {
         
         mod_format_DT_server('CCDetailedSharedPep', 
                              data = reactive({ll$qdata}),
+                             data.nostyle = reactive({ll$data.nostyle}),
                              dt_style = reactive({dt_style})
         )
         
@@ -438,17 +442,19 @@ mod_ds_cc_server <- function(id, object) {
         pepLine <- rvCC$detailedselectedNode$specPepLabels
         indices <- unlist(lapply(pepLine, function(x) {which(rownames(rv$data@qdata) == x)}))
         
-        qdata <- rv$data@qdata[indices, ]
-        qmetacell <- rv$data@metacell[indices, ]
+        qdata <- convert2df(rv$data@qdata[indices, ])
+        qmetacell <- convert2df(rv$data@metacell[indices, ])
         
+        data.nostyle <- NULL
         if (!is.null(input$pepInfo)) {
-          qdata <- cbind(qdata, (rv$data@metadata)[pepLine, input$pepInfo])
-          colnames(data)[(1 + .n - length(input$pepInfo)):.n] <- input$pepInfo
+          data.nostyle <- as.data.frame((rv$data@metadata)[pepLine, input$pepInfo])
+          colnames(data.nostyle) <- input$pepInfo
         }
         
-        list(qdata = convert2df(qdata), 
-             qmetacell = convert2df(qmetacell)
-        )
+        list(qdata = qdata, 
+             data.nostyle = data.nostyle,
+             qmetacell = qmetacell)
+       
       })
       
       output$CCDetailedSpecPep_UI <- renderUI({
@@ -460,6 +466,7 @@ mod_ds_cc_server <- function(id, object) {
         
         mod_format_DT_server('CCDetailedSpecPep', 
                              data = reactive({ll$qdata}),
+                             data.nostyle = reactive({ll$data.nostyle}),
                              dt_style = reactive({dt_style})
         )
         
@@ -467,67 +474,7 @@ mod_ds_cc_server <- function(id, object) {
         
       })
       
-      
-       
-      ##### -----------
-      # output$CCDetailedSpecPep <- DT::renderDataTable(server = TRUE, {
-      #   rvCC$detailedselectedNode
-      #   input$pepInfo
-      #   req(rvCC$detailedselectedNode$specPepLabels)
-      #   
-      #   ind <- 1:ncol(rv$data@qdata)
-      #   data <- FormatDataForDT(rv$data, rv$settings_nDigits)
-      #   .n <- ncol(data)
-      #   pepLine <- rvCC$detailedselectedNode$specPepLabels
-      #   indices <- unlist(lapply(pepLine, function(x) {which(rownames(data) == x)}))
-      #   data <- data[indices, c(ind, (ind + .n / 2))]
-      #   
-      #   if (!is.null(input$pepInfo)) {
-      #     data <- cbind(data, (rv$data@metadata)[pepLine, input$pepInfo])
-      #     colnames(data)[(1 + .n - length(input$pepInfo)):.n] <- input$pepInfo
-      #   }
-      #   
-      #   offset <- length(input$pepInfo)
-      #   
-      #   c.tags <- BuildColorStyles(rv$data)$tags
-      #   c.colors <- BuildColorStyles(rv$data)$colors
-      #   
-      #   dt <- DT::datatable(data,
-      #                       extensions = c("Scroller"),
-      #                       options = list(
-      #                         initComplete = initComplete(),
-      #                         dom = "rt",
-      #                         blengthChange = FALSE,
-      #                         ordering = FALSE,
-      #                         scrollX = 400,
-      #                         scrollY = 100,
-      #                         displayLength = 10,
-      #                         scroller = TRUE,
-      #                         header = FALSE,
-      #                         server = FALSE,
-      #                         columnDefs = list(
-      #                           list(
-      #                             targets = c(
-      #                               (((.n - offset) / 2) + 1):(.n - offset)
-      #                             ),
-      #                             visible = FALSE
-      #                           )
-      #                         )
-      #                       )
-      #   ) %>%
-      #     DT::formatStyle(
-      #       colnames(data)[1:((.n - offset) / 2)],
-      #       colnames(data)[(((.n - offset) / 2) + 1):(.n - offset)],
-      #       backgroundColor = DT::styleEqual(c.tags, c.colors)
-      #     )
-      #   
-      #   dt
-      # })
-      
-      
-      
-      
-      
+     
       
       
       BuildOne2OneTab <- reactive({

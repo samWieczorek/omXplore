@@ -1,4 +1,5 @@
 library(DaparViz)
+library(DT)
 
 ui <- mod_format_DT_ui("dt")
 
@@ -19,6 +20,7 @@ server <- function(input, output, session) {
   
   rv$selected <- mod_format_DT_server("dt", 
                                       data = reactive({obj@qdata}),
+                                      data_nostyle = reactive({iris[1:21,1:3]}),
                                       withDLBtns = FALSE,
                                       showRownames = FALSE,
                                       dom = 'Bt',

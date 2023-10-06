@@ -43,7 +43,7 @@ NULL
 #' @rdname mod_format_DT
 #'
 mod_format_DT_ui <- function(id) {
-    pkgs.require(c('shinyjs', 'DT'))
+  pkgs.require(c('shinyjs', 'DT'))
   ns <- NS(id)
   tagList(
     shinyjs::useShinyjs(),
@@ -64,6 +64,7 @@ mod_format_DT_ui <- function(id) {
 #' @rdname mod_format_DT
 mod_format_DT_server <- function(id,
                                  data = reactive({NULL}),
+                                 data_nostyle = reactive({NULL}),
                                  withDLBtns = FALSE,
                                  showRownames = FALSE,
                                  dom = 'Bt',
@@ -71,7 +72,7 @@ mod_format_DT_server <- function(id,
                                  filename = "Prostar_export",
                                  hideCols = reactive({NULL}),
                                  selection = 'single'
-                                 ){
+){
   
   
   moduleServer(id, function(input, output, session){
@@ -81,6 +82,7 @@ mod_format_DT_server <- function(id,
     
     rv <- reactiveValues(
       data = NULL,
+      tgt2hide = NULL,
       dataOUt = NULL
     )
     
@@ -99,16 +101,19 @@ mod_format_DT_server <- function(id,
     
     observe({
       req(data())
-      if(is.null(dt_style()))
-         rv$data <- data()
-      else {
-        
-        if(checkValidity()){
-        # Check validity of dataForStyling
-        rv$data <- cbind(data(), dt_style()$data)
-        }
-      }
       
+      rv$data <- data()
+      
+      # if(is.null(dt_style()))
+      #   rv$data <- data()
+      # else {
+      #   
+      #   if(checkValidity()){
+      #     # Check validity of dataForStyling
+      #     rv$data <- cbind(data(), dt_style()$data)
+      #   }
+      # }
+      # 
       DT::replaceData(proxy, rv$data, resetPaging = FALSE)
     })
     
@@ -128,14 +133,30 @@ mod_format_DT_server <- function(id,
     })
     
     
+    
+    prepareDataset <- reactive({
+      
+      df <- data()
+      
+      if(!is.null(dt_style()) && checkValidity()){
+        df <- cbind(df, dt_style()$data)
+        rv$tgt2hide <- ncol(data()) -1 + seq_len(ncol(dt_style()$data))
+      }
+      
+      if(!is.null(data_nostyle()))
+         df <- cbind(df, data_nostyle())
+      
+      df
+    })
+    
+    
     output$StaticDataTable <- DT::renderDataTable(server=TRUE,{
       
       req(length(rv$data) > 0)
       .jscode <- DT::JS("$.fn.dataTable.render.ellipsis( 30 )")
       
- 
-      dt <- DT::datatable(
-        rv$data, 
+        dt <- DT::datatable(
+        prepareDataset(), 
         escape = FALSE,
         selection = selection,
         rownames= showRownames,
@@ -148,21 +169,25 @@ mod_format_DT_server <- function(id,
                        else 
                          list(
                            list(targets = '_all', className = "dt-center", render = .jscode),
-                           list(targets = ncol(data())-1 + 1:ncol(dt_style()$data), visible = FALSE, className = "dt-center", render = .jscode)
+                           list(targets = rv$tgt2hide, 
+                                visible = FALSE, 
+                                className = "dt-center", 
+                                render = .jscode)
                          )
         )
       )
       
+      
       if (!is.null(dt_style())){
         dt <- dt %>%
           DT::formatStyle(
-            columns = colnames(rv$data),
+            columns = colnames(data()),
             valueColumns = colnames(dt_style()$data),
             backgroundColor = DT::styleEqual(names(dt_style()$colors),  
                                              unique(dt_style()$colors))
           )
       }
-
+      
       dt
     })
     
@@ -174,10 +199,9 @@ mod_format_DT_server <- function(id,
     }
     
     
-   return(reactive({rv$dataOut}))
+    return(reactive({rv$dataOut}))
   })
   
 }
-
 
 
