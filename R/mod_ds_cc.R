@@ -76,11 +76,17 @@ mod_ds_cc_ui <- function(id) {
              #---------------------------------------------------------
              tabPanel("Multi-Multi Connected Components",
                tagList(
-                 uiOutput(ns("pepInfo_ui")),
-                 selectInput(ns("searchCC"), "Search for CC",
-                             choices = c("Tabular view" = "tabular", "Graphical view" = "graphical"),
+                 fluidRow(
+                   column(width = 4, 
+                          radioButtons(ns("searchCC"), 
+                              "Search for CC",
+                             choices = c("Tabular view" = "tabular", 
+                                         "Graphical view" = "graphical"),
                              width = "150px"
-                             ),
+                             )
+                          ),
+                   column(width = 8, uiOutput(ns("pepInfo_ui")))),
+                 
                  fluidRow(
                    column(width = 6, tagList(
                      highcharter::highchartOutput(ns("jiji")),
@@ -221,7 +227,7 @@ mod_ds_cc_server <- function(id, object) {
       ##//////////////////////////////////////////////////////////////////
       
       
-      
+      # Plots Multi_Multi CC
       output$jiji <- highcharter::renderHighchart({
         tooltip <- NULL
         
@@ -249,6 +255,7 @@ mod_ds_cc_server <- function(id, object) {
           plotCC <- plotJitter_rCharts(df, clickFunction = clickFun)
         })
         plotCC
+
       })
       
       
@@ -256,12 +263,21 @@ mod_ds_cc_server <- function(id, object) {
         req(length((GetCCInfos(rv$data@cc))$Multi_Multi) > 0)
         
         ll <- (GetCCInfos(rv$data@cc))$Multi_Multi
+        
+        ll.pep <- cbind(
+          lapply(ll, 
+                 function(x) {paste(rownames(x), collapse = ",")}))
+        
+        ll.prot <- cbind(
+          lapply(ll,
+                 function(x) {paste(colnames(x), collapse = ",")}))
+        
         df <- cbind(
           id = 1:length(ll),
           nProt = cbind(lapply(ll, function(x) {ncol(x)} )),
           nPep = cbind(lapply(ll, function(x) {nrow(x)})),
-          proteins = cbind(lapply(ll,  function(x) {paste(colnames(x), collapse = ",")})),
-          peptides = cbind(lapply(ll, function(x) {paste(rownames(x), collapse = ",")}))
+          proteins = ll.prot,
+          peptides = ll.pep
         )
         
         colnames(df) <- c("id", "nProt", "nPep", "Proteins Ids", "Peptides Ids")
@@ -281,18 +297,17 @@ mod_ds_cc_server <- function(id, object) {
       #                          df.tags = reactive({NULL})
       #                          )
       
-      
+      # Show the DT data table ans gets the selected items from it
       output$CCMultiMulti_UI <- renderUI({
         rvCC$CCMultiMulti_rows_selected <- mod_format_DT_server("CCMultiMulti", 
                       data = reactive({GetDataFor_CCMultiMulti()}))
-        
         
         mod_format_DT_ui(ns("CCMultiMulti"))
       })
       
       
       
-      # select a CC in the summary table
+      # Catches the selected item in the CCMultiMulti table
       observeEvent(req(rvCC$CCMultiMulti_rows_selected()), {
         rvCC$selectedCC <- rvCC$CCMultiMulti_rows_selected()
       })
@@ -303,15 +318,17 @@ mod_ds_cc_server <- function(id, object) {
                      rvCC$selectedCCgraph), {
         local <- (GetCCInfos(rv$data@cc))$Multi_Multi
         rvCC$selectedNeighbors
-        
+       
         nodes <- rvCC$selectedCCgraph$nodes
         
-        
-        #browser()
         if (!is.null(input$node_selected) && input$node_selected == 1) {
-          sharedPepIndices <- intersect(rvCC$selectedNeighbors, which(nodes[, "group"] == "shared.peptide"))
-          specPepIndices <- intersect(rvCC$selectedNeighbors, which(nodes[, "group"] == "spec.peptide"))
-          protIndices <- intersect(rvCC$selectedNeighbors, which(nodes[, "group"] == "protein"))
+          # The DT table has not been used. Thus, it was the plot
+          sharedPepIndices <- intersect(rvCC$selectedNeighbors, 
+                                        which(nodes[, "group"] == "shared.peptide"))
+          specPepIndices <- intersect(rvCC$selectedNeighbors, 
+                                      which(nodes[, "group"] == "spec.peptide"))
+          protIndices <- intersect(rvCC$selectedNeighbors, 
+                                   which(nodes[, "group"] == "protein"))
         } else {
           .shared <- "shared.peptide"
           .spec <- "spec.peptide"
@@ -320,12 +337,13 @@ mod_ds_cc_server <- function(id, object) {
           protIndices <- which(nodes[, "group"] == "protein")
         }
         
-        .shared <- nodes[sharedPepIndices, "label"]
-        .specs <- nodes[specPepIndices, "label"]
-        .ind <- nodes[protIndices, "label"]
-        rvCC$detailedselectedNode$sharedPepLabels <- .shared
-        rvCC$detailedselectedNode$specPepLabels <- .specs
-        rvCC$detailedselectedNode$protLabels <- .ind
+        # Finally, update reactive global variable
+          rvCC$detailedselectedNode <- list(
+            sharedPepLabels = nodes[sharedPepIndices, "label"],
+            specPepLabels = nodes[specPepIndices, "label"],
+            protLabels = nodes[protIndices, "label"]
+            )
+
       })
       
       
@@ -394,7 +412,6 @@ mod_ds_cc_server <- function(id, object) {
         input$pepInfo
         
         req(rvCC$detailedselectedNode$sharedPepLabels)
-        
         pepLine <- rvCC$detailedselectedNode$sharedPepLabels
         indices <- unlist(lapply(pepLine, function(x) {which(rownames(rv$data@qdata) == x)}))
         
@@ -416,7 +433,7 @@ mod_ds_cc_server <- function(id, object) {
       
       
       output$CCDetailedSharedPep_UI <- renderUI({
-        req(rvCC$CCMultiMulti_rows_selected())
+        req(c(rvCC$CCMultiMulti_rows_selected(), rvCC$detailedselectedNode))
         ll <- GetDataFor_CCDetailedSharedPep_UI()
         
         dt_style = list(data = ll$qmetacell,
