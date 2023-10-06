@@ -4,7 +4,7 @@
 \alias{buildGraph}
 \title{Display a CC}
 \usage{
-buildGraph(cc)
+buildGraph(cc, peptides_info = NULL)
 }
 \arguments{
 \item{cc}{A cc (a list)}

@@ -13,6 +13,9 @@ mod_format_DT_server(
   data = reactive({
      NULL
  }),
+  data_nostyle = reactive({
+     NULL
+ }),
   withDLBtns = FALSE,
   showRownames = FALSE,
   dom = "Bt",

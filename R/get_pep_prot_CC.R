@@ -67,7 +67,9 @@ plotJitter <- function(list.of.cc = NULL) {
 #'
 #' @export
 #'
-buildGraph <- function(cc) {
+buildGraph <- function(cc,
+                       peptides_info = NULL,
+                       metadata = NULL) {
   nb.prot <- ncol(cc)
   nb.pep <- nrow(cc)
   subX <- cc
@@ -81,15 +83,30 @@ buildGraph <- function(cc) {
   def.grp <- c(rep("shared.peptide", nb.pep), rep("protein", nb.prot))
   def.grp[which(rowSums(subX) == 1)] <- "spec.peptide"
   
-  
+  buildTitle <- function(peptides_info){
+    title <- NULL
+    if(!is.null(peptides_info)){
+      title <- rep('', nb.total)
+      for (i in 1:nb.pep){
+        ind <- which(rownames(metadata) == rownames(cc)[i])
+        title[i] <- paste0("<p>", peptides_info, ':', metadata[ind, peptides_info], "</p>")
+      }
+  }
+    title
+  }
+   
   nodes <- data.frame(
     id = seq_len(nb.total),
     group = def.grp,
     label = c(rownames(subX), colnames(subX)),
-    title = paste0("<p>", seq_len(nb.total), "<br>Tooltip !</p>"),
     size = c(rep(10, nb.pep), rep(20, nb.prot)),
     stringsAsFactors = FALSE
   )
+  
+  title = buildTitle(peptides_info)
+  if (!is.null(title))
+    nodes <- cbind(nodes, title)
+  
   edges <- data.frame(
     from = c(edge.list$row),
     to = c(edge.list$col + nb.pep),
@@ -121,7 +138,7 @@ buildGraph <- function(cc) {
 #' \donttest{
 #' data(vData_ms)
 #' obj <- vData_ms[1]
-#' display.CC.visNet(obj@cc[[1]], obj@adjMat)
+#' display.CC.visNet(obj$cc[[1]])
 #' }
 #'
 #' @export
@@ -135,26 +152,25 @@ display.CC.visNet <- function(g,
                               prot.tooltip = NULL,
                               pept.tooltip = NULL) {
   
+  pkgs.require('visNetwork')
+  
   col.prot <- "#ECB57C"
   col.spec <- "#5CA3F7"
   col.shared <- "#0EA513"
-  
-  
-  visNetwork(g$nodes, g$edges, width = "100%", 
-                         height = "100%") %>%
-    visNodes(shape = "dot") %>% # square for all nodes
-    visGroups(groupname = "spec.peptide", 
+
+  visNetwork::visNetwork(g$nodes, g$edges, width = "100%", height = "100%") %>%
+    visNetwork::visNodes(shape = "dot") %>% # square for all nodes
+    visNetwork::visGroups(groupname = "spec.peptide", 
                           color = col.spec) %>% # darkblue for group "A"
-    visGroups(groupname = "shared.peptide", 
+    visNetwork::visGroups(groupname = "shared.peptide", 
                           color = col.shared) %>% # darkblue for group "A"
-    visGroups(groupname = "protein", 
+    visNetwork::visGroups(groupname = "protein", 
                           color = col.prot, shape = "dot") %>%
-    visOptions(highlightNearest = FALSE) %>%
+    visNetwork::visOptions(highlightNearest = FALSE) %>%
     # visLegend()
     # visPhysics(stabilization = FALSE)%>%
-    visEdges(color = "#A9A9A9", width = 2)
-  # %>%
-  # visIgraphLayout(layout = "layout_with_fr")
+    visNetwork::visEdges(color = "#A9A9A9", width = 2) %>%
+    visNetwork::visIgraphLayout(layout = "layout_with_fr")
 }
 
 
@@ -188,50 +204,41 @@ display.CC.visNet <- function(g,
 #'
 plotJitter_rCharts <- function(df, 
                                clickFunction = NULL) {
-  xtitle <- "TO DO"
   
   if (is.null(clickFunction)) {
     clickFunction <-
-      JS("function(event) 
-                {
-                Shiny.onInputChange('eventPointClicked', 
-                [this.index]+'_'+ [this.series.name]);
-                }")
+      JS("function(event){Shiny.onInputChange('eventPointClicked', 
+          [this.index]+'_'+ [this.series.name]);}")
   }
   
-  i_tooltip <- which(startsWith(colnames(df), "tooltip"))
+ # i_tooltip <- which(startsWith(colnames(df), "tooltip"))
   txt_tooltip <- NULL
   
-  if (length(i_tooltip) == 0){
-    warning("There is no tooltip in the object.")
-  }
+  #if (length(i_tooltip) == 0){
+  #  warning("There is no tooltip in the object.")
+ # } else {
+    # for (i in i_tooltip) {
+    #   txt_tooltip <- paste(txt_tooltip, "<b>", 
+    #                        gsub("tooltip_", "", colnames(df)[i], fixed = TRUE),
+    #                        " </b>: {point.", colnames(df)[i], "} <br> ",
+    #                        sep = "")
+    # }
+  #}
   
-  for (i in i_tooltip) {
-    txt_tooltip <- paste(txt_tooltip, "<b>", gsub("tooltip_", "",
-                                                  colnames(df)[i],
-                                                  fixed = TRUE
-    ),
-    " </b>: {point.", colnames(df)[i], "} <br> ",
-    sep = ""
-    )
-  }
-  
-  h1 <- highchart() %>%
-    hc_add_series(data = df, type = "scatter") %>%
+  highcharter::highchart() %>%
+    highcharter::hc_add_series(data = df, type = "scatter") %>%
     customChart(zoomType = "xy", chartType = "scatter") %>%
-    hc_legend(enabled = FALSE) %>%
-    hc_yAxis(title = list(text = "Nb of proteins ic CC")) %>%
-    hc_xAxis(title = list(text = "Nb of peptides ic CC")) %>%
-    hc_tooltip(headerFormat = "", pointFormat = txt_tooltip) %>%
-    hc_plotOptions(series = list(
+    highcharter::hc_legend(enabled = FALSE) %>%
+    highcharter::hc_yAxis(title = list(text = "Nb of proteins")) %>%
+    highcharter::hc_xAxis(title = list(text = "Nb of peptides")) %>%
+    highcharter::hc_tooltip(enabled = FALSE,
+                            headerFormat = "", 
+                            pointFormat = txt_tooltip) %>%
+    highcharter::hc_plotOptions(series = list(
       animation = list(duration = 100),
       cursor = "pointer",
-      point = list(events = list(
-        click = clickFunction
-      ))
+      point = list(events = list(click = clickFunction))
     )) %>%
     customExportMenu(fname = "plotCC")
   
-  
-  return(h1)
 }

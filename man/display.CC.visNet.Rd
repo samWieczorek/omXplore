@@ -33,7 +33,7 @@ Display a CC
 \donttest{
 data(vData_ms)
 obj <- vData_ms[1]
-display.CC.visNet(obj@cc[[1]], obj@adjMat)
+display.CC.visNet(obj$cc[[1]])
 }
 
 }

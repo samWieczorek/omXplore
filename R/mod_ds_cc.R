@@ -39,12 +39,10 @@ mod_ds_cc_ui <- function(id) {
     ),
     shinyjs::hidden(
       div(id = ns('mainUI'), 
-          tabPanel("Peptide-Protein Graph",
-           value = "graphTab",
-           tabsetPanel(id = "graphsPanel",
-             
-                       #---------------------------------------------------------
-                       tabPanel("One-One Connected Components",
+          tabPanel(title = '',
+                   value = "graphTab",
+                   tabsetPanel(id = "graphsPanel",
+                               tabPanel("One-One Connected Components",
                tagList(
                  fluidRow(
                    column(width = 4, tagList(
@@ -202,10 +200,14 @@ mod_ds_cc_server <- function(id, object) {
       output$visNetCC <- visNetwork::renderVisNetwork({
         
         req(rvCC$selectedCC)
+        input$pepInfo
         local <- (GetCCInfos(rv$data@cc))$Multi_Multi
+        m <- local[[rvCC$selectedCC]]
         
-        rvCC$selectedCCgraph <- buildGraph(local[[rvCC$selectedCC]])
-        
+        rvCC$selectedCCgraph <- buildGraph(local[[rvCC$selectedCC]], 
+                                           peptides_info = input$pepInfo,
+                                           metadata = rv$data@metadata)
+   
         display.CC.visNet(rvCC$selectedCCgraph) %>%
           visNetwork::visEvents(click = paste0("function(nodes){Shiny.onInputChange('",
             ns("click"), "', nodes.nodes[0]);
@@ -229,7 +231,7 @@ mod_ds_cc_server <- function(id, object) {
       
       # Plots Multi_Multi CC
       output$jiji <- highcharter::renderHighchart({
-        tooltip <- NULL
+        #tooltip <- 'Sequence'
         
         isolate({
           local <- (GetCCInfos(rv$data@cc))$Multi_Multi
@@ -238,19 +240,12 @@ mod_ds_cc_server <- function(id, object) {
           df <- tibble::tibble(x = jitter(n.pept),
                                y = jitter(n.prot),
                                index = 1:length(local)
-          )
-          
-          if (!is.null(tooltip)) {
-            df <- cbind(df, DaparViz@metadata[tooltip])
-          }
-          
+                               )
           colnames(df) <- gsub(".", "_", colnames(df), fixed = TRUE)
-          if (ncol(df) > 3) {
-            colnames(df)[4:ncol(df)] <- paste("tooltip_", colnames(df)[4:ncol(df)], sep = "")
-          }
-          
+
           clickFun <- JS(paste0("function(event) {Shiny.onInputChange('",
                                 ns("eventPointClicked"), "', [this.index]+'_'+ [this.series.name]);}"))
+          
           
           plotCC <- plotJitter_rCharts(df, clickFunction = clickFun)
         })
