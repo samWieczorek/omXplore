@@ -401,14 +401,14 @@ mod_ds_cc_server <- function(id, object) {
         qdata <- convert2df(rv$data@qdata[indices, ])
         qmetacell <- convert2df(rv$data@metacell[indices, ])
        
-        data.nostyle <- NULL
+        data_nostyle <- NULL
         if (!is.null(input$pepInfo)) {
-            data.nostyle <- as.data.frame((rv$data@metadata)[pepLine, input$pepInfo])
-            colnames(data.nostyle) <- input$pepInfo
+          data_nostyle <- as.data.frame((rv$data@metadata)[pepLine, input$pepInfo])
+            colnames(data_nostyle) <- input$pepInfo
           }
           
           list(qdata = qdata, 
-               data.nostyle = data.nostyle,
+               data_nostyle = data_nostyle,
                qmetacell = qmetacell)
          
 
@@ -424,7 +424,7 @@ mod_ds_cc_server <- function(id, object) {
         
         mod_format_DT_server('CCDetailedSharedPep', 
                              data = reactive({ll$qdata}),
-                             data.nostyle = reactive({ll$data.nostyle}),
+                             data_nostyle = reactive({ll$data_nostyle}),
                              dt_style = reactive({dt_style})
         )
         
@@ -445,14 +445,14 @@ mod_ds_cc_server <- function(id, object) {
         qdata <- convert2df(rv$data@qdata[indices, ])
         qmetacell <- convert2df(rv$data@metacell[indices, ])
         
-        data.nostyle <- NULL
+        data_nostyle <- NULL
         if (!is.null(input$pepInfo)) {
-          data.nostyle <- as.data.frame((rv$data@metadata)[pepLine, input$pepInfo])
-          colnames(data.nostyle) <- input$pepInfo
+          data_nostyle <- as.data.frame((rv$data@metadata)[pepLine, input$pepInfo])
+          colnames(data_nostyle) <- input$pepInfo
         }
         
         list(qdata = qdata, 
-             data.nostyle = data.nostyle,
+             data_nostyle = data_nostyle,
              qmetacell = qmetacell)
        
       })
@@ -466,7 +466,7 @@ mod_ds_cc_server <- function(id, object) {
         
         mod_format_DT_server('CCDetailedSpecPep', 
                              data = reactive({ll$qdata}),
-                             data.nostyle = reactive({ll$data.nostyle}),
+                             data_nostyle = reactive({ll$data_nostyle}),
                              dt_style = reactive({dt_style})
         )
         
