@@ -34,6 +34,8 @@ mod_format_DT_server(
 
 \item{data}{A \code{data.frame}}
 
+\item{data_nostyle}{xxx}
+
 \item{withDLBtns}{A boolean to indicate whether to display download buttons or not.}
 
 \item{showRownames}{A boolean to indicate whether to show rownames.}
@@ -51,16 +53,6 @@ mod_format_DT_server(
 \item{hideCols}{xxx}
 
 \item{selection}{xxx}
-
-\item{dataForStyling}{xxx}
-
-\item{xls_style}{A list of four items:
-\itemize{
-\item cols: a vector of colnames of columns to show,
-\item vals: a vector of colnames of columns that contain values,
-\item unique: unique(conds),
-\item pal: A vector of colors (HEX codes, string, rgb())
-}}
 }
 \value{
 NA

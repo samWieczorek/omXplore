@@ -54,6 +54,8 @@ plotJitter <- function(list.of.cc = NULL) {
 #' @title Display a CC
 #'
 #' @param cc A cc (a list)
+#' @param peptides_info xxx
+#' @param metadata www
 #' @return A plot
 #'
 #' @author Thomas Burger, Samuel Wieczorek

@@ -8,6 +8,10 @@ buildGraph(cc, peptides_info = NULL, metadata = NULL)
 }
 \arguments{
 \item{cc}{A cc (a list)}
+
+\item{peptides_info}{xxx}
+
+\item{metadata}{www}
 }
 \value{
 A plot
