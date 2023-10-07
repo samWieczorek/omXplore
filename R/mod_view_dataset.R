@@ -44,7 +44,7 @@
 #' 
 #' @param id A `character(1)` for the 'id' of the shiny module. It must be
 #' the same as for the '*_ui' function.
-#' @param ll.DaparViz A instance of the class `VizList`.
+#' @param obj A list of items of the class `DaparViz`.
 #' @param addons A `list`
 
 #'
@@ -92,7 +92,7 @@ mod_view_dataset_ui <- function(id) {
 #' @export
 #'
 mod_view_dataset_server <- function(id, 
-                                    ll.DaparViz = reactive({NULL}),
+                                    obj = reactive({NULL}),
                                     addons = list()
                                     ) {
 
@@ -114,14 +114,14 @@ mod_view_dataset_server <- function(id,
         
 
         observe({
-            req(ll.DaparViz())
-          if(inherits(ll.DaparViz(), "list")){
-            rv$data <- ll.DaparViz()
+            req(obj())
+          if(inherits(obj(), "list")){
+            rv$data <- obj()
             conds <- rv$data[[1]]@conds
             
           }
           
-          shinyjs::toggle('badFormatMsg', condition = !inherits(ll.DaparViz(), "list"))
+          shinyjs::toggle('badFormatMsg', condition = !inherits(obj(), "list"))
         }, priority = 1000)
 
 
@@ -207,7 +207,7 @@ mod_view_dataset_server <- function(id,
     for (mod in ll.mods)
       do.call(paste0(mod, '_server'), 
               list(id = paste0(mod, '_large'),
-                   DaparViz = reactive({rv$current.se})
+                   obj = reactive({rv$current.se})
                   )
               )
     })

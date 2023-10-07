@@ -24,10 +24,9 @@
 #' @author Samuel Wieczorek, Enora Fremy
 #'
 #' @examples
-#' \donttest{
-#' data(ft)
-#' vList <- convert2viz(ft)
-#' plotCompareAssays(vList, 1, 1, n = 5)
+#' \dontrun{
+#' data(vData_ft)
+#' plotCompareAssays(vData_ft, 1, 1, n = 5)
 #' }
 #'
 #' @import highcharter
@@ -50,7 +49,7 @@ plotCompareAssays <- function(vList,
     if (missing(vList)) {
         stop("'vList' is missing")
     }
-    stopifnot(inherits(vList, "VizList"))
+    stopifnot(inherits(vList, "list"))
     
     qdata1 <- vList[i]@qdata
     qdata2 <- vList[j]@qdata

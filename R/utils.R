@@ -183,7 +183,7 @@ pkgs.require <- function(ll.deps){
 #' @param path xxx
 #' 
 #' @examples 
-#' \donttest{
+#' \dontrun{
 #' addImgPath('mod_foo', system.file('.', package='DaparViz'))
 #' }
 #' 

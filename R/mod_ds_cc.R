@@ -3,13 +3,18 @@
 #' @description  A shiny Module.
 #'
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param DaparViz An instance of `DaparViz` class
+#' @param obj An instance of `DaparViz` class
 #'
 #' @keywords internal
 #'
 #' @return NA
+#' 
+#' @examples
+#' data(vData_ft)
+#' ds_cc(vData_ft[[1]])
+#' 
 #'
-#' @name connected_components
+#' @name ds-cc
 #'
 #'
 NULL
@@ -21,8 +26,7 @@ NULL
 #' @import shinyBS
 #' @import highcharter
 #'
-#' @export
-#' @rdname connected_components
+#' @rdname ds-cc
 #' 
 mod_ds_cc_ui <- function(id) {
   pkgs.require(c('visNetwork', 'shinyBS', 'shinyjs', 'highcharter'))
@@ -108,9 +112,8 @@ mod_ds_cc_ui <- function(id) {
 #' @importFrom tibble tibble
 #' @importFrom shinyjs toggle hidden
 #' @import highcharter
-#' @export
-#' @rdname connected_components
-mod_ds_cc_server <- function(id, object) {
+#' @rdname ds-cc
+mod_ds_cc_server <- function(id, obj) {
   pkgs.require(c('visNetwork', 'highcharter'))
   moduleServer(id, function(input, output, session) {
       ns <- session$ns
@@ -122,12 +125,12 @@ mod_ds_cc_server <- function(id, object) {
       
       
       
-      observeEvent(object(), ignoreInit = FALSE,{
-        obj.valid <- inherits(object(), "DaparViz")
-        cc.exists <- length(object()@cc) > 0
+      observeEvent(obj(), ignoreInit = FALSE,{
+        obj.valid <- inherits(obj(), "DaparViz")
+        cc.exists <- length(obj()@cc) > 0
         
         if(obj.valid && cc.exists)
-          rv$data <- object()
+          rv$data <- obj()
           
         shinyjs::toggle('mainUI', condition = obj.valid && cc.exists)
         shinyjs::toggle('noCCMsg', condition = obj.valid && !cc.exists)
@@ -666,4 +669,18 @@ mod_ds_cc_server <- function(id, object) {
       
     }
   )
+}
+
+
+#' @export
+#' @import shiny
+#' @rdname ds-cc
+#' 
+ds_cc <- function(obj){
+  ui <- mod_ds_cc_ui("plot")
+  
+  server <- function(input, output, session)
+    mod_ds_cc_server("plot", reactive({obj}))
+  
+  shinyApp(ui = ui, server = server)
 }

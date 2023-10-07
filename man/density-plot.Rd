@@ -4,6 +4,7 @@
 \alias{density-plot}
 \alias{mod_ds_density_ui}
 \alias{mod_ds_density_server}
+\alias{ds_density}
 \alias{densityPlot}
 \title{Displays a correlation matrix of the quantitative data of a
 numeric matrix.}
@@ -12,7 +13,7 @@ mod_ds_density_ui(id)
 
 mod_ds_density_server(
   id,
-  DaparViz = reactive({
+  obj = reactive({
      NULL
  }),
   pal.name = reactive({
@@ -20,12 +21,14 @@ mod_ds_density_server(
  })
 )
 
+ds_density(obj)
+
 densityPlot(data, conds, pal.name = NULL)
 }
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
-\item{DaparViz}{An instance of the class \code{DaparViz}.}
+\item{obj}{An instance of the class \code{DaparViz}.}
 
 \item{pal.name}{A \code{character(1)} which is the name of the palette from
 the package \link{RColorBrewer} from which the colors are taken. Default
@@ -46,32 +49,7 @@ NA
 xxxx
 }
 \examples{
-library(DaparViz)
+data(vData_ft)
+ds_density(vData_ft[[1]])
 
-
-ui <- fluidPage(mod_ds_density_ui("plot"))
-
-server <- shinyServer(function(input, output, session) {
-  data(vData_ft)
-  obj <- vData_ft[[1]]
-  mod_ds_density_server("plot", 
-                        vizData = reactive({obj}))
-  })
-
-if (interactive())
-  shinyApp(ui, server)
-library(DaparViz)
-
-
-ui <- fluidPage(mod_ds_density_ui("plot"))
-
-server <- shinyServer(function(input, output, session) {
-  data(vData_ft)
-  obj <- vData_ft[[1]]
-  mod_ds_density_server("plot", 
-                        vizData = reactive({obj}))
-  })
-
-if (interactive())
-  shinyApp(ui, server)
 }

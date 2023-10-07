@@ -14,7 +14,9 @@
 #'
 #' @export
 #' 
-#' @example inst/extdata/examples/ex_mod_ds_corrmatrix.R
+#' @examples
+#' NULL
+#' 
 #' @return NA
 #'
 #' @rdname corrmatrix

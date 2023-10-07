@@ -54,6 +54,7 @@ plotJitter <- function(list.of.cc = NULL) {
 #' @title Display a CC
 #'
 #' @param cc A cc (a list)
+#' @param metadata xxx
 #' @return A plot
 #'
 #' @author Thomas Burger, Samuel Wieczorek
@@ -61,14 +62,13 @@ plotJitter <- function(list.of.cc = NULL) {
 #' @examples
 #' \donttest{
 #' data(vData_ms)
-#' obj <- vData_ms[1]
-#' g <- buildGraph(obj@cc[[1]], obj@adjMat)
+#' obj <- vData_ms[[1]]
+#' g <- buildGraph(obj@cc[[1]])
 #' }
 #'
 #' @export
 #'
 buildGraph <- function(cc,
-                       peptides_info = NULL,
                        metadata = NULL) {
   nb.prot <- ncol(cc)
   nb.pep <- nrow(cc)
@@ -83,16 +83,18 @@ buildGraph <- function(cc,
   def.grp <- c(rep("shared.peptide", nb.pep), rep("protein", nb.prot))
   def.grp[which(rowSums(subX) == 1)] <- "spec.peptide"
   
-  buildTitle <- function(peptides_info){
-    title <- NULL
-    if(!is.null(peptides_info)){
-      title <- rep('', nb.total)
+  buildNodesInfos <- function(metadata){
+    nodes_infos <- NULL
+    if(!is.null(metadata)){
+      nodes_infos <- rep('', nb.total)
+      
+      # We add infos only on peptides nodes
       for (i in 1:nb.pep){
         ind <- which(rownames(metadata) == rownames(cc)[i])
-        title[i] <- paste0("<p>", peptides_info, ':', metadata[ind, peptides_info], "</p>")
+        nodes_infos[i] <- paste0("<p>", colnames(metadata)[i], ':', metadata[ind, ], "</p>")
       }
   }
-    title
+    nodes_infos
   }
    
   nodes <- data.frame(
@@ -103,7 +105,7 @@ buildGraph <- function(cc,
     stringsAsFactors = FALSE
   )
   
-  title = buildTitle(peptides_info)
+  title = buildNodesInfos(metadata)
   if (!is.null(title))
     nodes <- cbind(nodes, title)
   

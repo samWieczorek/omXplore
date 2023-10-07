@@ -16,7 +16,7 @@ This line allows to extend the resource path to a different directory
 than the one in 'inst/' which is given by default when loading a package.
 }
 \examples{
-\donttest{
+\dontrun{
 addImgPath('mod_foo', system.file('.', package='DaparViz'))
 }
 

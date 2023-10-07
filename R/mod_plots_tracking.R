@@ -3,7 +3,7 @@
 #' @description This shiny module provides a tool to select
 #'
 #' @param id shiny id
-#' @param DaparViz internal
+#' @param obj An instance of the class `DaparViz`
 #' @param params A `list` of three items to give instructions to the module
 #' in this it is run in slave mode:
 #' * type: xxxxx
@@ -12,7 +12,7 @@
 #' @param resetBtn A `boolean(1)` which indicates whether to show the 'Reset' button 
 #' or not.
 #' 
-#' @return A `list` (same structure as the parameter 'params")
+#' @return A `list` (same structure as the parameter `params`)
 #'
 #' @example inst/extdata/examples/ex_mod_plots_tracking.R
 #' 
@@ -64,7 +64,7 @@ mod_plots_tracking_ui <- function(id) {
 #' @import shinyjs
 #'
 mod_plots_tracking_server <- function(id, 
-                                      DaparViz = reactive({NULL}),
+                                      obj = reactive({NULL}),
                                       resetBtn = reactive({FALSE})){
    
   moduleServer(id, function(input, output, session) {
@@ -81,8 +81,8 @@ mod_plots_tracking_server <- function(id,
   
   
   observe({
-    if(inherits(DaparViz(), "DaparViz"))
-      rv.track$data <- DaparViz()
+    if(inherits(obj(), "DaparViz"))
+      rv.track$data <- obj()
 
     shinyjs::toggle('badFormatMsg', condition = is.null(rv.track$data))
     shinyjs::toggle('typeSelect', condition = !is.null(rv.track$data))

@@ -7,23 +7,21 @@
 #' @name ds-pca
 #' 
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param DaparViz xxx
+#' @param obj An instance of the class `DaparViz`
 #'
 #' @return A plot
 #'
 #' @author Samuel Wieczorek, Enora Fremy
 #'
-#' @example inst/extdata/examples/ex_mod_ds_pca.R
+#' @examples
+#' data(vData_ft)
+#' ds_pca(vData_ft[[1]])
 #'
 NULL
 
 
 #' @rdname ds-pca
-#'
 #' @importFrom shiny NS tagList uiOutput
-#'
-#' @export
-#'
 mod_ds_pca_ui <- function(id) {
     ns <- NS(id)
     tagList(
@@ -43,7 +41,7 @@ mod_ds_pca_ui <- function(id) {
 #'
 #' @export
 mod_ds_pca_server <- function(id,
-                              DaparViz) {
+                              obj) {
     pkgs.require('factoextra')
   
     moduleServer(id, function(input, output, session) {
@@ -59,8 +57,8 @@ mod_ds_pca_server <- function(id,
         
         observe({
           
-          if(inherits(DaparViz(), "DaparViz"))
-            rv.pca$data <- as.matrix(DaparViz()@qdata)
+          if(inherits(obj(), "DaparViz"))
+            rv.pca$data <- as.matrix(obj()@qdata)
           
           shinyjs::toggle('badFormatMsg', condition = is.null(rv.pca$data))
         }, priority = 1000)
@@ -217,4 +215,17 @@ mod_ds_pca_server <- function(id,
             ncp
         })
     })
+}
+
+
+#' @import shiny
+#' @export
+#' @rdname ds-pca
+ds_pca <- function(obj){
+  
+  ui <- mod_ds_pca_ui("plot")
+
+server <- function(input, output, session)
+  mod_ds_pca_server("plot", obj = reactive({obj}))
+shinyApp(ui = ui, server = server)
 }

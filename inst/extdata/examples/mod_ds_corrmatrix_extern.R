@@ -6,7 +6,7 @@
 #' in the GUI of DaparViz.
 #'
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param vizData xxx
+#' @param obj xxx
 #' @param img xxx
 #'
 #' 
@@ -31,7 +31,7 @@ mod_ds_plot_extern_ui <- function(id) {
 #' @export
 #'
 mod_ds_plot_extern_server <- function(id,
-                                     vizData = reactive({NULL}),
+                                      obj = reactive({NULL}),
                                      img = NULL) {
   
   
@@ -45,13 +45,13 @@ mod_ds_plot_extern_server <- function(id,
         addImgPath('mod_ds_plot_extern', "my_location")
         
         observe({
-           req(vizData())
-            stopifnot(inherits(vizData(), 'VizData'))
+           req(obj())
+            stopifnot(inherits(obj(), 'VizData'))
         })
 
 
         output$plot <- renderPlot({
-            req(vizData())
+            req(obj())
             plot(1:10)
         })
     })

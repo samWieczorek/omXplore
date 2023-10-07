@@ -5,18 +5,20 @@
 #' xxxx
 #' 
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param DaparViz An instance of the class `DaparViz`.
+#' @param obj An instance of the class `DaparViz`.
 #' @param pal.name It is a reactive value.
 #'
 #' @name density-plot
 #' 
 #' @return NA
 #'
-#' @example inst/extdata/examples/ex_mod_ds_density.R
+#' @examples
+#' data(vData_ft)
+#' ds_density(vData_ft[[1]])
 #'
 NULL
 
-#' @export
+
 #' @importFrom shiny NS tagList
 #' @importFrom highcharter highchartOutput
 #' @rdname density-plot
@@ -32,13 +34,12 @@ mod_ds_density_ui <- function(id) {
 }
 
 
-#' @export
 #' @rdname density-plot
 #'
 #' @importFrom highcharter renderHighchart
 #'
 mod_ds_density_server <- function(id,
-                                  DaparViz = reactive({NULL}),
+                                  obj = reactive({NULL}),
                                   pal.name = reactive({NULL})) {
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
@@ -48,10 +49,11 @@ mod_ds_density_server <- function(id,
         )
         
         observe({
-          if(inherits(DaparViz(), "DaparViz"))
-            rv$data <- DaparViz()
+          if(inherits(obj(), "DaparViz"))
+            rv$data <- obj()
 
-          shinyjs::toggle('badFormatMsg', condition = !inherits(DaparViz(), "DaparViz"))
+          shinyjs::toggle('badFormatMsg', 
+                          condition = !inherits(obj(), "DaparViz"))
         }, priority = 1000)
 
 
@@ -71,3 +73,16 @@ mod_ds_density_server <- function(id,
     })
 }
 
+
+#' @import shiny
+#' @export
+#' @rdname density-plot
+ds_density <- function(obj){
+  
+  ui <- mod_ds_density_ui("plot")
+
+server <- function(input, output, session)
+  mod_ds_density_server("plot", obj = reactive({obj}))
+
+shinyApp(ui, server)
+}

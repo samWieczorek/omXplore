@@ -12,18 +12,13 @@
 #' 
 #' @param id shiny id
 #' @param data A `data.frame`
-#' @param dataForStyling xxx
+#' @param data_nostyle xxx
 #' @param withDLBtns A boolean to indicate whether to display download buttons or not.
 #' @param showRownames A boolean to indicate whether to show rownames.
 #' @param dom xxx
 #' @param dt_style A `list` composed of:
 #' * data : a data.frame` xxxx
 #' * colors : a named vector
-#' @param xls_style A list of four items:
-#' * cols: a vector of colnames of columns to show,
-#' * vals: a vector of colnames of columns that contain values,
-#' * unique: unique(conds),
-#' * pal: RColorBrewer::brewer.pal(3, "Dark2")[1:2]
 #' @param filename A `character(1)` which is the default filename for download.
 #' @param hideCols xxx
 #' @param selection xxx

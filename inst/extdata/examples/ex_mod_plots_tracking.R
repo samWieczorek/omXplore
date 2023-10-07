@@ -14,7 +14,7 @@ server <- function(input, output, session) {
   obj <- vData_ft[[1]]
   
   indices <- mod_plots_tracking_server("tracker", 
-                                       vizData = reactive({obj}))
+                                       obj = reactive({obj}))
   
   observe({
     print(indices())

@@ -7,14 +7,16 @@
 #' @name plot-variance
 #' 
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param DaparViz xxx
+#' @param obj xxx
 #' @param pal.name A `character(1)` which is the name of the palette from the 
 #' package `RColorBrewer` from which the colors are taken. 
 #' Default value is 'Set1'.
 #' 
 #' @return NA
 #'
-#' @example inst/extdata/examples/ex_mod_ds_variance.R
+#' @examples
+#' data(vData_ft)
+#' ds_variance(vDataz_ft[[1]])
 #'
 NULL
 
@@ -37,9 +39,8 @@ mod_ds_variance_ui <- function(id) {
 #'
 #' @importFrom shiny NS tagList
 #' @rdname plot-variance
-#' @export
 mod_ds_variance_server <- function(id,
-                                   DaparViz,
+                                   obj,
                                    pal.name = NULL) {
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
@@ -47,8 +48,8 @@ mod_ds_variance_server <- function(id,
         rv <- reactiveValues(data = NULL)
         
         observe({
-          if(inherits(DaparViz(), "DaparViz"))
-            rv$data <- DaparViz()
+          if(inherits(obj(), "DaparViz"))
+            rv$data <- obj()
           
           shinyjs::toggle('badFormatMsg', condition = is.null(rv$data))
         }, priority = 1000)
@@ -70,4 +71,19 @@ mod_ds_variance_server <- function(id,
           )
         })
     })
+}
+
+
+#' @import shiny
+#' @rdname plot-variance
+#' @export
+#' 
+ds_variance <- function(obj){
+  ui <- fluidPage(mod_ds_variance_ui("plot"))
+
+  server <- sfunction(input, output, session) 
+    mod_ds_variance_server("plot", obj = reactive({obj}))
+  
+  shinyApp(ui, server)
+  
 }

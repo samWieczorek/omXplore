@@ -3,21 +3,23 @@
 #' @description xxx
 #' 
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param DaparViz An instance of the class `DaparViz`
+#' @param obj An instance of the class `DaparViz`
 #' @param digits xxx
 #'
 #'
-#' @name SE-explorer
+#' @name ds_explorer
 #'
-#' @example inst/extdata/examples/ex_mod_ds_seExplorer.R
+#' @examples
+#' data(vData_ft)
+#' ds_explorer(vData_ft[[1]])
 #' 
 NULL
 
 
-#' @export
+
 #' @import shiny
 #' @import DT
-#' @rdname SE-explorer
+#' @rdname ds_explorer
 #' @import shinyBS
 #' 
 mod_ds_seExplorer_ui <- function(id) {
@@ -45,17 +47,15 @@ mod_ds_seExplorer_ui <- function(id) {
       )
 }
 
-#'
-#' @export
-#'
+
 #' @return NA
 #' @import DT
 #' @importFrom tibble as_tibble
 #' @importFrom stats setNames
 #'
-#' @rdname SE-explorer
+#' @rdname ds_explorer
 mod_ds_seExplorer_server <- function(id,
-                                     DaparViz = reactive({NULL}),
+                                     obj = reactive({NULL}),
                                      digits = reactive({3})) {
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
@@ -64,8 +64,8 @@ mod_ds_seExplorer_server <- function(id,
         
         observe({
           
-          if(inherits(DaparViz(), "DaparViz")){
-            rv$data <- DaparViz()
+          if(inherits(obj(), "DaparViz")){
+            rv$data <- obj()
             
             tags <- GetMetacellTags(rv$data@metacell, 
                                     level = rv$data@type, 
@@ -235,3 +235,16 @@ mod_ds_seExplorer_server <- function(id,
     })
 }
 
+
+#' @rdname ds_explorer
+#' @export
+#' @import shiny
+#' 
+ds_explorer <- function(obj){
+  ui <- fluidPage(mod_ds_seExplorer_ui("plot"))
+
+server <- function(input, output, session)
+  mod_ds_seExplorer_server("plot", reactive({obj}))
+
+shinyApp(ui = ui, server = server)
+}

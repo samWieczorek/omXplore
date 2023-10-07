@@ -10,7 +10,7 @@ mod_plots_tracking_ui(id)
 
 mod_plots_tracking_server(
   id,
-  DaparViz = reactive({
+  obj = reactive({
      NULL
  }),
   resetBtn = reactive({
@@ -21,7 +21,7 @@ mod_plots_tracking_server(
 \arguments{
 \item{id}{shiny id}
 
-\item{DaparViz}{internal}
+\item{obj}{An instance of the class \code{DaparViz}}
 
 \item{resetBtn}{A \code{boolean(1)} which indicates whether to show the 'Reset' button
 or not.}
@@ -35,7 +35,7 @@ in this it is run in slave mode:
 }}
 }
 \value{
-A \code{list} (same structure as the parameter 'params")
+A \code{list} (same structure as the parameter \code{params})
 }
 \description{
 This shiny module provides a tool to select
@@ -57,7 +57,7 @@ server <- function(input, output, session) {
   obj <- vData_ft[[1]]
   
   indices <- mod_plots_tracking_server("tracker", 
-                                       vizData = reactive({obj}))
+                                       obj = reactive({obj}))
   
   observe({
     print(indices())

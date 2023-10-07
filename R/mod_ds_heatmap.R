@@ -13,13 +13,14 @@
 #' 
 #' @return NA
 #'
-#' @example inst/extdata/examples/ex_mod_ds_heatmap.R
+#' @examples
+#' data(vData_ft)
+#' ds_heatmaps(vData_ft[[1]])
 #'
 NULL
 
 
-#'
-#' @export
+
 #' @importFrom shiny NS tagList
 #' @rdname heatmaps
 mod_ds_heatmap_ui <- function(id) {
@@ -47,11 +48,10 @@ mod_ds_heatmap_ui <- function(id) {
 
 
 
-#' @export
 #' @rdname heatmaps
 #'
 mod_ds_heatmap_server <- function(id,
-                                  DaparViz = reactive({NULL}),
+                                  obj = reactive({NULL}),
                                   width = 900) {
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
@@ -59,12 +59,12 @@ mod_ds_heatmap_server <- function(id,
         rv <- reactiveValues(data = NULL)
         
         observe({
-          if(inherits(DaparViz(), "DaparViz"))
-            rv$data <- DaparViz()
+          if(inherits(obj(), "DaparViz"))
+            rv$data <- obj()
           
-          shinyjs::toggle('badFormatMsg', condition = !inherits(DaparViz(), "DaparViz"))
-          shinyjs::toggle('linkage', condition = !inherits(DaparViz(), "DaparViz"))
-          shinyjs::toggle('distance', condition = !inherits(DaparViz(), "DaparViz"))
+          shinyjs::toggle('badFormatMsg', condition = !inherits(obj(), "DaparViz"))
+          shinyjs::toggle('linkage', condition = !inherits(obj(), "DaparViz"))
+          shinyjs::toggle('distance', condition = !inherits(obj(), "DaparViz"))
         }, priority = 1000)
 
 
@@ -97,4 +97,20 @@ mod_ds_heatmap_server <- function(id,
             })
         })
     })
+}
+
+
+
+#' @import shiny
+#' @rdname heatmaps
+#' @export
+ds_heatmap <- function(obj){
+  ui <- fluidPage(
+    mod_ds_heatmap_ui("plot")
+  )
+  
+  server <- function(input, output, session)
+    mod_ds_heatmap_server("plot", reactive({obj}))
+
+  shinyApp(ui = ui, server = server)
 }

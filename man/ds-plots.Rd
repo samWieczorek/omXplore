@@ -10,7 +10,7 @@ mod_view_dataset_ui(id)
 
 mod_view_dataset_server(
   id,
-  ll.DaparViz = reactive({
+  obj = reactive({
      NULL
  }),
   addons = list()
@@ -20,7 +20,7 @@ mod_view_dataset_server(
 \item{id}{A \code{character(1)} for the 'id' of the shiny module. It must be
 the same as for the '*_ui' function.}
 
-\item{ll.DaparViz}{A instance of the class \code{VizList}.}
+\item{obj}{A list of items of the class \code{DaparViz}.}
 
 \item{addons}{A \code{list}}
 }
@@ -78,7 +78,7 @@ server <- function(input, output, session) {
   obj <- vData_ft
   
   mod_view_dataset_server("dataset", 
-                          ll.vizData = reactive({obj}),
+                          obj = reactive({obj}),
                           addons = list(DaparToolshed=c('mod_ds_metacell'))
                           )
 }
@@ -102,7 +102,7 @@ server <- function(input, output, session) {
   obj <- vData_ft
   
   mod_view_dataset_server("dataset", 
-                          ll.vizData = reactive({obj}),
+                          obj = reactive({obj}),
                           addons = list(DaparToolshed=c('mod_ds_metacell'))
                           )
 }

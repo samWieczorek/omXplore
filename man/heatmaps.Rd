@@ -4,6 +4,7 @@
 \alias{heatmaps}
 \alias{mod_ds_heatmap_ui}
 \alias{mod_ds_heatmap_server}
+\alias{ds_heatmap}
 \alias{mv.heatmap}
 \title{Displays a correlation matrix of the quantitative data of a
 numeric matrix.}
@@ -12,11 +13,13 @@ mod_ds_heatmap_ui(id)
 
 mod_ds_heatmap_server(
   id,
-  DaparViz = reactive({
+  obj = reactive({
      NULL
  }),
   width = 900
 )
+
+ds_heatmap(obj)
 
 mv.heatmap(
   x,
@@ -32,8 +35,6 @@ mv.heatmap(
 }
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
-
-\item{DaparViz}{xxx}
 
 \item{width}{xxx}
 
@@ -55,6 +56,8 @@ be plotted.}
 \item{main}{Main title; default to none.}
 
 \item{ylab}{y-axis title; default to none.}
+
+\item{DaparViz}{xxx}
 }
 \value{
 NA
@@ -63,40 +66,7 @@ NA
 xxxx
 }
 \examples{
+data(vData_ft)
+ds_heatmaps(vData_ft[[1]])
 
-library(DaparViz)
-
-ui <- fluidPage(
-  mod_ds_heatmap_ui("plot")
-)
-
-server <- function(input, output, session) {
-  
-  data(vData_ft)
-  obj <- vData_ft[[1]]
-  
-  mod_ds_heatmap_server("plot", reactive({obj})
-  )
-  }
-
-if (interactive())
-  shinyApp(ui = ui, server = server)
-
-library(DaparViz)
-
-ui <- fluidPage(
-  mod_ds_heatmap_ui("plot")
-)
-
-server <- function(input, output, session) {
-  
-  data(vData_ft)
-  obj <- vData_ft[[1]]
-  
-  mod_ds_heatmap_server("plot", reactive({obj})
-  )
-  }
-
-if (interactive())
-  shinyApp(ui = ui, server = server)
 }

@@ -5,12 +5,15 @@
 #' xxxx
 #'
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param DaparViz A instance of the class `DaparViz`
+#' @param obj A instance of the class `DaparViz`
 #' @param track.indices xxx
+#' @param withTracking xxx
 #' 
 #' @name intensity-plots
 #'
-#' @example inst/extdata/examples/ex_mod_ds_intensity.R
+#' @examples
+#' data(vData_ft)
+#' ds_intensity(vData_ft[[1]])
 #'
 NULL
 
@@ -44,7 +47,7 @@ mod_ds_intensity_ui <- function(id) {
 #' @return NA
 #'
 mod_ds_intensity_server <- function(id, 
-                                    DaparViz, 
+                                    obj, 
                                     track.indices = reactive({NULL})
                                     ) {
     
@@ -54,8 +57,8 @@ mod_ds_intensity_server <- function(id,
         rv <- reactiveValues(data = NULL)
         
         observe({
-          if(inherits(DaparViz(), "DaparViz"))
-            rv$data <- DaparViz()
+          if(inherits(obj(), "DaparViz"))
+            rv$data <- obj()
           
           shinyjs::toggle('badFormatMsg', condition = is.null(rv$data))
           shinyjs::toggle('choosePlot', condition = !is.null(rv$data))
@@ -102,4 +105,31 @@ mod_ds_intensity_server <- function(id,
             deleteFile = TRUE
         )
     })
+}
+
+
+#' @import shiny
+#' @rdname intensity-plots
+#' @export
+ds_intensity <- function(obj,
+                         withTracking = FALSE){
+  ui <- fluidPage(
+    tagList(
+      mod_plots_tracking_ui('tracker'),
+      mod_ds_intensity_ui("iplot")
+    )
+  )
+  
+  server <- function(input, output, session) {
+    indices <- mod_plots_tracking_server("tracker", 
+                                         obj = reactive({obj}))
+    
+    mod_ds_intensity_server("iplot",
+                            obj = reactive({obj}),
+                            track.indices = reactive({indices()})
+    )
+  }
+  
+  
+  shinyApp(ui = ui, server = server)
 }

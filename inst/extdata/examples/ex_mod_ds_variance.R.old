@@ -8,7 +8,7 @@ server <- shinyServer(function(input, output, session) {
   obj <- vData_ft[[1]]
   
   mod_ds_variance_server("plot", 
-                         vizData = reactive({obj}))
+                         obj = reactive({obj}))
 })
 
 if (interactive())

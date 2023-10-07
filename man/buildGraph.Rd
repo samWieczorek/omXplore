@@ -4,10 +4,12 @@
 \alias{buildGraph}
 \title{Display a CC}
 \usage{
-buildGraph(cc, peptides_info = NULL)
+buildGraph(cc, metadata = NULL)
 }
 \arguments{
 \item{cc}{A cc (a list)}
+
+\item{metadata}{xxx}
 }
 \value{
 A plot
@@ -18,8 +20,8 @@ Display a CC
 \examples{
 \donttest{
 data(vData_ms)
-obj <- vData_ms[1]
-g <- buildGraph(obj@cc[[1]], obj@adjMat)
+obj <- vData_ms[[1]]
+g <- buildGraph(obj@cc[[1]])
 }
 
 }

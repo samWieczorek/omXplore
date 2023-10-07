@@ -8,7 +8,7 @@ server <- function(input, output, session) {
   obj <- vData_ms[[1]]
   
   mod_ds_pca_server("plot", 
-                    vizData = reactive({obj}))
+                    obj = reactive({obj}))
   }
 
 if (interactive())

@@ -1,5 +1,5 @@
 ---
-title: "DaparViz User manual"
+title: "DaparViz user manual"
 author: 
 - name: Samuel Wieczorek
 - name: Thomas Burger
@@ -14,7 +14,7 @@ output:
         toc: true
         toc_depth: 2
 vignette: >
-    %\VignetteIndexEntry{DaparViz User Manual}
+    %\VignetteIndexEntry{DaparViz user Manual}
     %\VignetteEngine{knitr::rmarkdown}
     %%\VignetteKeywords{Softmware, Mass Spectrometry, Quantitative }
     %\VignetteEncoding{UTF-8}
@@ -26,13 +26,9 @@ vignette: >
 
 \newcommand{\bordurefigure}[1]{\fbox{\includegraphics{#1}}}
 
-```{r echo=FALSE}
-BiocStyle::markdown()
-```
+
 
 # Introduction
-
-\section{Installation}\label{sec:install}
 
 The `DaparViz` package is a Shiny app which provides a series of plots dedicated to the analysis of proteomics data. It can 
 deal with two data structures: `MSnSet` and `QFeatures`.
@@ -47,7 +43,7 @@ The experiment package `DaparToolshedData` contains many datasets that can be us
 `DaparViz` contains built-in plots but have the capability to show plots developped by other developper (as a Shiny app).
 
 
-\section{Installation}\label{sec:install}
+# Installation
 
 To install this package, start R (version "4.3") and enter:
 
@@ -60,9 +56,53 @@ BiocManager::install("DaparViz")
 
 For older versions of R, please refer to the appropriate Bioconductor release.
 
+# Using DaparViz
+
+The functions in DaparViz use a specific data format which is describe in the 
+following section.
+
+DaparViz is a collection of standard plots which are available as Shiny 
+applications. Thus, each plot has its own application.
+
+The main feature in DaparViz is a Shiny app which combine all the different
+Shiny app.
+
+## Internal data format
+
+`DaparViz` has its own data format (the DaparViz-class) which is a 
+simplification of the formats it can deal with. 
+To see which data formats `DaparViz` can manage, run 
+
+```
+
+```
+
+To see how to convert other data formats to DaparViz-class, run ?DaparViz-class
+```
+
+```
+
+However, `DaparViz` plot functions integrate a convert feature so as to pass
+directly datasets in other format to the plot functions.
 
 
-\section{Session information}\label{sec:sessionInfo}
+## Main UI
+
+```
+
+```
+
+
+## Individual plots
+
+
+
+```
+listPlotModules()
+
+```
+
+# Session information
 
 ```{r}
 sessionInfo()

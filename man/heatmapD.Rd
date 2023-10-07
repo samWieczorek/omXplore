@@ -26,26 +26,6 @@ This function is a wrapper to \code{heatmap.2()} that displays
 quantitative data in the \code{MSnbase::exprs()} table of an object of
 class \code{MSnSet}. For more details, see \code{heatmap.2()}.
 }
-\examples{
-
-library(DaparViz)
-
-ui <- fluidPage(
-  mod_ds_heatmap_ui("plot")
-)
-
-server <- function(input, output, session) {
-  
-  data(vData_ft)
-  obj <- vData_ft[[1]]
-  
-  mod_ds_heatmap_server("plot", reactive({obj})
-  )
-  }
-
-if (interactive())
-  shinyApp(ui = ui, server = server)
-}
 \author{
 Florence Combes, Samuel Wieczorek, Enor Fremy
 }

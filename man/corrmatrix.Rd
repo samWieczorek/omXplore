@@ -4,6 +4,7 @@
 \alias{corrmatrix}
 \alias{mod_ds_corrmatrix_ui}
 \alias{mod_ds_corrmatrix_server}
+\alias{ds_corrmatrix}
 \alias{corrMatrix}
 \title{Displays a correlation matrix of the quantitative data of a
 numeric matrix.}
@@ -12,7 +13,7 @@ mod_ds_corrmatrix_ui(id)
 
 mod_ds_corrmatrix_server(
   id,
-  DaparViz = reactive({
+  obj = reactive({
      NULL
  }),
   rate = reactive({
@@ -23,12 +24,14 @@ mod_ds_corrmatrix_server(
  })
 )
 
+ds_corrmatrix(obj)
+
 corrMatrix(data, rate = 0.5, showValues = FALSE)
 }
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
-\item{DaparViz}{xxx}
+\item{obj}{An instance of the class \code{DaparViz}}
 
 \item{rate}{The rate parameter to control the exponential law for
 the gradient of colors}
@@ -46,34 +49,10 @@ NA
 xxxx
 }
 \examples{
-library(DaparViz)
+data(vData_ft)
+ds_corrmatrix(vData_ft[[1]])
 
-ui <- fluidPage(
-  mod_ds_corrmatrix_ui("plot")
-)
 
-server <- function(input, output, session) {
-  data(vData_ft)
-  obj <- vData_ft[[1]]
-  
-  mod_ds_corrmatrix_server("plot", reactive({obj}))
-  }
+NULL
 
-if (interactive())
-  shinyApp(ui = ui, server = server)
-library(DaparViz)
-
-ui <- fluidPage(
-  mod_ds_corrmatrix_ui("plot")
-)
-
-server <- function(input, output, session) {
-  data(vData_ft)
-  obj <- vData_ft[[1]]
-  
-  mod_ds_corrmatrix_server("plot", reactive({obj}))
-  }
-
-if (interactive())
-  shinyApp(ui = ui, server = server)
 }

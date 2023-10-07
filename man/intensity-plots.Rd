@@ -5,6 +5,7 @@
 \alias{intensity-plots}
 \alias{mod_ds_intensity_ui}
 \alias{mod_ds_intensity_server}
+\alias{ds_intensity}
 \alias{boxPlot}
 \alias{violinPlot}
 \title{Displays a correlation matrix of the quantitative data of a
@@ -14,11 +15,13 @@ mod_ds_intensity_ui(id)
 
 mod_ds_intensity_server(
   id,
-  DaparViz,
+  obj,
   track.indices = reactive({
      NULL
  })
 )
+
+ds_intensity(obj, withTracking = FALSE)
 
 boxPlot(data, conds, subset = NULL, pal.name = NULL)
 
@@ -27,9 +30,11 @@ violinPlot(data, conds, subset = NULL, pal.name)
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
-\item{DaparViz}{A instance of the class \code{DaparViz}}
+\item{obj}{A instance of the class \code{DaparViz}}
 
 \item{track.indices}{xxx}
+
+\item{withTracking}{xxx}
 
 \item{data}{An instance of the class \code{matrix}}
 
@@ -54,75 +59,9 @@ A violinplot
 xxxx
 }
 \examples{
-library(DaparViz)
+data(vData_ft)
+ds_intensity(vData_ft[[1]])
 
-ui <- fluidPage(
-  tagList(
-    mod_plots_tracking_ui('tracker'),
-    mod_ds_intensity_ui("iplot")
-  )
-)
-
-server <- function(input, output, session) {
-  data(vData_ft)
-  obj <- vData_ft[[1]]
-  indices <- mod_plots_tracking_server("tracker", 
-                                       vizData = reactive({obj}))
-  
-  mod_ds_intensity_server("iplot",
-                          vizData = reactive({obj}),
-                          track.indices = reactive({indices()})
-                          )
-    }
-
-if (interactive())
-  shinyApp(ui = ui, server = server)
-library(DaparViz)
-
-ui <- fluidPage(
-  tagList(
-    mod_plots_tracking_ui('tracker'),
-    mod_ds_intensity_ui("iplot")
-  )
-)
-
-server <- function(input, output, session) {
-  data(vData_ft)
-  obj <- vData_ft[[1]]
-  indices <- mod_plots_tracking_server("tracker", 
-                                       vizData = reactive({obj}))
-  
-  mod_ds_intensity_server("iplot",
-                          vizData = reactive({obj}),
-                          track.indices = reactive({indices()})
-                          )
-    }
-
-if (interactive())
-  shinyApp(ui = ui, server = server)
-library(DaparViz)
-
-ui <- fluidPage(
-  tagList(
-    mod_plots_tracking_ui('tracker'),
-    mod_ds_intensity_ui("iplot")
-  )
-)
-
-server <- function(input, output, session) {
-  data(vData_ft)
-  obj <- vData_ft[[1]]
-  indices <- mod_plots_tracking_server("tracker", 
-                                       vizData = reactive({obj}))
-  
-  mod_ds_intensity_server("iplot",
-                          vizData = reactive({obj}),
-                          track.indices = reactive({indices()})
-                          )
-    }
-
-if (interactive())
-  shinyApp(ui = ui, server = server)
 }
 \author{
 Samuel Wieczorek, Anais Courtier, Enora Fremy

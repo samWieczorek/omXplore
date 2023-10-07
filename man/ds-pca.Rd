@@ -4,6 +4,7 @@
 \alias{ds-pca}
 \alias{mod_ds_pca_ui}
 \alias{mod_ds_pca_server}
+\alias{ds_pca}
 \alias{wrapper_pca}
 \alias{plotPCA_Eigen}
 \alias{plotPCA_Var}
@@ -13,7 +14,9 @@
 \usage{
 mod_ds_pca_ui(id)
 
-mod_ds_pca_server(id, DaparViz)
+mod_ds_pca_server(id, obj)
+
+ds_pca(obj)
 
 wrapper_pca(DaparViz, var.scaling = TRUE, ncp = NULL)
 
@@ -27,6 +30,8 @@ plotPCA_Eigen_hc(res.pca)
 }
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
+
+\item{obj}{An instance of the class \code{DaparViz}}
 
 \item{DaparViz}{An instance of the class \code{DaparViz}.}
 
@@ -58,36 +63,9 @@ xxx
 }
 }
 \examples{
+data(vData_ft)
+ds_pca(vData_ft[[1]])
 
-library(DaparViz)
-
-ui <- mod_ds_pca_ui("plot")
-
-server <- function(input, output, session) {
-  data(vData_ms)
-  obj <- vData_ms[[1]]
-  
-  mod_ds_pca_server("plot", 
-                    vizData = reactive({obj}))
-  }
-
-if (interactive())
-  shinyApp(ui = ui, server = server)
-
-library(DaparViz)
-
-ui <- mod_ds_pca_ui("plot")
-
-server <- function(input, output, session) {
-  data(vData_ms)
-  obj <- vData_ms[[1]]
-  
-  mod_ds_pca_server("plot", 
-                    vizData = reactive({obj}))
-  }
-
-if (interactive())
-  shinyApp(ui = ui, server = server)
 }
 \author{
 Samuel Wieczorek, Enora Fremy

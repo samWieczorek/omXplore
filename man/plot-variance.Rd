@@ -4,20 +4,23 @@
 \alias{plot-variance}
 \alias{mod_ds_variance_ui}
 \alias{mod_ds_variance_server}
+\alias{ds_variance}
 \alias{CVDist}
 \title{Displays a correlation matrix of the quantitative data of a
 numeric matrix.}
 \usage{
 mod_ds_variance_ui(id)
 
-mod_ds_variance_server(id, DaparViz, pal.name = NULL)
+mod_ds_variance_server(id, obj, pal.name = NULL)
+
+ds_variance(obj)
 
 CVDist(vizData, pal.name = NULL)
 }
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
-\item{DaparViz}{xxx}
+\item{obj}{xxx}
 
 \item{pal.name}{xxx}
 
@@ -32,34 +35,7 @@ NA
 xxxx
 }
 \examples{
-library(DaparViz)
+data(vData_ft)
+ds_variance(vDataz_ft[[1]])
 
-
-ui <- fluidPage(mod_ds_variance_ui("plot"))
-
-server <- shinyServer(function(input, output, session) {
-  data(vData_ft)
-  obj <- vData_ft[[1]]
-  
-  mod_ds_variance_server("plot", 
-                         vizData = reactive({obj}))
-})
-
-if (interactive())
-  shinyApp(ui, server)
-library(DaparViz)
-
-
-ui <- fluidPage(mod_ds_variance_ui("plot"))
-
-server <- shinyServer(function(input, output, session) {
-  data(vData_ft)
-  obj <- vData_ft[[1]]
-  
-  mod_ds_variance_server("plot", 
-                         vizData = reactive({obj}))
-})
-
-if (interactive())
-  shinyApp(ui, server)
 }
