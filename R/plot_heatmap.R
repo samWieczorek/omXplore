@@ -14,8 +14,8 @@
 #' @return A heatmap
 #'
 #' @author Florence Combes, Samuel Wieczorek, Enor Fremy
-#'
-#' @example inst/extdata/examples/ex_mod_ds_heatmap.R
+#' 
+#' @rdname ds_heatmap
 #'
 #' @export
 #'
@@ -111,8 +111,6 @@ heatmapD <- function(vData,
 #' @export
 #'
 #' @importFrom grDevices heat.colors
-#' 
-#' @example inst/extdata/examples/ex_mod_ds_heatmap.R
 #'
 #' @rdname heatmaps
 #'
@@ -350,8 +348,6 @@ mv.heatmap <- function(x,
 #' @return A heatmap
 #'
 #' @author Samuel Wieczorek
-#'
-#' @example inst/extdata/examples/ex_mod_ds_heatmap.R
 #'
 #' @export
 #'

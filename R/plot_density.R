@@ -12,8 +12,6 @@
 #' @importFrom stats density
 #'
 #' @export
-#' 
-#' @example inst/extdata/examples/ex_mod_ds_density.R
 #'
 #' @rdname density-plot
 #' 

@@ -34,7 +34,6 @@ NULL
 #' @importFrom shiny NS tagList
 #' @import DT
 #'
-#' @export
 #' @rdname mod_format_DT
 #'
 mod_format_DT_ui <- function(id) {
@@ -51,9 +50,7 @@ mod_format_DT_ui <- function(id) {
   )
 }
 
-#'
-#' @export
-#'
+
 #' @importFrom htmlwidgets JS
 #' @import DT
 #' @rdname mod_format_DT

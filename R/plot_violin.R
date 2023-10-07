@@ -10,10 +10,7 @@
 #' package [RColorBrewer] from which the colors are taken. Default value 
 #' is 'Set1'.
 #'
-#' @return A violinplot
-#' 
-#' @example inst/extdata/examples/ex_mod_ds_intensity.R
-#'
+#' @return A violin plot
 #'
 #' @importFrom grDevices colorRampPalette
 #' @importFrom RColorBrewer brewer.pal

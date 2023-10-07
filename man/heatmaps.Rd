@@ -4,7 +4,6 @@
 \alias{heatmaps}
 \alias{mod_ds_heatmap_ui}
 \alias{mod_ds_heatmap_server}
-\alias{ds_heatmap}
 \alias{mv.heatmap}
 \title{Displays a correlation matrix of the quantitative data of a
 numeric matrix.}
@@ -18,8 +17,6 @@ mod_ds_heatmap_server(
  }),
   width = 900
 )
-
-ds_heatmap(obj)
 
 mv.heatmap(
   x,

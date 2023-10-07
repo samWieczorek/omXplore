@@ -20,9 +20,6 @@
 #' @param chosen.axes The dimensions to plot
 #'
 #' @author Samuel Wieczorek, Enora Fremy
-
-#' 
-#' @example inst/extdata/examples/ex_mod_ds_pca.R
 #'
 NULL
 

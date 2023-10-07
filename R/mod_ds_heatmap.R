@@ -9,7 +9,7 @@
 #' @param DaparViz xxx
 #' @param width xxx
 #'
-#' @name heatmaps
+#' @name ds_heatmap
 #' 
 #' @return NA
 #'
@@ -22,7 +22,7 @@ NULL
 
 
 #' @importFrom shiny NS tagList
-#' @rdname heatmaps
+#' @rdname ds_heatmap
 mod_ds_heatmap_ui <- function(id) {
     ns <- NS(id)
     tagList(
@@ -48,7 +48,7 @@ mod_ds_heatmap_ui <- function(id) {
 
 
 
-#' @rdname heatmaps
+#' @rdname ds_heatmap
 #'
 mod_ds_heatmap_server <- function(id,
                                   obj = reactive({NULL}),
@@ -102,7 +102,7 @@ mod_ds_heatmap_server <- function(id,
 
 
 #' @import shiny
-#' @rdname heatmaps
+#' @rdname ds_heatmap
 #' @export
 ds_heatmap <- function(obj){
   ui <- fluidPage(

@@ -15,7 +15,7 @@ mod_ds_variance_server(id, obj, pal.name = NULL)
 
 ds_variance(obj)
 
-CVDist(vizData, pal.name = NULL)
+CVDist(obj, pal.name = NULL)
 }
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
@@ -23,8 +23,6 @@ CVDist(vizData, pal.name = NULL)
 \item{obj}{xxx}
 
 \item{pal.name}{xxx}
-
-\item{vizData}{xxx}
 }
 \value{
 NA

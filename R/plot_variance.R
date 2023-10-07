@@ -5,26 +5,24 @@
 #'
 #' @export
 #' 
-#' @param vizData xxx
+#' @param obj xxx
 #' @param pal.name xxx
-#' 
-#' @example inst/extdata/examples/ex_mod_ds_variance.R
 #'
 #' @rdname plot-variance
 #' 
 #' @return NA
 #'
-CVDist <- function(vizData,
+CVDist <- function(obj,
                    pal.name = NULL) {
 
-  stopifnot(inherits(vizData, "DaparViz"))
+  stopifnot(inherits(obj, "DaparViz"))
   
 
-    if (is.null(vizData@conds)) {
-        stop("'vizData@conds' is NULL")
+    if (is.null(obj@conds)) {
+        stop("'obj@conds' is NULL")
     } 
   
-  u_conds <- unique(vizData@conds)
+  u_conds <- unique(obj@conds)
 
     myColors <- SampleColors(u_conds)
 
@@ -54,9 +52,9 @@ CVDist <- function(vizData,
     minX <- maxX <- 0
     maxY <- 0
     for (i in seq_len(length(u_conds))) {
-        if (length(which(vizData@conds == u_conds[i])) > 1) {
+        if (length(which(obj@conds == u_conds[i])) > 1) {
             t <- apply(
-                vizData@qdata[, which(vizData@conds == u_conds[i])], 1,
+                obj@qdata[, which(obj@conds == u_conds[i])], 1,
                 function(x) 
                     100 * stats::var(x, na.rm = TRUE) / mean(x, na.rm = TRUE)
             )

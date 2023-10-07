@@ -40,19 +40,29 @@
 #'
 #' - Histogram of missing values.
 #'
-#' @name ds-plots
+#' @name ds-view
 #' 
 #' @param id A `character(1)` for the 'id' of the shiny module. It must be
 #' the same as for the '*_ui' function.
 #' @param obj A list of items of the class `DaparViz`.
-#' @param addons A `list`
-
+#' @param addons A `list` to configure the other shiny apps to integrate.
+#' Each item correspond to one package:
+#' * the name of the slot is the name of the package
+#' * the content of the slot is a vector composed of the generic name of the
+#' shiny app. Each of the apps listed here must be an exported app of the 
+#' package.
+#' For example, given the value addons = list(testPkg = c('foo', 'foo2')). That
+#' means that the package called "testPkg" must provide the four functions:
+#' foo1_ui(), foo1_server() and foo2_ui(), foo2_server())
 #'
 #' @return A plot
 #'
 #' @author Samuel Wieczorek, Enora Fremy
 #'
-#' @example inst/extdata/examples/ex_mod_view_dataset.R
+#' @examples
+#' data(vData_ft)
+#' addon <- list(DaparToolshed=c('mod_ds_metacell'))
+#' view_dataset(vData_ft[[1]], addon)
 #' 
 NULL
 
@@ -61,10 +71,8 @@ NULL
 
 #' @import shiny
 #' @importFrom shinyjs useShinyjs
-#' @rdname ds-plots
+#' @rdname ds-view
 #' @export
-#' 
-#' @example inst/extdata/examples/ex_mod_view_dataset.R
 #' 
 mod_view_dataset_ui <- function(id) {
     ns <- NS(id)
@@ -88,7 +96,7 @@ mod_view_dataset_ui <- function(id) {
 #' @importFrom shinyjs show hide hidden
 #' @import shiny
 #'
-#' @rdname ds-plots
+#' @rdname ds-view
 #' @export
 #'
 mod_view_dataset_server <- function(id, 
@@ -216,8 +224,24 @@ mod_view_dataset_server <- function(id,
 }
 
 
-
-
-
+#' @export
+#' @rdname ds-view
+#' @import shiny
+#' 
+view_dataset <- function(obj,
+                         addons = NULL){
+  
+  ui <- fluidPage(
+    mod_view_dataset_ui("dataset")
+    )
+  
+  server <- function(input, output, session) {
+    mod_view_dataset_server("dataset", 
+                          obj = reactive({obj}),
+                          addons = addons)
+    }
+  
+  shinyApp(ui, server)
+}
 
 

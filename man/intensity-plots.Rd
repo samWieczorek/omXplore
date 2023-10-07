@@ -53,7 +53,7 @@ NA
 
 A boxplot
 
-A violinplot
+A violin plot
 }
 \description{
 xxxx
