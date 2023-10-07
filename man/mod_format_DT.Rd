@@ -59,7 +59,7 @@ mod_format_DT_server(
 \item cols: a vector of colnames of columns to show,
 \item vals: a vector of colnames of columns that contain values,
 \item unique: unique(conds),
-\item pal: RColorBrewer::brewer.pal(3, "Dark2")\link{1:2}
+\item pal: A vector of colors (HEX codes, string, rgb())
 }}
 }
 \value{

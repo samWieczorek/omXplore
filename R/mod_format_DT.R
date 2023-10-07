@@ -23,7 +23,7 @@
 #' * cols: a vector of colnames of columns to show,
 #' * vals: a vector of colnames of columns that contain values,
 #' * unique: unique(conds),
-#' * pal: RColorBrewer::brewer.pal(3, "Dark2")[1:2]
+#' * pal: A vector of colors (HEX codes, string, rgb())
 #' @param filename A `character(1)` which is the default filename for download.
 #' @param hideCols xxx
 #' @param selection xxx
