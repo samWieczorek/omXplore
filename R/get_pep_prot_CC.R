@@ -54,8 +54,7 @@ plotJitter <- function(list.of.cc = NULL) {
 #' @title Display a CC
 #'
 #' @param cc A cc (a list)
-#' @param peptides_info xxx
-#' @param metadata www
+#' @param metadata A `data.frame` which contains information about peptides.
 #' @return A plot
 #'
 #' @author Thomas Burger, Samuel Wieczorek
@@ -70,7 +69,6 @@ plotJitter <- function(list.of.cc = NULL) {
 #' @export
 #'
 buildGraph <- function(cc,
-                       peptides_info = NULL,
                        metadata = NULL) {
   nb.prot <- ncol(cc)
   nb.pep <- nrow(cc)
@@ -87,11 +85,11 @@ buildGraph <- function(cc,
   
   buildTitle <- function(peptides_info){
     title <- NULL
-    if(!is.null(peptides_info)){
+    if(!is.null(metadata)){
       title <- rep('', nb.total)
       for (i in 1:nb.pep){
         ind <- which(rownames(metadata) == rownames(cc)[i])
-        title[i] <- paste0("<p>", peptides_info, ':', metadata[ind, peptides_info], "</p>")
+        title[i] <- paste0("<p>", colnames(metadat)[i], ':', metadata[ind, ], "</p>")
       }
   }
     title
