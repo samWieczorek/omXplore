@@ -25,8 +25,10 @@ NA
 A shiny Module.
 }
 \examples{
+if(interactive()){
 data(vData_ft)
 ds_cc(vData_ft[[1]])
+}
 
 
 }

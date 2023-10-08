@@ -1,33 +1,18 @@
 
 
 
-#' @title This function is a wrapper to `heatmap.2()` that displays
-#' quantitative data in the `MSnbase::exprs()` table of an object of
-#' class `MSnSet`. For more details, see `heatmap.2()`.
-#'
-#' @param vData An instance of a class `DaparViz`.
-#' @param distance The distance used by the clustering algorithm to compute
-#' the dendrogram.
-#' @param cluster the clustering algorithm used to build the dendrogram.
-#' @param dendro A boolean to indicate fi the dendrogram has to be displayed
-#'
-#' @return A heatmap
-#'
-#' @author Florence Combes, Samuel Wieczorek, Enor Fremy
-#' 
+
 #' @rdname ds_heatmap
 #'
-#' @export
-#'
-heatmapD <- function(vData,
+heatmapD <- function(obj,
                      distance = "euclidean",
                      cluster = "complete",
                      dendro = FALSE) {
   
   pkgs.require(c('stats', 'dendextend', "gplots", 'grDevices', 'RColorBrewer'))
   
-  qdata <- vData@qdata
-  conds <- vData@conds
+  qdata <- obj@qdata
+  conds <- obj@conds
   
   .data <- matrix(qdata,
                   ncol = ncol(qdata),
@@ -112,7 +97,7 @@ heatmapD <- function(vData,
 #'
 #' @importFrom grDevices heat.colors
 #'
-#' @rdname heatmaps
+#' @rdname ds_heatmap
 #'
 mv.heatmap <- function(x,
                        col = grDevices::heat.colors(100),

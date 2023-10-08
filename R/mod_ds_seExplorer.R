@@ -10,8 +10,10 @@
 #' @name ds_explorer
 #'
 #' @examples
+#' if(interactive()){
 #' data(vData_ft)
 #' ds_explorer(vData_ft[[1]])
+#' }
 #' 
 NULL
 

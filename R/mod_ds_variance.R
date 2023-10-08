@@ -15,8 +15,10 @@
 #' @return NA
 #'
 #' @examples
+#' if(interactive()){
 #' data(vData_ft)
 #' ds_variance(vDataz_ft[[1]])
+#' }
 #'
 NULL
 

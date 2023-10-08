@@ -49,7 +49,9 @@ NA
 xxxx
 }
 \examples{
+if(interactive()){
 data(vData_ft)
 ds_density(vData_ft[[1]])
+}
 
 }

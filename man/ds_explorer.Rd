@@ -34,7 +34,9 @@ NA
 xxx
 }
 \examples{
+if(interactive()){
 data(vData_ft)
 ds_explorer(vData_ft[[1]])
+}
 
 }

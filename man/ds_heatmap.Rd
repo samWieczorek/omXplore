@@ -2,17 +2,45 @@
 % Please edit documentation in R/mod_ds_heatmap.R, R/plot_heatmap.R
 \name{ds_heatmap}
 \alias{ds_heatmap}
+\alias{mod_ds_heatmap_ui}
+\alias{mod_ds_heatmap_server}
 \alias{heatmapD}
-\title{This function is a wrapper to \code{heatmap.2()} that displays
-quantitative data in the \code{MSnbase::exprs()} table of an object of
-class \code{MSnSet}. For more details, see \code{heatmap.2()}.}
+\alias{mv.heatmap}
+\title{Displays a correlation matrix of the quantitative data of a
+numeric matrix.}
 \usage{
+mod_ds_heatmap_ui(id)
+
+mod_ds_heatmap_server(
+  id,
+  obj = reactive({
+     NULL
+ }),
+  width = 900
+)
+
 ds_heatmap(obj)
 
-heatmapD(vData, distance = "euclidean", cluster = "complete", dendro = FALSE)
+heatmapD(obj, distance = "euclidean", cluster = "complete", dendro = FALSE)
+
+mv.heatmap(
+  x,
+  col = grDevices::heat.colors(100),
+  srtCol = NULL,
+  labCol = NULL,
+  labRow = NULL,
+  key = TRUE,
+  key.title = NULL,
+  main = NULL,
+  ylab = NULL
+)
 }
 \arguments{
-\item{vData}{An instance of a class \code{DaparViz}.}
+\item{id}{A \code{character(1)} which is the id of the shiny module.}
+
+\item{obj}{An instance of a class \code{DaparViz}.}
+
+\item{width}{xxx}
 
 \item{distance}{The distance used by the clustering algorithm to compute
 the dendrogram.}
@@ -20,14 +48,40 @@ the dendrogram.}
 \item{cluster}{the clustering algorithm used to build the dendrogram.}
 
 \item{dendro}{A boolean to indicate fi the dendrogram has to be displayed}
+
+\item{x}{A \code{matrix} or \code{array} containing the quantitative data.}
+
+\item{col}{Colors used for the image. Defaults to heat colors (heat.colors).}
+
+\item{srtCol}{Angle of column conds, in degrees from horizontal}
+
+\item{labCol}{Character vectors with column conds to use.}
+
+\item{labRow}{Character vectors with row conds to use.}
+
+\item{key}{Logical indicating whether a color-key should be shown.}
+
+\item{key.title}{Main title of the color key. If set to NA no title will
+be plotted.}
+
+\item{main}{Main title; default to none.}
+
+\item{ylab}{y-axis title; default to none.}
 }
 \value{
-A heatmap
+NA
 }
 \description{
 This function is a wrapper to \code{heatmap.2()} that displays
-quantitative data in the \code{MSnbase::exprs()} table of an object of
-class \code{MSnSet}. For more details, see \code{heatmap.2()}.
+quantitative data in an object of #' class \code{DaparViz}. For
+more details, see \code{heatmap.2()}.
+}
+\examples{
+if(interactive()){
+data(vData_ft)
+ds_heatmaps(vData_ft[[1]])
+}
+
 }
 \author{
 Florence Combes, Samuel Wieczorek, Enor Fremy

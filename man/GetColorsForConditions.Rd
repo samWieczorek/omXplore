@@ -19,11 +19,9 @@ A vector composed of HEX color code for the conditions
 xxxx
 }
 \examples{
-\donttest{
-data(Exp1_R25_pept, package="DAPARdata")
-conditions <- Biobase::pData(Exp1_R25_pept)$Condition
-GetColorsForConditions(conditions, ExtendPalette(2))
-}
+data(vData_ft)
+conds <- vData_ft[[1]]@conds
+GetColorsForConditions(conds, ExtendPalette(2))
 
 }
 \author{

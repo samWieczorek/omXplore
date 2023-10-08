@@ -69,11 +69,12 @@ SampleColors <- function(conds, pal.name = "Set1") {
 #' @rdname palette
 #'
 ExtendPalette <- function(n, pal.name = "Set1") {
+  
+  pkgs.require('RColorBrewer')
     stopifnot(is.numeric(n))
 
-    if (is.null(pal.name) || !(pal.name %in% rownames(brewer.pal.info))) {
+    if (!(pal.name %in% rownames(RColorBrewer::brewer.pal.info)))
         pal.name <- "Set1"
-    }
 
     extended.pal <- NULL
 
@@ -115,11 +116,9 @@ ExtendPalette <- function(n, pal.name = "Set1") {
 #' @author Samuel Wieczorek
 #'
 #' @examples
-#' \donttest{
-#' data(Exp1_R25_pept, package="DAPARdata")
-#' conditions <- Biobase::pData(Exp1_R25_pept)$Condition
-#' GetColorsForConditions(conditions, ExtendPalette(2))
-#' }
+#' data(vData_ft)
+#' conds <- vData_ft[[1]]@conds
+#' GetColorsForConditions(conds, ExtendPalette(2))
 #'
 #' @export
 #'

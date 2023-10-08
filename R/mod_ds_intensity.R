@@ -12,8 +12,10 @@
 #' @name intensity-plots
 #'
 #' @examples
+#' if(interactive()){
 #' data(vData_ft)
 #' ds_intensity(vData_ft[[1]])
+#' }
 #'
 NULL
 

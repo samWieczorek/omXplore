@@ -60,9 +60,11 @@
 #' @author Samuel Wieczorek, Enora Fremy
 #'
 #' @examples
+#' if(interactive()){
 #' data(vData_ft)
 #' addon <- list(DaparToolshed=c('mod_ds_metacell'))
 #' view_dataset(vData_ft[[1]], addon)
+#' }
 #' 
 NULL
 

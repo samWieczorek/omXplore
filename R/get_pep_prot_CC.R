@@ -1,56 +1,4 @@
 
-
-
-
-#' @title Jitter plot of CC
-#'
-#' @param list.of.cc List of cc such as returned by the function get.pep.prot.cc
-#'
-#' @return A plot
-#'
-#' @author Thomas Burger
-#'
-#' @examples
-#' \donttest{
-#' data(vData_ms)
-#' plotJitter(vData_ms[1]@cc)
-#' }
-#'
-#' @export
-#'
-plotJitter <- function(list.of.cc = NULL) {
-  if (is.null(list.of.cc)) {
-    return()
-  }
-  
-  #x <- length(list.of.cc) # number of CCs
-  cc.summary <- sapply(list.of.cc, function(x) {
-    c(length(x[[1]]), length(x[[2]]))
-  })
-  # cc.summary <- vapply(list.of.cc, 
-  #     function(x) {c(length(x[[1]]), length(x[[2]]))},
-  #     data.frame(2)
-  #     )
-  
-  rownames(cc.summary) <- c("Nb_proteins", "Nb_peptides")
-  colSums(cc.summary) # total amount of pep and prot in each CC
-  colnames(cc.summary) <- seq_len(length(list.of.cc))
-  cc.summary
-  rowSums(cc.summary) # c(number of prot, number of pep)
-  
-  
-  cc.summary <- as.data.frame(t(jitter(cc.summary)))
-  plot(
-    jitter(cc.summary[, 2]), 
-    jitter(cc.summary[, 1]), 
-    type = "p", 
-    xlab = "#peptides in CC", 
-    ylab = "#proteins in CC"
-  )
-}
-
-
-
 #' @title Display a CC
 #'
 #' @param cc A cc (a list)
@@ -137,11 +85,11 @@ buildGraph <- function(cc,
 #' @author Thomas Burger, Samuel Wieczorek
 #'
 #' @examples
-#' \donttest{
-#' data(vData_ms)
-#' obj <- vData_ms[1]
-#' display.CC.visNet(obj$cc[[1]])
-#' }
+#' data(vData_ft)
+#' cc <- vData_ft[[1]]@cc[[1]]
+#' g <- buildGraph(cc) 
+#' display.CC.visNet(g)
+#' 
 #'
 #' @export
 #'
@@ -190,22 +138,18 @@ display.CC.visNet <- function(g,
 #' @import highcharter
 #' 
 #' @examples 
-#' \donttest{
-#' data(vData_ms)
-#' obj <- vData_ms[1]
-#' ll <- obj@cc[1:4]
-#' n.prot <- unlist(lapply(ll, function(x) {length(x$proteins)}))
-#' n.pept <- unlist(lapply(ll, function(x) {length(x$peptides)}))
-#' df <- tibble::tibble(
-#' x = jitter(n.pept),
-#' y = jitter(n.prot),
-#' index = seq_len(length(ll))
-#' )
-#' plotJitter_rCharts(df)
-#' }
+#' data(vData_ft)
+#' obj <- vData_ft[[1]]
+#' 
+#' n.prot <- unlist(lapply(obj@cc, function(x) {ncol(x)}))
+#' n.pept <- unlist(lapply(obj@cc, function(x) {nrow(x)}))
+#' df <- tibble::tibble(x = jitter(n.pept),
+#'                     y = jitter(n.prot),
+#'                     index = seq_len(length(obj@cc)))
+#' plotCCJitter(df)
 #'
-plotJitter_rCharts <- function(df, 
-                               clickFunction = NULL) {
+plotCCJitter <- function(df,
+                         clickFunction = NULL) {
   
   if (is.null(clickFunction)) {
     clickFunction <-

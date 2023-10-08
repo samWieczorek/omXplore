@@ -74,9 +74,11 @@ number of missing values (NA) per lines (ie proteins) and per conditions,
 }
 
 \examples{
+if(interactive()){
 data(vData_ft)
 addon <- list(DaparToolshed=c('mod_ds_metacell'))
 view_dataset(vData_ft[[1]], addon)
+}
 
 }
 \author{

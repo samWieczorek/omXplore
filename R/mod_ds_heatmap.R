@@ -2,20 +2,39 @@
 #' numeric matrix.
 #'
 #' @description
-#' xxxx
+#' This function is a wrapper to `heatmap.2()` that displays
+#' quantitative data in an object of #' class `DaparViz`. For 
+#' more details, see `heatmap.2()`.
 #' 
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param id A `character(1)` which is the id of the shiny module.
-#' @param DaparViz xxx
 #' @param width xxx
+#' @param obj An instance of a class `DaparViz`.
+#' @param distance The distance used by the clustering algorithm to compute
+#' the dendrogram.
+#' @param cluster the clustering algorithm used to build the dendrogram.
+#' @param dendro A boolean to indicate fi the dendrogram has to be displayed
+#' @param x xxx
+#' @param col A palette of colors
+#' @param srtCol xxx
+#' @param labCol xxx
+#' @param labRow xxxx
+#' @param key xxx
+#' @param key.title xxxx
+#' @param main xxx
+#' @param ylab xxxx
+#' 
+#' 
+#' @author Florence Combes, Samuel Wieczorek, Enor Fremy
 #'
 #' @name ds_heatmap
 #' 
 #' @return NA
 #'
 #' @examples
+#' if(interactive()){
 #' data(vData_ft)
 #' ds_heatmaps(vData_ft[[1]])
+#' }
 #'
 NULL
 

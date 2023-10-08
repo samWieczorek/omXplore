@@ -10,8 +10,10 @@
 #' @return NA
 #' 
 #' @examples
+#' if(interactive()){
 #' data(vData_ft)
 #' ds_cc(vData_ft[[1]])
+#' }
 #' 
 #'
 #' @name ds-cc
@@ -219,12 +221,6 @@ mod_ds_cc_server <- function(id, obj) {
           visNetwork::visOptions(highlightNearest = TRUE)
       })
       
-      
-      
-      
-      
-      
-      
       ##//////////////////////////////////////////////////////////////////
       ##
       ##    Multi-Multi Connected Components
@@ -250,7 +246,7 @@ mod_ds_cc_server <- function(id, obj) {
                                 ns("eventPointClicked"), "', [this.index]+'_'+ [this.series.name]);}"))
           
           
-          plotCC <- plotJitter_rCharts(df, clickFunction = clickFun)
+          plotCC <- plotCCJitter(df, clickFunction = clickFun)
         })
         plotCC
 

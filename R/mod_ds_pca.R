@@ -14,8 +14,10 @@
 #' @author Samuel Wieczorek, Enora Fremy
 #'
 #' @examples
+#' if(interactive()){
 #' data(vData_ft)
 #' ds_pca(vData_ft[[1]])
+#' }
 #'
 NULL
 

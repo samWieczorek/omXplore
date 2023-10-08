@@ -59,8 +59,10 @@ A violin plot
 xxxx
 }
 \examples{
+if(interactive()){
 data(vData_ft)
 ds_intensity(vData_ft[[1]])
+}
 
 }
 \author{
