@@ -18,7 +18,7 @@ mod_ds_pca_server(id, obj)
 
 ds_pca(obj)
 
-wrapper_pca(DaparViz, var.scaling = TRUE, ncp = NULL)
+wrapper_pca(obj, var.scaling = TRUE, ncp = NULL)
 
 plotPCA_Eigen(res.pca)
 
@@ -31,9 +31,7 @@ plotPCA_Eigen_hc(res.pca)
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
-\item{obj}{An instance of the class \code{DaparViz}}
-
-\item{DaparViz}{An instance of the class \code{DaparViz}.}
+\item{obj}{An instance of the class \code{DaparViz}.}
 
 \item{var.scaling}{The dimensions to plot}
 
@@ -52,8 +50,6 @@ A plot
 \description{
 This method plots a bar plot which represents the distribution of the
 number of missing values (NA) per lines (ie proteins).
-
-xxx
 \itemize{
 \item \code{wrapper_pca()}: xxx
 \item \code{plotPCA_Eigen_hc()}: plots the eigen values of PCA with the highcharts library
@@ -65,6 +61,8 @@ xxx
 \examples{
 if(interactive()){
 data(vData_ft)
+# Replace missing values for the example
+vData_ft[[1]]@qdata[which(is.na(vData_ft[[1]]@qdata))] <- 0
 ds_pca(vData_ft[[1]])
 }
 

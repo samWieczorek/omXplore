@@ -5,7 +5,7 @@
 \alias{mod_view_dataset_ui}
 \alias{mod_view_dataset_server}
 \alias{view_dataset}
-\title{Bar plot of missing values per lines using highcharter.}
+\title{Bar plot of missing values per lines using \code{highcharter}.}
 \usage{
 mod_view_dataset_ui(id)
 
@@ -42,13 +42,13 @@ A plot
 }
 \description{
 This method plots a bar plot which represents the distribution of the
-number of missing values (NA) per lines (ie proteins).
+number of missing values (NA) per lines (i.e. proteins).
 }
 \details{
 \itemize{
 \item distribution of the missing values per line,
 \item a bar plot which represents the distribution of the
-number of missing values (NA) per lines (ie proteins) and per conditions,
+number of missing values (NA) per lines (i.e. proteins) and per conditions,
 \item Histogram of missing values.
 \item Variance : Builds a densityplot of the CV of entities in numeric matrix.
 The CV is calculated for each condition present in the dataset

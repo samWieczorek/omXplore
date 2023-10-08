@@ -4,11 +4,25 @@
 #'
 #' This method plots a bar plot which represents the distribution of the
 #' number of missing values (NA) per lines (ie proteins).
-#' @name ds-pca
+#' 
+#' * `wrapper_pca()`: xxx
+#' * `plotPCA_Eigen_hc()`: plots the eigen values of PCA with the highcharts library
+#' * `plotPCA_Eigen()`: plots the eigen values of PCA
+#' * `plotPCA_Var()`: 
+#' * `plotPCA_Ind()`: 
 #' 
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param obj An instance of the class `DaparViz`
+#' @param obj An instance of the class `DaparViz`.
+#' @param var.scaling The dimensions to plot
+#' @param ncp A `integer(1)` which represents the umber of dimensions kept in 
+#' the results.
+#' @param res.pca Result of FactoMineR::PCA
+#' @param chosen.axes The dimensions to plot
 #'
+#' @author Samuel Wieczorek, Enora Fremy
+#'
+#' @name ds-pca
+#' 
 #' @return A plot
 #'
 #' @author Samuel Wieczorek, Enora Fremy

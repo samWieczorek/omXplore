@@ -1,34 +1,5 @@
-#' @title xxx
-#' @description xxx
-#' 
-#' * `wrapper_pca()`: xxx
-#' * `plotPCA_Eigen_hc()`: plots the eigen values of PCA with the highcharts library
-#' * `plotPCA_Eigen()`: plots the eigen values of PCA
-#' * `plotPCA_Var()`: 
-#' * `plotPCA_Ind()`: 
-#' 
-#' 
-#' 
-#' 
-#' @name ds-pca
-#' 
-#' @param obj An instance of the class `DaparViz`.
-#' @param var.scaling The dimensions to plot
-#' @param ncp A `integer(1)` which represents the umber of dimensions kept in 
-#' the results.
-#' @param res.pca Result of FactoMineR::PCA
-#' @param chosen.axes The dimensions to plot
-#'
-#' @author Samuel Wieczorek, Enora Fremy
-#'
-NULL
-
-
-#'
 #' @importFrom stats na.omit
-#' 
 #' @export
-#'
 #' @rdname ds-pca
 #'
 wrapper_pca <- function(obj,

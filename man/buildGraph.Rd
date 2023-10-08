@@ -4,12 +4,22 @@
 \alias{buildGraph}
 \title{Display a CC}
 \usage{
+<<<<<<< HEAD
 buildGraph(cc, metadata = NULL)
+=======
+buildGraph(cc, peptides_info = NULL, metadata = NULL)
+>>>>>>> 8719bbdfcf44843baf29786466f3a9ead1a5b5f8
 }
 \arguments{
 \item{cc}{A cc (a list)}
 
+<<<<<<< HEAD
 \item{metadata}{xxx}
+=======
+\item{peptides_info}{xxx}
+
+\item{metadata}{www}
+>>>>>>> 8719bbdfcf44843baf29786466f3a9ead1a5b5f8
 }
 \value{
 A plot
