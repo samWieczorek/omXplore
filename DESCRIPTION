@@ -73,7 +73,7 @@ Collate:
     mod_explore_graphs.R
     mod_ds_corrmatrix.R
     mod_ds_density.R
-    mod_ds_seExplorer.R
+    mod_ds_tabExplorer.R
     mod_ds_heatmap.R
     mod_ds_intensity.R
     mod_mv_imputation.R

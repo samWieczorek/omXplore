@@ -1,4 +1,4 @@
-#' @title Explore a `VizClass` object
+#' @title Explore a list of `DaparViz` objects.
 #'
 #' @description xxx
 #' 
@@ -7,7 +7,7 @@
 #' @param digits xxx
 #'
 #'
-#' @name ds_explorer
+#' @name ds_tabExplorer
 #'
 #' @examples
 #' if(interactive()){
@@ -21,10 +21,10 @@ NULL
 
 #' @import shiny
 #' @import DT
-#' @rdname ds_explorer
+#' @rdname ds_tabExplorer
 #' @import shinyBS
 #' 
-mod_ds_seExplorer_ui <- function(id) {
+mod_ds_tabExplorer_ui <- function(id) {
     ns <- NS(id)
     pkgs.require('shinyBS')
     tagList(
@@ -55,8 +55,8 @@ mod_ds_seExplorer_ui <- function(id) {
 #' @importFrom tibble as_tibble
 #' @importFrom stats setNames
 #'
-#' @rdname ds_explorer
-mod_ds_seExplorer_server <- function(id,
+#' @rdname ds_tabExplorer
+mod_ds_tabExplorer_server <- function(id,
                                      obj = reactive({NULL}),
                                      digits = reactive({3})) {
     moduleServer(id, function(input, output, session) {
@@ -238,15 +238,15 @@ mod_ds_seExplorer_server <- function(id,
 }
 
 
-#' @rdname ds_explorer
+#' @rdname ds_tabExplorer
 #' @export
 #' @import shiny
 #' 
 ds_explorer <- function(obj){
-  ui <- fluidPage(mod_ds_seExplorer_ui("plot"))
+  ui <- fluidPage(mod_ds_tabExplorer_ui("plot"))
 
 server <- function(input, output, session)
-  mod_ds_seExplorer_server("plot", reactive({obj}))
+  mod_ds_tabExplorer_server("plot", reactive({obj}))
 
 shinyApp(ui = ui, server = server)
 }

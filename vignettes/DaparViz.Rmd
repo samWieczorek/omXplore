@@ -89,7 +89,6 @@ directly datasets in other format to the plot functions.
 library(DaparViz)
 data(vData_ft)
 view_dataset(vData_ft)
-
 ```
 
 
@@ -98,7 +97,12 @@ view_dataset(vData_ft)
 
 
 ```
+library(DaparViz)
+data(vData_ft)
+obj <- vData_ft[[1]]
 listPlotModules()
+ds_pca(obj)
+ds_density(obj)
 
 ```
 
