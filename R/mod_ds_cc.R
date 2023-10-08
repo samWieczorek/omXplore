@@ -30,6 +30,8 @@ NULL
 #'
 #' @rdname ds-cc
 #' 
+#' @export
+#' 
 mod_ds_cc_ui <- function(id) {
   pkgs.require(c('visNetwork', 'shinyBS', 'shinyjs', 'highcharter'))
   ns <- NS(id)
@@ -115,6 +117,7 @@ mod_ds_cc_ui <- function(id) {
 #' @importFrom shinyjs toggle hidden
 #' @import highcharter
 #' @rdname ds-cc
+#' @export
 mod_ds_cc_server <- function(id, obj) {
   pkgs.require(c('visNetwork', 'highcharter'))
   moduleServer(id, function(input, output, session) {

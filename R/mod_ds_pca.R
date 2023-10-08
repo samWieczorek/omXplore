@@ -40,6 +40,7 @@ NULL
 
 #' @rdname ds-pca
 #' @importFrom shiny NS tagList uiOutput
+#' @export
 mod_ds_pca_ui <- function(id) {
     ns <- NS(id)
     tagList(
@@ -204,6 +205,7 @@ mod_ds_pca_server <- function(id,
 
 
         Compute_PCA_dim <- reactive({
+          req(rv.pca$data)
             nmax <- 12 # ncp should not be greater than...
             # for info, ncp = number of components or dimensions in PCA results
 

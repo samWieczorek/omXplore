@@ -41,6 +41,7 @@ mod_ds_variance_ui <- function(id) {
 #'
 #' @importFrom shiny NS tagList
 #' @rdname plot-variance
+#' @export
 mod_ds_variance_server <- function(id,
                                    obj,
                                    pal.name = NULL) {

@@ -24,6 +24,7 @@ NULL
 #' @importFrom shiny NS tagList
 #' @importFrom highcharter highchartOutput
 #' @rdname density-plot
+#' @export
 mod_ds_density_ui <- function(id) {
     ns <- NS(id)
     tagList(
@@ -39,6 +40,8 @@ mod_ds_density_ui <- function(id) {
 #' @rdname density-plot
 #'
 #' @importFrom highcharter renderHighchart
+#' 
+#' @export
 #'
 mod_ds_density_server <- function(id,
                                   obj = reactive({NULL}),

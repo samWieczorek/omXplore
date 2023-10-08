@@ -25,6 +25,7 @@ NULL
 
 #' @importFrom shiny NS tagList
 #' @rdname corrmatrix
+#' @export
 mod_ds_corrmatrix_ui <- function(id) {
     ns <- NS(id)
     tagList(
@@ -37,6 +38,7 @@ mod_ds_corrmatrix_ui <- function(id) {
 }
 
 #' @rdname corrmatrix
+#' @export
 #'
 mod_ds_corrmatrix_server <- function(id,
                                      obj = reactive({NULL}),

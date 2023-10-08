@@ -42,6 +42,7 @@ NULL
 
 #' @importFrom shiny NS tagList
 #' @rdname ds_heatmap
+#' @export
 mod_ds_heatmap_ui <- function(id) {
     ns <- NS(id)
     tagList(
@@ -68,7 +69,7 @@ mod_ds_heatmap_ui <- function(id) {
 
 
 #' @rdname ds_heatmap
-#'
+#' @export
 mod_ds_heatmap_server <- function(id,
                                   obj = reactive({NULL}),
                                   width = 900) {

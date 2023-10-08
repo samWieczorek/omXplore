@@ -11,13 +11,13 @@ mod_view_dataset_ui(id)
 
 mod_view_dataset_server(
   id,
-  obj = reactive({
-     NULL
- }),
-  addons = list()
+  obj = NULL,
+  addons = list(),
+  width = 40,
+  height = 40
 )
 
-view_dataset(obj, addons = NULL)
+view_dataset(obj = NULL, addons = NULL)
 }
 \arguments{
 \item{id}{A \code{character(1)} for the 'id' of the shiny module. It must be
@@ -36,6 +36,10 @@ For example, given the value addons = list(testPkg = c('foo', 'foo2')). That
 means that the package called "testPkg" must provide the four functions:
 foo1_ui(), foo1_server() and foo2_ui(), foo2_server())
 }}
+
+\item{width}{xxx}
+
+\item{height}{xxx}
 }
 \value{
 A plot

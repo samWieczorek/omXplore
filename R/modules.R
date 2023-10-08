@@ -107,7 +107,7 @@ listShinyApps <- function(location = 'both'){
 }
 
 
-
+#' @export
 #' @rdname DaparViz-modules
 #' 
 listPlotModules <- function(location = 'both'){

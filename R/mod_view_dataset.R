@@ -54,6 +54,8 @@
 #' For example, given the value addons = list(testPkg = c('foo', 'foo2')). That
 #' means that the package called "testPkg" must provide the four functions:
 #' foo1_ui(), foo1_server() and foo2_ui(), foo2_server())
+#' @param width xxx
+#' @param height xxx
 #'
 #' @return A plot
 #'
@@ -102,57 +104,57 @@ mod_view_dataset_ui <- function(id) {
 #' @export
 #'
 mod_view_dataset_server <- function(id, 
-                                    obj = reactive({NULL}),
-                                    addons = list()
+                                    obj = NULL,
+                                    addons = list(),
+                                    width = 40,
+                                    height = 40
                                     ) {
 
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
 
-        .width <- .height <- 40
-        
-        addModules(addons)
-        ll.mods <- listPlotModules()
-        
-        
         rv <- reactiveValues(
           data = NULL,
           conds = NULL,
           current.se = NULL,
-          btns.history = NULL
+          btns.history = NULL,
+          ll.mods = NULL
         )
-        
 
         observe({
             req(obj())
           if(inherits(obj(), "list")){
-            rv$data <- obj()
-            conds <- rv$data[[1]]@conds
+              rv$data <- obj()
+              conds <- rv$data[[1]]@conds
             
-          }
+              addModules(addons)
+              rv$ll.mods <- listPlotModules()
+            } else 
+            shinyjs::toggle('badFormatMsg', condition = !inherits(obj(), "list"))
           
-          shinyjs::toggle('badFormatMsg', condition = !inherits(obj(), "list"))
         }, priority = 1000)
 
 
         observeEvent(GetVignettesBtns(), ignoreInit = TRUE, {
+          req(rv$ll.mods)
             clicked <- which(rv$btns.history != GetVignettesBtns())
-            shinyjs::show(paste0("div_", ll.mods[clicked], "_large"))
+            shinyjs::show(paste0("div_", rv$ll.mods[clicked], "_large"))
             
-            lapply(ll.mods[-clicked], function(y) {
+            lapply(rv$ll.mods[-clicked], function(y) {
                 shinyjs::hide(paste0("div_", y, "_large"))
             })
             rv$btns.history <- GetVignettesBtns()
         })
 
         GetVignettesBtns <- reactive({
-            unlist(lapply(ll.mods, function(x) input[[x]]))
+          req(rv$ll.mods)
+            unlist(lapply(rv$ll.mods, function(x) input[[x]]))
         })
 
 
         output$ShowPlots_ui <- renderUI({
-          req(rv$data)
-            lapply(ll.mods, function(x) {
+          req(c(rv$data, rv$ll.mods))
+            lapply(rv$ll.mods, function(x) {
                 shinyjs::hidden(
                     div(id = ns(paste0("div_", x, "_large")),
                         do.call(
@@ -179,8 +181,8 @@ mod_view_dataset_server <- function(id,
         
         
         output$ShowVignettes_ui <- renderUI({
-          req(rv$data)
-          lapply(ll.mods, function(x) {
+          req(c(rv$data, rv$ll.mods))
+          lapply(rv$ll.mods, function(x) {
             actionButton(ns(x),
                     label = tagList(
                         p(gsub("mod_ds_", "", x)),
@@ -213,8 +215,8 @@ mod_view_dataset_server <- function(id,
         })
 
   observe({
-    req(rv$current.se)
-    for (mod in ll.mods)
+    req(c(rv$current.se, rv$ll.mods))
+    for (mod in rv$ll.mods)
       do.call(paste0(mod, '_server'), 
               list(id = paste0(mod, '_large'),
                    obj = reactive({rv$current.se})
@@ -230,7 +232,7 @@ mod_view_dataset_server <- function(id,
 #' @rdname ds-view
 #' @import shiny
 #' 
-view_dataset <- function(obj,
+view_dataset <- function(obj = NULL,
                          addons = NULL){
   
   ui <- fluidPage(

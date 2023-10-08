@@ -24,6 +24,8 @@ NULL
 #' @rdname ds_tabExplorer
 #' @import shinyBS
 #' 
+#' @export
+#' 
 mod_ds_tabExplorer_ui <- function(id) {
     ns <- NS(id)
     pkgs.require('shinyBS')
@@ -56,6 +58,8 @@ mod_ds_tabExplorer_ui <- function(id) {
 #' @importFrom stats setNames
 #'
 #' @rdname ds_tabExplorer
+#' 
+#' @export
 mod_ds_tabExplorer_server <- function(id,
                                      obj = reactive({NULL}),
                                      digits = reactive({3})) {
