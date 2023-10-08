@@ -2,11 +2,7 @@
 #' @title Display a CC
 #'
 #' @param cc A cc (a list)
-<<<<<<< HEAD
 #' @param metadata xxx
-=======
-#' @param metadata A `data.frame` which contains information about peptides.
->>>>>>> 8719bbdfcf44843baf29786466f3a9ead1a5b5f8
 #' @return A plot
 #'
 #' @author Thomas Burger, Samuel Wieczorek
@@ -35,7 +31,6 @@ buildGraph <- function(cc,
   def.grp <- c(rep("shared.peptide", nb.pep), rep("protein", nb.prot))
   def.grp[which(rowSums(subX) == 1)] <- "spec.peptide"
   
-<<<<<<< HEAD
   buildNodesInfos <- function(metadata){
     nodes_infos <- NULL
     if(!is.null(metadata)){
@@ -45,15 +40,6 @@ buildGraph <- function(cc,
       for (i in 1:nb.pep){
         ind <- which(rownames(metadata) == rownames(cc)[i])
         nodes_infos[i] <- paste0("<p>", colnames(metadata)[i], ':', metadata[ind, ], "</p>")
-=======
-  buildTitle <- function(peptides_info){
-    title <- NULL
-    if(!is.null(metadata)){
-      title <- rep('', nb.total)
-      for (i in 1:nb.pep){
-        ind <- which(rownames(metadata) == rownames(cc)[i])
-        title[i] <- paste0("<p>", colnames(metadat)[i], ':', metadata[ind, ], "</p>")
->>>>>>> 8719bbdfcf44843baf29786466f3a9ead1a5b5f8
       }
   }
     nodes_infos
