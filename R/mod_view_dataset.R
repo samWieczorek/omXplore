@@ -1,9 +1,9 @@
-#' @title Bar plot of missing values per lines using highcharter.
+#' @title Bar plot of missing values per lines using `highcharter`.
 #'
 #' @description
 #'
 #' This method plots a bar plot which represents the distribution of the
-#' number of missing values (NA) per lines (ie proteins).
+#' number of missing values (NA) per lines (i.e. proteins).
 #'
 #'
 #' @details
@@ -11,7 +11,7 @@
 #' - distribution of the missing values per line,
 #'
 #' - a bar plot which represents the distribution of the
-#' number of missing values (NA) per lines (ie proteins) and per conditions,
+#' number of missing values (NA) per lines (i.e. proteins) and per conditions,
 #'
 #' - Histogram of missing values.
 #'

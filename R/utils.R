@@ -211,8 +211,10 @@ addImgPath <- function(prefix, path){
 #' @export
 addModules <- function(addons){
   
-  stopifnot(inherits(addons, 'list'))
-  
+  if (is.null(addons) || !inherits(addons, 'list')){
+    warning('xxx')
+    return(NULL)
+  }
   
   f_assign <- function(fun, pkg, suffix){
     f_name <- paste0(fun, '_', suffix)

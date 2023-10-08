@@ -58,14 +58,11 @@ For older versions of R, please refer to the appropriate Bioconductor release.
 
 # Using DaparViz
 
-The functions in DaparViz use a specific data format which is describe in the 
-following section.
+The functions in DaparViz use a specific data format which is described in the following section.
 
-DaparViz is a collection of standard plots which are available as Shiny 
-applications. Thus, each plot has its own application.
+DaparViz is a collection of standard plots which are available as Shiny applications. Thus, each plot has its own application.
 
-The main feature in DaparViz is a Shiny app which combine all the different
-Shiny app.
+The main feature in DaparViz is a Shiny app which combine all the different Shiny app.
 
 ## Internal data format
 
@@ -89,6 +86,9 @@ directly datasets in other format to the plot functions.
 ## Main UI
 
 ```
+library(DaparViz)
+data(vData_ft)
+view_dataset(vData_ft)
 
 ```
 

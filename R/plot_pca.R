@@ -12,7 +12,7 @@
 #' 
 #' @name ds-pca
 #' 
-#' @param DaparViz An instance of the class `DaparViz`.
+#' @param obj An instance of the class `DaparViz`.
 #' @param var.scaling The dimensions to plot
 #' @param ncp A `integer(1)` which represents the umber of dimensions kept in 
 #' the results.
@@ -31,14 +31,14 @@ NULL
 #'
 #' @rdname ds-pca
 #'
-wrapper_pca <- function(DaparViz,
+wrapper_pca <- function(obj,
                         var.scaling = TRUE,
                         ncp = NULL) {
    
   pkgs.require('FactoMineR')
 
-    if (missing(DaparViz)) {
-        stop("'DaparViz' is missing.")
+    if (missing(obj)) {
+        stop("'obj' is missing.")
     }
 
     
@@ -48,25 +48,23 @@ wrapper_pca <- function(DaparViz,
 
   res.pca <- NULL
  
-  if (length(which(is.na(DaparViz@qdata))) > 0) {
+  #if (length(which(is.na(obj@qdata))) > 0) {
     if (is.null(ncp)) {
         nmax <- 12
-        y <- DaparViz@qdata
+        y <- obj@qdata
         nprot <- dim(y)[1]
         n <- dim(y)[2] # If too big, take the number of conditions.
 
-        if (n > nmax) {
-            n <- length(unique(DaparViz@conds))
-        }
+        if (n > nmax)
+            n <- length(unique(obj@conds))
 
         ncp <- min(n, nmax)
     }
 
-    res.pca <- FactoMineR::PCA(DaparViz@qdata,
+    res.pca <- FactoMineR::PCA(obj@qdata,
                                scale.unit = var.scaling,
                                ncp = ncp,
                                graph = FALSE)
-  }
 
     return(res.pca)
 }
@@ -80,10 +78,11 @@ wrapper_pca <- function(DaparViz,
 #' @rdname ds-pca
 #'
 plotPCA_Eigen <- function(res.pca) {
+  pkgs.require('highcharter')
     stopifnot(!is.null(res.pca))
 
-    hc <- highchart() %>%
-        hc_yAxis_multiples(
+    hc <- highcharter::highchart() %>%
+      highcharter::hc_yAxis_multiples(
             list(title = list(text = "% of variances"),
                  lineWidth = 0,
                  labels = list(format = "{value}%"),
@@ -97,14 +96,14 @@ plotPCA_Eigen <- function(res.pca) {
                  labels = list(format = "{value}%")
                  )
         ) %>%
-        hc_xAxis(title = "Principal Components", 
+        highcharter::hc_xAxis(title = "Principal Components", 
             categories = rownames(res.pca$eig)) %>%
-        hc_add_series(data.frame(y = res.pca$eig[, 2]),
+      highcharter::hc_add_series(data.frame(y = res.pca$eig[, 2]),
             type = "column",
             name = "% of variances",
             yAxis = 0
         ) %>%
-        hc_add_series(data.frame(y = res.pca$eig[, 3]),
+      highcharter::hc_add_series(data.frame(y = res.pca$eig[, 3]),
             type = "line",
             color = "darkblue",
             name = "Cumulative % of variances",
@@ -112,7 +111,7 @@ plotPCA_Eigen <- function(res.pca) {
             color = "#FF7900",
             yAxis = 0
         ) %>%
-        hc_legend(enabled = TRUE)
+      highcharter::hc_legend(enabled = TRUE)
 
     hc
 }

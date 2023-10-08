@@ -16,6 +16,8 @@
 #' @examples
 #' if(interactive()){
 #' data(vData_ft)
+#' # Replace missing values for the example
+#' vData_ft[[1]]@qdata[which(is.na(vData_ft[[1]]@qdata))] <- 0
 #' ds_pca(vData_ft[[1]])
 #' }
 #'
@@ -44,7 +46,7 @@ mod_ds_pca_ui <- function(id) {
 #' @export
 mod_ds_pca_server <- function(id,
                               obj) {
-    pkgs.require('factoextra')
+    pkgs.require(c('highcharter', 'factoextra'))
   
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
@@ -53,17 +55,18 @@ mod_ds_pca_server <- function(id,
           data = NULL,
           PCA_axes = NULL,
           res.pca = NULL,
-          PCA_varScale = NULL
+          PCA_varScale = TRUE
         )
         
         
         observe({
           
-          if(inherits(obj(), "DaparViz"))
+          is.DaparViz <- inherits(obj(), "DaparViz")
+          if(is.DaparViz)
             rv.pca$data <- as.matrix(obj()@qdata)
           
-          shinyjs::toggle('badFormatMsg', condition = is.null(rv.pca$data))
-        }, priority = 1000)
+          shinyjs::toggle('badFormatMsg', condition = !is.DaparViz)
+          }, priority = 1000)
         
        output$WarningNA_PCA <- renderUI({
             req(rv.pca$data)
@@ -80,19 +83,18 @@ mod_ds_pca_server <- function(id,
 
         output$pcaOptions <- renderUI({
             req(rv.pca$data)
-            req(rv.pca$res.pca)
             req(length(which(is.na(rv.pca$data))) == 0)
             tagList(
                 tags$div(
                     tags$div(style = "display:inline-block; vertical-align: middle; padding-right: 20px;",
-                        numericInput(ns("pca.axe1"), "Dimension 1",
+                        numericInput(ns("pca_axe1"), "Dimension 1",
                                      min = 1, 
                                      max = Compute_PCA_dim(),
                                      value = 1,
                                      width = "100px")),
                     tags$div(
                         style = "display:inline-block; vertical-align: middle;",
-                        numericInput(ns("pca.axe2"), "Dimension 2",
+                        numericInput(ns("pca_axe2"), "Dimension 2",
                                      min = 1,
                                      max = Compute_PCA_dim(),
                                      value = 2,
@@ -107,26 +109,26 @@ mod_ds_pca_server <- function(id,
         })
 
 
-        observeEvent(c(input$pca.axe1, input$pca.axe2), {
-            rv.pca$PCA_axes <- c(input$pca.axe1, input$pca.axe2)
+        observeEvent(c(input$pca_axe1, input$pca_axe2), {
+            rv.pca$PCA_axes <- c(input$pca_axe1, input$pca_axe2)
         })
 
 
-        observeEvent(input$varScale_PCA, {
+        observeEvent(input$varScale_PCA, ignoreInit = FALSE, {
             rv.pca$PCA_varScale <- input$varScale_PCA
-            rv.pca$res.pca <- wrapper_pca(DaparViz = DaparViz(),
+            rv.pca$res.pca <- wrapper_pca(obj = obj(),
                                           var.scaling = rv.pca$PCA_varScale,
                                           ncp = Compute_PCA_dim()
                                           )
         })
 
-        observeEvent(rv.pca$data, {
-            if (length(which(is.na(rv.pca$data))) == 0) {
-                rv.pca$res.pca <- wrapper_pca(DaparViz = DaparViz(),
-                                              var.scaling = rv.pca$PCA_varScale,
-                                              ncp = Compute_PCA_dim()
-                                              )
-            }
+        observe({
+            req(length(which(is.na(rv.pca$data)))==0)
+          
+            rv.pca$res.pca <- wrapper_pca(obj = obj(),
+                                          var.scaling = rv.pca$PCA_varScale,
+                                          ncp = Compute_PCA_dim()
+                                          )
         })
 
 
@@ -143,32 +145,17 @@ mod_ds_pca_server <- function(id,
             )
         })
         
-        tryCatch({
-        mod_format_DT_server("PCAvarCoord",
-            data = reactive({as.data.frame(rv.pca$res.pca$var$coord)}),
-            showRownames = TRUE,
-            full_style = reactive({
-                list(
-                    cols = colnames(rv.pca$res.pca$var$coord),
-                    vals = colnames(rv.pca$res.pca$var$coord),
-                    unique = unique(DaparViz@conds),
-                    pal = RColorBrewer::brewer.pal(3, "Dark2")[seq_len(2)]
-                )
-            })
-        )},
-        warning = function(w) {
-          shinyjs::info(conditionMessage(w))
-          return(NULL)
-        },
-        error = function(e) {
-          shinyjs::info(conditionMessage(e))
-          return(NULL)
-        },
-        finally = {
-          # cleanup-code
-        }
-        )
-
+        observe({
+          
+          df <- as.data.frame(rv.pca$res.pca$var$coord)
+          mod_format_DT_server("PCAvarCoord", 
+                              data = reactive({round(df, digits=2)}),
+                              showRownames = TRUE
+                              )
+          })
+          
+          
+          
         output$pcaPlotVar <- renderPlot({
             req(c(rv.pca$PCA_axes, rv.pca$res.pca))
             withProgress(message = "Making plot", value = 100, {
@@ -192,7 +179,7 @@ mod_ds_pca_server <- function(id,
         })
 
 
-        output$pcaPlotEigen <- renderHighchart({
+        output$pcaPlotEigen <- highcharter::renderHighchart({
             req(rv.pca$res.pca)
 
             withProgress(message = "Making plot", value = 100, {
@@ -211,7 +198,7 @@ mod_ds_pca_server <- function(id,
             n <- dim(y)[2] # If too big, take the number of conditions.
 
             if (n > nmax)
-                n <- length(unique(DaparViz@conds))
+                n <- length(unique(obj()@conds))
 
             ncp <- min(n, nmax)
             ncp
