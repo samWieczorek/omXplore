@@ -56,15 +56,9 @@ BiocManager::install("DaparViz")
 
 For older versions of R, please refer to the appropriate Bioconductor release.
 
-# Using DaparViz
 
-The functions in DaparViz use a specific data format which is described in the following section.
 
-DaparViz is a collection of standard plots which are available as Shiny applications. Thus, each plot has its own application.
-
-The main feature in DaparViz is a Shiny app which combine all the different Shiny app.
-
-## Internal data format
+# DaparViz data format
 
 `DaparViz` has its own data format (the DaparViz-class) which is a 
 simplification of the formats it can deal with. 
@@ -83,7 +77,20 @@ However, `DaparViz` plot functions integrate a convert feature so as to pass
 directly datasets in other format to the plot functions.
 
 
+
+# Using DaparViz
+
+The functions in DaparViz use a specific data format which is described in the following section.
+
+DaparViz is a collection of standard plots which are available as Shiny applications. Thus, each plot has its own application.
+
+The main feature in DaparViz is a Shiny app which combine all the different Shiny app.
+
 ## Main UI
+
+The Shiny app called view_dataset() is the main application of the package
+`DaparViz`. It can be lauched as follows2:
+
 
 ```
 library(DaparViz)
@@ -91,9 +98,40 @@ data(vData_ft)
 view_dataset(vData_ft)
 ```
 
+It is composed of two parts :
+* a selection widget to select the dataset to show in the plots,
+* a graphical part with clickable vignettes which represent the plots 
+available. When the user clicks on one of those vignettes, the corresponding plot is showed below.
+
+When a plot is displayed, it shows the data corresponding to the dataset selected in the widget. If this dataset is changed, the plot update automatically to the new dataset.
+
+
+The list of vignettes is composed of :
+* built-in shiny apps in the package `DaparViz`. See details with `listPlotsModules()`.
+* external apps which are exported by other packages. For more details on the
+development of an external app, see section xxx.
+
+
+
+
+
 
 ## Individual plots
 
+Each of the built-in plots can be run in a standalone mode rather than embedded in the main UI.
+
+It is possible simply by running its name. The list of all built-in shiny apps is available via
+
+```
+# Get the builtin shiny apps in DaparViz
+listShinyApps()
+
+# Get the external shiny apps that are embedded into DaparViz
+listShinyApps()
+
+# Get all the shiny apps which are avaialbie in the main UI
+listShinyApps()
+```
 
 
 ```

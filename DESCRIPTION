@@ -69,6 +69,7 @@ Collate:
     adjacencyMatrixInfos.R
     plots_compare_assays.R
     global.R
+    modules.R
     mod_view_dataset.R
     mod_explore_graphs.R
     mod_ds_corrmatrix.R
