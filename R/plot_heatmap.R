@@ -2,7 +2,7 @@
 
 
 
-#' @rdname ds_heatmap
+#' @rdname DaparViz_heatmap
 #'
 heatmapD <- function(obj,
                      distance = "euclidean",
@@ -97,7 +97,7 @@ heatmapD <- function(obj,
 #'
 #' @importFrom grDevices heat.colors
 #'
-#' @rdname ds_heatmap
+#' @rdname DaparViz_heatmap
 #'
 mv.heatmap <- function(x,
                        col = grDevices::heat.colors(100),

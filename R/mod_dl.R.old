@@ -1,4 +1,4 @@
-#' @title mod_dl
+#' @title dl
 #'
 #' @description  A shiny Module.
 #' 
@@ -12,15 +12,15 @@
 #'
 #' @return NA
 #'
-#' @name mod_dl
-#' @example inst/extdata/examples/ex_mod_dl.R
+#' @name dl
+#' @example inst/extdata/examples/ex_dl.R
 #'
 NULL
 
 
 #' @import shiny
 #'
-#' @rdname mod_dl
+#' @rdname dl
 #'
 #' @export
 #'
@@ -34,7 +34,7 @@ dl_ui <- function(id) {
   )
 }
 
-#' @rdname mod_dl
+#' @rdname dl
 #'
 #' @export
 #'

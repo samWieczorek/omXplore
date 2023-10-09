@@ -32,7 +32,7 @@
 #' data(vData_ft)
 #' # Replace missing values for the example
 #' vData_ft[[1]]@qdata[which(is.na(vData_ft[[1]]@qdata))] <- 0
-#' ds_pca(vData_ft[[1]])
+#' DaparViz_pca(vData_ft[[1]])
 #' }
 #'
 NULL
@@ -41,7 +41,7 @@ NULL
 #' @rdname ds-pca
 #' @importFrom shiny NS tagList uiOutput
 #' @export
-mod_ds_pca_ui <- function(id) {
+DaparViz_pca_ui <- function(id) {
     ns <- NS(id)
     tagList(
       shinyjs::useShinyjs(),
@@ -59,7 +59,7 @@ mod_ds_pca_ui <- function(id) {
 #' @importFrom highcharter renderHighchart
 #'
 #' @export
-mod_ds_pca_server <- function(id,
+DaparViz_pca_server <- function(id,
                               obj) {
     pkgs.require(c('highcharter', 'factoextra'))
   
@@ -155,7 +155,7 @@ mod_ds_pca_server <- function(id,
             tagList(
                 plotOutput(ns("pcaPlotVar")),
                 plotOutput(ns("pcaPlotInd")),
-                mod_format_DT_ui(ns("PCAvarCoord")),
+                format_DT_ui(ns("PCAvarCoord")),
                 highcharter::highchartOutput(ns("pcaPlotEigen"))
             )
         })
@@ -163,7 +163,7 @@ mod_ds_pca_server <- function(id,
         observe({
           
           df <- as.data.frame(rv.pca$res.pca$var$coord)
-          mod_format_DT_server("PCAvarCoord", 
+          format_DT_server("PCAvarCoord", 
                               data = reactive({round(df, digits=2)}),
                               showRownames = TRUE
                               )
@@ -226,11 +226,11 @@ mod_ds_pca_server <- function(id,
 #' @import shiny
 #' @export
 #' @rdname ds-pca
-ds_pca <- function(obj){
+DaparViz_pca <- function(obj){
   
-  ui <- mod_ds_pca_ui("plot")
+  ui <- DaparViz_pca_ui("plot")
 
 server <- function(input, output, session)
-  mod_ds_pca_server("plot", obj = reactive({obj}))
+  DaparViz_pca_server("plot", obj = reactive({obj}))
 shinyApp(ui = ui, server = server)
 }

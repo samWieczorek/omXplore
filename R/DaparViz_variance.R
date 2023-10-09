@@ -17,7 +17,7 @@
 #' @examples
 #' if(interactive()){
 #' data(vData_ft)
-#' ds_variance(vDataz_ft[[1]])
+#' DaparViz_variance(vDataz_ft[[1]])
 #' }
 #'
 NULL
@@ -26,7 +26,7 @@ NULL
 #' @importFrom shiny NS tagList
 #' @rdname plot-variance
 #' @export
-mod_ds_variance_ui <- function(id) {
+DaparViz_variance_ui <- function(id) {
     ns <- NS(id)
     tagList(
       shinyjs::useShinyjs(),
@@ -42,7 +42,7 @@ mod_ds_variance_ui <- function(id) {
 #' @importFrom shiny NS tagList
 #' @rdname plot-variance
 #' @export
-mod_ds_variance_server <- function(id,
+DaparViz_variance_server <- function(id,
                                    obj,
                                    pal.name = NULL) {
     moduleServer(id, function(input, output, session) {
@@ -81,11 +81,11 @@ mod_ds_variance_server <- function(id,
 #' @rdname plot-variance
 #' @export
 #' 
-ds_variance <- function(obj){
-  ui <- fluidPage(mod_ds_variance_ui("plot"))
+DaparViz_variance <- function(obj){
+  ui <- fluidPage(DaparViz_variance_ui("plot"))
 
   server <- sfunction(input, output, session) 
-    mod_ds_variance_server("plot", obj = reactive({obj}))
+    DaparViz_variance_server("plot", obj = reactive({obj}))
   
   shinyApp(ui, server)
   

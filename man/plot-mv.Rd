@@ -2,13 +2,13 @@
 % Please edit documentation in R/mod_mv_imputation.R
 \name{plot-mv}
 \alias{plot-mv}
-\alias{mod_mv_imputation_ui}
-\alias{mod_mv_imputation_server}
+\alias{mv_imputation_ui}
+\alias{mv_imputation_server}
 \title{Distribution of Observed values with respect to intensity values}
 \usage{
-mod_mv_imputation_ui(id)
+mv_imputation_ui(id)
 
-mod_mv_imputation_server(
+mv_imputation_server(
   id,
   vData = reactive({
      NULL
@@ -55,40 +55,6 @@ The lines have been sorted in order to visualize easily the different
 number of missing values. A white square is plotted for missing values.
 }
 
-\examples{
-#' data(ft_na, package='DaparViz')
-#' data <- assay(ft_na, 1)
-#' conds <- colData(ft_na)$Condition
-#'
-#' #-----------------------------
-#' # xxx
-#' #-----------------------------
-#'
-#' mv.density(ft_na[[1]], conds, pattern = "missing MEC")
-#'
-#' mv.mec.heatmap(ft_na[[1]], conds)
-#'
-#' #-----------------------------
-#' # xxx
-#' #-----------------------------
-#'
-#' if (interactive()) {
-#'     data(ft_na, package='DaparViz')
-#'
-#'     ui <- mod_mv_imputation_ui("plot")
-#'
-#'     server <- function(input, output, session) {
-#'         mod_mv_imputation_server("plot",
-#'             se = reactive({
-#'                 ft_na[[1]]
-#'             }),
-#'             conds = colData(ft_na)$Condition
-#'         )
-#'     }
-#'
-#'     shinyApp(ui = ui, server = server)
-#' }
-}
 \author{
 Samuel Wieczorek, Enora Fremy
 }

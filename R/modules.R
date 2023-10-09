@@ -25,7 +25,7 @@ NULL
 #' 
 #' @examples 
 #' \dontrun{
-#' addImgPath('mod_foo', system.file('.', package='DaparViz'))
+#' addImgPath('foo', system.file('.', package='DaparViz'))
 #' }
 #' 
 #' @export
@@ -35,7 +35,7 @@ NULL
 #' @author Samuel Wieczorek
 #' 
 addImgPath <- function(prefix, path){
-  myPath <- gsub('mod_', '', path)
+  myPath <- gsub('', '', path)
   addResourcePath(prefix = paste0("img_", myPath),
                   directoryPath = "my_location")
 }
@@ -62,11 +62,12 @@ addModules <- function(addons){
   }
   
   f_assign <- function(fun, pkg, suffix){
-    f_name <- paste0(fun, '_', suffix)
-    f_fullname <- paste0(pkg, '::', fun, '_', suffix)
+    f_original_name <- paste0(fun, '_', suffix)
+    f_dest_name <- paste0('DaparViz_',fun, '_', suffix)
+    f_fullname <- paste0(pkg, '::', f_original_name)
     require(pkg, character.only=TRUE)
-    if (f_name %in% ls(paste0("package:", pkg)))
-      assign(f_name, eval(parse(text = f_fullname)), envir = globalenv())
+    if (f_original_name %in% ls(paste0("package:", pkg)))
+      assign(f_dest_name, eval(parse(text = f_fullname)), envir = globalenv())
   }
   
   for (x in names(addons)){
@@ -86,12 +87,12 @@ listShinyApps <- function(location = 'both'){
   
   stopifnot(location %in% c('both', 'external', 'builtin'))
   
-  builtinApps <- gsub("mod_", "", listPlotModules('builtin'))
+  builtinApps <- gsub("", "", listPlotModules('builtin'))
   builtinApps <- paste0(builtinApps, '()')
   
   externalApps <- listPlotModules('external')
   if (length(externalApps) > 0){
-    externalApps <- gsub("mod_", "", )
+    externalApps <- gsub("", "", )
     externalApps <- paste0(externalApps, '()')
   } else 
     externalApps <- NULL
@@ -115,14 +116,14 @@ listPlotModules <- function(location = 'both'){
   stopifnot(location %in% c('both', 'external', 'builtin'))
   
   builtin <- ls("package:DaparViz")
-  builtin <- builtin[grep("mod_ds_", builtin)]
+  builtin <- builtin[grep("DaparViz_", builtin)]
   builtin <- gsub("_server", "", builtin)
   builtin <- gsub("_ui", "", builtin)
   builtin <- unique(builtin)
   
   # Lists module in the global environment
   external <- utils::lsf.str(envir = globalenv())
-  external <- external[grep("mod_ds_", external)]
+  external <- external[grep("DaparViz_", external)]
   external <- gsub("_server", "", external)
   external <- gsub("_ui", "", external)
   external <- unique(external)

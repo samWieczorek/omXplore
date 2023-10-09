@@ -88,10 +88,10 @@ metacell.def('peptide')
 #-----------------------------------------------
 if(interactive()){
 data(ft)
-ui <- mod_qMetacellLegend_ui("legend")
+ui <- qMetacellLegend_ui("legend")
 
 server <- function(input, output, session) {
-  mod_qMetacellLegend_server('legend',
+  qMetacellLegend_server('legend',
                                 object = reactive({ft[[1]]}))
   }
   

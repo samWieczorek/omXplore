@@ -1,4 +1,4 @@
-#' @title mod_plots_tracking_ui and mod_plots_tracking_server
+#' @title plots_tracking_ui and plots_tracking_server
 #'
 #' @description This shiny module provides a tool to select
 #'
@@ -14,19 +14,19 @@
 #' 
 #' @return A `list` (same structure as the parameter `params`)
 #'
-#' @example inst/extdata/examples/ex_mod_plots_tracking.R
+#' @example inst/extdata/examples/ex_plots_tracking.R
 #' 
-#' @name mod_plots_tracking
+#' @name plots_tracking
 #' 
 NULL
 
 
 
-#' @rdname mod_plots_tracking
+#' @rdname plots_tracking
 #' @export
 #' @importFrom shiny NS tagList
 #'
-mod_plots_tracking_ui <- function(id) {
+plots_tracking_ui <- function(id) {
   pkgs.require('shinyjs')
   ns <- NS(id)
   tagList(
@@ -57,13 +57,13 @@ mod_plots_tracking_ui <- function(id) {
 }
 
 
-#' @rdname mod_plots_tracking
+#' @rdname plots_tracking
 #'
 #' @export
 #' @keywords internal
 #' @import shinyjs
 #'
-mod_plots_tracking_server <- function(id, 
+plots_tracking_server <- function(id, 
                                       obj = reactive({NULL}),
                                       resetBtn = reactive({FALSE})){
    

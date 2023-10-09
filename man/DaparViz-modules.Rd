@@ -44,7 +44,7 @@ xxxx
 }
 \examples{
 \dontrun{
-addImgPath('mod_foo', system.file('.', package='DaparViz'))
+addImgPath('foo', system.file('.', package='DaparViz'))
 }
 
 }

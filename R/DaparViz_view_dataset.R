@@ -64,7 +64,7 @@
 #' @examples
 #' if(interactive()){
 #' data(vData_ft)
-#' addon <- list(DaparToolshed=c('mod_ds_metacell'))
+#' addon <- list(DaparToolshed=c('DaparViz_metacell'))
 #' view_dataset(vData_ft[[1]], addon)
 #' }
 #' 
@@ -78,7 +78,7 @@ NULL
 #' @rdname ds-view
 #' @export
 #' 
-mod_view_dataset_ui <- function(id) {
+view_dataset_ui <- function(id) {
     ns <- NS(id)
     tagList(
         shinyjs::useShinyjs(),
@@ -103,7 +103,7 @@ mod_view_dataset_ui <- function(id) {
 #' @rdname ds-view
 #' @export
 #'
-mod_view_dataset_server <- function(id, 
+view_dataset_server <- function(id, 
                                     obj = NULL,
                                     addons = list(),
                                     width = 40,
@@ -148,7 +148,7 @@ mod_view_dataset_server <- function(id,
 
         GetVignettesBtns <- reactive({
           req(rv$ll.mods)
-            unlist(lapply(rv$ll.mods, function(x) input[[x]]))
+          unlist(lapply(rv$ll.mods, function(x) input[[x]]))
         })
 
 
@@ -157,8 +157,8 @@ mod_view_dataset_server <- function(id,
             lapply(rv$ll.mods, function(x) {
                 shinyjs::hidden(
                     div(id = ns(paste0("div_", x, "_large")),
-                        do.call(
-                            paste0(x, "_ui"), list(ns(paste0(x, "_large")))
+                        do.call(paste0(x, "_ui"), 
+                                list(ns(paste0(x, "_large")))
                         )
                     )
                 )
@@ -170,11 +170,13 @@ mod_view_dataset_server <- function(id,
           # By default, search image from the images directory of the DaparViz
           # package. This works for built-in plot modules. For external modules,
           # then load customized resource path
-          img_path <- system.file('images', paste0(gsub("mod_", "", x), ".png"), package='DaparViz')
+          img_path <- system.file('images', paste0(gsub("", "", x), ".png"), 
+                                  package='DaparViz')
           if (file.exists(img_path))
-            img_src <- paste0("images/", gsub("mod_", "", x), ".png")
+            img_src <- paste0("images/", gsub("", "", x), ".png")
           else
-            img_src <- paste0("img_", gsub("mod_", "", x), "/", gsub("mod_", "", x), ".png")
+            img_src <- paste0("img_", gsub("", "", x), "/", 
+                              gsub("", "", x), ".png")
           
           img_src
         }
@@ -185,10 +187,11 @@ mod_view_dataset_server <- function(id,
           lapply(rv$ll.mods, function(x) {
             actionButton(ns(x),
                     label = tagList(
-                        p(gsub("mod_ds_", "", x)),
+                        p(gsub("DaparViz_", "", x)),
                         tags$img(src = FindImgSrc(x), height = "50px")
                         ),
-                    style = "padding: 0px; border: none; background-size: cover; background-position: center;"
+                    style = "padding: 0px; border: none; 
+                    background-size: cover; background-position: center;"
                 )
             })
         })
@@ -236,11 +239,11 @@ view_dataset <- function(obj = NULL,
                          addons = NULL){
   
   ui <- fluidPage(
-    mod_view_dataset_ui("dataset")
+    view_dataset_ui("dataset")
     )
   
   server <- function(input, output, session) {
-    mod_view_dataset_server("dataset", 
+    view_dataset_server("dataset", 
                           obj = reactive({obj}),
                           addons = addons)
     }

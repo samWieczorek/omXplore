@@ -17,20 +17,21 @@
 #' @examples
 #' if(interactive()){
 #' data(vData_ft)
-#' ds_corrmatrix(vData_ft[[1]])
+#' DaparViz_corrmatrix(vData_ft[[1]])
 #' }
 #' 
 #'
 NULL
 
 #' @importFrom shiny NS tagList
+#' @import shinyjs
 #' @rdname corrmatrix
 #' @export
-mod_ds_corrmatrix_ui <- function(id) {
+DaparViz_corrmatrix_ui <- function(id) {
     ns <- NS(id)
     tagList(
-      useShinyjs(),
-      hidden(div(id = ns('badFormatMsg'), h3(bad_format_txt))),
+      shinyjs::useShinyjs(),
+      shinyjs::hidden(div(id = ns('badFormatMsg'), h3(bad_format_txt))),
       uiOutput(ns("showValues_ui")),
         uiOutput(ns("rate_ui")),
         highcharter::highchartOutput(ns("plot"), width = "600px", height = "500px")
@@ -40,7 +41,7 @@ mod_ds_corrmatrix_ui <- function(id) {
 #' @rdname corrmatrix
 #' @export
 #'
-mod_ds_corrmatrix_server <- function(id,
+DaparViz_corrmatrix_server <- function(id,
                                      obj = reactive({NULL}),
                                      rate = reactive({0.5}),
                                      showValues = reactive({FALSE})) {
@@ -117,11 +118,11 @@ mod_ds_corrmatrix_server <- function(id,
 
 #' @export
 #' @rdname corrmatrix
-ds_corrmatrix <- function(obj){
-  ui <- mod_ds_corrmatrix_ui("plot")
+DaparViz_corrmatrix <- function(obj){
+  ui <- DaparViz_corrmatrix_ui("plot")
 
   server <- function(input, output, session)
-    mod_ds_corrmatrix_server("plot", reactive({obj}))
+    DaparViz_corrmatrix_server("plot", reactive({obj}))
 
   shinyApp(ui = ui, server = server)
 }

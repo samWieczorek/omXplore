@@ -34,7 +34,7 @@
 #' the package [RColorBrewer] to use.
 #' @author Samuel Wieczorek, Enora Fremy
 #'
-#' @example inst/extdata/examples/ex_mod_mv_imputation.R
+#' @example inst/extdata/examples/ex_mv_imputation.R
 #' 
 NULL
 
@@ -44,7 +44,7 @@ NULL
 #' @importFrom shiny NS tagList plotOutput
 #' @importFrom highcharter highchartOutput
 #'
-mod_mv_imputation_ui <- function(id) {
+mv_imputation_ui <- function(id) {
     ns <- NS(id)
     tagList(
         tags$div(
@@ -65,7 +65,7 @@ mod_mv_imputation_ui <- function(id) {
 #' @export
 #' @importFrom highcharter renderHighchart
 #'
-mod_mv_imputation_server <- function(id,
+mv_imputation_server <- function(id,
                                      vData = reactive({NULL}),
                                      pal.name = reactive({NULL})) {
     

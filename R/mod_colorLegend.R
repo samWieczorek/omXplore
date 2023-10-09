@@ -12,7 +12,7 @@
 #' 
 #' @return NA
 #'
-#' @example inst/extdata/examples/ex_mod_colorLegend.R
+#' @example inst/extdata/examples/ex_colorLegend.R
 #' 
 NULL
 
@@ -38,7 +38,7 @@ custom_metacell_colors <- function()
 #' @rdname color-legend
 #' @export
 #' 
-mod_colorLegend_ui <- function(id) {
+colorLegend_ui <- function(id) {
     ns <- NS(id)
     pkgs.require('shinyBS')
     shinyBS::bsCollapse(id = "collapseExample",
@@ -53,7 +53,7 @@ mod_colorLegend_ui <- function(id) {
 
 #' @export
 #' @rdname color-legend
-mod_colorLegend_server <- function(id, 
+colorLegend_server <- function(id, 
                                    presentTags = reactive({NULL}), 
                                    hide.white = TRUE) {
   moduleServer(id, function(input, output, session) {

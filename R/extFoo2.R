@@ -1,0 +1,78 @@
+
+
+#' @title Displays a correlation matrix of the quantitative data of a
+#' numeric matrix.
+#'
+#' @description
+#' xxxx
+#'
+#' @name external_app
+#' 
+#' @param id A `character(1)` which is the id of the shiny module.
+#' @param obj An instance of the class `DaparViz`
+#' 
+#' @return NA
+#'
+#' @examples
+#' if(interactive()){
+#' data(vData_ft)
+#' DaparViz_corrmatrix(vData_ft[[1]])
+#' }
+#' 
+#'
+NULL
+
+#' @importFrom shiny NS tagList
+#' @rdname external_app
+#' @export
+extFoo2_ui <- function(id) {
+  ns <- NS(id)
+  tagList(
+    shinyjs::useShinyjs(),
+    shinyjs::hidden(div(id = ns('badFormatMsg'), h3(bad_format_txt))),
+    plotOutput(ns('plot'))
+  )
+}
+
+#' @rdname corrmatrix
+#' @export
+#'
+extFoo2_server <- function(id,
+                                  obj = reactive({NULL})) {
+  
+  
+  
+  moduleServer(id, function(input, output, session) {
+    ns <- session$ns
+    
+    rv <- reactiveValues(
+      data = NULL)
+    
+    observe({
+      req(obj())
+      if(inherits(obj(), "DaparViz")){
+        rv$data <- obj()
+      } else 
+        shinyjs::toggle('badFormatMsg', condition = !inherits(obj(), "list"))
+      
+    }, priority = 1000)
+    
+    output$plot <- renderPlot({
+      req(rv$data)
+      plot(rv$data@qdata)
+    })
+  })
+}
+
+
+
+#' @export
+#' @rdname corrmatrix
+extFoo2 <- function(obj){
+  ui <- parViz_extFoo2_ui("plot")
+  
+  server <- function(input, output, session)
+    extFoo2_server("plot", reactive({obj}))
+  
+  shinyApp(ui = ui, server = server)
+}

@@ -15,7 +15,7 @@
 #' @examples
 #' if(interactive()){
 #' data(vData_ft)
-#' ds_density(vData_ft[[1]])
+#' DaparViz_density(vData_ft[[1]])
 #' }
 #'
 NULL
@@ -25,7 +25,7 @@ NULL
 #' @importFrom highcharter highchartOutput
 #' @rdname density-plot
 #' @export
-mod_ds_density_ui <- function(id) {
+DaparViz_density_ui <- function(id) {
     ns <- NS(id)
     tagList(
       shinyjs::useShinyjs(),
@@ -43,7 +43,7 @@ mod_ds_density_ui <- function(id) {
 #' 
 #' @export
 #'
-mod_ds_density_server <- function(id,
+DaparViz_density_server <- function(id,
                                   obj = reactive({NULL}),
                                   pal.name = reactive({NULL})) {
     moduleServer(id, function(input, output, session) {
@@ -82,12 +82,12 @@ mod_ds_density_server <- function(id,
 #' @import shiny
 #' @export
 #' @rdname density-plot
-ds_density <- function(obj){
+DaparViz_density <- function(obj){
   
-  ui <- mod_ds_density_ui("plot")
+  ui <- DaparViz_density_ui("plot")
 
 server <- function(input, output, session)
-  mod_ds_density_server("plot", obj = reactive({obj}))
+  DaparViz_density_server("plot", obj = reactive({obj}))
 
 shinyApp(ui, server)
 }

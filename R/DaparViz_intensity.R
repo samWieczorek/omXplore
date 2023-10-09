@@ -14,7 +14,7 @@
 #' @examples
 #' if(interactive()){
 #' data(vData_ft)
-#' ds_intensity(vData_ft[[1]])
+#' DaparViz_intensity(vData_ft[[1]])
 #' }
 #'
 NULL
@@ -25,7 +25,7 @@ NULL
 #' @importFrom stats setNames
 #' @export
 #' @rdname intensity-plots
-mod_ds_intensity_ui <- function(id) {
+DaparViz_intensity_ui <- function(id) {
     ns <- NS(id)
     tagList(
         shinyjs::useShinyjs(),
@@ -48,7 +48,7 @@ mod_ds_intensity_ui <- function(id) {
 #'
 #' @return NA
 #'
-mod_ds_intensity_server <- function(id, 
+DaparViz_intensity_server <- function(id, 
                                     obj, 
                                     track.indices = reactive({NULL})
                                     ) {
@@ -113,20 +113,20 @@ mod_ds_intensity_server <- function(id,
 #' @import shiny
 #' @rdname intensity-plots
 #' @export
-ds_intensity <- function(obj,
+DaparViz_intensity <- function(obj,
                          withTracking = FALSE){
   ui <- fluidPage(
     tagList(
-      mod_plots_tracking_ui('tracker'),
-      mod_ds_intensity_ui("iplot")
+      plots_tracking_ui('tracker'),
+      DaparViz_intensity_ui("iplot")
     )
   )
   
   server <- function(input, output, session) {
-    indices <- mod_plots_tracking_server("tracker", 
+    indices <- plots_tracking_server("tracker", 
                                          obj = reactive({obj}))
     
-    mod_ds_intensity_server("iplot",
+    DaparViz_intensity_server("iplot",
                             obj = reactive({obj}),
                             track.indices = reactive({indices()})
     )

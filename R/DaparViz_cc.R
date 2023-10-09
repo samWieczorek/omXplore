@@ -1,4 +1,4 @@
-#' @title mod_plots_cc_ui and mod_plots_cc_server
+#' @title plots_cc_ui and plots_cc_server
 #'
 #' @description  A shiny Module.
 #'
@@ -12,7 +12,7 @@
 #' @examples
 #' if(interactive()){
 #' data(vData_ft)
-#' ds_cc(vData_ft[[1]])
+#' DaparViz_cc(vData_ft[[1]])
 #' }
 #' 
 #'
@@ -32,7 +32,7 @@ NULL
 #' 
 #' @export
 #' 
-mod_ds_cc_ui <- function(id) {
+DaparViz_cc_ui <- function(id) {
   pkgs.require(c('visNetwork', 'shinyBS', 'shinyjs', 'highcharter'))
   ns <- NS(id)
   tagList(
@@ -118,7 +118,7 @@ mod_ds_cc_ui <- function(id) {
 #' @import highcharter
 #' @rdname ds-cc
 #' @export
-mod_ds_cc_server <- function(id, obj) {
+DaparViz_cc_server <- function(id, obj) {
   pkgs.require(c('visNetwork', 'highcharter'))
   moduleServer(id, function(input, output, session) {
       ns <- session$ns
@@ -296,10 +296,10 @@ mod_ds_cc_server <- function(id, obj) {
       
       # Show the DT data table ans gets the selected items from it
       output$CCMultiMulti_UI <- renderUI({
-        rvCC$CCMultiMulti_rows_selected <- mod_format_DT_server("CCMultiMulti", 
+        rvCC$CCMultiMulti_rows_selected <- format_DT_server("CCMultiMulti", 
                       data = reactive({GetDataFor_CCMultiMulti()}))
         
-        mod_format_DT_ui(ns("CCMultiMulti"))
+        format_DT_ui(ns("CCMultiMulti"))
       })
       
       
@@ -395,8 +395,8 @@ mod_ds_cc_server <- function(id, obj) {
         df <- data.frame(proteinId = unlist(.protLabels))
         colnames(df) <- c("Proteins Ids")
         
-        mod_format_DT_server('CCDetailedProt', data = reactive({df}))
-        mod_format_DT_ui(ns('CCDetailedProt'))
+        format_DT_server('CCDetailedProt', data = reactive({df}))
+        format_DT_ui(ns('CCDetailedProt'))
       })
       
       
@@ -436,13 +436,13 @@ mod_ds_cc_server <- function(id, obj) {
         dt_style = list(data = ll$qmetacell,
                         colors = BuildColorStyles(rv$data@type))
         
-        mod_format_DT_server('CCDetailedSharedPep', 
+        format_DT_server('CCDetailedSharedPep', 
                              data = reactive({ll$qdata}),
                              data_nostyle = reactive({ll$data_nostyle}),
                              dt_style = reactive({dt_style})
         )
         
-        mod_format_DT_ui(ns('CCDetailedSharedPep'))
+        format_DT_ui(ns('CCDetailedSharedPep'))
       })
       
       
@@ -478,13 +478,13 @@ mod_ds_cc_server <- function(id, obj) {
         dt_style = list(data = ll$qmetacell,
                         colors = BuildColorStyles(rv$data@type))
         
-        mod_format_DT_server('CCDetailedSpecPep', 
+        format_DT_server('CCDetailedSpecPep', 
                              data = reactive({ll$qdata}),
                              data_nostyle = reactive({ll$data_nostyle}),
                              dt_style = reactive({dt_style})
         )
         
-        mod_format_DT_ui(ns('CCDetailedSpecPep'))
+        format_DT_ui(ns('CCDetailedSpecPep'))
         
       })
       
@@ -553,9 +553,9 @@ mod_ds_cc_server <- function(id, obj) {
         colnames(df) <- c("Proteins Ids", "nPep", "Peptides Ids")
         
         
-        rvCC$OneMultiDT_rows_selected <- mod_format_DT_server('OneMultiDT', 
+        rvCC$OneMultiDT_rows_selected <- format_DT_server('OneMultiDT', 
                                                                         data = reactive({df}))
-        mod_format_DT_ui(ns('OneMultiDT'))
+        format_DT_ui(ns('OneMultiDT'))
       })
       
 
@@ -589,12 +589,12 @@ mod_ds_cc_server <- function(id, obj) {
         dt_style = list(data = ll$qmetacell,
                         colors = BuildColorStyles(rv$data@type))
         
-        mod_format_DT_server('OneMultiDTDetailed', 
+        format_DT_server('OneMultiDTDetailed', 
                              data = reactive({ll$qdata}),
                              dt_style = reactive({dt_style})
         )
 
-        mod_format_DT_ui(ns('OneMultiDTDetailed'))
+        format_DT_ui(ns('OneMultiDTDetailed'))
       })
       
       
@@ -616,10 +616,10 @@ mod_ds_cc_server <- function(id, obj) {
         #req(rv$isValid)
         df <- BuildOne2OneTab()
         colnames(df) <- c("Proteins Ids", "Peptides Ids")
-        rvCC$OneOneDT_rows_selected <- mod_format_DT_server('OneOneDT', 
+        rvCC$OneOneDT_rows_selected <- format_DT_server('OneOneDT', 
                                                             data = reactive({df}) )
         
-        mod_format_DT_ui(ns('OneOneDT'))
+        format_DT_ui(ns('OneOneDT'))
       })
       
       
@@ -657,12 +657,12 @@ mod_ds_cc_server <- function(id, obj) {
         dt_style = list(data = ll$qmetacell,
                         colors = BuildColorStyles(rv$data@type)
                         )
-       mod_format_DT_server('OneOneDTDetailed', 
+       format_DT_server('OneOneDTDetailed', 
                              data = reactive({ll$qdata}),
                              dt_style = reactive({dt_style})
                              )
         
-        mod_format_DT_ui(ns('OneOneDTDetailed'))
+        format_DT_ui(ns('OneOneDTDetailed'))
       })
       
       
@@ -675,11 +675,11 @@ mod_ds_cc_server <- function(id, obj) {
 #' @import shiny
 #' @rdname ds-cc
 #' 
-ds_cc <- function(obj){
-  ui <- mod_ds_cc_ui("plot")
+DaparViz_cc <- function(obj){
+  ui <- DaparViz_cc_ui("plot")
   
   server <- function(input, output, session)
-    mod_ds_cc_server("plot", reactive({obj}))
+    DaparViz_cc_server("plot", reactive({obj}))
   
   shinyApp(ui = ui, server = server)
 }

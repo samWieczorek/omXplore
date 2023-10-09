@@ -1,4 +1,4 @@
-#' @title   mod_format_DT_ui and mod_format_DT_server
+#' @title   format_DT_ui and format_DT_server
 #'
 #' @description
 #'
@@ -23,7 +23,7 @@
 #' @param hideCols xxx
 #' @param selection xxx
 #'
-#' @name mod_format_DT
+#' @name format_DT
 #' 
 #' @return NA
 #' 
@@ -34,9 +34,9 @@ NULL
 #' @importFrom shiny NS tagList
 #' @import DT
 #'
-#' @rdname mod_format_DT
+#' @rdname format_DT
 #'
-mod_format_DT_ui <- function(id) {
+format_DT_ui <- function(id) {
   pkgs.require(c('shinyjs', 'DT'))
   ns <- NS(id)
   tagList(
@@ -53,8 +53,8 @@ mod_format_DT_ui <- function(id) {
 
 #' @importFrom htmlwidgets JS
 #' @import DT
-#' @rdname mod_format_DT
-mod_format_DT_server <- function(id,
+#' @rdname format_DT
+format_DT_server <- function(id,
                                  data = reactive({NULL}),
                                  data_nostyle = reactive({NULL}),
                                  withDLBtns = FALSE,

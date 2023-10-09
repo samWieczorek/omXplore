@@ -30,10 +30,12 @@ vignette: >
 
 # Introduction
 
-The `DaparViz` package is a Shiny app which provides a series of plots dedicated to the analysis of proteomics data. It can 
-deal with two data structures: `MSnSet` and `QFeatures`.
+The `DaparViz` package is a Shiny app which is a standalone hub for plots
+dedicated to the analysis of proteomics data. It can deal with two data 
+formats: `MSnSet` and `QFeatures`. It has a series of built-in plots and can
+integrate og=ther shiny apps
 
-It has been developped as a Shiny module so as to be flexible: it can run standalone- or can be inserted in another Shiny app.
+It has been developed as a Shiny module so as to be flexible: it can run standalone- or can be inserted in another Shiny app.
 In that sense, it can be used on its own; or as a complement to the numerous 
 Bioconductor packages (\url{https://www.bioconductor.org/}) it is compliant with; or through the `Prostar` interface.
 
@@ -120,18 +122,14 @@ development of an external app, see section xxx.
 
 Each of the built-in plots can be run in a standalone mode rather than embedded in the main UI.
 
-It is possible simply by running its name. The list of all built-in shiny apps is available via
+It is possible simply by running its name. The list of all shiny apps which are 
+available via DaparViz can be seen using
 
 ```
-# Get the builtin shiny apps in DaparViz
-listShinyApps()
-
-# Get the external shiny apps that are embedded into DaparViz
-listShinyApps()
-
 # Get all the shiny apps which are avaialbie in the main UI
 listShinyApps()
 ```
+See the help page of this function fore more details.
 
 
 ```
@@ -143,6 +141,42 @@ ds_pca(obj)
 ds_density(obj)
 
 ```
+
+# Adding external plots
+
+DaparViz can plot builtin plots as external shiny app. For that purpose, there are 
+only two points to consider:
+* make a shiny app available in the global R environment
+* ensure that the name of the two functions `ui()` and `server()` of the app 
+respect a predefined syntax. More specifically, the name of the shiny app is 
+composed by the prefix 'mod_ds_' (which stands for 'descriptive statistics') and 
+a user-defined name. As for each Shiny app, there must be two functions (one 
+for the ui part and the second one for the server part.).
+Thus, in this example, the shiny app called `ds_foo` must provide the functions 
+`mod_ds_foo_ui()` and `mod_ds_foo_server()`. 
+
+
+The use of those external apps is devoted to its developer, the interface of 
+DaparViz is only a shell that presents apps in a user-friendly interface.
+
+To add external app to DaparViz, please use the global function `view_dataset()`
+as follows. In the example below, one want to add the app called `mod_external_foo` 
+from the package `DaparViz`. It is only for the example, this app contains a 
+simple plot just to demonstrate how it works
+
+```
+library(DaparViz)
+data(vData_ft)
+
+addons <- list(
+  DaparViz = c('extFoo1', 'extFoo2')
+)
+view_dataset(vData_ft, addons)
+```
+
+## Technical point of view
+
+
 
 # Session information
 

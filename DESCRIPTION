@@ -70,17 +70,17 @@ Collate:
     plots_compare_assays.R
     global.R
     modules.R
-    mod_view_dataset.R
+    DaparViz_view_dataset.R
     mod_explore_graphs.R
-    mod_ds_corrmatrix.R
-    mod_ds_density.R
-    mod_ds_tabExplorer.R
-    mod_ds_heatmap.R
-    mod_ds_intensity.R
+    DaparViz_corrmatrix.R
+    DaparViz_density.R
+    DaparViz_tabExplorer.R
+    DaparViz_heatmap.R
+    DaparViz_intensity.R
     mod_mv_imputation.R
-    mod_ds_pca.R
-    mod_ds_cc.R
-    mod_ds_variance.R
+    DaparViz_pca.R
+    DaparViz_cc.R
+    DaparViz_variance.R
     mod_colorLegend.R
     plot_boxplot.R
     plot_corrmatrix.R
@@ -89,10 +89,12 @@ Collate:
     plot_heatmap.R
     plot_pca.R
     plot_violin.R
-    mod_plots_tracking.R
+    DaparViz_plots_tracking.R
     get_pep_prot_CC.R
-    mod_format_DT.R
+    DaparViz_format_DT.R
     metacell_utils.R
+    extFoo1.R
+    extFoo2.R
 RoxygenNote: 7.2.3
 Packaged: 2017-10-13 11:13:04 UTC; sw175264
 Encoding: UTF-8

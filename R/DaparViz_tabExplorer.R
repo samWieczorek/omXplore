@@ -7,12 +7,12 @@
 #' @param digits xxx
 #'
 #'
-#' @name ds_tabExplorer
+#' @name DaparViz_tabExplorer
 #'
 #' @examples
 #' if(interactive()){
 #' data(vData_ft)
-#' ds_explorer(vData_ft[[1]])
+#' DaparViz_explorer(vData_ft[[1]])
 #' }
 #' 
 NULL
@@ -21,18 +21,18 @@ NULL
 
 #' @import shiny
 #' @import DT
-#' @rdname ds_tabExplorer
+#' @rdname DaparViz_tabExplorer
 #' @import shinyBS
 #' 
 #' @export
 #' 
-mod_ds_tabExplorer_ui <- function(id) {
+DaparViz_tabExplorer_ui <- function(id) {
     ns <- NS(id)
     pkgs.require('shinyBS')
     tagList(
       shinyjs::useShinyjs(),
       shinyjs::hidden(div(id = ns('badFormatMsg'), h3(bad_format_txt))),
-      shinyjs::hidden(div(id=ns('div_legend'),mod_colorLegend_ui(ns("legend")))),
+      shinyjs::hidden(div(id=ns('div_legend'),colorLegend_ui(ns("legend")))),
       shinyjs::hidden(
         div(id = ns('div_infos'),
         shinyBS::bsCollapse(id = "infos", open = "", multiple = TRUE,
@@ -57,10 +57,10 @@ mod_ds_tabExplorer_ui <- function(id) {
 #' @importFrom tibble as_tibble
 #' @importFrom stats setNames
 #'
-#' @rdname ds_tabExplorer
+#' @rdname DaparViz_tabExplorer
 #' 
 #' @export
-mod_ds_tabExplorer_server <- function(id,
+DaparViz_tabExplorer_server <- function(id,
                                      obj = reactive({NULL}),
                                      digits = reactive({3})) {
     moduleServer(id, function(input, output, session) {
@@ -77,7 +77,7 @@ mod_ds_tabExplorer_server <- function(id,
                                     level = rv$data@type, 
                                     onlyPresent = TRUE)
             
-            mod_colorLegend_server("legend", tags)
+            colorLegend_server("legend", tags)
           }
           
           shinyjs::toggle('badFormatMsg', condition = is.null(rv$data))
@@ -242,15 +242,15 @@ mod_ds_tabExplorer_server <- function(id,
 }
 
 
-#' @rdname ds_tabExplorer
+#' @rdname DaparViz_tabExplorer
 #' @export
 #' @import shiny
 #' 
-ds_explorer <- function(obj){
-  ui <- fluidPage(mod_ds_tabExplorer_ui("plot"))
+DaparViz_tabExplorer <- function(obj){
+  ui <- fluidPage(DaparViz_tabExplorer_ui("plot"))
 
 server <- function(input, output, session)
-  mod_ds_tabExplorer_server("plot", reactive({obj}))
+  DaparViz_tabExplorer_server("plot", reactive({obj}))
 
 shinyApp(ui = ui, server = server)
 }

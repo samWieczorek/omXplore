@@ -7,7 +7,7 @@
 #' #'
 #' #' @rdname connected-components
 #' #' @export
-#' mod_explore_graphs_ui <- function(id) {
+#' explore_graphs_ui <- function(id) {
 #'     ns <- NS(id)
 #' 
 #'     pkgs.require('visNetwork')
@@ -28,7 +28,7 @@
 #'                     tagList(
 #'                         fluidRow(
 #'                             column(width = 4, tagList(
-#'                                 # mod_download_btns_ui(ns('OneOneDT_DL_btns')),
+#'                                 # download_btns_ui(ns('OneOneDT_DL_btns')),
 #'                                 DT::dataTableOutput(ns("OneOneDT"))
 #'                             )),
 #'                             column(width = 8, tagList(
@@ -98,7 +98,7 @@
 #' #'
 #' #' @rdname connected-components
 #' #' @export
-#' mod_explore_graphs_server <- function(id,
+#' explore_graphs_server <- function(id,
 #'                                       ll.cc,
 #'                                       se,
 #'                                       settings) {

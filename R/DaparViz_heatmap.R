@@ -26,14 +26,14 @@
 #' 
 #' @author Florence Combes, Samuel Wieczorek, Enor Fremy
 #'
-#' @name ds_heatmap
+#' @name DaparViz_heatmap
 #' 
 #' @return NA
 #'
 #' @examples
 #' if(interactive()){
 #' data(vData_ft)
-#' ds_heatmaps(vData_ft[[1]])
+#' DaparViz_heatmaps(vData_ft[[1]])
 #' }
 #'
 NULL
@@ -41,9 +41,9 @@ NULL
 
 
 #' @importFrom shiny NS tagList
-#' @rdname ds_heatmap
+#' @rdname DaparViz_heatmap
 #' @export
-mod_ds_heatmap_ui <- function(id) {
+DaparViz_heatmap_ui <- function(id) {
     ns <- NS(id)
     tagList(
       useShinyjs(),
@@ -61,16 +61,16 @@ mod_ds_heatmap_ui <- function(id) {
                     width = "150px")
             )),
             tags$hr(),
-            uiOutput(ns("DS_PlotHeatmap"))
+            uiOutput(ns("DaparViz_PlotHeatmap"))
         )
 }
 
 
 
 
-#' @rdname ds_heatmap
+#' @rdname DaparViz_heatmap
 #' @export
-mod_ds_heatmap_server <- function(id,
+DaparViz_heatmap_server <- function(id,
                                   obj = reactive({NULL}),
                                   width = 900) {
     moduleServer(id, function(input, output, session) {
@@ -92,7 +92,7 @@ mod_ds_heatmap_server <- function(id,
         height <- paste0(2 * width / 3, "px")
         width <- paste0(width, "px")
 
-        output$DS_PlotHeatmap <- renderUI({
+        output$DaparViz_PlotHeatmap <- renderUI({
             req(rv$data)
           if (nrow(rv$data@qdata) > limitHeatmap)
                 tags$p("The dataset is too large to compute the heatmap in a reasonable time.")
@@ -109,11 +109,10 @@ mod_ds_heatmap_server <- function(id,
 
                 withProgress(message = "Making plot", value = 100, {
                   
-                    heatmapD(
-                        vData = rv$data,
-                        distance = input$distance,
-                        cluster = input$linkage
-                    )
+                    heatmapD(obj = rv$data,
+                             distance = input$distance,
+                             cluster = input$linkage
+                             )
             })
         })
     })
@@ -122,15 +121,15 @@ mod_ds_heatmap_server <- function(id,
 
 
 #' @import shiny
-#' @rdname ds_heatmap
+#' @rdname DaparViz_heatmap
 #' @export
-ds_heatmap <- function(obj){
+DaparViz_heatmap <- function(obj){
   ui <- fluidPage(
-    mod_ds_heatmap_ui("plot")
+    DaparViz_heatmap_ui("plot")
   )
   
   server <- function(input, output, session)
-    mod_ds_heatmap_server("plot", reactive({obj}))
+    DaparViz_heatmap_server("plot", reactive({obj}))
 
   shinyApp(ui = ui, server = server)
 }
