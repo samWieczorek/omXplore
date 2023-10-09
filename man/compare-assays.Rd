@@ -5,7 +5,7 @@
 \title{Compare two assays}
 \usage{
 plotCompareAssays(
-  vList,
+  obj,
   i,
   j,
   info = NULL,
@@ -17,7 +17,7 @@ plotCompareAssays(
 )
 }
 \arguments{
-\item{vList}{An instance of the class \code{VizList}.}
+\item{obj}{An instance of the class \code{DaparViz}.}
 
 \item{i}{A numeric matrix containing quantitative data after
 normalization.}
@@ -48,7 +48,7 @@ The comparison is made with the division operator.
 }
 \examples{
 data(vData_ft)
-plotCompareAssays(vData_ft, 1, 1, n = 5)
+plotCompareAssays(vData_ft, 1, 2, n = 5)
 
 }
 \author{

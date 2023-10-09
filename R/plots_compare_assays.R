@@ -8,7 +8,7 @@
 #'
 #' The comparison is made with the division operator.
 #'
-#' @param vList An instance of the class `VizList`.
+#' @param obj An instance of the class `DaparViz`.
 #' @param i A numeric matrix containing quantitative data after 
 #' normalization.
 #' @param j xxx
@@ -25,7 +25,7 @@
 #'
 #' @examples
 #' data(vData_ft)
-#' plotCompareAssays(vData_ft, 1, 1, n = 5)
+#' plotCompareAssays(vData_ft, 1, 2, n = 5)
 #'
 #' @import highcharter
 #' @importFrom tibble as_tibble
@@ -35,7 +35,7 @@
 #'
 #' @rdname compare-assays
 #'
-plotCompareAssays <- function(vList,
+plotCompareAssays <- function(obj,
                               i,
                               j,
                               info = NULL,
@@ -44,16 +44,20 @@ plotCompareAssays <- function(vList,
                               n = 100,
                               type = "scatter",
                               FUN = NULL) {
-    if (missing(vList)) {
+  
+  pkgs.require('highcharter')
+    if (missing(obj)) {
         stop("'vList' is missing")
     }
-    stopifnot(inherits(vList, "list"))
+    stopifnot(inherits(obj, "list"))
     
-    qdata1 <- vList[i]@qdata
-    qdata2 <- vList[j]@qdata
-    conds <- vList[i]@conds
+    qdata1 <- obj[[i]]@qdata
+    qdata2 <- obj[[j]]@qdata
+    conds <- obj[[i]]@conds
     
-    if (!all.equal(dim(qdata1), dim(qdata2))) {
+   
+    if (nrow(qdata1) != nrow(qdata2) || 
+        ncol(qdata1) != ncol(qdata2) ) {
         stop("Assays must have the same dimensions.")
     }
 
@@ -110,7 +114,6 @@ plotCompareAssays <- function(vList,
         }
     }
 
-
     myColors <- ExtendPalette(length(unique(conds)), pal.name)
 
     # Compare by using the division between assays
@@ -129,17 +132,17 @@ plotCompareAssays <- function(vList,
         )
     }
 
-    h1 <- highchart() %>%
+    h1 <- highcharter::highchart() %>%
         customChart(chartType = type) %>%
-        hc_add_series_list(series) %>%
-        hc_colors(myColors) %>%
+        highcharter::hc_add_series_list(series) %>%
+      highcharter::hc_colors(myColors) %>%
         customExportMenu(fname = "compareAssays")
 
     if (!all.equal(info, rep(NA, length(info)))) {
         h1 <- h1 %>%
-            hc_tooltip(headerFormat = "", pointFormat = "Id: {point.name}")
+          highcharter::hc_tooltip(headerFormat = "", pointFormat = "Id: {point.name}")
     } else {
-        h1 <- h1 %>% hc_tooltip(enabled = FALSE)
+        h1 <- h1 %>% highcharter::hc_tooltip(enabled = FALSE)
     }
 
 
