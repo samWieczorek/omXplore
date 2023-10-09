@@ -2,14 +2,11 @@
 % Please edit documentation in R/modules.R
 \name{DaparViz-modules}
 \alias{DaparViz-modules}
-\alias{addImgPath}
 \alias{addModules}
 \alias{listShinyApps}
 \alias{listPlotModules}
 \title{Modules functions}
 \usage{
-addImgPath(prefix, path)
-
 addModules(addons)
 
 listShinyApps(location = "both")
@@ -17,10 +14,6 @@ listShinyApps(location = "both")
 listPlotModules(location = "both")
 }
 \arguments{
-\item{prefix}{A \code{character()} vector which contains packages names}
-
-\item{path}{xxx}
-
 \item{addons}{A \code{list} in which each item is:
 \itemize{
 \item is named by the name of a package
@@ -37,17 +30,5 @@ xxxxx
 \item \code{addModules()}: xxx
 }
 
-This line allows to extend the resource path to a different directory
-than the one in 'inst/' which is given by default when loading a package.
-
 xxxx
-}
-\examples{
-\dontrun{
-addImgPath('foo', system.file('.', package='DaparViz'))
-}
-
-}
-\author{
-Samuel Wieczorek
 }

@@ -157,9 +157,7 @@ view_dataset_server <- function(id,
             lapply(rv$ll.mods, function(x) {
                 shinyjs::hidden(
                     div(id = ns(paste0("div_", x, "_large")),
-                        do.call(paste0(x, "_ui"), 
-                                list(ns(paste0(x, "_large")))
-                        )
+                        do.call(paste0(x, "_ui"), list(ns(paste0(x, "_large"))))
                     )
                 )
             })
@@ -170,14 +168,14 @@ view_dataset_server <- function(id,
           # By default, search image from the images directory of the DaparViz
           # package. This works for built-in plot modules. For external modules,
           # then load customized resource path
-          img_path <- system.file('images', paste0(gsub("", "", x), ".png"), 
-                                  package='DaparViz')
-          if (file.exists(img_path))
-            img_src <- paste0("images/", gsub("", "", x), ".png")
-          else
-            img_src <- paste0("img_", gsub("", "", x), "/", 
-                              gsub("", "", x), ".png")
           
+          
+          img_path <- system.file('images', paste0(x, ".png"), package='DaparViz')
+          if (file.exists(img_path))
+            img_src <- paste0("images/", x, ".png")
+          else
+            img_src <- paste0('DaparViz_imgDir/', gsub('DaparViz_', '', x), '.png')
+
           img_src
         }
         
@@ -197,18 +195,16 @@ view_dataset_server <- function(id,
         })
 
         observeEvent(req(rv$data, input$chooseDataset), ignoreNULL = TRUE,{
-
             rv$current.se <- rv$data[[input$chooseDataset]]
         })
 
         output$chooseDataset_ui <- renderUI({
             req(rv$data)
 
-            if (length(rv$data) == 0) {
+            if (length(rv$data) == 0)
                 choices <- list(" " = character(0))
-            } else {
+            else
                 choices <- names(rv$data)
-            }
 
             selectInput(ns("chooseDataset"), "Dataset",
                 choices = choices,

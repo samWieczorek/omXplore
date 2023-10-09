@@ -47,10 +47,8 @@ process.
 The comparison is made with the division operator.
 }
 \examples{
-\dontrun{
 data(vData_ft)
 plotCompareAssays(vData_ft, 1, 1, n = 5)
-}
 
 }
 \author{

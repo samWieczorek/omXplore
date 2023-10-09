@@ -24,10 +24,8 @@
 #' @author Samuel Wieczorek, Enora Fremy
 #'
 #' @examples
-#' \dontrun{
 #' data(vData_ft)
 #' plotCompareAssays(vData_ft, 1, 1, n = 5)
-#' }
 #'
 #' @import highcharter
 #' @importFrom tibble as_tibble

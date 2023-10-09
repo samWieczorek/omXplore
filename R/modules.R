@@ -15,35 +15,6 @@
 #' 
 NULL
 
-#' @title Add resource path for image
-#' 
-#' @description This line allows to extend the resource path to a different directory
-#' than the one in 'inst/' which is given by default when loading a package.
-#' 
-#' @param prefix A `character()` vector which contains packages names
-#' @param path xxx
-#' 
-#' @examples 
-#' \dontrun{
-#' addImgPath('foo', system.file('.', package='DaparViz'))
-#' }
-#' 
-#' @export
-#' 
-#' @rdname DaparViz-modules
-#' 
-#' @author Samuel Wieczorek
-#' 
-addImgPath <- function(prefix, path){
-  myPath <- gsub('', '', path)
-  addResourcePath(prefix = paste0("img_", myPath),
-                  directoryPath = "my_location")
-}
-
-
-
-
-
 
 #' @title Add shiny module
 #' @description xxxx
@@ -71,11 +42,14 @@ addModules <- function(addons){
   }
   
   for (x in names(addons)){
-    for (m in addons[[x]]){
+    for (m in addons[[x]]$funcs){
       f_assign(m, x, 'ui')
       f_assign(m, x, 'server')
     }
+    addResourcePath(prefix = paste0(x, '_imgDir'), 
+                    directoryPath = addons[[x]]$imgDirPath)
   }
+  
 }
 
 
