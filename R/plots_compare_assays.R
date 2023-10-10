@@ -11,12 +11,14 @@
 #' @param obj An instance of the class `DaparViz`.
 #' @param i A numeric matrix containing quantitative data after 
 #' normalization.
-#' @param j xxx
+#' @param j A numeric matrix containing quantitative data after 
+#' normalization
 #' @param info xxx
 #' @param pal.name xxx
 #' @param subset.view xxx
 #' @param n xxx
-#' @param type The type of plot. Available values are 'scatter' (default) or 'line'
+#' @param type The type of plot. Available values are 'scatter' (default) 
+#' or 'line'
 #' @param FUN xxx
 #'
 #' @return A plot
@@ -140,7 +142,8 @@ plotCompareAssays <- function(obj,
 
     if (!all.equal(info, rep(NA, length(info)))) {
         h1 <- h1 %>%
-          highcharter::hc_tooltip(headerFormat = "", pointFormat = "Id: {point.name}")
+          highcharter::hc_tooltip(headerFormat = "", 
+                                  pointFormat = "Id: {point.name}")
     } else {
         h1 <- h1 %>% highcharter::hc_tooltip(enabled = FALSE)
     }

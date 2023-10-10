@@ -31,18 +31,26 @@ vignette: >
 # Introduction
 
 The `DaparViz` package is a Shiny app which is a standalone hub for plots
-dedicated to the analysis of proteomics data. It can deal with two data 
-formats: `MSnSet` and `QFeatures`. It has a series of built-in plots and can
-integrate og=ther shiny apps
+dedicated to the analysis of proteomics data. It is compliant with two data 
+formats: `MSnSet` and `QFeatures`. 
 
-It has been developed as a Shiny module so as to be flexible: it can run standalone- or can be inserted in another Shiny app.
-In that sense, it can be used on its own; or as a complement to the numerous 
-Bioconductor packages (\url{https://www.bioconductor.org/}) it is compliant with; or through the `Prostar` interface.
+`DaparViz` a series of built-in plots and can easily integrate other plots that 
+comes from other packages or directly developed in R.
 
-`Prostar` (Proteomics statistical analysis with R) is a 
-web interface based on Shiny technology (\url{http://shiny.rstudio.com/}) that provides GUI (Graphical User Interfaces).
-The experiment package `DaparToolshedData` contains many datasets that can be used as examples.
-`DaparViz` contains built-in plots but have the capability to show plots developped by other developper (as a Shiny app).
+It contains:
+* several built-in plots,
+* one main UI which gives easily access to the individual plots.
+
+All the plots in this package are based on Shiny technology 
+(\url{http://shiny.rstudio.com/}) and are implemented as modules modules
+(\url{https://rviews.rstudio.com/2021/10/20/a-beginner-s-guide-to-shiny-modules/}). Thus, each plot can be run standalone or easily inserted in another Shiny app.
+In that sense, the plots in `DaparViz` can be used alone or as a complement to 
+the numerous packages on Bioconductor (\url{https://www.bioconductor.org/}) it is compliant with. For example, it is well used in `Prostar` (Proteomics statistical analysis with R) which is a 
+web interface based on Shiny technology (\url{http://shiny.rstudio.com/}) which
+provides GUI (Graphical User Interfaces).
+The datasets contained in the experiment packages `DAPARdata` and `DaparToolshedData` can be used as toy examples.
+
+`DaparViz` contains built-in plots but have the capability to show plots developped by other developer (as a Shiny app).
 
 
 # Installation
@@ -56,27 +64,40 @@ if (!require("BiocManager", quietly = TRUE))
 BiocManager::install("DaparViz")
 ```
 
-For older versions of R, please refer to the appropriate Bioconductor release.
+This will also install dependencies.
 
+It is also possible to install `DaparViz` from Github:
+
+```
+library(devtools)
+install_github('prostarproteomics/DaparViz')
+
+```
+
+For older versions of R, please refer to the appropriate Bioconductor release.
 
 
 # DaparViz data format
 
-`DaparViz` has its own data format (the DaparViz-class) which is a 
-simplification of the formats it can deal with. 
+`DaparViz` is based on its own data format (a S4 class named `DaparViz`) which is a 
+simplification of the formats it can deal with. The main data structure in the
+package `DaparViz` is a list of instances of `DaparViz` class.
 To see which data formats `DaparViz` can manage, run 
 
 ```
 
 ```
 
-To see how to convert other data formats to DaparViz-class, run ?DaparViz-class
+To convert datasets to the class DaparViz-class, run
 ```
+convert2xxx(my_dataset)
 
 ```
 
-However, `DaparViz` plot functions integrate a convert feature so as to pass
-directly datasets in other format to the plot functions.
+However, all the plots functions in `DaparViz` integrate a convert feature 
+so as to pass directly datasets in other format to the plot functions. They
+also have a check function to ensure that the parameters are in the correct
+format.
 
 
 
@@ -173,7 +194,7 @@ addons <- list(
     funcs = c('extFoo1', 'extFoo2'),
     imgDirPath = system.file('extdata', package='DaparViz')
     )
-    )
+  )
 view_dataset(vData_ft, addons)
 ```
 
