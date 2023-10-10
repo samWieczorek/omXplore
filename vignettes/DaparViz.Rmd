@@ -103,8 +103,6 @@ format.
 
 # Using DaparViz
 
-The functions in DaparViz use a specific data format which is described in the following section.
-
 DaparViz is a collection of standard plots which are available as Shiny applications. Thus, each plot has its own application.
 
 The main feature in DaparViz is a Shiny app which combine all the different Shiny app.
