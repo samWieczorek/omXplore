@@ -97,16 +97,13 @@ buildGraph <- function(cc,
 #' @import visNetwork
 #'
 display.CC.visNet <- function(g,
-                              layout = NULL,
+                              layout = "layout_with_fr",
                               obj = NULL,
                               prot.tooltip = NULL,
                               pept.tooltip = NULL) {
   
-  pkgs.require(c('visNetwork', 'igraph'))
-  
-  if(is.null(layout))
-    layout <- igraph::layout_nicely
-  
+  pkgs.require('visNetwork')
+
   col.prot <- "#ECB57C"
   col.spec <- "#5CA3F7"
   col.shared <- "#0EA513"
@@ -123,7 +120,7 @@ display.CC.visNet <- function(g,
     # visLegend()
     # visPhysics(stabilization = FALSE)%>%
     visNetwork::visEdges(color = "#A9A9A9", width = 2) %>%
-    visNetwork::visIgraphLayout(layout = "layout_with_fr")
+    visNetwork::visIgraphLayout(layout)
 }
 
 
