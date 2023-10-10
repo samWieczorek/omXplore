@@ -5,6 +5,7 @@
 \alias{custom_metacell_colors}
 \alias{colorLegend_ui}
 \alias{colorLegend_server}
+\alias{colorLegend}
 \title{Color legend for DaparToolshed}
 \usage{
 custom_metacell_colors()
@@ -18,6 +19,8 @@ colorLegend_server(
  }),
   hide.white = TRUE
 )
+
+colorLegend(obj)
 }
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
@@ -26,10 +29,20 @@ colorLegend_server(
 
 \item{hide.white}{A \code{boolean()} to indicate whether the white cells must be
 hidden or not.}
+
+\item{obj}{An instance of the class \code{DaparViz}.}
 }
 \value{
 NA
 }
 \description{
 Shows xxx based on the tags in the package 'DaparToolshed'
+}
+\examples{
+if(interactive()){
+library(DaparViz)
+data(vData_ft)
+colorLegend(vData_ft[[1]])
+}
+
 }

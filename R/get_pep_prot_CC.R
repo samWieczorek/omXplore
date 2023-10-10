@@ -97,12 +97,15 @@ buildGraph <- function(cc,
 #' @import visNetwork
 #'
 display.CC.visNet <- function(g,
-                              layout = layout_nicely,
+                              layout = NULL,
                               obj = NULL,
                               prot.tooltip = NULL,
                               pept.tooltip = NULL) {
   
-  pkgs.require('visNetwork')
+  pkgs.require(c('visNetwork', 'igraph'))
+  
+  if(is.null(layout))
+    layout <- igraph::layout_nicely
   
   col.prot <- "#ECB57C"
   col.spec <- "#5CA3F7"

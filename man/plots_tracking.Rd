@@ -17,6 +17,8 @@ plots_tracking_server(
      FALSE
  })
 )
+
+plots_tracking(obj)
 }
 \arguments{
 \item{id}{shiny id}
@@ -39,5 +41,13 @@ A \code{list} (same structure as the parameter \code{params})
 }
 \description{
 This shiny module provides a tool to select
+}
+\examples{
+if(interactive()){
+library(DaparViz)
+data(vData_ft)
+plots_tracking(vData_ft[[1]])
+}
+
 }
 \keyword{internal}

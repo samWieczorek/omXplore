@@ -84,7 +84,7 @@ DaparViz_variance_server <- function(id,
 DaparViz_variance <- function(obj){
   ui <- fluidPage(DaparViz_variance_ui("plot"))
 
-  server <- sfunction(input, output, session) 
+  server <- function(input, output, session) 
     DaparViz_variance_server("plot", obj = reactive({obj}))
   
   shinyApp(ui, server)

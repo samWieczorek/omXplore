@@ -14,7 +14,12 @@
 #' 
 #' @return A `list` (same structure as the parameter `params`)
 #'
-#' @example inst/extdata/examples/ex_plots_tracking.R
+#' @examples
+#' if(interactive()){
+#' library(DaparViz)
+#' data(vData_ft)
+#' plots_tracking(vData_ft[[1]])
+#' }
 #' 
 #' @name plots_tracking
 #' 
@@ -197,4 +202,21 @@ plots_tracking_server <- function(id,
   
   return(reactive({dataOut$indices}))
 })
+}
+
+
+
+
+#' @export
+#' @rdname plots_tracking
+#' 
+plots_tracking <- function(obj){
+  ui <- fluidPage(
+    plots_tracking_ui("tracker")
+    )
+
+  server <- function(input, output, session) {
+    indices <- plots_tracking_server("tracker", obj = reactive({obj}))}
+
+  shinyApp(ui, server)
 }

@@ -124,7 +124,7 @@ extFoo2_server <- function(id,
 #' @export
 #' @rdname external_app
 extFoo2 <- function(obj){
-  ui <- parViz_extFoo2_ui("plot")
+  ui <- extFoo2_ui("plot")
   
   server <- function(input, output, session)
     extFoo2_server("plot", reactive({obj}))

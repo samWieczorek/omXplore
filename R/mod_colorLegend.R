@@ -7,12 +7,18 @@
 #' @param presentTags A vector of `character()` which correspond to the tags.
 #' @param hide.white  A `boolean()` to indicate whether the white cells must be
 #' hidden or not.
+#' @param obj An instance of the class `DaparViz`.
 #' 
 #' @name color-legend
 #' 
 #' @return NA
 #'
-#' @example inst/extdata/examples/ex_colorLegend.R
+#' @examples
+#' if(interactive()){
+#' library(DaparViz)
+#' data(vData_ft)
+#' colorLegend(vData_ft[[1]])
+#' }
 #' 
 NULL
 
@@ -53,9 +59,9 @@ colorLegend_ui <- function(id) {
 
 #' @export
 #' @rdname color-legend
-colorLegend_server <- function(id, 
-                                   presentTags = reactive({NULL}), 
-                                   hide.white = TRUE) {
+colorLegend_server <- function(id,
+                               presentTags = reactive({NULL}), 
+                               hide.white = TRUE) {
   moduleServer(id, function(input, output, session) {
       ns <- session$ns
       
@@ -87,3 +93,33 @@ colorLegend_server <- function(id,
 
 
 
+#' @export
+#' @rdname color-legend
+colorLegend <- function(obj){
+ui <- fluidPage(
+  tagList(
+    colorLegend_ui("plot1"),
+    colorLegend_ui("plot2"),
+    colorLegend_ui("plot3")
+  )
+)
+
+server <- function(input, output, session) {
+  
+  tags <- GetMetacellTags(obj@metacell, 
+                          level = obj@type, 
+                          onlyPresent = TRUE)
+  
+  # Use the default color palette
+  colorLegend_server("plot1", tags)
+  
+  # Use of a user-defined color palette
+  colorLegend_server("plot2", tags)
+  
+  # Use of a  palette
+  colorLegend_server("plot3", tags)
+}
+
+  shinyApp(ui, server)
+  
+}

@@ -1,8 +1,6 @@
 .onLoad <- function(libname, pkgname) {
-    library(shiny)
-  library(MSnbase)
-  library(QFeatures)
-  
+  requireNamespace(c('shiny', 'MSnbase', 'QFeatures'))
+
   shiny::addResourcePath(
         prefix = "images",
         directoryPath = system.file("images", package = "DaparViz")

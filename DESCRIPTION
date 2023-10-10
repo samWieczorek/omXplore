@@ -65,9 +65,7 @@ Collate:
     utils.R
     AllGenerics.R
     DaparViz-class.R
-    plots_volcano.R
     adjacencyMatrixInfos.R
-    plots_compare_assays.R
     global.R
     modules.R
     DaparViz_view_dataset.R
@@ -77,7 +75,6 @@ Collate:
     DaparViz_tabExplorer.R
     DaparViz_heatmap.R
     DaparViz_intensity.R
-    mod_mv_imputation.R
     DaparViz_pca.R
     DaparViz_cc.R
     DaparViz_variance.R

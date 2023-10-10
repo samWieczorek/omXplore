@@ -6,7 +6,7 @@
 \usage{
 display.CC.visNet(
   g,
-  layout = layout_nicely,
+  layout = igraph::layout_nicely,
   obj = NULL,
   prot.tooltip = NULL,
   pept.tooltip = NULL

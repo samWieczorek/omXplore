@@ -262,12 +262,12 @@ setMethod("convert2Viz", signature = "QFeatures",
     ll <- list()
     for (i in 1:length(object)){
       #metacell.backup <- qMetacell(object[[i]])
-      mdata <- rowData(object[[i]])
+      mdata <- SummarizedExperiment::rowData(object[[i]])
       X <- matrix()
       cc <- list()
       
       if ("qMetacell" %in% names(mdata)){
-        metacell.backup <- rowData(object)[[i]]$qMetacell
+        metacell.backup <- SummarizedExperiment::rowData(object)[[i]]$qMetacell
         mdata <- mdata[, -which(names(mdata)=="qMetacell")]
       }
       
@@ -279,19 +279,19 @@ setMethod("convert2Viz", signature = "QFeatures",
         # Create the adjacency matrix
         parentProt <- metadata(object[[i]])$parentProtId
         X <- PSMatch::makeAdjacencyMatrix(
-          rowData(object[[i]])[, parentProt])
-        rownames(X) <- rownames(rowData(object[[i]]))
+          SummarizedExperiment::rowData(object[[i]])[, parentProt])
+        rownames(X) <- rownames(SummarizedExperiment::rowData(object[[i]]))
         
         # Create the connected components
         cc <- PSMatch::ConnectedComponents(X)@adjMatrices
       }
 
-      ll[[names(object)[i]]] <- DaparViz(qdata = assay(object[[i]]),
-                                        metacell = rowData(object)[[i]]$qMetacell,
+      ll[[names(object)[i]]] <- DaparViz(qdata = SummarizedExperiment::assay(object[[i]]),
+                                        metacell = SummarizedExperiment::rowData(object)[[i]]$qMetacell,
                                         metadata = as.data.frame(mdata),
                                         colID = metadata(object[[i]])$idcol,
                                         proteinID = metadata(object[[i]])$parentProtId,
-                                        conds = colData(object)$Condition,
+                                        conds = SummarizedExperiment::colData(object)$Condition,
                                         type = metadata(object[[i]])$typeDataset,
                                         adjMat = as.matrix(X),
                                         cc = as.list(cc)

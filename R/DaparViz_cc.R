@@ -212,8 +212,7 @@ DaparViz_cc_server <- function(id, obj) {
         local <- (GetCCInfos(rv$data@cc))$Multi_Multi
         m <- local[[rvCC$selectedCC]]
         
-        rvCC$selectedCCgraph <- buildGraph(local[[rvCC$selectedCC]], 
-                                           peptides_info = input$pepInfo,
+        rvCC$selectedCCgraph <- buildGraph(cc = local[[rvCC$selectedCC]], 
                                            metadata = rv$data@metadata)
    
         display.CC.visNet(rvCC$selectedCCgraph) %>%
