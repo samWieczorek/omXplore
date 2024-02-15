@@ -33,8 +33,8 @@ DaparViz_corrmatrix_ui <- function(id) {
       shinyjs::useShinyjs(),
       shinyjs::hidden(div(id = ns('badFormatMsg'), h3(bad_format_txt))),
       uiOutput(ns("showValues_ui")),
-        uiOutput(ns("rate_ui")),
-        highcharter::highchartOutput(ns("plot"), width = "600px", height = "500px")
+      uiOutput(ns("rate_ui")),
+      highcharter::highchartOutput(ns("plot"), width = "600px", height = "500px")
     )
 }
 
@@ -54,9 +54,15 @@ DaparViz_corrmatrix_server <- function(id,
         rv.corr <- reactiveValues(
           data = NULL,
           rate = NULL,
-          showValues = FALSE
+          showValues = NULL
         )
 
+        observeEvent(id, { 
+          rv.corr$rate <- rate()
+          rv.corr$showValues <- showValues()
+          })
+        
+        
         observe({
           if(inherits(obj(), "DaparViz"))
             rv.corr$data <- obj()
@@ -65,7 +71,7 @@ DaparViz_corrmatrix_server <- function(id,
         }, priority = 1000)
 
         output$rate_ui <- renderUI({
-            req(rv.corr$rate, rv.corr$data)
+            req(rv.corr$rate)
             sliderInput(ns("rate"),
                 "Tune to modify the color gradient",
                 min = 0,
@@ -78,19 +84,16 @@ DaparViz_corrmatrix_server <- function(id,
 
         output$showValues_ui <- renderUI({
           req(rv.corr$data)
-            checkboxInput(ns("showLabels"),
-                "Show labels",
+          rv.corr$showValues
+            checkboxInput(ns("showLabels"), "Show labels",
                 value = rv.corr$showValues
             )
         })
 
 
-        observeEvent(req(!is.null(input$showLabels)), {
-            rv.corr$showValues <- input$showLabels
-        })
-
-        observeEvent(req(rate()), {
-            rv.corr$rate <- rate()
+        observeEvent(req(input$showLabels), {
+          input$showLabels
+          rv.corr$showValues <- input$showLabels
         })
 
         observeEvent(req(input$rate), {
@@ -99,7 +102,9 @@ DaparViz_corrmatrix_server <- function(id,
 
         output$plot <- renderHighchart({
             req(rv.corr$data)
-
+          rv.corr$rate
+          rv.corr$showValues
+          
             withProgress(message = "Making plot", value = 100, {
                 tmp <- corrMatrix(
                     data = rv.corr$data@qdata,

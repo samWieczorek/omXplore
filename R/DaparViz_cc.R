@@ -38,9 +38,7 @@ DaparViz_cc_ui <- function(id) {
   tagList(
     shinyjs::useShinyjs(),
     shinyjs::hidden(
-      div(id = ns('badFormatMsg'), 
-          h3('Dataset in not in correct format.')
-      )
+      div(id = ns('badFormatMsg'), h3(bad_format_txt))
     ),
     shinyjs::hidden(
       div(id = ns('noCCMsg'), h3('The dataset contains no CC.'))

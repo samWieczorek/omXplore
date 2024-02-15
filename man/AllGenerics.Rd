@@ -2,16 +2,7 @@
 % Please edit documentation in R/AllGenerics.R
 \name{AllGenerics}
 \alias{AllGenerics}
-\alias{convert2Viz}
 \title{Placeholder for generics functions documentation}
-\usage{
-convert2Viz(object, ...)
-}
-\arguments{
-\item{object}{xxx}
-
-\item{...}{xxx}
-}
 \description{
-xxx
+Placeholder for generics functions documentation
 }

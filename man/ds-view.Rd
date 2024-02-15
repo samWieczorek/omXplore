@@ -2,12 +2,12 @@
 % Please edit documentation in R/DaparViz_view_dataset.R
 \name{ds-view}
 \alias{ds-view}
-\alias{view_dataset_ui}
+\alias{view_dataset2_ui}
 \alias{view_dataset_server}
 \alias{view_dataset}
 \title{Bar plot of missing values per lines using \code{highcharter}.}
 \usage{
-view_dataset_ui(id)
+view_dataset2_ui(id)
 
 view_dataset_server(id, obj = NULL, addons = list(), width = 40, height = 40)
 

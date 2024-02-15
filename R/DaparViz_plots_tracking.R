@@ -36,14 +36,14 @@ plots_tracking_ui <- function(id) {
   ns <- NS(id)
   tagList(
     shinyjs::useShinyjs(),
-    hidden(div(id = ns('badFormatMsg'), h3(bad_format_txt))),
-    hidden(actionButton(ns('reset'), "Reset")),
-    hidden(selectInput(ns("typeSelect"), "Type of selection",
+    shinyjs::hidden(div(id = ns('badFormatMsg'), h3(bad_format_txt))),
+    shinyjs::hidden(actionButton(ns('reset'), "Reset")),
+    shinyjs::hidden(selectInput(ns("typeSelect"), "Type of selection",
                 choices = character(0),
                 selected = character(0),
                 width = "130px")),
     
-    hidden(
+    shinyjs::hidden(
       selectizeInput(inputId = ns("listSelect"),
                    label = "Select protein",
                    choices = character(0),

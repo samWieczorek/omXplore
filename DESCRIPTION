@@ -22,6 +22,8 @@ Imports:
     MSnbase,
     PSMatch,
     QFeatures,
+    SummarizedExperiment,
+    MultiAssayExperiment,
     shinyBS,
     shinyjs,
     DT,
@@ -59,39 +61,43 @@ biocViews:
     QualityControl
 NeedsCompilation: no
 Collate:
-    zzz.R
-    doc-data.R
-    palette.R
-    utils.R
-    AllGenerics.R
-    DaparViz-class.R
     adjacencyMatrixInfos.R
-    global.R
-    modules.R
-    DaparViz_view_dataset.R
-    mod_explore_graphs.R
+    AllGenerics.R
+    conversion_funcs.R
+    DaparViz-class.R
+    DaparViz_cc.R
     DaparViz_corrmatrix.R
     DaparViz_density.R
-    DaparViz_tabExplorer.R
+    DaparViz_format_DT.R
     DaparViz_heatmap.R
     DaparViz_intensity.R
     DaparViz_pca.R
-    DaparViz_cc.R
+    DaparViz_plots_tracking.R
+    DaparViz_tabExplorer.R
     DaparViz_variance.R
+    DaparViz_view_dataset.R
+    doc-data.R
+    external_apps_examples.R
+    funcs_accessors.R
+    funcs_accessors_MSnSet.R
+    get_pep_prot_CC.R
+    global.R
+    metacell_utils.R
+    mod_bsmodal.R
     mod_colorLegend.R
+    mod_explore_graphs.R
+    modules.R
+    palette.R
     plot_boxplot.R
     plot_corrmatrix.R
-    plot_variance.R
     plot_density.R
     plot_heatmap.R
     plot_pca.R
+    plot_variance.R
     plot_violin.R
-    DaparViz_plots_tracking.R
-    get_pep_prot_CC.R
-    DaparViz_format_DT.R
-    metacell_utils.R
-    external_apps_examples.R
-RoxygenNote: 7.2.3
+    utils.R
+    zzz.R
+RoxygenNote: 7.3.1
 Packaged: 2017-10-13 11:13:04 UTC; sw175264
 Encoding: UTF-8
 LazyData: false

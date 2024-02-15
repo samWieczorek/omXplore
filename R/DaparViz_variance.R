@@ -17,7 +17,7 @@
 #' @examples
 #' if(interactive()){
 #' data(vData_ft)
-#' DaparViz_variance(vDataz_ft[[1]])
+#' DaparViz_variance(vData_ft[[1]])
 #' }
 #'
 NULL

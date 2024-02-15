@@ -33,7 +33,7 @@
 #' @examples
 #' if(interactive()){
 #' data(vData_ft)
-#' DaparViz_heatmaps(vData_ft[[1]])
+#' DaparViz_heatmap(vData_ft[[1]])
 #' }
 #'
 NULL

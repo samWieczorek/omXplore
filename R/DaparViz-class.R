@@ -4,13 +4,14 @@
 #'
 #'  Conceptually, a `DaparViz` object is a standard representation of all
 #'  elements from quantitative other structured data used in proteomics, such
-#'  as `MSnset` or `QFeatures`. It allows to use it as a generic converter.
+#'  as `MSnset`, `QFeatures`, `SummarizedExperiment` or `MultAssayExperiment`. 
+#'  It allows to use it as a generic converter.
 #'  
-#'  `DaparViz` objects are not usually created by hand but are created from the `VizList` 
-#'  which is the class accessible by the user.
+#'  `DaparViz` objects are not usually created by hand but are created from 
+#'  the `VizList` which is the class accessible by the user.
 #'  
 #'  The recommended way to create `DaparViz` objects is the use the
-#' `xxxx()` function of the class `VizList`
+#' function `convert2viz()` of the class `VizList`
 #'
 #' @name DaparViz-class
 #' 
@@ -29,15 +30,17 @@ NULL
 DaparViz <- setClass(
   
   "DaparViz",
-  #' @slot qdata xxx
-  #' @slot metacell xxx
-  #' @slot metadata xxx
-  #' @slot colID xxx
-  #' @slot proteinID xxx
-  #' @slot conds xxx
-  #' @slot type xxx
+  #' @slot qdata A matrix containing the quantitative data
+  #' @slot metacell A matrix of xxx
+  #' @slot metadata A matrix of xxxx
+  #' @slot colID The name of the colum which contains the ids of each row.
+  #' @slot proteinID The name of the column in the metadata which represent the
+  #' (unique) id of the protein
+  #' @slot conds A vector of the names of the condition of each sample 
+  #' of the dataset
+  #' @slot type The type of entity in the dataset (peptide, protein, ...)
   #' @slot adjMat xxx
-  #' @slot cc xxx
+  #' @slot cc A list of xxx
   
   representation(
       qdata = "matrix",
@@ -45,7 +48,7 @@ DaparViz <- setClass(
       metadata = 'data.frame',
       colID = "character",
       proteinID = "character",
-      conds = "vector",
+      conds = "character",
       type = "character",
       adjMat = 'matrix',
       cc = 'list'
@@ -54,11 +57,11 @@ DaparViz <- setClass(
   # Set the default values for the slots. (optional)
   prototype(
       qdata = matrix(),
-      metacell = data.frame(),
-      metadata = data.frame(),
+      metacell = NULL,
+      metadata = NULL,
       colID = NA_character_,
       proteinID = NA_character_,
-      conds = c(),
+      conds = NA_character_,
       type = NA_character_,
       adjMat = NULL,
       cc = list()
@@ -181,25 +184,56 @@ setMethod("initialize" , "DaparViz" ,
              type,
              adjMat,
              cc){
-        
+      
+      
+       # browser()
 
-      .Object@qdata <- if(is.null(qdata) || !inherits(qdata, 'matrix')) matrix() else qdata
+      if(is.null(qdata) || !inherits(qdata, 'matrix')) 
+        .Object@qdata <- matrix() 
+      else 
+        .Object@qdata <- qdata
       
-      .Object@metacell <- if(is.null(metacell) || !inherits(metacell, 'data.frame')) data.frame() else metacell
+      if(is.null(metacell) || !inherits(metacell, 'data.frame')) 
+        .Object@metacell <- data.frame() 
+      else 
+        .Object@metacell <- metacell
 
-      .Object@metadata <-  if(is.null(metadata) || !inherits(metadata, 'data.frame')) data.frame() else metadata
+      if(is.null(metadata) || !inherits(metadata, 'data.frame')) 
+        .Object@metadata <-  data.frame() 
+      else 
+        .Object@metadata <-  metadata
       
-      .Object@colID <- if(is.null(colID) || colID=="" || length(colID)==0 || !inherits(colID, 'character')) '' else colID
+      if(is.null(colID) || colID=="" || length(colID)==0 || 
+         !inherits(colID, 'character')) 
+        .Object@colID <- '' 
+      else 
+        .Object@colID <- colID
       
-      .Object@proteinID <- if(is.null(proteinID) || length(proteinID)==0 || !inherits(proteinID, 'character')) '' else proteinID
-      
-      .Object@conds <- if(is.null(conds) || !is.vector(conds)) c() else conds
-      
-      .Object@type <-  if(is.null(type) || length(type)==0 || !inherits(type, 'character')) '' else type
-     
-      .Object@cc <- if(is.null(cc) || !inherits(cc, 'list')) list() else cc
+      if(is.null(proteinID) || length(proteinID)==0 || 
+         !inherits(proteinID, 'character')) 
+        .Object@proteinID <- '' 
+      else 
+        .Object@proteinID <- proteinID
     
-      .Object@adjMat <- if(is.null(adjMat) || !inherits(adjMat, 'matrix')) matrix() else adjMat
+      if(is.null(conds) || !is.vector(conds) || length(conds)==0) 
+        .Object@conds <- '' 
+      else 
+        .Object@conds <- conds
+      
+      if(is.null(type) || length(type)==0 || !inherits(type, 'character'))
+        .Object@type <-  '' 
+      else 
+        .Object@type <-  type
+     
+      if(is.null(cc) || !inherits(cc, 'list')) 
+        .Object@cc <- list() 
+      else 
+        .Object@cc <- cc
+    
+      if(is.null(adjMat) || !inherits(adjMat, 'matrix')) 
+        .Object@adjMat <- matrix() 
+      else 
+        .Object@adjMat <- adjMat
       
       return(.Object)
     }
@@ -248,181 +282,3 @@ setMethod('[', signature = c('DaparViz', "ANY", "ANY", "ANY"),
             return(x)  
 })
 
-
-#' @exportMethod convert2Viz
-#' 
-#' @rdname DaparViz-class
-#' @import QFeatures
-#' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
-#' 
-setMethod("convert2Viz", signature = "QFeatures",
-  #' @param object An instance of class `QFeatures`.
-  function(object) {
-    
-    ll <- list()
-    for (i in 1:length(object)){
-      #metacell.backup <- qMetacell(object[[i]])
-      mdata <- SummarizedExperiment::rowData(object[[i]])
-      X <- matrix()
-      cc <- list()
-      
-      if ("qMetacell" %in% names(mdata)){
-        metacell.backup <- SummarizedExperiment::rowData(object)[[i]]$qMetacell
-        mdata <- mdata[, -which(names(mdata)=="qMetacell")]
-      }
-      
-      if ("adjacencyMatrix" %in% names(mdata))
-        mdata <- mdata[, -which(names(mdata)=="adjacencyMatrix")]
-
-
-      if (metadata(object[[i]])$typeDataset == 'peptide'){
-        # Create the adjacency matrix
-        parentProt <- metadata(object[[i]])$parentProtId
-        X <- PSMatch::makeAdjacencyMatrix(
-          SummarizedExperiment::rowData(object[[i]])[, parentProt])
-        rownames(X) <- rownames(SummarizedExperiment::rowData(object[[i]]))
-        
-        # Create the connected components
-        cc <- PSMatch::ConnectedComponents(X)@adjMatrices
-      }
-
-      ll[[names(object)[i]]] <- DaparViz(qdata = SummarizedExperiment::assay(object[[i]]),
-                                        metacell = SummarizedExperiment::rowData(object)[[i]]$qMetacell,
-                                        metadata = as.data.frame(mdata),
-                                        colID = metadata(object[[i]])$idcol,
-                                        proteinID = metadata(object[[i]])$parentProtId,
-                                        conds = SummarizedExperiment::colData(object)$Condition,
-                                        type = metadata(object[[i]])$typeDataset,
-                                        adjMat = as.matrix(X),
-                                        cc = as.list(cc)
-      )
-      }
-    ll
-    })
-
-
-
-
-
-
-#' 
-#' @rdname DaparViz-class
-#' @import MSnbase
-#' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
-#' 
-setMethod("convert2Viz", signature = "MSnSet",
-          #' @param object An instance of class `MSnSet`.
-          #' @param ... xxx
-  function(object, ...) {
-    pkgs.require('PSMatch')
-    
-    X <- matrix()
-    cc <- list()
-    
-    if (object@experimentData@other$typeOfData == 'peptide'){
-      X <- PSMatch::makeAdjacencyMatrix(fData(object)[, object@experimentData@other$proteinId])
-      rownames(X) <- rownames(fData(object))
-      connectedComp <- PSMatch::ConnectedComponents(X)
-      cc <- connectedComp@adjMatrices
-    }
-    
-    ll.tmp <- list()
-    ll.tmp[['original']] <- new(Class ="DaparViz",
-                                qdata = exprs(object),
-                                metacell = fData(object)[, object@experimentData@other$names_metacell],
-                                metadata = fData(object),
-                                colID = object@experimentData@other$keyId,
-                                proteinID = object@experimentData@other$proteinId,
-                                conds = pData(object)$Condition,
-                                type = object@experimentData@other$typeOfData,
-                                adjMat = as.matrix(X),
-                                cc = as.list(cc)
-                                )
-    ll.tmp
-    
-  }
-)
-
-
-
-
-
-#' @title Formats available in DaparViz
-#' @description
-#' A short description...
-#' 
-#' @export
-#' 
-FormatAvailables <- function()
-  c('QFeatures', 'MSnSet', 'list')
-
-
-#' #' @title Get the class of object
-#' #' @description This function returns the class of the object passed as argument,
-#' #' or the class of its items if the object is a `list`. If the class is not managed
-#' #' by DaparViz, then return NA For a list of managed classes.
-#' #' see `FormatAvailables()`.
-#' #' @param ll An object.
-#' #' @rdname Convert2VizList
-#' #' 
-#' CheckClass <- function(ll){
-#'   ll.class <- NULL
-#'   if (inherits(ll, 'QFeatures'))
-#'     ll.class <- 'QFeatures'
-#'   else if (inherits(ll, 'list')){
-#'     if (sum(unlist(lapply(ll, function(x) inherits(x, 'MSnSet')))) == length(ll)
-#'              && length(names(ll)) == length(ll))
-#'       ll.class <- 'MSnSet'
-#'     else
-#'       ll.class <- 'list'
-#'     }
-#'   else if (inherits(ll, 'VizList'))
-#'     ll.class <- 'VizList'
-#'   else
-#'     ll.class <- NA
-#'   return(ll.class)
-#' }
-
-#' 
-#' #' @title Convert a dataset to an instance of class `VizList`
-#' #' @description
-#' #' Actually, three types of dataset can be converted:
-#' #' * A `list` which must be formatted in the correct format. See xxx
-#' #' * A `list` of instances of class `MSnset`
-#' #' * An instance of class `QFeatures` (which is already a list)
-#' #' @param obj An instance of class `VizList`
-#' #' @rdname Convert2VizList
-#' #' @return An instance of class `VizList`
-#' #' @export
-#' convert2viz <- function(obj = NULL){
-#'   
-#'   if (is.null(obj) || length(obj) == 0)
-#'     return(NULL)
-#'   
-#'   ll <- NULL
-#'   stopifnot(CheckClass(obj) %in% FormatAvailables())
-#'   stopifnot(!is.na(CheckClass(obj)))
-#'   
-#'   switch(CheckClass(obj),
-#'          
-#'          # Nothing to do
-#'          VizList = ll <- obj,
-#'          
-#'          QFeatures = ll <- Convert2VizList(obj),
-#'          
-#'          MSnSet = {
-#'            ll.tmp <- NULL
-#'            for (i in 1:length(obj))
-#'              ll.tmp[[names(obj)[i]]] <- Convert2DaparViz(obj[[i]])
-#'            ll <- VizList(ll.tmp)
-#'          },
-#'          
-#'          list = {
-#'            ll.tmp <- NULL
-#'            for (i in 1:length(obj))
-#'              ll.tmp[[names(obj)[i]]] <- Convert2DaparViz(obj[[i]])
-#'            ll <- VizList(ll.tmp)
-#'          }
-#'          )
-#'   return(ll)
-#'  }

@@ -12,7 +12,7 @@
 #' @examples
 #' if(interactive()){
 #' data(vData_ft)
-#' DaparViz_explorer(vData_ft[[1]])
+#' DaparViz_tabExplorer(vData_ft[[1]])
 #' }
 #' 
 NULL
