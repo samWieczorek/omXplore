@@ -36,7 +36,10 @@ foo1_ui(), foo1_server() and foo2_ui(), foo2_server())
 \item{height}{xxx}
 }
 \value{
-A plot
+A shiny application
+
+A shiny application which wraps the functions view_dataset_ui() and the
+view_dataset_server()
 }
 \description{
 This method plots a bar plot which represents the distribution of the
@@ -57,8 +60,8 @@ The CV is calculated for each condition present in the dataset
 The function \code{\link[=heatmapD]{heatmapD()}}
 
 The function [] is inspired from the function 'heatmap.2'
-that displays a numeric matrix. For more information, please refer to the help
-of the heatmap.2 function.
+that displays a numeric matrix. For more information, please refer to the
+help of the heatmap.2 function.
 }
 \section{Missing values}{
 
@@ -77,6 +80,10 @@ data(vData_ft)
 addon <- list(DaparToolshed=c('DaparViz_metacell'))
 view_dataset(vData_ft[[1]], addon)
 }
+
+data(vData_ft)
+view_dataset(obj)
+
 
 }
 \author{

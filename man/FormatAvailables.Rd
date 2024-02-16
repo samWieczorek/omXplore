@@ -6,6 +6,14 @@
 \usage{
 FormatAvailables()
 }
+\value{
+A vector of classes compliant with the package DaparViz.
+}
 \description{
-A short description...
+Gives the list of classes for the datasets which be can converted by the
+function \code{convert2Viz()}.
+}
+\examples{
+FormatAvailables()
+
 }

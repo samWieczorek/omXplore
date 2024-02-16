@@ -27,14 +27,6 @@ plots_tracking(obj)
 
 \item{resetBtn}{A \code{boolean(1)} which indicates whether to show the 'Reset' button
 or not.}
-
-\item{params}{A \code{list} of three items to give instructions to the module
-in this it is run in slave mode:
-\itemize{
-\item type: xxxxx
-\item names: xxxxx
-\item indices: xxxxx
-}}
 }
 \value{
 A \code{list} (same structure as the parameter \code{params})

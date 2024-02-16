@@ -8,7 +8,7 @@ library(MSnbase)
 
 finalSize <- 100
 
-# Build data examples from DaparToolshedData (QFeatures)
+# Build data examples with `QFeatures` datasets.
 
 data("Exp1_R25_pept", package='DaparToolshedData')
 data("Exp1_R25_prot", package='DaparToolshedData')
@@ -24,7 +24,7 @@ vData_ft[['processed_1']] <- vData_ft2[[1]]
 
 save(vData_ft, file='data/vData_ft.RData')
 
-# Build data examples from DAPARdata (MSnSet)
+# Build data examples MSnSet datasets.
 
 data("Exp1_R25_pept", package='DAPARdata')
 data("Exp1_R25_prot", package='DAPARdata')

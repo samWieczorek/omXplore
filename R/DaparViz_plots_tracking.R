@@ -4,11 +4,6 @@
 #'
 #' @param id shiny id
 #' @param obj An instance of the class `DaparViz`
-#' @param params A `list` of three items to give instructions to the module
-#' in this it is run in slave mode:
-#' * type: xxxxx
-#' * names: xxxxx
-#' * indices: xxxxx
 #' @param resetBtn A `boolean(1)` which indicates whether to show the 'Reset' button 
 #' or not.
 #' 
@@ -69,8 +64,8 @@ plots_tracking_ui <- function(id) {
 #' @import shinyjs
 #'
 plots_tracking_server <- function(id, 
-                                      obj = reactive({NULL}),
-                                      resetBtn = reactive({FALSE})){
+                                  obj = reactive({NULL}),
+                                  resetBtn = reactive({FALSE})){
    
   moduleServer(id, function(input, output, session) {
     ns <- session$ns

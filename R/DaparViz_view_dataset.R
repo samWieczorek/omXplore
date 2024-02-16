@@ -27,8 +27,8 @@
 #'
 #'
 #' The function [] is inspired from the function 'heatmap.2'
-#' that displays a numeric matrix. For more information, please refer to the help
-#' of the heatmap.2 function.
+#' that displays a numeric matrix. For more information, please refer to the
+#' help of the heatmap.2 function.
 #'
 #'
 #' @section Missing values:
@@ -57,7 +57,7 @@
 #' @param width xxx
 #' @param height xxx
 #'
-#' @return A plot
+#' @return A shiny application
 #'
 #' @author Samuel Wieczorek, Enora Fremy
 #'
@@ -88,8 +88,10 @@ view_dataset2_ui <- function(id) {
         div(id = ns('badFormatMsg'), p(bad_format_txt))
       ),
       fluidRow(
-        column(3, div(style = general_style,  uiOutput(ns("chooseDataset_ui")))),
-        column(9, div(style = general_style, uiOutput(ns("ShowPlots_ui"))))
+        column(3, div(style = general_style,  
+                      uiOutput(ns("chooseDataset_ui")))),
+        column(9, div(style = general_style, 
+                      uiOutput(ns("ShowPlots_ui"))))
       )
      # br(), br(), br(),
       #uiOutput(ns("ShowPlots_ui"))
@@ -109,8 +111,7 @@ view_dataset_server <- function(id,
                                 obj = NULL,
                                 addons = list(),
                                 width = 40,
-                                height = 40
-) {
+                                height = 40) {
   
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
@@ -219,6 +220,14 @@ view_dataset_server <- function(id,
 #' @export
 #' @rdname ds-view
 #' @import shiny
+#' 
+#' @return A shiny application which wraps the functions view_dataset_ui() and the
+#' view_dataset_server()
+#' 
+#' @examples
+#' data(vData_ft)
+#' view_dataset(obj)
+#' 
 #' 
 view_dataset <- function(obj = NULL,
                           addons = NULL){

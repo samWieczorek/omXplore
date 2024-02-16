@@ -4,19 +4,26 @@ Title: Vizualization tools for the Differential Analysis of Proteins Abundance
     with R
 Version: 0.99.1
 Date: 2023-10-01
-Authors@R: c(person(given = "Samuel", family = "Wieczorek",
-    email = "samuel.wieczorek@cea.fr", role = c("aut","cre")),
-    person(given = "Thomas", family ="Burger",
-    email = "thomas.burger@cea.fr", role = c("aut")),
-    person(given = "Enora", family ="Fremy",
-    email = "enora.fremy@cea.fr", role = c("ctb"))
+Authors@R: 
+  c(person(given = "Samuel", 
+      family = "Wieczorek",
+      email = "samuel.wieczorek@cea.fr", 
+      role = c("aut","cre")),
+  person(given = "Thomas", 
+      family ="Burger",
+      email = "thomas.burger@cea.fr",
+      role = c("aut")),
+  person(given = "Enora", 
+    family = "Fremy",
+    email = "enora.fremy@cea.fr", 
+    role = c("ctb"))
     )
 Description: This package contains a collection of functions (shiny modules) 
     for the visualisation and the statistical analysis of proteomic data. These
     plots can be displayed individually or embedded in a global Shiny module.
 License: Artistic-2.0
 Depends:
-    R (>= 4.3.0)
+    R (>= 4.4.0), methods
 Imports:
     shiny, 
     MSnbase,
@@ -41,7 +48,6 @@ Imports:
 Suggests: 
     knitr,
     dendextend,
-    methods,
     rmarkdown,
     crayon,
     BiocStyle,
@@ -54,14 +60,11 @@ Suggests:
     tidyr
 biocViews: 
     Software,
-    MSnSet, 
-    QFeatures,
     Proteomics,
     MassSpectrometry,
     QualityControl
 NeedsCompilation: no
 Collate:
-    adjacencyMatrixInfos.R
     AllGenerics.R
     conversion_funcs.R
     DaparViz-class.R
@@ -79,11 +82,10 @@ Collate:
     doc-data.R
     external_apps_examples.R
     funcs_accessors.R
-    funcs_accessors_MSnSet.R
     get_pep_prot_CC.R
     global.R
+    Infos_adjacencyMatrix.R
     metacell_utils.R
-    mod_bsmodal.R
     mod_colorLegend.R
     mod_explore_graphs.R
     modules.R
