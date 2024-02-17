@@ -63,14 +63,10 @@ subsetting by assays}
 \item{l}{\code{character()}, \code{logical()}, or \code{numeric()} vector for
 subsetting by assays}
 
-\item{...}{See \code{MultiAssayExperiment} for details. For \code{plot},
-further arguments passed to \code{igraph::plot.igraph}.}
+\item{...}{Additional parameters}
 
 \item{drop}{logical (default \code{TRUE}) whether to drop empty assay
 elements in the \code{ExperimentList}.}
-
-\item{y}{\code{character()}, \code{logical()}, or \code{numeric()} vector for
-subsetting by assays}
 }
 \value{
 See individual method description for the return value.
@@ -124,7 +120,7 @@ DaparViz()
 
 }
 \seealso{
-The \code{\link[=DaparViz]{DaparViz()}} constructor and the \code{\link[=convert2Viz]{convert2Viz()}}
+The \code{DaparViz()} constructor and the \code{convert2Viz()}
 function. The \emph{DaparViz} vignette provides an extended example.
 }
 \author{

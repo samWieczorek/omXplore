@@ -65,7 +65,6 @@ biocViews:
     QualityControl
 NeedsCompilation: no
 Collate:
-    AllGenerics.R
     conversion_funcs.R
     DaparViz-class.R
     DaparViz_cc.R
@@ -79,6 +78,7 @@ Collate:
     DaparViz_tabExplorer.R
     DaparViz_variance.R
     DaparViz_view_dataset.R
+    DaparViz_view_dataset2.R
     doc-data.R
     external_apps_examples.R
     funcs_accessors.R

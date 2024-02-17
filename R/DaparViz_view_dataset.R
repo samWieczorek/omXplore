@@ -79,7 +79,7 @@ NULL
 #' @rdname ds-view
 #' @export
 #'
-view_dataset2_ui <- function(id) {
+view_dataset_ui <- function(id) {
   ns <- NS(id)
   tagList(
     shinyjs::useShinyjs(),
@@ -225,8 +225,10 @@ view_dataset_server <- function(id,
 #' view_dataset_server()
 #' 
 #' @examples
+#' if(interactive()){
 #' data(vData_ft)
 #' view_dataset(obj)
+#' }
 #' 
 #' 
 view_dataset <- function(obj = NULL,

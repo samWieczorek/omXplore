@@ -2,6 +2,7 @@
 % Please edit documentation in R/conversion_funcs.R
 \name{DaparViz-converter}
 \alias{DaparViz-converter}
+\alias{convert2Viz}
 \alias{convert2Viz,ANY-method}
 \alias{convert2Viz,MultiAssayExperiment-method}
 \alias{convert2Viz,QFeatures-method}
@@ -9,6 +10,8 @@
 \alias{convert2Viz,MSnSet-method}
 \title{Convert datasets to \code{DaparViz} class}
 \usage{
+convert2Viz(object, ...)
+
 \S4method{convert2Viz}{ANY}(object)
 
 \S4method{convert2Viz}{MultiAssayExperiment}(object)
@@ -34,21 +37,13 @@ in the package \code{DaparViz}.
 }
 \examples{
 
-# Conversion of an object of class `QFeatures`
-data(vData_ft)
-convert2Viz(vData_ft)
 
 # Conversion of an object of class `MSnSet`
-data(vData_ms)
-convert2Viz(vData_ms)
+data(sub_Exp1_R2_pept_MSnSet)
+convert2Viz(sub_Exp1_R2_pept_MSnSet)
 
-# Conversion of an object of class `SummarizedExperiment`
-data(miniACC, package='MultiAssayExperiment')
-convert2Viz(miniACC[[1]])
-
-
-# Conversion of an object of class `MultiAssayExperiment`
-data(miniACC, package='MultiAssayExperiment')
-convert2Viz(miniACC)
+# Conversion of an object of class `QFeatures`
+data(sub_Exp1_R2_pept_qf)
+convert2Viz(sub_Exp1_R2_pept_qf)
 
 }

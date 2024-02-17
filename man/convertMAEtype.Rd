@@ -17,7 +17,6 @@ An object of class DaparViz.
 xxx
 }
 \examples{
-data(vData_ft)
-convertMAEtype(vData_ft)
+NULL
 
 }

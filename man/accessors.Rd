@@ -2,6 +2,22 @@
 % Please edit documentation in R/funcs_accessors.R
 \name{accessors}
 \alias{accessors}
+\alias{GetSlotMetadata,}
+\alias{GetSlotMetacell,}
+\alias{GetSlotQdata,}
+\alias{GetSlotProteinID,}
+\alias{GetSlotColID,}
+\alias{GetSlotConds,}
+\alias{GetSlotAdjMat,}
+\alias{GetSlotCc}
+\alias{GetSlotMetadata}
+\alias{GetSlotMetacell}
+\alias{GetSlotQdata}
+\alias{GetSlotProteinID}
+\alias{GetSlotColID}
+\alias{GetSlotConds}
+\alias{GetSlotType}
+\alias{GetSlotAdjMat}
 \alias{GetSlotMetadata,SummarizedExperiment-method}
 \alias{GetSlotMetadata,MSnSet-method}
 \alias{GetSlotQdata,ANY-method}
@@ -18,8 +34,26 @@
 \alias{GetSlotConds,MultiAssayExperiment-method}
 \alias{GetSlotConds,ANY-method}
 \alias{GetSlotConds,MSnSet-method}
-\title{Accessors fucntions}
+\title{Accessors functions}
 \usage{
+GetSlotMetadata(object, ...)
+
+GetSlotMetacell(object, ...)
+
+GetSlotQdata(object, ...)
+
+GetSlotProteinID(object, ...)
+
+GetSlotColID(object, ...)
+
+GetSlotConds(object, ...)
+
+GetSlotType(object, ...)
+
+GetSlotAdjMat(object, ...)
+
+GetSlotCc(object, ...)
+
 \S4method{GetSlotMetadata}{SummarizedExperiment}(object)
 
 \S4method{GetSlotMetadata}{MSnSet}(object)
@@ -54,6 +88,8 @@
 }
 \arguments{
 \item{object}{An instance of class \code{MSnSet}.}
+
+\item{...}{xxxx description}
 }
 \value{
 See individual method description for the return value.
@@ -72,14 +108,14 @@ xxx
 ## -----------------------------------
 ## Accessing slots from a MSnSet dataset
 ## -----------------------------------
-data(Exp1_R25_prot, package = 'DAPARdata')
-obj <- Exp1_R25_prot
-GetSlotMetadata(obj)
-GetSlotQdata(obj)
-GetSlotMetacell(obj)
-GetSlotColID(obj)
-GetSlotType(obj)
-GetSlotProteinID(obj)
-GetSlotConds(obj)
+data(sub_Exp1_R2_prot_MSnSet)
+obj <- sub_Exp1_R2_prot_MSnSet
+metadata <- GetSlotMetadata(obj)
+qdata <- GetSlotQdata(obj)
+metacell <- GetSlotMetacell(obj)
+id <- GetSlotColID(obj)
+type <- GetSlotType(obj)
+proteinID <- GetSlotProteinID(obj)
+conds <- GetSlotConds(obj)
 
 }

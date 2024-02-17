@@ -26,8 +26,8 @@ save(vData_ft, file='data/vData_ft.RData')
 
 # Build data examples MSnSet datasets.
 
-data("Exp1_R25_pept", package='DAPARdata')
-data("Exp1_R25_prot", package='DAPARdata')
+data("Exp1_R2_pept_MSnSet")
+data("Exp1_R2_prot_MSnSet")
 
 ms1 <- Exp1_R25_pept[150:170]
 ms2 <- Exp1_R25_prot[1:21]

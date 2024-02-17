@@ -1,28 +1,78 @@
-#' @title Accessors fucntions
+#' @title Accessors functions
 #' @description xxx
 #' @return See individual method description for the return value. 
 #' @param object An object of 
+#' @param ... xxxx description
 #' @name accessors
+#'
+#' 
+#' @aliases GetSlotMetadata, GetSlotMetacell, GetSlotQdata, GetSlotProteinID,
+#' GetSlotColID, GetSlotConds, GetSlotAdjMat, GetSlotCc
 #' @examples
 #' 
 #' ## -----------------------------------
 #' ## Accessing slots from a MSnSet dataset
 #' ## -----------------------------------
-#' data(Exp1_R25_prot, package = 'DAPARdata')
-#' obj <- Exp1_R25_prot
-#' GetSlotMetadata(obj)
-#' GetSlotQdata(obj)
-#' GetSlotMetacell(obj)
-#' GetSlotColID(obj)
-#' GetSlotType(obj)
-#' GetSlotProteinID(obj)
-#' GetSlotConds(obj)
+#' data(sub_Exp1_R2_prot_MSnSet)
+#' obj <- sub_Exp1_R2_prot_MSnSet
+#' metadata <- GetSlotMetadata(obj)
+#' qdata <- GetSlotQdata(obj)
+#' metacell <- GetSlotMetacell(obj)
+#' id <- GetSlotColID(obj)
+#' type <- GetSlotType(obj)
+#' proteinID <- GetSlotProteinID(obj)
+#' conds <- GetSlotConds(obj)
 #' 
 NULL
 
 
+#' @rdname accessors
 #' @exportMethod GetSlotMetadata
-#' 
+setGeneric("GetSlotMetadata", 
+           function(object, ...) standardGeneric("GetSlotMetadata"))
+
+#' @rdname accessors
+#' @exportMethod GetSlotMetacell
+setGeneric("GetSlotMetacell", 
+           function(object, ...) standardGeneric("GetSlotMetacell"))
+
+#' @rdname accessors
+#' @exportMethod GetSlotQdata
+setGeneric("GetSlotQdata", 
+           function(object, ...) standardGeneric("GetSlotQdata"))
+
+#' @rdname accessors
+#' @exportMethod GetSlotProteinID
+setGeneric("GetSlotProteinID", 
+           function(object, ...) standardGeneric("GetSlotProteinID"))
+
+
+#' @rdname accessors
+#' @exportMethod GetSlotColID
+setGeneric("GetSlotColID", 
+           function(object, ...) standardGeneric("GetSlotColID"))
+
+#' @rdname accessors
+#' @exportMethod GetSlotConds
+setGeneric("GetSlotConds", 
+           function(object, ...) standardGeneric("GetSlotConds"))
+
+
+#' @rdname accessors
+#' @exportMethod GetSlotType
+setGeneric("GetSlotType", 
+           function(object, ...) standardGeneric("GetSlotType"))
+
+#' @rdname accessors
+#' @exportMethod GetSlotAdjMat
+setGeneric("GetSlotAdjMat", 
+           function(object, ...) standardGeneric("GetSlotAdjMat"))
+
+#' @rdname accessors
+#' @exportMethod GetSlotCc
+setGeneric("GetSlotCc", 
+           function(object, ...) standardGeneric("GetSlotCc"))
+
 #' @rdname accessors
 #' @import QFeatures
 #' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
@@ -50,8 +100,7 @@ setMethod("GetSlotMetadata", signature = "MSnSet",
           })
 
 
-#' @exportMethod GetSlotQdata
-#' 
+ 
 #' @rdname accessors
 #' @import QFeatures
 #' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
@@ -62,9 +111,6 @@ setMethod("GetSlotQdata", signature = "ANY",
             NULL
           })
 
-
-#' @exportMethod GetSlotQdata
-#' 
 #' @rdname accessors
 #' @import QFeatures
 #' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
@@ -95,8 +141,6 @@ setMethod("GetSlotQdata", signature = "MSnSet",
 
 
 
-#' @exportMethod GetSlotMetacell
-#' 
 #' @rdname accessors
 #' @import QFeatures
 #' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
@@ -165,8 +209,6 @@ setMethod("GetSlotColID", signature = "MSnSet",
           })
 
 
-#' @exportMethod GetSlotType
-#' 
 #' @rdname accessors
 #' @import SummarizedExperiment
 #' 
@@ -199,8 +241,6 @@ setMethod("GetSlotType", signature = "MSnSet",
           })
 
 
-#' @exportMethod GetSlotProteinID
-#' 
 #' @rdname accessors
 #' @import QFeatures
 #' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
@@ -234,8 +274,6 @@ setMethod("GetSlotProteinID", signature = "MSnSet",
           })
 
 
-#' @exportMethod GetSlotConds
-#' 
 #' @rdname accessors
 #' @import MultiAssayExperiment
 #' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
@@ -286,8 +324,7 @@ setMethod("GetSlotConds", signature = "MSnSet",
 #' @return An object of class DaparViz.
 #' 
 #' @examples
-#' data(vData_ft)
-#' convertMAEtype(vData_ft)
+#' NULL
 #' 
 convertMAEtype <- function(object){
 ll <- list()

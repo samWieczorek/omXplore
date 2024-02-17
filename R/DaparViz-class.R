@@ -19,8 +19,6 @@
 ##' 
 ##' @param x An instance of class [QFeatures].
 ##'
-##' @param y A single assay or a *named* list of assays.
-##'
 ##' @param i `character()`, `integer()`, `logical()` or `GRanges()`
 ##'     object for subsetting by rows.
 ##'
@@ -33,21 +31,16 @@
 ##' @param l `character()`, `logical()`, or `numeric()` vector for
 ##'     subsetting by assays
 ##'     
-##'
-##' @param y `character()`, `logical()`, or `numeric()` vector for
-##'     subsetting by assays 
+##' @param ... Additional parameters
 ##'     
 ##' @param drop logical (default `TRUE`) whether to drop empty assay
 ##'     elements in the `ExperimentList`.
-##'
-##' @param ... See `MultiAssayExperiment` for details. For `plot`,
-##'     further arguments passed to `igraph::plot.igraph`.
 ##'     
 ##' @return See individual method description for the return value.
 ##' 
 ##' @seealso
-##' The [DaparViz()] constructor and the [convert2Viz()]
-##'   function. The *DaparViz* vignette provides an extended example.
+##' The `DaparViz()` constructor and the `convert2Viz()`
+##' function. The *DaparViz* vignette provides an extended example.
 ##'   
 ##' @exportClass DaparViz
 ##'

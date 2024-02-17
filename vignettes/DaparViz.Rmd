@@ -90,7 +90,7 @@ To see which data formats `DaparViz` can manage, run
 
 To convert datasets to the class DaparViz-class, run
 ```
-convert2xxx(my_dataset)
+convert2Viz(my_dataset)
 
 ```
 
