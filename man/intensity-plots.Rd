@@ -64,6 +64,11 @@ data(vData_ft)
 DaparViz_intensity(vData_ft[[1]])
 }
 
+data(vData_ft)
+qdata <- GetSlotQdata(vData_ft[[1]])
+conds <- GetSlotConds(vData_ft[[1]])
+boxPlot(qdata, conds)
+
 }
 \author{
 Samuel Wieczorek, Anais Courtier, Enora Fremy

@@ -31,6 +31,8 @@
 setGeneric("convert2Viz", 
            function(object, ...) standardGeneric("convert2Viz"))
 
+
+
 #' @rdname DaparViz-converter
 setMethod("convert2Viz", signature = NULL,
           #' @title xxx

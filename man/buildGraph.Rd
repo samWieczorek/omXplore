@@ -21,7 +21,7 @@ Display a CC
 \donttest{
 data(vData_ms)
 obj <- vData_ms[[1]]
-g <- buildGraph(obj@cc[[1]])
+g <- buildGraph(GetSlotCc(obj)[[1]])
 }
 
 }

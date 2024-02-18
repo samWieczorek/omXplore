@@ -40,7 +40,6 @@ Shows xxx based on the tags in the package 'DaparToolshed'
 }
 \examples{
 if(interactive()){
-library(DaparViz)
 data(vData_ft)
 colorLegend(vData_ft[[1]])
 }

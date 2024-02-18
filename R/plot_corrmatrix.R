@@ -15,7 +15,9 @@
 #' @export
 #' 
 #' @examples
-#' NULL
+#' data(vData_ft)
+#' qdata <- GetSlotQdata(vData_ft[[1]])
+#' corrMatrix(qdata)
 #' 
 #' @return NA
 #'

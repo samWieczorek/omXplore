@@ -293,10 +293,10 @@ DaparViz_cc_server <- function(id, obj) {
       
       # Show the DT data table ans gets the selected items from it
       output$CCMultiMulti_UI <- renderUI({
-        rvCC$CCMultiMulti_rows_selected <- format_DT_server("CCMultiMulti", 
+        rvCC$CCMultiMulti_rows_selected <- formatDT_server("CCMultiMulti", 
                       data = reactive({GetDataFor_CCMultiMulti()}))
         
-        format_DT_ui(ns("CCMultiMulti"))
+        formatDT_ui(ns("CCMultiMulti"))
       })
       
       
@@ -392,8 +392,8 @@ DaparViz_cc_server <- function(id, obj) {
         df <- data.frame(proteinId = unlist(.protLabels))
         colnames(df) <- c("Proteins Ids")
         
-        format_DT_server('CCDetailedProt', data = reactive({df}))
-        format_DT_ui(ns('CCDetailedProt'))
+        formatDT_server('CCDetailedProt', data = reactive({df}))
+        formatDT_ui(ns('CCDetailedProt'))
       })
       
       
@@ -433,13 +433,13 @@ DaparViz_cc_server <- function(id, obj) {
         dt_style = list(data = ll$qmetacell,
                         colors = BuildColorStyles(rv$data@type))
         
-        format_DT_server('CCDetailedSharedPep', 
+        formatDT_server('CCDetailedSharedPep', 
                              data = reactive({ll$qdata}),
                              data_nostyle = reactive({ll$data_nostyle}),
                              dt_style = reactive({dt_style})
         )
         
-        format_DT_ui(ns('CCDetailedSharedPep'))
+        formatDT_ui(ns('CCDetailedSharedPep'))
       })
       
       
@@ -475,13 +475,13 @@ DaparViz_cc_server <- function(id, obj) {
         dt_style = list(data = ll$qmetacell,
                         colors = BuildColorStyles(rv$data@type))
         
-        format_DT_server('CCDetailedSpecPep', 
+        formatDT_server('CCDetailedSpecPep', 
                              data = reactive({ll$qdata}),
                              data_nostyle = reactive({ll$data_nostyle}),
                              dt_style = reactive({dt_style})
         )
         
-        format_DT_ui(ns('CCDetailedSpecPep'))
+        formatDT_ui(ns('CCDetailedSpecPep'))
         
       })
       
@@ -550,9 +550,9 @@ DaparViz_cc_server <- function(id, obj) {
         colnames(df) <- c("Proteins Ids", "nPep", "Peptides Ids")
         
         
-        rvCC$OneMultiDT_rows_selected <- format_DT_server('OneMultiDT', 
+        rvCC$OneMultiDT_rows_selected <- formatDT_server('OneMultiDT', 
                                                                         data = reactive({df}))
-        format_DT_ui(ns('OneMultiDT'))
+        formatDT_ui(ns('OneMultiDT'))
       })
       
 
@@ -586,12 +586,12 @@ DaparViz_cc_server <- function(id, obj) {
         dt_style = list(data = ll$qmetacell,
                         colors = BuildColorStyles(rv$data@type))
         
-        format_DT_server('OneMultiDTDetailed', 
+        formatDT_server('OneMultiDTDetailed', 
                              data = reactive({ll$qdata}),
                              dt_style = reactive({dt_style})
         )
 
-        format_DT_ui(ns('OneMultiDTDetailed'))
+        formatDT_ui(ns('OneMultiDTDetailed'))
       })
       
       
@@ -613,10 +613,10 @@ DaparViz_cc_server <- function(id, obj) {
         #req(rv$isValid)
         df <- BuildOne2OneTab()
         colnames(df) <- c("Proteins Ids", "Peptides Ids")
-        rvCC$OneOneDT_rows_selected <- format_DT_server('OneOneDT', 
+        rvCC$OneOneDT_rows_selected <- formatDT_server('OneOneDT', 
                                                             data = reactive({df}) )
         
-        format_DT_ui(ns('OneOneDT'))
+        formatDT_ui(ns('OneOneDT'))
       })
       
       
@@ -654,12 +654,12 @@ DaparViz_cc_server <- function(id, obj) {
         dt_style = list(data = ll$qmetacell,
                         colors = BuildColorStyles(rv$data@type)
                         )
-       format_DT_server('OneOneDTDetailed', 
+       formatDT_server('OneOneDTDetailed', 
                              data = reactive({ll$qdata}),
                              dt_style = reactive({dt_style})
                              )
         
-        format_DT_ui(ns('OneOneDTDetailed'))
+        formatDT_ui(ns('OneOneDTDetailed'))
       })
       
       

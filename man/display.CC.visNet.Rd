@@ -31,7 +31,7 @@ Display a CC
 }
 \examples{
 data(vData_ft)
-cc <- vData_ft[[1]]@cc[[1]]
+cc <- GetSlotCc(vData_ft[[1]])[[1]]
 g <- buildGraph(cc) 
 display.CC.visNet(g)
 

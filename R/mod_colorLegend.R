@@ -15,7 +15,6 @@
 #'
 #' @examples
 #' if(interactive()){
-#' library(DaparViz)
 #' data(vData_ft)
 #' colorLegend(vData_ft[[1]])
 #' }

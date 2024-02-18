@@ -21,11 +21,11 @@ Display a jitter plot for connected components
 data(vData_ft)
 obj <- vData_ft[[1]]
 
-n.prot <- unlist(lapply(obj@cc, function(x) {ncol(x)}))
-n.pept <- unlist(lapply(obj@cc, function(x) {nrow(x)}))
+n.prot <- unlist(lapply(GetSlotCc(obj), function(x) {ncol(x)}))
+n.pept <- unlist(lapply(GetSlotCc(obj), function(x) {nrow(x)}))
 df <- tibble::tibble(x = jitter(n.pept),
                     y = jitter(n.prot),
-                    index = seq_len(length(obj@cc)))
+                    index = seq_len(length(GetSlotCc(obj))))
 plotCCJitter(df)
 
 }

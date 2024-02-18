@@ -6,6 +6,7 @@
 \alias{DaparViz_heatmap_server}
 \alias{heatmapD}
 \alias{mv.heatmap}
+\alias{heatmapForMissingValues}
 \title{Displays a correlation matrix of the quantitative data of a
 numeric matrix.}
 \usage{
@@ -26,6 +27,18 @@ heatmapD(obj, distance = "euclidean", cluster = "complete", dendro = FALSE)
 mv.heatmap(
   x,
   col = grDevices::heat.colors(100),
+  srtCol = NULL,
+  labCol = NULL,
+  labRow = NULL,
+  key = TRUE,
+  key.title = NULL,
+  main = NULL,
+  ylab = NULL
+)
+
+heatmapForMissingValues(
+  x,
+  col = NULL,
   srtCol = NULL,
   labCol = NULL,
   labRow = NULL,
@@ -70,11 +83,19 @@ be plotted.}
 }
 \value{
 NA
+
+A heatmap
 }
 \description{
 This function is a wrapper to \code{heatmap.2()} that displays
 quantitative data in an object of #' class \code{DaparViz}. For
 more details, see \code{heatmap.2()}.
+
+#' This function is inspired from the function \code{heatmap.2}
+that displays quantitative data in the \code{MSnbase::exprs()} table of an
+object of
+class \code{MSnSet}. For more information, please refer to the help
+of the heatmap.2 function.
 }
 \examples{
 if(interactive()){
@@ -82,7 +103,12 @@ data(vData_ft)
 DaparViz_heatmap(vData_ft[[1]])
 }
 
+data(vData_ft)
+heatmapD(vData_ft[[1]])
+
 }
 \author{
 Florence Combes, Samuel Wieczorek, Enor Fremy
+
+Samuel Wieczorek
 }

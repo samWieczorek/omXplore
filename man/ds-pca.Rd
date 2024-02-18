@@ -61,9 +61,11 @@ number of missing values (NA) per lines (ie proteins).
 \examples{
 if(interactive()){
 data(vData_ft)
+obj <- vData_ft[[1]]
 # Replace missing values for the example
-vData_ft[[1]]@qdata[which(is.na(vData_ft[[1]]@qdata))] <- 0
-DaparViz_pca(vData_ft[[1]])
+qdata <- GetSlotQdata(obj)
+qdata[which(is.na(qdata))] <- 0
+DaparViz_pca(obj)
 }
 
 }

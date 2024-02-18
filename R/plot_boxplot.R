@@ -21,6 +21,12 @@
 #' @export
 #'
 #' @rdname intensity-plots
+#' 
+#' @examples
+#' data(vData_ft)
+#' qdata <- GetSlotQdata(vData_ft[[1]])
+#' conds <- GetSlotConds(vData_ft[[1]])
+#' boxPlot(qdata, conds)
 #'
 boxPlot <- function(data,
                     conds,

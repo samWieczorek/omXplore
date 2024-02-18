@@ -26,9 +26,12 @@ listPlotModules(location = "both")
 xxxxx
 \itemize{
 \item \code{listShinyApps()}: xxx
-\item \code{addImgPath()}: xxx
-\item \code{addModules()}: xxx
+\item \code{listPlotModules()}: xxx
+\item \code{addModules()}: Add shiny module
 }
+}
+\examples{
+listShinyApps()
+listPlotModules
 
-xxxx
 }

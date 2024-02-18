@@ -1,9 +1,46 @@
-
+#' @title xxx
+#' @description #' This function is inspired from the function \code{heatmap.2}
+#' that displays quantitative data in the \code{MSnbase::exprs()} table of an 
+#' object of
+#' class \code{MSnSet}. For more information, please refer to the help
+#' of the heatmap.2 function.
+#' @name DaparViz_heatmap
+#' 
+#' @param x A `matrix` or `array` containing the quantitative data.
+#'
+#' @param col Colors used for the image. Defaults to heat colors (heat.colors).
+#'
+#' @param srtCol Angle of column conds, in degrees from horizontal
+#'
+#' @param labCol Character vectors with column conds to use.
+#'
+#' @param labRow Character vectors with row conds to use.
+#'
+#' @param key Logical indicating whether a color-key should be shown.
+#'
+#' @param key.title Main title of the color key. If set to NA no title will
+#' be plotted.
+#'
+#' @param main Main title; default to none.
+#'
+#' @param ylab y-axis title; default to none.
+#'
+#' @return A heatmap
+#' @export
+#'
+#' @author Samuel Wieczorek
+#'
+#' @examples
+#' data(vData_ft)
+#' heatmapD(vData_ft[[1]])
+#' 
+NULL
 
 
 
 #' @rdname DaparViz_heatmap
-#'
+#' @export
+#' 
 heatmapD <- function(obj,
                      distance = "euclidean",
                      cluster = "complete",
@@ -74,25 +111,6 @@ heatmapD <- function(obj,
   )
 }
 
-#' @param x A `matrix` or `array` containing the quantitative data.
-#'
-#' @param col Colors used for the image. Defaults to heat colors (heat.colors).
-#'
-#' @param srtCol Angle of column conds, in degrees from horizontal
-#'
-#' @param labCol Character vectors with column conds to use.
-#'
-#' @param labRow Character vectors with row conds to use.
-#'
-#' @param key Logical indicating whether a color-key should be shown.
-#'
-#' @param key.title Main title of the color key. If set to NA no title will
-#' be plotted.
-#'
-#' @param main Main title; default to none.
-#'
-#' @param ylab y-axis title; default to none.
-#'
 #' @export
 #'
 #' @importFrom grDevices heat.colors
@@ -302,38 +320,7 @@ mv.heatmap <- function(x,
 
 
 
-#' @title  xxx
-#' 
-#' @description 
-#' This function is inspired from the function \code{heatmap.2}
-#' that displays quantitative data in the \code{MSnbase::exprs()} table of an 
-#' object of
-#' class \code{MSnSet}. For more information, please refer to the help
-#' of the heatmap.2 function.
-#'
-#' @param x A dataframe that contains quantitative data.
-#'
-#' @param col colors used for the image. Defaults to heat colors (heat.colors).
-#'
-#' @param srtCol angle of column conds, in degrees from horizontal
-#'
-#' @param labCol character vectors with column conds to use.
-#'
-#' @param labRow character vectors with row conds to use.
-#'
-#' @param key logical indicating whether a color-key should be shown.
-#'
-#' @param key.title main title of the color key. If set to NA no title will
-#' be plotted.
-#'
-#' @param main main title; default to none.
-#'
-#' @param ylab y-axis title; default to none.
-#'
-#' @return A heatmap
-#'
-#' @author Samuel Wieczorek
-#'
+#' @rdname DaparViz_heatmap
 #' @export
 #'
 heatmapForMissingValues <- function(x,

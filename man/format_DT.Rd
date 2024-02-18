@@ -2,13 +2,13 @@
 % Please edit documentation in R/DaparViz_format_DT.R
 \name{format_DT}
 \alias{format_DT}
-\alias{format_DT_ui}
-\alias{format_DT_server}
-\title{format_DT_ui and format_DT_server}
+\alias{DaparViz_formatDT_ui}
+\alias{DaparViz_formatDT_server}
+\title{formatDT_ui and formatDT_server}
 \usage{
-format_DT_ui(id)
+DaparViz_formatDT_ui(id)
 
-format_DT_server(
+DaparViz_formatDT_server(
   id,
   data = reactive({
      NULL
@@ -64,4 +64,12 @@ See \code{DT} package homepage for more details about styling tables.
 If no style is precised, this module show the raw data.
 If any style is given, then the dataset must be well configured (I.e. it
 must contain the correct columns )
+}
+\examples{
+if(interactive()){
+data(vData_ft)
+DaparViz_formatDT(GetSlotQdata(vData_ft[[1]]))
+}
+
+
 }

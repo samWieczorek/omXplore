@@ -8,6 +8,7 @@
 #' 
 #' @aliases GetSlotMetadata, GetSlotMetacell, GetSlotQdata, GetSlotProteinID,
 #' GetSlotColID, GetSlotConds, GetSlotAdjMat, GetSlotCc
+#' 
 #' @examples
 #' 
 #' ## -----------------------------------
@@ -73,13 +74,13 @@ setGeneric("GetSlotAdjMat",
 setGeneric("GetSlotCc", 
            function(object, ...) standardGeneric("GetSlotCc"))
 
+#' @param object An instance of class `SummarizedExperiment`.
 #' @rdname accessors
 #' @import QFeatures
 #' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
 #' @return A data.frame containing the metadata of the dataset
 #' 
 setMethod("GetSlotMetadata", signature = "SummarizedExperiment",
-          #' @param object An instance of class `SummarizedExperiment`.
           function(object) {
             tryCatch({
                 SummarizedExperiment::rowData(object)},
@@ -87,11 +88,11 @@ setMethod("GetSlotMetadata", signature = "SummarizedExperiment",
                 error = function(e) NULL)
           })
 
+#' @param object An instance of class `MSnSet`.
 #' @rdname accessors
 #' @import MSnbase
 #'
 setMethod("GetSlotMetadata", signature = "MSnSet",
-          #' @param object An instance of class `MSnSet`.
           function(object) {
             tryCatch({
               MSnbase::fData(object)},
@@ -99,24 +100,27 @@ setMethod("GetSlotMetadata", signature = "MSnSet",
               error = function(e) NULL)
           })
 
-
+#' @param object An instance of class `DaparViz`.
+#' @rdname accessors
+setMethod("GetSlotMetadata", signature = "DaparViz",
+          function(object) object@metadata)
  
+#' @param object An instance of class `SummarizedExperiment`.
 #' @rdname accessors
 #' @import QFeatures
 #' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
 #' 
 setMethod("GetSlotQdata", signature = "ANY",
-          #' @param object An instance of class `SummarizedExperiment`.
-          function(object) {
+           function(object) {
             NULL
           })
 
+#' @param object An instance of class `SummarizedExperiment`.
 #' @rdname accessors
 #' @import QFeatures
 #' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
 #' 
 setMethod("GetSlotQdata", signature = "SummarizedExperiment",
-          #' @param object An instance of class `SummarizedExperiment`.
           function(object) {
             tryCatch({
               SummarizedExperiment::assay(object)
@@ -125,11 +129,17 @@ setMethod("GetSlotQdata", signature = "SummarizedExperiment",
               error = function(e) NULL)
           })
 
+#' @param object An instance of class `DaparViz`.
+#' @rdname accessors
+#' 
+setMethod("GetSlotQdata", signature = "DaparViz",
+          function(object) object@qdata )
+
+#' @param object An instance of class `MSnSet`.
 #' @rdname accessors
 #' @import MSnbase
 #'
 setMethod("GetSlotQdata", signature = "MSnSet",
-          #' @param object An instance of class `MSnSet`.
           function(object) {
             tryCatch({
               MSnbase::exprs(object)
@@ -141,12 +151,19 @@ setMethod("GetSlotQdata", signature = "MSnSet",
 
 
 
+#' @param object An instance of class `DaparViz`.
+#' @rdname accessors
+setMethod("GetSlotMetacell", signature = "DaparViz",
+          function(object) object@metacell)
+
+
+
+#' @param object An instance of class `SummarizedExperiment`.
 #' @rdname accessors
 #' @import QFeatures
 #' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
 #' 
 setMethod("GetSlotMetacell", signature = "SummarizedExperiment",
-          #' @param object An instance of class `SummarizedExperiment`.
           function(object) {
             tryCatch({
               (SummarizedExperiment::rowData(object))$qMetacell
@@ -155,12 +172,12 @@ setMethod("GetSlotMetacell", signature = "SummarizedExperiment",
             error = function(e) NULL)
           })
 
+#' @param object An instance of class `MSnSet`.
 #' @rdname accessors
 #' @import MSnbase
 #'
 setMethod("GetSlotMetacell", signature = "MSnSet",
-          #' @param object An instance of class `MSnSet`.
-          function(object) {
+           function(object) {
             tryCatch({
               #if ('names_metacell' %in% names(object@experimentData@other))
               MSnbase::fData(object)[, object@experimentData@other$names_metacell]
@@ -170,15 +187,18 @@ setMethod("GetSlotMetacell", signature = "MSnSet",
           })
 
 
- 
+#' @param object An instance of class `DaparViz`.
+#' @rdname accessors
+setMethod("GetSlotColID", signature = "DaparViz",
+          function(object) object@colID)
+
+
+#' @param object An instance of class `SummarizedExperiment`.
 #' @rdname accessors
 #' @import QFeatures
 #' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
 #' 
 setMethod("GetSlotColID", signature = "SummarizedExperiment",
-          #' @title xxx
-          #' @description xxx
-          #' @param object An instance of class `SummarizedExperiment`.
           function(object) {
             tryCatch({
               colID <- SummarizedExperiment::metadata(object)$idcol
@@ -190,13 +210,11 @@ setMethod("GetSlotColID", signature = "SummarizedExperiment",
             error = function(e) '')
           })
 
+#' @param object An instance of class `MSnSet`.
 #' @import MSnbase
 #' @rdname accessors
 #' 
 setMethod("GetSlotColID", signature = "MSnSet",
-          #' @title xxx
-          #' @description xxx
-          #' @param object An instance of class `MSnSet`.
           function(object) {
             tryCatch({
               colID <- object@experimentData@other$keyId
@@ -209,11 +227,17 @@ setMethod("GetSlotColID", signature = "MSnSet",
           })
 
 
+#' @param object An instance of class `DaparViz`.
+#' @rdname accessors
+setMethod("GetSlotType", signature = "DaparViz",
+          function(object) object@type)
+
+
+#' @param object An instance of class `SummarizedExperiment`.
 #' @rdname accessors
 #' @import SummarizedExperiment
 #' 
 setMethod("GetSlotType", signature = "SummarizedExperiment",
-          #' @param object An instance of class `SummarizedExperiment`.
           function(object) {
             tryCatch({
               type <- SummarizedExperiment::metadata(object)$typeDataset
@@ -225,10 +249,10 @@ setMethod("GetSlotType", signature = "SummarizedExperiment",
             error = function(e) '')
           })
 
+#' @param object An instance of class `MSnSet`.
 #' @import MSnbase
 #' @rdname accessors
 setMethod("GetSlotType", signature = "MSnSet",
-          #' @param object An instance of class `MSnSet`.
           function(object) {
             tryCatch({
               type <- object@experimentData@other$typeOfData
@@ -241,13 +265,19 @@ setMethod("GetSlotType", signature = "MSnSet",
           })
 
 
+#' @param object An instance of class `DaparViz`.
+#' @rdname accessors
+setMethod("GetSlotProteinID", signature = "DaparViz",
+          function(object) object@proteinID)
+
+
+#' @param object An instance of class `SummarizedExperiment`.
 #' @rdname accessors
 #' @import QFeatures
 #' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
 #' 
 setMethod("GetSlotProteinID", signature = "SummarizedExperiment",
-          #' @param object An instance of class `SummarizedExperiment`.
-          function(object) {
+           function(object) {
             tryCatch({
               proteinID <- SummarizedExperiment::metadata(object)$parentProtId
               if(is.null(proteinID)) proteinID <- ''
@@ -258,10 +288,10 @@ setMethod("GetSlotProteinID", signature = "SummarizedExperiment",
             error = function(e) '')
           })
 
+#' @param object An instance of class `MSnSet`.
 #' @import MSnbase
 #' @rdname accessors
 setMethod("GetSlotProteinID", signature = "MSnSet",
-          #' @param object An instance of class `MSnSet`.
           function(object) {
             tryCatch({
               proteinID <- object@experimentData@other$proteinId
@@ -274,12 +304,18 @@ setMethod("GetSlotProteinID", signature = "MSnSet",
           })
 
 
+#' @param object An instance of class `DaparViz`.
+#' @rdname accessors
+setMethod("GetSlotConds", signature = "DaparViz",
+          function(object) object@conds)
+
+
+#' @param object An instance of class `MultiAssayExperiment`.
 #' @rdname accessors
 #' @import MultiAssayExperiment
 #' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
 #' 
 setMethod("GetSlotConds", signature = "MultiAssayExperiment",
-          #' @param object An instance of class `MultiAssayExperiment`.
           function(object) {
             tryCatch({
               conds <- SummarizedExperiment::colData(object)$Condition
@@ -291,20 +327,20 @@ setMethod("GetSlotConds", signature = "MultiAssayExperiment",
             error = function(e) '')
           })
 
+#' @param object An instance of class `SummarizedExperiment`.
 #' @rdname accessors
 #' 
 setMethod("GetSlotConds", signature = "ANY",
-          #' @param object An instance of class `SummarizedExperiment`.
           function(object) {
             ''
           })
 
+#' @param object An instance of class `MSnSet`.
 #' @rdname accessors
 #' @import MSnbase
 #'
 setMethod("GetSlotConds", signature = "MSnSet",
-          #' @param object An instance of class `MSnSet`.
-          function(object) {
+           function(object) {
             tryCatch({
               conds <- MSnbase::pData(object)$Condition
               if(is.null(conds)) conds <- ''
@@ -314,6 +350,32 @@ setMethod("GetSlotConds", signature = "MSnSet",
             warning = function(w) '',
             error = function(e) '')
           })
+
+
+#' @param object An instance of class `ANY`.
+#' @rdname accessors
+setMethod("GetSlotCc", signature = "ANY",
+          function(object) NULL)
+
+#' @param object An instance of class `DaparViz`.
+#' @rdname accessors
+setMethod("GetSlotCc", signature = "DaparViz",
+          function(object) object@cc)
+
+
+
+#' @param object An instance of class `ANY`.
+#' @rdname accessors
+setMethod("GetSlotAdjMat", signature = "ANY",
+          function(object) NULL)
+
+#' @param object An instance of class `DaparViz`.
+#' @rdname accessors
+setMethod("GetSlotAdjMat", signature = "DaparViz",
+          function(object) object@adjMat)
+
+
+
 
 
 #' @title xxx

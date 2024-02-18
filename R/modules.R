@@ -3,25 +3,25 @@
 #' @description
 #' xxxxx
 #' * `listShinyApps()`: xxx
-#' * `addImgPath()`: xxx
-#' * `addModules()`: xxx
+#' * `listPlotModules()`: xxx
+#' * `addModules()`: Add shiny module
 #' 
 #' @param location xxx
-#' 
-#' @name DaparViz-modules
-#' 
-#' 
-#' 
-#' 
-NULL
-
-
-#' @title Add shiny module
-#' @description xxxx
 #' @param addons A `list` in which each item is:
 #' * is named by the name of a package
 #' * contains th set of modules to integrate
 #' 
+
+#' 
+#' @name DaparViz-modules
+#' 
+#' @examples
+#' listShinyApps()
+#' listPlotModules
+#' 
+NULL
+
+
 #' @export
 #' @rdname DaparViz-modules
 #'

@@ -55,6 +55,8 @@ DaparViz_corrmatrix(vData_ft[[1]])
 }
 
 
-NULL
+data(vData_ft)
+qdata <- GetSlotQdata(vData_ft[[1]])
+corrMatrix(qdata)
 
 }

@@ -20,20 +20,31 @@
 \alias{GetSlotAdjMat}
 \alias{GetSlotMetadata,SummarizedExperiment-method}
 \alias{GetSlotMetadata,MSnSet-method}
+\alias{GetSlotMetadata,DaparViz-method}
 \alias{GetSlotQdata,ANY-method}
 \alias{GetSlotQdata,SummarizedExperiment-method}
+\alias{GetSlotQdata,DaparViz-method}
 \alias{GetSlotQdata,MSnSet-method}
+\alias{GetSlotMetacell,DaparViz-method}
 \alias{GetSlotMetacell,SummarizedExperiment-method}
 \alias{GetSlotMetacell,MSnSet-method}
+\alias{GetSlotColID,DaparViz-method}
 \alias{GetSlotColID,SummarizedExperiment-method}
 \alias{GetSlotColID,MSnSet-method}
+\alias{GetSlotType,DaparViz-method}
 \alias{GetSlotType,SummarizedExperiment-method}
 \alias{GetSlotType,MSnSet-method}
+\alias{GetSlotProteinID,DaparViz-method}
 \alias{GetSlotProteinID,SummarizedExperiment-method}
 \alias{GetSlotProteinID,MSnSet-method}
+\alias{GetSlotConds,DaparViz-method}
 \alias{GetSlotConds,MultiAssayExperiment-method}
 \alias{GetSlotConds,ANY-method}
 \alias{GetSlotConds,MSnSet-method}
+\alias{GetSlotCc,ANY-method}
+\alias{GetSlotCc,DaparViz-method}
+\alias{GetSlotAdjMat,ANY-method}
+\alias{GetSlotAdjMat,DaparViz-method}
 \title{Accessors functions}
 \usage{
 GetSlotMetadata(object, ...)
@@ -58,36 +69,58 @@ GetSlotCc(object, ...)
 
 \S4method{GetSlotMetadata}{MSnSet}(object)
 
+\S4method{GetSlotMetadata}{DaparViz}(object)
+
 \S4method{GetSlotQdata}{ANY}(object)
 
 \S4method{GetSlotQdata}{SummarizedExperiment}(object)
 
+\S4method{GetSlotQdata}{DaparViz}(object)
+
 \S4method{GetSlotQdata}{MSnSet}(object)
+
+\S4method{GetSlotMetacell}{DaparViz}(object)
 
 \S4method{GetSlotMetacell}{SummarizedExperiment}(object)
 
 \S4method{GetSlotMetacell}{MSnSet}(object)
 
+\S4method{GetSlotColID}{DaparViz}(object)
+
 \S4method{GetSlotColID}{SummarizedExperiment}(object)
 
 \S4method{GetSlotColID}{MSnSet}(object)
+
+\S4method{GetSlotType}{DaparViz}(object)
 
 \S4method{GetSlotType}{SummarizedExperiment}(object)
 
 \S4method{GetSlotType}{MSnSet}(object)
 
+\S4method{GetSlotProteinID}{DaparViz}(object)
+
 \S4method{GetSlotProteinID}{SummarizedExperiment}(object)
 
 \S4method{GetSlotProteinID}{MSnSet}(object)
+
+\S4method{GetSlotConds}{DaparViz}(object)
 
 \S4method{GetSlotConds}{MultiAssayExperiment}(object)
 
 \S4method{GetSlotConds}{ANY}(object)
 
 \S4method{GetSlotConds}{MSnSet}(object)
+
+\S4method{GetSlotCc}{ANY}(object)
+
+\S4method{GetSlotCc}{DaparViz}(object)
+
+\S4method{GetSlotAdjMat}{ANY}(object)
+
+\S4method{GetSlotAdjMat}{DaparViz}(object)
 }
 \arguments{
-\item{object}{An instance of class \code{MSnSet}.}
+\item{object}{An instance of class \code{DaparViz}.}
 
 \item{...}{xxxx description}
 }
@@ -97,10 +130,6 @@ See individual method description for the return value.
 A data.frame containing the metadata of the dataset
 }
 \description{
-xxx
-
-xxx
-
 xxx
 }
 \examples{

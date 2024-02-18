@@ -1,4 +1,4 @@
-#' @title   format_DT_ui and format_DT_server
+#' @title   formatDT_ui and formatDT_server
 #'
 #' @description
 #'
@@ -25,6 +25,13 @@
 #'
 #' @name format_DT
 #' 
+#' @examples
+#' if(interactive()){
+#' data(vData_ft)
+#' DaparViz_formatDT(GetSlotQdata(vData_ft[[1]]))
+#' }
+#' 
+#' 
 #' @return NA
 #' 
 NULL
@@ -36,7 +43,7 @@ NULL
 #'
 #' @rdname format_DT
 #'
-format_DT_ui <- function(id) {
+DaparViz_formatDT_ui <- function(id) {
   pkgs.require(c('shinyjs', 'DT'))
   ns <- NS(id)
   tagList(
@@ -54,7 +61,7 @@ format_DT_ui <- function(id) {
 #' @importFrom htmlwidgets JS
 #' @import DT
 #' @rdname format_DT
-format_DT_server <- function(id,
+DaparViz_formatDT_server <- function(id,
                                  data = reactive({NULL}),
                                  data_nostyle = reactive({NULL}),
                                  withDLBtns = FALSE,
@@ -197,3 +204,18 @@ format_DT_server <- function(id,
 }
 
 
+
+
+#' @import shiny
+#' @export
+#' @rdname density-plot
+DaparViz_formatDT <- function(obj){
+  
+  ui <- DaparViz_formatDT_ui("table")
+  
+  server <- function(input, output, session)
+    DaparViz_formatDT_server("table", 
+                             data = reactive({obj}))
+  
+  shinyApp(ui, server)
+}

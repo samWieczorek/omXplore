@@ -16,6 +16,13 @@
 #' @rdname density-plot
 #' 
 #' @return NA
+#' 
+#' @examples
+#' data(vData_ft)
+#' qdata <- GetSlotQdata(vData_ft[[1]])
+#' conds <- GetSlotConds(vData_ft[[1]])
+#' densityPlot(qdata, conds)
+#' 
 #'
 densityPlot <- function(data,
                         conds,

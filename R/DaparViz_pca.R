@@ -30,9 +30,11 @@
 #' @examples
 #' if(interactive()){
 #' data(vData_ft)
+#' obj <- vData_ft[[1]]
 #' # Replace missing values for the example
-#' vData_ft[[1]]@qdata[which(is.na(vData_ft[[1]]@qdata))] <- 0
-#' DaparViz_pca(vData_ft[[1]])
+#' qdata <- GetSlotQdata(obj)
+#' qdata[which(is.na(qdata))] <- 0
+#' DaparViz_pca(obj)
 #' }
 #'
 NULL
@@ -155,7 +157,7 @@ DaparViz_pca_server <- function(id,
             tagList(
                 plotOutput(ns("pcaPlotVar")),
                 plotOutput(ns("pcaPlotInd")),
-                format_DT_ui(ns("PCAvarCoord")),
+                formatDT_ui(ns("PCAvarCoord")),
                 highcharter::highchartOutput(ns("pcaPlotEigen"))
             )
         })
@@ -163,7 +165,7 @@ DaparViz_pca_server <- function(id,
         observe({
           
           df <- as.data.frame(rv.pca$res.pca$var$coord)
-          format_DT_server("PCAvarCoord", 
+          formatDT_server("PCAvarCoord", 
                               data = reactive({round(df, digits=2)}),
                               showRownames = TRUE
                               )
