@@ -137,8 +137,8 @@ library(DaparViz)
 data(vData_ft)
 obj <- vData_ft[[1]]
 listPlotModules()
-ds_pca(obj)
-ds_density(obj)
+DaparViz_pca(obj)
+DaparViz_density(obj)
 ```
 
 # Adding external plots

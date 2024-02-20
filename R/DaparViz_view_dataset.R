@@ -63,8 +63,9 @@
 #' @examples
 #' if (interactive()) {
 #'   data(vData_ft)
-#'   addon <- list(DaparToolshed = c("DaparViz_metacell"))
-#'   view_dataset(vData_ft[[1]], addon)
+#'  # addon <- list(DaparToolshed = c("DaparViz_metacell"))
+#'   addons <- list(DaparViz = list(funcs = c("extFoo1"), imgDirPath = ''))
+#'   view_dataset(vData_ft, addons)
 #' }
 #'
 NULL
@@ -168,6 +169,11 @@ view_dataset_server <- function(
               paste0(x, "_ui"),
               list(id = ns(paste0(x, "_large")))
             )
+            
+            # Here, we could put the global function that calls shinyApp with
+            # the module but it takes a longer time to display than if the
+            # server is laready launched elsewhere
+            #do.call(x, list(obj = rv$current.se))
           )
         )
       })

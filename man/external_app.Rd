@@ -39,8 +39,6 @@ extFoo2(obj)
 \item{obj}{An instance of the class \code{DaparViz}}
 }
 \value{
-A shiny app
-
 NA
 
 NA
