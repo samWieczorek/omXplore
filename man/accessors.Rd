@@ -127,7 +127,61 @@ GetSlotCc(object, ...)
 \value{
 See individual method description for the return value.
 
+If exists, the slot value requested.
+
 A data.frame containing the metadata of the dataset
+
+A data.frame
+
+A data.frame
+
+A data.frame
+
+A data.frame
+
+A data.frame
+
+A data.frame
+
+A data.frame
+
+A data.frame
+
+A data.frame
+
+A character(0)
+
+A character(0)
+
+A character(0)
+
+A character(0)
+
+A character(0)
+
+A character(0)
+
+A character(0)
+
+A character(0)
+
+A character(0)
+
+A character(0)
+
+A character(0)
+
+A character(0)
+
+A character(0)
+
+A character(0)
+
+A character(0)
+
+A character(0)
+
+A character(0)
 }
 \description{
 xxx

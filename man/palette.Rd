@@ -4,11 +4,14 @@
 \alias{palette}
 \alias{SampleColors}
 \alias{ExtendPalette}
+\alias{GetColorsForConditions}
 \title{Palette for samples.}
 \usage{
 SampleColors(conds, pal.name = "Set1")
 
 ExtendPalette(n, pal.name = "Set1")
+
+GetColorsForConditions(conds, pal = NULL)
 }
 \arguments{
 \item{conds}{A \code{character()} of conditions. The length of the vector is
@@ -19,9 +22,16 @@ package \link{RColorBrewer} from which the colors are taken. Default value
 is 'Set1'.}
 
 \item{n}{The number of desired colors in the palette}
+
+\item{pal}{A vector of HEX color code that form the basis palette from which
+to build the complete color vector for the conditions.}
 }
 \value{
-A \code{HEX()} color codes.
+A vector
+
+A vector
+
+A vector
 }
 \description{
 Builds a vector of \verb{#conditions} colors for a set of samples. One color is
@@ -46,4 +56,10 @@ SampleColors(conds, "Dark2")
 #-----------------------------------------------
 
 ExtendPalette(12)
+
+
+data(vData_ft)
+conds <- GetSlotConds(vData_ft[[1]])
+GetColorsForConditions(conds, ExtendPalette(2))
+
 }

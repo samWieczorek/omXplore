@@ -19,17 +19,20 @@ DaparViz_cc(obj)
 \item{obj}{An instance of \code{DaparViz} class}
 }
 \value{
-NA
+A shiny plot
+
+A shiny plot
+
+A shiny app
 }
 \description{
 A shiny Module.
 }
 \examples{
-if(interactive()){
-data(vData_ft)
-DaparViz_cc(vData_ft[[1]])
+if (interactive()) {
+  data(vData_ft)
+  DaparViz_cc(vData_ft[[1]])
 }
-
 
 }
 \keyword{internal}

@@ -13,6 +13,9 @@ GetMetacellTags(object = NULL, level = NULL, onlyPresent = FALSE)
 
 \item{onlyPresent}{xxx}
 }
+\value{
+A vector
+}
 \description{
 xxx
 }

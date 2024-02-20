@@ -84,6 +84,14 @@ be plotted.}
 \value{
 NA
 
+NA
+
+A shiny app
+
+A heatmap
+
+A heatmap
+
 A heatmap
 }
 \description{
@@ -98,9 +106,9 @@ class \code{MSnSet}. For more information, please refer to the help
 of the heatmap.2 function.
 }
 \examples{
-if(interactive()){
-data(vData_ft)
-DaparViz_heatmap(vData_ft[[1]])
+if (interactive()) {
+  data(vData_ft)
+  DaparViz_heatmap(vData_ft[[1]])
 }
 
 data(vData_ft)

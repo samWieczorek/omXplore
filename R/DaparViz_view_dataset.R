@@ -41,7 +41,7 @@
 #' - Histogram of missing values.
 #'
 #' @name ds-view
-#' 
+#'
 #' @param id A `character(1)` for the 'id' of the shiny module. It must be
 #' the same as for the '*_ui' function.
 #' @param obj A list of items of the class `DaparViz`.
@@ -49,7 +49,7 @@
 #' Each item correspond to one package:
 #' * the name of the slot is the name of the package
 #' * the content of the slot is a vector composed of the generic name of the
-#' shiny app. Each of the apps listed here must be an exported app of the 
+#' shiny app. Each of the apps listed here must be an exported app of the
 #' package.
 #' For example, given the value addons = list(testPkg = c('foo', 'foo2')). That
 #' means that the package called "testPkg" must provide the four functions:
@@ -57,17 +57,16 @@
 #' @param width xxx
 #' @param height xxx
 #'
-#' @return A shiny application
 #'
 #' @author Samuel Wieczorek, Enora Fremy
 #'
 #' @examples
-#' if(interactive()){
-#' data(vData_ft)
-#' addon <- list(DaparToolshed=c('DaparViz_metacell'))
-#' view_dataset(vData_ft[[1]], addon)
+#' if (interactive()) {
+#'   data(vData_ft)
+#'   addon <- list(DaparToolshed = c("DaparViz_metacell"))
+#'   view_dataset(vData_ft[[1]], addon)
 #' }
-#' 
+#'
 NULL
 
 
@@ -78,6 +77,7 @@ NULL
 #' @importFrom shinyjs useShinyjs
 #' @rdname ds-view
 #' @export
+#' @return NA
 #'
 view_dataset_ui <- function(id) {
   ns <- NS(id)
@@ -85,16 +85,20 @@ view_dataset_ui <- function(id) {
     shinyjs::useShinyjs(),
     fluidPage(
       shinyjs::hidden(
-        div(id = ns('badFormatMsg'), p(bad_format_txt))
+        div(id = ns("badFormatMsg"), p(bad_format_txt))
       ),
       fluidRow(
-        column(3, div(style = general_style,  
-                      uiOutput(ns("chooseDataset_ui")))),
-        column(9, div(style = general_style, 
-                      uiOutput(ns("ShowPlots_ui"))))
+        column(3, div(
+          style = general_style,
+          uiOutput(ns("chooseDataset_ui"))
+        )),
+        column(9, div(
+          style = general_style,
+          uiOutput(ns("ShowPlots_ui"))
+        ))
       )
-     # br(), br(), br(),
-      #uiOutput(ns("ShowPlots_ui"))
+      # br(), br(), br(),
+      # uiOutput(ns("ShowPlots_ui"))
     )
   )
 }
@@ -106,16 +110,17 @@ view_dataset_ui <- function(id) {
 #'
 #' @rdname ds-view
 #' @export
+#' @return NA
 #'
-view_dataset_server <- function(id, 
-                                obj = NULL,
-                                addons = list(),
-                                width = 40,
-                                height = 40) {
-  
+view_dataset_server <- function(
+    id,
+    obj = NULL,
+    addons = list(),
+    width = 40,
+    height = 40) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
-    
+
     rv <- reactiveValues(
       data = NULL,
       conds = NULL,
@@ -123,96 +128,107 @@ view_dataset_server <- function(id,
       btns.history = NULL,
       ll.mods = NULL
     )
-    
-    observe({
-      req(obj())
-      if(inherits(obj(), "list")){
-        rv$data <- obj()
-        conds <- rv$data[[1]]@conds
-        
-        addModules(addons)
-        rv$ll.mods <- listPlotModules()
-        print(rv$ll.mods)
-      } else 
-        shinyjs::toggle('badFormatMsg', condition = !inherits(obj(), "list"))
-      
-    }, priority = 1000)
-    
-    
+
+    observe(
+      {
+        req(obj())
+        if (inherits(obj(), "list")) {
+          rv$data <- obj()
+          conds <- rv$data[[1]]@conds
+
+          addModules(addons)
+          rv$ll.mods <- listPlotModules()
+          # print(rv$ll.mods)
+        } else {
+          shinyjs::toggle("badFormatMsg", condition = !inherits(obj(), "list"))
+        }
+      },
+      priority = 1000
+    )
+
+
     output$ShowPlots_ui <- renderUI({
       req(c(rv$data, rv$ll.mods))
-        lapply(rv$ll.mods, function(x) {
-          tagList(
-            actionButton(
-              ns(x),
-              label = tagList(
-                p(gsub("DaparViz_", "", x)),
-                tags$img(src = FindImgSrc(x), height = "50px")),
-                style = "padding: 5px; border: none; 
-              background-size: cover; background-position: center;"),
-          
-              shinyBS::bsModal(ns(paste0("window_",x)),
-                               title = x,
-                               trigger = ns(x),
-                               footer = NULL,
-                               do.call(paste0(x, "_ui"), 
-                                       list(id = ns(paste0(x, "_large"))))
-                               )
+      lapply(rv$ll.mods, function(x) {
+        tagList(
+          actionButton(
+            ns(x),
+            label = tagList(
+              p(gsub("DaparViz_", "", x)),
+              tags$img(src = FindImgSrc(x), height = "50px")
+            ),
+            style = "padding: 5px; border: none;
+              background-size: cover; background-position: center;"
+          ),
+          shinyBS::bsModal(ns(paste0("window_", x)),
+            title = x,
+            trigger = ns(x),
+            footer = NULL,
+            do.call(
+              paste0(x, "_ui"),
+              list(id = ns(paste0(x, "_large")))
             )
-        })
+          )
+        )
+      })
     })
-    
+
 
     observe({
-      req(c(rv$current.se, rv$ll.mods))
-      #print(rv$current.se)
-      for (x in rv$ll.mods){
-       # print(paste0('Launch : ', x))
-        do.call(paste0(x, '_server'), 
-                  list(id = paste0(x, '_large'),
-                       obj = reactive({rv$current.se})
-                  )
+      req(rv$current.se)
+      req(rv$ll.mods)
+
+      for (x in rv$ll.mods) {
+        # print(paste0('Launch : ', x))
+        do.call(
+          paste0(x, "_server"),
+          list(
+            id = paste0(x, "_large"),
+            obj = reactive({
+              rv$current.se
+            })
           )
+        )
       }
     })
-    
-    FindImgSrc <- function(x){
+
+    FindImgSrc <- function(x) {
       # By default, search image from the images directory of the DaparViz
       # package. This works for built-in plot modules. For external modules,
       # then load customized resource path
-      
-      
-      img_path <- system.file('images', paste0(x, ".png"), package='DaparViz')
-      if (file.exists(img_path))
+
+
+      img_path <- system.file("images", paste0(x, ".png"), package = "DaparViz")
+      if (file.exists(img_path)) {
         img_src <- paste0("images/", x, ".png")
-      else
-        img_src <- paste0('DaparViz_imgDir/', gsub('DaparViz_', '', x), '.png')
-      
+      } else {
+        img_src <- paste0("DaparViz_imgDir/", gsub("DaparViz_", "", x), ".png")
+      }
+
       img_src
     }
-    
+
 
     # Update current.se variable
-    observeEvent(req(rv$data, input$chooseDataset), ignoreNULL = TRUE,{
+    observeEvent(req(rv$data, input$chooseDataset), ignoreNULL = TRUE, {
       rv$current.se <- rv$data[[input$chooseDataset]]
     })
-    
+
     output$chooseDataset_ui <- renderUI({
       req(rv$data)
-      
-      if (length(rv$data) == 0)
+
+      if (length(rv$data) == 0) {
         choices <- list(" " = character(0))
-      else
+      } else {
         choices <- names(rv$data)
-  
+      }
+
       radioButtons(ns("chooseDataset"), "Dataset",
-                   choices = choices,
-                   selected = names(rv$data)[length(rv$data)],
-                   width = 200)
+        choices = choices,
+        selected = names(rv$data)[length(rv$data)],
+        width = 200
+      )
     })
-    
-    
-    
   })
 }
 
@@ -220,31 +236,32 @@ view_dataset_server <- function(id,
 #' @export
 #' @rdname ds-view
 #' @import shiny
-#' 
-#' @return A shiny application which wraps the functions view_dataset_ui() and the
-#' view_dataset_server()
-#' 
+#' @import shinyBS
+#'
+#' @return A shiny application which wraps the functions view_dataset_ui()
+#' and the view_dataset_server()
+#'
 #' @examples
-#' if(interactive()){
-#' data(vData_ft)
-#' view_dataset(obj)
+#' if (interactive()) {
+#'   data(vData_ft)
+#'   view_dataset(vData_ft)
 #' }
-#' 
-#' 
-view_dataset <- function(obj = NULL,
-                          addons = NULL){
-  
+#'
+view_dataset <- function(
+    obj = NULL,
+    addons = NULL) {
   ui <- fluidPage(
     view_dataset_ui("dataset")
   )
-  
+
   server <- function(input, output, session) {
     view_dataset_server("dataset",
-                        obj = reactive({obj}),
-                        addons = addons)
+      obj = reactive({
+        obj
+      }),
+      addons = addons
+    )
   }
-  
+
   shinyApp(ui, server)
 }
-
-

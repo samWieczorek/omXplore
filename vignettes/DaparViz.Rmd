@@ -50,32 +50,11 @@ web interface based on Shiny technology (\url{http://shiny.rstudio.com/}) which
 provides GUI (Graphical User Interfaces).
 The datasets contained in the experiment packages `DAPARdata` and `DaparToolshedData` can be used as toy examples.
 
-`DaparViz` contains built-in plots but have the capability to show plots developped by other developer (as a Shiny app).
+`DaparViz` contains built-in plots but have the capability to show plots developed by other developer (as a Shiny app).
 
-
-# Installation
-
-To install this package, start R (version "4.3") and enter:
-
+```{r loadpkg, echo = TRUE}
+library(DaparViz)
 ```
-if (!require("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-
-BiocManager::install("DaparViz")
-```
-
-This will also install dependencies.
-
-It is also possible to install `DaparViz` from Github:
-
-```
-library(devtools)
-install_github('prostarproteomics/DaparViz')
-
-```
-
-For older versions of R, please refer to the appropriate Bioconductor release.
-
 
 # DaparViz data format
 
@@ -84,14 +63,17 @@ simplification of the formats it can deal with. The main data structure in the
 package `DaparViz` is a list of instances of `DaparViz` class.
 To see which data formats `DaparViz` can manage, run 
 
-```
-
+```{r unknown,  message = FALSE, warning = FALSE, echo = TRUE}
+library(DaparViz)
+FormatAvailables()
 ```
 
 To convert datasets to the class DaparViz-class, run
-```
-convert2Viz(my_dataset)
 
+```{r convert2Viz, message = FALSE, warning = FALSE, echo = TRUE}
+library(DaparViz)
+data(sub_Exp1_R2_prot_qf)
+convert2Viz(sub_Exp1_R2_prot_qf)
 ```
 
 However, all the plots functions in `DaparViz` integrate a convert feature 
@@ -103,17 +85,17 @@ format.
 
 # Using DaparViz
 
-DaparViz is a collection of standard plots which are available as Shiny applications. Thus, each plot has its own application.
+`DaparViz` is a collection of standard plots which are available as Shiny applications. Thus, each plot has its own application.
 
-The main feature in DaparViz is a Shiny app which combine all the different Shiny app.
+The main feature in `DaparViz` is a Shiny app which combine all the different Shiny app.
 
 ## Main UI
 
 The Shiny app called view_dataset() is the main application of the package
-`DaparViz`. It can be lauched as follows2:
+`DaparViz`. It can be lauched as follows:
 
 
-```
+```{r view_dataset, fig.show='hide', message = FALSE, warning = FALSE, echo = TRUE}
 library(DaparViz)
 data(vData_ft)
 view_dataset(vData_ft)
@@ -144,21 +126,19 @@ Each of the built-in plots can be run in a standalone mode rather than embedded 
 It is possible simply by running its name. The list of all shiny apps which are 
 available via DaparViz can be seen using
 
-```
-# Get all the shiny apps which are avaialbie in the main UI
+```{r listShinyApps, eval = TRUE, message = FALSE, warning = FALSE, echo = TRUE}
 listShinyApps()
 ```
 See the help page of this function fore more details.
 
 
-```
+```{r ex_modules, fig.show='hide', message = FALSE, warning = FALSE, echo = TRUE}
 library(DaparViz)
 data(vData_ft)
 obj <- vData_ft[[1]]
 listPlotModules()
 ds_pca(obj)
 ds_density(obj)
-
 ```
 
 # Adding external plots
@@ -183,16 +163,16 @@ as follows. In the example below, one want to add the app called `extFoo1` and `
 from the package `DaparViz`. It is only for the example, this app contains a 
 simple plot just to demonstrate how it works
 
-```
+```{r addons, fig.show='hide', message = FALSE, warning = FALSE, echo = TRUE}
 library(DaparViz)
 data(vData_ft)
 
 addons <- list(
   DaparViz = list(
-    funcs = c('extFoo1', 'extFoo2'),
-    imgDirPath = system.file('extdata', package='DaparViz')
-    )
+    funcs = c("extFoo1", "extFoo2"),
+    imgDirPath = system.file("extdata", package = "DaparViz")
   )
+)
 view_dataset(vData_ft, addons)
 ```
 

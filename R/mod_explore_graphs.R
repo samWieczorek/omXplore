@@ -1,4 +1,4 @@
-#' 
+#'
 #' #' @param id A `character(1)` which is the id of the shiny module.
 #' #'
 #' #' @importFrom shiny NS tagList
@@ -9,9 +9,9 @@
 #' #' @export
 #' explore_graphs_ui <- function(id) {
 #'     ns <- NS(id)
-#' 
+#'
 #'     pkgs.require('visNetwork')
-#' 
+#'
 #'     fluidPage(
 #'         tabPanel("Peptide-Protein Graph",
 #'             value = "graphTab",
@@ -42,11 +42,11 @@
 #'                     "One-Multi CC",
 #'                     tagList(
 #'                         fluidRow(
-#'                             column(width = 4, 
+#'                             column(width = 4,
 #'                                 tagList(
 #'                                 DT::dataTableOutput(ns("OneMultiDT"))
 #'                             )),
-#'                             column(width = 8, 
+#'                             column(width = 8,
 #'                                 tagList(
 #'                                 DT::dataTableOutput(ns("OneMultiDTDetailed"))
 #'                             ))
@@ -89,8 +89,8 @@
 #'         )
 #'     )
 #' }
-#' 
-#' 
+#'
+#'
 #' #' @param id A `character(1)` which is the id of the shiny module.
 #' #' @param ll.cc xxx
 #' #' @param se An object of class `QFeatures`
@@ -102,21 +102,21 @@
 #'                                       ll.cc,
 #'                                       se,
 #'                                       settings) {
-#' 
-#' 
+#'
+#'
 #'     pkgs.require('visNetwork')
-#' 
+#'
 #'     moduleServer(id, function(input, output, session) {
 #'         ns <- session$ns
-#' 
-#' 
+#'
+#'
 #'         rv.cc <- reactiveValues(
 #'             ## selected CC in global CC list (tab or plot)
 #'             selectedCC = NULL,
 #'             selectedNode = NULL,
 #'             selectedNeighbors = NULL,
 #'             selectedCCgraph = NULL,
-#' 
+#'
 #'             # when the user selects a node in the graph
 #'             detailedselectedNode = list(
 #'                 sharedPepLabels = NULL,
@@ -124,13 +124,13 @@
 #'                 protLabels = NULL
 #'             )
 #'         )
-#' 
-#' 
-#' 
+#'
+#'
+#'
 #'         #----------------------------------------------------------------
 #'         # "One-One CC"
 #'         #----------------------------------------------------------------
-#' 
+#'
 #'         # Extract one-one connected components from the complete list of CC
 #'         BuildOne2OneTab <- reactive({
 #'             ll.cc()
@@ -143,20 +143,20 @@
 #'                     }
 #'                 )
 #'             )
-#' 
+#'
 #'             if (is.null(table)) {
 #'                 table <- data.frame(
 #'                     proteins = character(),
 #'                     peptides = character()
 #'                 )
 #'             }
-#' 
+#'
 #'             table
 #'         })
-#' 
-#' 
-#' 
-#' 
+#'
+#'
+#'
+#'
 #'         output$OneOneDT <- DT::renderDT({
 #'             req(BuildOne2OneTab())
 #'             DT::datatable(BuildOne2OneTab(),
@@ -186,16 +186,16 @@
 #'                 )
 #'             )
 #'         })
-#' 
-#' 
-#' 
+#'
+#'
+#'
 #'         output$OneOneDTDetailed <- DT::renderDT({
 #'             req(ll.cc())
 #'             req(input$OneOneDT_rows_selected)
 #'             input$pepInfo
-#' 
+#'
 #'             line <- input$OneOneDT_rows_selected
-#' 
+#'
 #'             ind <- seq_len(ncol(se()))
 #'             data <- .getDataForExprs(se())
 #'             pepLine <- as.numeric(BuildOne2OneTab()[line, 2])
@@ -203,7 +203,7 @@
 #'                 which(rownames(data) == x)
 #'             }))
 #'             data <- data[indices, c(ind, (ind + ncol(data) / 2))]
-#' 
+#'
 #'             if (!is.null(input$pepInfo)) {
 #'                 data <- cbind(
 #'                     data,
@@ -212,7 +212,7 @@
 #'                 .ind <- (1 + ncol(data) - length(input$pepInfo)):ncol(data)
 #'                 colnames(data)[.ind] <- input$pepInfo
 #'             }
-#' 
+#'
 #'             offset <- length(input$pepInfo)
 #'             .to <- ncol(data) - offset
 #'             dt <- datatable(data,
@@ -238,14 +238,14 @@
 #'                     colnames(data)[seq_len(.to / 2)],
 #'                     colnames(data)[seq.int(from = (.to / 2) + 1, to = .to)],
 #'                     backgroundColor = DT::styleEqual(
-#'                         c("POV", "MEC"), 
+#'                         c("POV", "MEC"),
 #'                         c("orange", "blue"))
 #'                 )
-#' 
+#'
 #'             dt
 #'         })
-#' 
-#' 
+#'
+#'
 #'         #----------------------------------------------------------------
 #'         # "One-Multi CC"
 #'         #----------------------------------------------------------------
@@ -263,7 +263,7 @@
 #'                 )
 #'             )
 #'             table <- table[c("proteins", "nPep", "peptides")]
-#' 
+#'
 #'             if (is.null(table)) {
 #'                 table <- data.frame(
 #'                     proteins = character(),
@@ -273,8 +273,8 @@
 #'             }
 #'             table
 #'         })
-#' 
-#' 
+#'
+#'
 #'         output$OneMultiDT <- DT::renderDT({
 #'             req(BuildOne2MultiTab())
 #'             DT::datatable(BuildOne2MultiTab(),
@@ -302,25 +302,25 @@
 #'                 )
 #'             )
 #'         })
-#' 
-#' 
-#' 
+#'
+#'
+#'
 #'         output$OneMultiDTDetailed <- DT::renderDT({
 #'             input$pepInfo
 #'             req(input$OneMultiDT_rows_selected)
-#' 
+#'
 #'             line <- input$OneMultiDT_rows_selected
-#' 
+#'
 #'             ind <- seq(ncol(se()))
 #'             data <- .getDataForExprs(se())
 #'             pepLine <- as.numeric(unlist(BuildOne2MultiTab()[line, "peptides"]))
-#' 
+#'
 #'             indices <- unlist(lapply(pepLine, function(x) {
 #'                 which(rownames(data) == x)
 #'             }))
-#' 
+#'
 #'             data <- data[indices, c(ind, (ind + ncol(data) / 2))]
-#' 
+#'
 #'             if (!is.null(input$pepInfo)) {
 #'                 data <- cbind(
 #'                     data,
@@ -329,10 +329,10 @@
 #'                 .ind <- (1 + ncol(data) - length(input$pepInfo)):ncol(data)
 #'                 colnames(data)[.ind] <- input$pepInfo
 #'             }
-#' 
+#'
 #'             offset <- length(input$pepInfo)
 #'             .to <- ncol(data) - offset
-#' 
+#'
 #'             dt <- datatable(data,
 #'                 extensions = c("Scroller", "Buttons"),
 #'                 options = list(
@@ -356,19 +356,19 @@
 #'                     colnames(data)[seq_len(.to / 2)],
 #'                     colnames(data)[seq.int(from = (.to / 2) + 1, to = .to)],
 #'                     backgroundColor = DT::styleEqual(
-#'                         c("POV", "MEC"), 
+#'                         c("POV", "MEC"),
 #'                         c("orange", "blue"))
 #'                 )
-#' 
+#'
 #'             dt
 #'         })
-#' 
-#' 
-#' 
+#'
+#'
+#'
 #'         #----------------------------------------------------------------
 #'         # "Multi-Any CC"
 #'         #----------------------------------------------------------------
-#' 
+#'
 #'         output$graphicalView_ui <- renderHighchart({
 #'             req(input$searchCC == "graphical")
 #'             tooltip <- NULL
@@ -377,26 +377,26 @@
 #'                 tooltip <- as.data.frame(tooltip)
 #'                 colnames(tooltip) <- input$pepInfo
 #'             }
-#' 
+#'
 #'             clickFun <-
 #'                 JS(paste0(
 #'                     "function(event) {Shiny.onInputChange('",
 #'                     ns("eventPointClicked"),
 #'                     "', [this.index]+'_'+ [this.series.name]);}"
 #'                 ))
-#' 
+#'
 #'             plotCC <- plotJitter_hc(
 #'                 ll.cc = Extract_CC(ll.cc(), "MultiAny"),
 #'                 df.tooltips = tooltip,
 #'                 clickFunction = clickFun
 #'             )
-#' 
-#' 
+#'
+#'
 #'             plotCC
 #'         })
-#' 
-#' 
-#' 
+#'
+#'
+#'
 #'         output$tabularView_ui <- DT::renderDT({
 #'             req(input$searchCC == "tabular")
 #'             df <- do.call(rbind, lapply(
@@ -410,7 +410,7 @@
 #'             ))
 #'             df <- cbind(df, id = seq(nrow(df)))
 #'             df <- df[c("id", "nProt", "nPep", "proteins", "peptides")]
-#' 
+#'
 #'             DT::datatable(df,
 #'                 selection = "single",
 #'                 rownames = FALSE,
@@ -440,9 +440,9 @@
 #'                 )
 #'             )
 #'         })
-#' 
-#' 
-#' 
+#'
+#'
+#'
 #'         output$pepInfo_ui <- renderUI({
 #'             se()
 #'             selectInput(ns("pepInfo"),
@@ -451,33 +451,33 @@
 #'                 multiple = TRUE
 #'             )
 #'         })
-#' 
+#'
 #'         observeEvent(req(input$searchCC), {
 #'             #print(input$searchCC)
-#'             shinyjs::toggle("graphicalView_ui", 
+#'             shinyjs::toggle("graphicalView_ui",
 #'                 condition = input$searchCC == "graphical")
-#'             shinyjs::toggle("tabularView_ui", 
+#'             shinyjs::toggle("tabularView_ui",
 #'                 condition = input$searchCC == "tabular")
 #'         })
-#' 
-#' 
+#'
+#'
 #'         # select a point in the grpah
 #'         observeEvent(input$click, {
 #'             rv.cc$selectedNode <- input$click
 #'         })
-#' 
-#' 
+#'
+#'
 #'         # Get the id of selected neighbors in the graph
 #'         observeEvent(input$visNet_CC_highlight_color_id, {
 #'             rv.cc$selectedNeighbors <- input$visNet_CC_highlight_color_id
 #'         })
-#' 
-#' 
+#'
+#'
 #'         # select a CC in the summary table
 #'         observeEvent(input$tabularView_ui_rows_selected, {
 #'             rv.cc$selectedCC <- input$tabularView_ui_rows_selected
 #'         })
-#' 
+#'
 #'         # select a CC in the jitter plot
 #'         observeEvent(req(input$eventPointClicked), {
 #'             # browser()
@@ -486,8 +486,8 @@
 #'             # this.index + 1
 #'             rv.cc$selectedCC <- this.index + 1
 #'         })
-#' 
-#' 
+#'
+#'
 #'         output$visNet_CC <- visNetwork::renderVisNetwork({
 #'             req(rv.cc$selectedCC)
 #'             local <- Extract_CC(ll.cc(), "MultiAny")
@@ -496,19 +496,19 @@
 #'                 cc = local[[rv.cc$selectedCC]],
 #'                 X = QFeatures::adjacencyMatrix(se())
 #'             )
-#' 
+#'
 #'             show.graph(rv.cc$selectedCCgraph) %>%
 #'                 visNetwork::visEvents(click = paste0("function(nodes){
 #'                 Shiny.onInputChange('", ns("click"), "', nodes.nodes[0]);
-#'                 Shiny.onInputChange('", 
+#'                 Shiny.onInputChange('",
 #'                 ns("node_selected"), "', nodes.nodes.length);
 #'                 ;}")) %>%
 #'                 visNetwork::visOptions(highlightNearest = TRUE)
 #'         })
-#' 
-#' 
-#' 
-#' 
+#'
+#'
+#'
+#'
 #'         observeEvent(c(
 #'             rv.cc$selectedNeighbors,
 #'             input$node_selected,
@@ -516,9 +516,9 @@
 #'         ), {
 #'             local <- Extract_CC(ll.cc(), "MultiAny")
 #'             rv.cc$selectedNeighbors
-#' 
+#'
 #'             nodes <- rv.cc$selectedCCgraph$nodes
-#' 
+#'
 #'             if (!is.null(input$node_selected) && input$node_selected == 1) {
 #'                 .ensA <- which(nodes[, "group"] == "shared.peptide")
 #'                 .ensB <- which(nodes[, "group"] == "spec.peptide")
@@ -531,7 +531,7 @@
 #'                 specPepIndices <- which(nodes[, "group"] == "spec.peptide")
 #'                 protIndices <- which(nodes[, "group"] == "protein")
 #'             }
-#'             
+#'
 #'             .node1 <- nodes[sharedPepIndices, "label"]
 #'             .node2 <- nodes[specPepIndices, "label"]
 #'             .node3 <- nodes[protIndices, "label"]
@@ -539,12 +539,12 @@
 #'             rv.cc$detailedselectedNode$specPepLabels <- as.numeric(.node2)
 #'             rv.cc$detailedselectedNode$protLabels <- as.numeric(.node3)
 #'         })
-#' 
-#' 
+#'
+#'
 #'         output$CCDetailed <- renderUI({
 #'             req(rv.cc$detailedselectedNode)
 #'             req(rv.cc$selectedCC)
-#' 
+#'
 #'             tagList(
 #'                 h4("Proteins"),
 #'                 DT::DTOutput(ns("CCDetailedProt")),
@@ -554,14 +554,14 @@
 #'                 DT::DTOutput(ns("CCDetailedSharedPep"))
 #'             )
 #'         })
-#' 
+#'
 #'         output$CCDetailedProt <- DT::renderDT({
 #'             req(rv.cc$selectedCC)
 #'             rv.cc$detailedselectedNode
 #'             if (is.null(rv.cc$detailedselectedNode$protLabels)) {
 #'                 return(NULL)
 #'             }
-#' 
+#'
 #'             df <- data.frame(
 #'                 proteinId = unlist(rv.cc$detailedselectedNode$protLabels)
 #'                 # other = rep(NA,length(rv.cc$detailedselectedNode$protLabels))
@@ -583,18 +583,18 @@
 #'             )
 #'             dt
 #'         })
-#' 
-#' 
-#' 
+#'
+#'
+#'
 #'         #######
-#' 
+#'
 #'         output$CCDetailedSharedPep <- DT::renderDT({
 #'             rv.cc$detailedselectedNode
 #'             input$pepInfo
-#' 
+#'
 #'             req(rv.cc$detailedselectedNode$sharedPepLabels)
-#' 
-#' 
+#'
+#'
 #'             ind <- seq(ncol(se()))
 #'             data <- .getDataForExprs(se())
 #'             pepLine <- rv.cc$detailedselectedNode$sharedPepLabels
@@ -602,7 +602,7 @@
 #'                 which(rownames(data) == x)
 #'             }))
 #'             data <- data[indices, c(ind, (ind + ncol(data) / 2))]
-#' 
+#'
 #'             if (!is.null(input$pepInfo)) {
 #'                 data <- cbind(
 #'                     data,
@@ -611,7 +611,7 @@
 #'                 .ind <- (1 + ncol(data) - length(input$pepInfo)):ncol(data)
 #'                 colnames(data)[.ind] <- input$pepInfo
 #'             }
-#' 
+#'
 #'             offset <- length(input$pepInfo)
 #'             .to <- ncol(data) - offset
 #'                 dt <- datatable(data,
@@ -639,24 +639,24 @@
 #'                     colnames(data)[seq_len(.to / 2)],
 #'                     colnames(data)[seq.int(from = (.to / 2) + 1, to = .to)],
 #'                     backgroundColor = DT::styleEqual(
-#'                         c("POV", "MEC"), 
+#'                         c("POV", "MEC"),
 #'                         c("orange", "blue")
 #'                         )
 #'                 )
-#' 
+#'
 #'             dt
 #'         })
-#' 
-#' 
-#' 
-#' 
-#' 
+#'
+#'
+#'
+#'
+#'
 #'         ##### -----------
 #'         output$CCDetailedSpecPep <- DT::renderDT({
 #'             rv.cc$detailedselectedNode
 #'             input$pepInfo
 #'             req(rv.cc$detailedselectedNode$specPepLabels)
-#' 
+#'
 #'             ind <- seq(ncol(se()))
 #'             data <- .getDataForExprs(se())
 #'             pepLine <- rv.cc$detailedselectedNode$specPepLabels
@@ -664,7 +664,7 @@
 #'                 which(rownames(data) == x)
 #'             }))
 #'             data <- data[indices, c(ind, (ind + ncol(data) / 2))]
-#' 
+#'
 #'             if (!is.null(input$pepInfo)) {
 #'                 data <- cbind(
 #'                     data,
@@ -673,10 +673,10 @@
 #'                 .ind <- (1 + ncol(data) - length(input$pepInfo)):ncol(data)
 #'                 colnames(data)[.ind] <- input$pepInfo
 #'             }
-#' 
+#'
 #'             offset <- length(input$pepInfo)
 #'             .to <- ncol(data) - offset
-#' 
+#'
 #'             dt <- datatable(data,
 #'                 extensions = c("Scroller"),
 #'                 options = list(
@@ -702,18 +702,18 @@
 #'                     colnames(data)[seq_len(.to / 2)],
 #'                     colnames(data)[seq.int(from = (.to / 2) + 1, to = .to)],
 #'                     backgroundColor = DT::styleEqual(
-#'                         c("POV", "MEC"), 
+#'                         c("POV", "MEC"),
 #'                         c("orange", "blue")
 #'                         )
 #'                 )
-#' 
+#'
 #'             dt
 #'         })
-#' 
-#' 
-#' 
-#' 
-#' 
+#'
+#'
+#'
+#'
+#'
 #'         BuildMulti2AnyTab <- reactive({
 #'             ll.cc()
 #'             table <- do.call(
@@ -737,4 +737,4 @@
 #'         })
 #'     })
 #' }
-#' 
+#'

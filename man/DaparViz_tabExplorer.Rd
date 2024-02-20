@@ -29,14 +29,18 @@ DaparViz_tabExplorer(obj)
 }
 \value{
 NA
+
+NA
+
+A shiny app
 }
 \description{
 xxx
 }
 \examples{
-if(interactive()){
-data(vData_ft)
-DaparViz_tabExplorer(vData_ft[[1]])
+if (interactive()) {
+  data(vData_ft)
+  DaparViz_tabExplorer(vData_ft[[1]])
 }
 
 }

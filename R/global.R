@@ -1,4 +1,3 @@
-
 #' @title xxx
 #' @field general_style xxx
 #' @export
@@ -12,6 +11,6 @@ actionBtnClass <- "btn-primary"
 #' @title xxx
 #' @field bad_format_txt xxx
 #' @export
-bad_format_txt <- 'Dataset in not in correct format. 
+bad_format_txt <- "Dataset in not in correct format.
 DaparViz can handle MSnset and QFeatures files or instances of class DaparViz.
-If you use MSnset or QFeatures datasets, please use the function convert2viz()'
+If you use MSnset or QFeatures datasets, please use the function convert2viz()"

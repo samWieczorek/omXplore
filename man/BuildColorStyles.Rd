@@ -9,6 +9,9 @@ BuildColorStyles(type)
 \arguments{
 \item{type}{An instance of the class \code{DaparViz}}
 }
+\value{
+A list
+}
 \description{
 xxxx
 }

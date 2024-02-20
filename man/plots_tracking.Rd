@@ -25,20 +25,25 @@ plots_tracking(obj)
 
 \item{obj}{An instance of the class \code{DaparViz}}
 
-\item{resetBtn}{A \code{boolean(1)} which indicates whether to show the 'Reset' button
-or not.}
+\item{resetBtn}{A \code{boolean(1)} which indicates whether to show the 'Reset'
+button or not.}
 }
 \value{
 A \code{list} (same structure as the parameter \code{params})
+
+NA
+
+NA
+
+A shiny app
 }
 \description{
 This shiny module provides a tool to select
 }
 \examples{
-if(interactive()){
-library(DaparViz)
-data(vData_ft)
-plots_tracking(vData_ft[[1]])
+if (interactive()) {
+  data(vData_ft)
+  plots_tracking(vData_ft[[1]])
 }
 
 }

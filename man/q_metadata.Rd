@@ -12,12 +12,14 @@ metacell.def(level)
 Available values are: \code{peptide}, \code{protein}}
 }
 \value{
-A data.frame containing the different tags and corresponding colors for the level
-given in parameter
+A data.frame containing the different tags and corresponding colors
+for the level given in parameter
+
+A list
 }
 \description{
-This function gives the vocabulary used for the quantitative metadata of each entity in
-each condition.
+This function gives the vocabulary used for the quantitative metadata of
+each entity in each condition.
 }
 \section{Glossary}{
 
@@ -80,25 +82,27 @@ Conversion from Maxquant datasets
 
 \examples{
 
-metacell.def('protein')
-metacell.def('peptide')
+metacell.def("protein")
+metacell.def("peptide")
 
 #-----------------------------------------------
-# A shiny app to view color legends 
+# A shiny app to view color legends
 #-----------------------------------------------
-if(interactive()){
-data(ft)
-ui <- qMetacellLegend_ui("legend")
+if (interactive()) {
+  data(ft)
+  ui <- qMetacellLegend_ui("legend")
 
-server <- function(input, output, session) {
-  qMetacellLegend_server('legend',
-                                object = reactive({ft[[1]]}))
+  server <- function(input, output, session) {
+    qMetacellLegend_server("legend",
+      object = reactive({
+        ft[[1]]
+      })
+    )
   }
-  
- shinyApp(ui = ui, server = server)
-  
-  
+
+  shinyApp(ui = ui, server = server)
 }
+
 }
 \author{
 Thomas Burger, Samuel Wieczorek

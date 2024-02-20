@@ -23,6 +23,6 @@ xxxx
 }
 \examples{
 data(vData_ft)
-GetCCInfos(vData_ft[[1]]@cc)
+GetCCInfos(GetSlotCc(vData_ft[[1]]))
 
 }

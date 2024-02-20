@@ -31,18 +31,29 @@ plotPCA_Eigen_hc(res.pca)
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
-\item{obj}{An instance of the class \code{DaparViz}.}
+\item{obj}{xxx}
 
-\item{var.scaling}{The dimensions to plot}
+\item{var.scaling}{xxx}
 
-\item{ncp}{A \code{integer(1)} which represents the umber of dimensions kept in
-the results.}
+\item{ncp}{xxx}
 
-\item{res.pca}{Result of FactoMineR::PCA}
+\item{res.pca}{xxx}
 
-\item{chosen.axes}{The dimensions to plot}
+\item{chosen.axes}{xxx}
 }
 \value{
+NA
+
+NA
+
+NA
+
+The result of the function FactoMineR::PCA()
+
+A plot
+
+A plot
+
 A plot
 
 A plot
@@ -52,21 +63,32 @@ This method plots a bar plot which represents the distribution of the
 number of missing values (NA) per lines (ie proteins).
 \itemize{
 \item \code{wrapper_pca()}: xxx
-\item \code{plotPCA_Eigen_hc()}: plots the eigen values of PCA with the highcharts library
+\item \code{plotPCA_Eigen_hc()}: plots the eigen values of PCA with the highcharts
+library
 \item \code{plotPCA_Eigen()}: plots the eigen values of PCA
 \item \code{plotPCA_Var()}:
 \item \code{plotPCA_Ind()}:
 }
+
+xxx
 }
 \examples{
-if(interactive()){
+if (interactive()) {
+  data(vData_ft)
+  obj <- vData_ft[[1]]
+  # Replace missing values for the example
+  qdata <- GetSlotQdata(obj)
+  qdata[which(is.na(qdata))] <- 0
+  DaparViz_pca(obj)
+}
+
 data(vData_ft)
 obj <- vData_ft[[1]]
-# Replace missing values for the example
-qdata <- GetSlotQdata(obj)
-qdata[which(is.na(qdata))] <- 0
-DaparViz_pca(obj)
-}
+res.pca <- wrapper_pca(obj)
+plotPCA_Eigen(res.pca)
+plotPCA_Var(res.pca)
+plotPCA_Eigen_hc(res.pca)
+plotPCA_Ind(res.pca)
 
 }
 \author{

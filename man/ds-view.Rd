@@ -36,10 +36,12 @@ foo1_ui(), foo1_server() and foo2_ui(), foo2_server())
 \item{height}{xxx}
 }
 \value{
-A shiny application
+NA
 
-A shiny application which wraps the functions view_dataset_ui() and the
-view_dataset_server()
+NA
+
+A shiny application which wraps the functions view_dataset_ui()
+and the view_dataset_server()
 }
 \description{
 This method plots a bar plot which represents the distribution of the
@@ -75,17 +77,16 @@ number of missing values (NA) per lines (ie proteins) and per conditions,
 }
 
 \examples{
-if(interactive()){
-data(vData_ft)
-addon <- list(DaparToolshed=c('DaparViz_metacell'))
-view_dataset(vData_ft[[1]], addon)
+if (interactive()) {
+  data(vData_ft)
+  addon <- list(DaparToolshed = c("DaparViz_metacell"))
+  view_dataset(vData_ft[[1]], addon)
 }
 
-if(interactive()){
-data(vData_ft)
-view_dataset(obj)
+if (interactive()) {
+  data(vData_ft)
+  view_dataset(vData_ft)
 }
-
 
 }
 \author{

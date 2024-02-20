@@ -8,117 +8,133 @@
 #' @param hide.white  A `boolean()` to indicate whether the white cells must be
 #' hidden or not.
 #' @param obj An instance of the class `DaparViz`.
-#' 
+#'
 #' @name color-legend
-#' 
-#' @return NA
 #'
 #' @examples
-#' if(interactive()){
-#' data(vData_ft)
-#' colorLegend(vData_ft[[1]])
+#' if (interactive()) {
+#'   data(vData_ft)
+#'   colorLegend(vData_ft[[1]])
 #' }
-#' 
+#'
 NULL
 
 
 #' @export
 #' @rdname color-legend
-#' 
-custom_metacell_colors <- function()
-  list("Any" = "white",
-       "Missing" = "#CF8205",
-       "Missing POV" = "#E5A947",
-       "Missing MEC" = "#F1CA8A",
-       "Quantified" = "#0A31D0",
-       "Quant. by recovery" = "#B9C4F2",
-       "Quant. by direct id" = "#6178D9",
-       "Combined tags" = "#1E8E05",
-       "Imputed" = "#A40C0C",
-       "Imputed POV" = "#E34343",
-       "Imputed MEC" = "#F59898")
+#'
+#' @return A vector
+#'
+custom_metacell_colors <- function() {
+  list(
+    "Any" = "white",
+    "Missing" = "#CF8205",
+    "Missing POV" = "#E5A947",
+    "Missing MEC" = "#F1CA8A",
+    "Quantified" = "#0A31D0",
+    "Quant. by recovery" = "#B9C4F2",
+    "Quant. by direct id" = "#6178D9",
+    "Combined tags" = "#1E8E05",
+    "Imputed" = "#A40C0C",
+    "Imputed POV" = "#E34343",
+    "Imputed MEC" = "#F59898"
+  )
+}
 
 #' @import shiny
 #' @import shinyBS
 #' @rdname color-legend
 #' @export
-#' 
+#'
+#' @return NA
+#'
 colorLegend_ui <- function(id) {
-    ns <- NS(id)
-    pkgs.require('shinyBS')
-    shinyBS::bsCollapse(id = "collapseExample",
-               open = "",
-               shinyBS::bsCollapsePanel(title = "Legend of colors",
-                               uiOutput(ns("legend")),
-                               style = "")
-               )
+  ns <- NS(id)
+
+  shinyBS::bsCollapse(
+    id = "collapseExample",
+    open = "",
+    shinyBS::bsCollapsePanel(
+      title = "Legend of colors",
+      uiOutput(ns("legend")),
+      style = ""
+    )
+  )
 }
 
 
 
 #' @export
 #' @rdname color-legend
+#' @return NA
+#'
 colorLegend_server <- function(id,
-                               presentTags = reactive({NULL}), 
+                               presentTags = reactive({
+                                 NULL
+                               }),
                                hide.white = TRUE) {
   moduleServer(id, function(input, output, session) {
-      ns <- session$ns
-      
+    ns <- session$ns
 
-      output$legend <- renderUI({
-         req(presentTags)
-         mc <- custom_metacell_colors()
-         
-         
-        tagList(
-          lapply(presentTags, function(x) {
-           if (mc[[x]] != "white" || (mc[[x]] == "white" && !isTRUE(hide.white))) {
-              tagList(
-                tags$div(
-                  class = "color-box",
-                  style = paste0("display:inline-block; vertical-align: middle;
-                    width:20px; height:20px; border:1px solid #000; background-color: ", mc[[x]], ";"),
-                ),
-                tags$p(style = paste0("display:inline-block;  vertical-align: middle;"),  x),
-                br()
-              )
-            }
-          })
-        )
-      })
-    }
-  )
+
+    output$legend <- renderUI({
+      req(presentTags)
+      mc <- custom_metacell_colors()
+
+
+      tagList(
+        lapply(presentTags, function(x) {
+          .cond <- mc[[x]] != "white" ||
+            (mc[[x]] == "white" && !isTRUE(hide.white))
+          if (.cond) {
+            tagList(
+              tags$div(
+                class = "color-box",
+                style = paste0("display:inline-block; vertical-align: middle;
+                    width:20px; height:20px; border:1px solid #000;
+                                 background-color: ", mc[[x]], ";"),
+              ),
+              tags$p(style = paste0("display:inline-block;
+                                      vertical-align: middle;"), x),
+              br()
+            )
+          }
+        })
+      )
+    })
+  })
 }
 
 
 
 #' @export
 #' @rdname color-legend
-colorLegend <- function(obj){
-ui <- fluidPage(
-  tagList(
-    colorLegend_ui("plot1"),
-    colorLegend_ui("plot2"),
-    colorLegend_ui("plot3")
+#' @return A shiny app
+#'
+colorLegend <- function(obj) {
+  ui <- fluidPage(
+    tagList(
+      colorLegend_ui("plot1"),
+      colorLegend_ui("plot2"),
+      colorLegend_ui("plot3")
+    )
   )
-)
 
-server <- function(input, output, session) {
-  
-  tags <- GetMetacellTags(obj@metacell, 
-                          level = obj@type, 
-                          onlyPresent = TRUE)
-  
-  # Use the default color palette
-  colorLegend_server("plot1", tags)
-  
-  # Use of a user-defined color palette
-  colorLegend_server("plot2", tags)
-  
-  # Use of a  palette
-  colorLegend_server("plot3", tags)
-}
+  server <- function(input, output, session) {
+    tags <- GetMetacellTags(obj@metacell,
+      level = obj@type,
+      onlyPresent = TRUE
+    )
+
+    # Use the default color palette
+    colorLegend_server("plot1", tags)
+
+    # Use of a user-defined color palette
+    colorLegend_server("plot2", tags)
+
+    # Use of a  palette
+    colorLegend_server("plot3", tags)
+  }
 
   shinyApp(ui, server)
-  
 }

@@ -29,6 +29,18 @@ convert2Viz(object, ...)
 }
 \value{
 An object of class \code{DaparViz}.
+
+An instance of class \code{DaparViz}
+
+An object of class \code{DaparViz}.
+
+An object of class \code{DaparViz}.
+
+An object of class \code{DaparViz}.
+
+An object of class \code{DaparViz}.
+
+An object of class \code{DaparViz}.
 }
 \description{
 These functions are converters for different data formats

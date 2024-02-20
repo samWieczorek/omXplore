@@ -39,16 +39,27 @@ extFoo2(obj)
 \item{obj}{An instance of the class \code{DaparViz}}
 }
 \value{
+A shiny app
+
 NA
+
+NA
+
+A shiny app
+
+NA
+
+NA
+
+A shiny app
 }
 \description{
 xxxx
 }
 \examples{
-if(interactive()){
-data(vData_ft)
-extFoo1(vData_ft[[1]])
+if (interactive()) {
+  data(vData_ft)
+  extFoo1(vData_ft[[1]])
 }
-
 
 }

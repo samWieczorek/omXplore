@@ -18,12 +18,7 @@ A contextual menu for highcharts plots
 Customised contextual menu of highcharts plots
 }
 \examples{
-library(highcharter)
-hc <- highchart() \%>\%
-    hc_chart(type = "line") \%>\%
-    hc_add_series(data = c(29, 71, 40))
-hc <- customExportMenu(hc, fname = "foo")
-hc
+NULL
 
 }
 \author{

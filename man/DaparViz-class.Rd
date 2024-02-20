@@ -70,6 +70,8 @@ elements in the \code{ExperimentList}.}
 }
 \value{
 See individual method description for the return value.
+
+An instance of class \code{DaparViz}
 }
 \description{
 Conceptually, a \code{DaparViz} object is a standard representation of all

@@ -1,9 +1,8 @@
-
 #' @title Customised contextual menu of highcharts plots
 #'
 #' @param hc A highcharter object
 #' @param fname The filename under which the plot has to be saved
-#' 
+#'
 #' @return A contextual menu for highcharts plots
 #'
 #' @author Samuel Wieczorek
@@ -11,28 +10,25 @@
 #' @rdname customExportMenu_HC
 #'
 #' @examples
-#' library(highcharter)
-#' hc <- highchart() %>%
-#'     hc_chart(type = "line") %>%
-#'     hc_add_series(data = c(29, 71, 40))
-#' hc <- customExportMenu(hc, fname = "foo")
-#' hc
+#' NULL
 #'
 #' @export
+#' @import highcharter
 #'
 customExportMenu <- function(hc, fname) {
-  pkgs.require('highcharter')
-    highcharter::hc_exporting(hc,
-                              enabled = TRUE,
-                              filename = fname,
-                              buttons = list(
-                                contextButton = list(
-                                  menuItems = list("downloadPNG",
-                                                   "downloadSVG",
-                                                   "downloadPDF")
-                                  )
-                                )
-                              )
+  highcharter::hc_exporting(hc,
+    enabled = TRUE,
+    filename = fname,
+    buttons = list(
+      contextButton = list(
+        menuItems = list(
+          "downloadPNG",
+          "downloadSVG",
+          "downloadPDF"
+        )
+      )
+    )
+  )
   hc
 }
 
@@ -52,34 +48,37 @@ customExportMenu <- function(hc, fname) {
 #' @author Samuel Wieczorek
 #'
 #' @examples
-#' library("highcharter")
-#' hc <- highchart()
-#' hc_chart(hc, type = "line")
-#' hc_add_series(hc, data = c(29, 71, 40))
-#' customChart(hc)
+#' if (interactive()) {
+#'   hc <- highchart()
+#'   hc_chart(hc, type = "line")
+#'   hc_add_series(hc, data = c(29, 71, 40))
+#'   customChart(hc)
+#' }
 #'
 #' @export
 #'
-customChart <- function(hc,
-                        chartType = 'scatter',
-                        zoomType = "None",
-                        width = 0,
-                        height = 0) {
-  pkgs.require('highcharter')
-    hc %>%
-        hc_chart(
-            type = chartType,
-            zoomType = zoomType,
-            showAxes = TRUE,
-            width = width,
-            height = height,
-            resetZoomButton = list(
-                position = list(
-                    align = "left",
-                    verticalAlign = "top"
-                )
-            )
+#' @import highcharter
+#'
+customChart <- function(
+    hc,
+    chartType = "scatter",
+    zoomType = "None",
+    width = 0,
+    height = 0) {
+  hc %>%
+    hc_chart(
+      type = chartType,
+      zoomType = zoomType,
+      showAxes = TRUE,
+      width = width,
+      height = height,
+      resetZoomButton = list(
+        position = list(
+          align = "left",
+          verticalAlign = "top"
         )
+      )
+    )
 }
 
 
@@ -87,13 +86,13 @@ customChart <- function(hc,
 #' @noRd
 #' @export
 .initComplete <- function() {
-    return(DT::JS(
-        "function(settings, json) {",
-        "$(this.api().table().header()).css({
-        'background-color': 'darkgrey', 
+  return(DT::JS(
+    "function(settings, json) {",
+    "$(this.api().table().header()).css({
+        'background-color': 'darkgrey',
         'color': 'black'});",
-        "}"
-    ))
+    "}"
+  ))
 }
 
 
@@ -102,20 +101,21 @@ customChart <- function(hc,
 #' @title Constructs a dataset suitable to use with the module format_DT.
 #'
 #' @description
-#' This function builds the skeleton of a dataset which can be used by the module
-#' format_DT. It creates additional columns to be used to style the table.
+#' This function builds the skeleton of a dataset which can be used by the
+#' module formatDT. It creates additional columns to be used to style the table.
 #' to colors cells.
 #'
 #' @param vizData An instance of the class `DaparViz`
-#' @param digits An 'integer(1)' to specify the number of digits to display 
+#' @param digits An 'integer(1)' to specify the number of digits to display
 #' in the tables for numerical values. Default is 2.
-#' 
+#'
 #' @return A data.frame
 #'
 #' @export
 #'
-FormatDataForDT <- function(vizData, digits = 2) {
-
+FormatDataForDT <- function(
+    vizData,
+    digits = 2) {
   test.table <- as.data.frame(round(vizData@qdata))
   if (!is.null(names(vizData@metacell))) {
     test.table <- cbind(round(vizData@qdata, digits = digits), vizData@metacell)
@@ -124,7 +124,8 @@ FormatDataForDT <- function(vizData, digits = 2) {
       test.table,
       as.data.frame(
         matrix(rep(NA, ncol(test.table) * nrow(test.table)),
-               nrow = nrow(test.table))
+          nrow = nrow(test.table)
+        )
       )
     )
   }
@@ -144,6 +145,9 @@ FormatDataForDT <- function(vizData, digits = 2) {
 #' @param type An instance of the class `DaparViz`
 #'
 #' @export
+#'
+#' @return A list
+#'
 BuildColorStyles <- function(type) {
   mc <- metacell.def(type)
   colors <- as.list(setNames(mc$color, mc$node))
@@ -152,60 +156,43 @@ BuildColorStyles <- function(type) {
 
 
 
-#' @title Loads packages
-#' 
-#' @description Checks if a package is available to load it
-#' 
-#' @param ll.deps A `character()` vector which contains packages names
-#' 
-#' @examples 
-#' pkgs.require('DAPAR')
-#' 
-#' @export
-#' 
-#' @author Samuel Wieczorek
-#' 
-pkgs.require <- function(ll.deps){
-  lapply(ll.deps, function(x) {
-    if (!requireNamespace(x, quietly = TRUE)) {
-      stop(paste0("Please install ", x, ": BiocManager::install('", x, "')"))
-    }
-  })
-}
-
 #' @title xxx
 #' @description xxxx
 #' @param cc xxx
 #' @return A `list` of three items:
 #' * `One_One`: the number of cc composed of one protein and one peptide
 #' * `One_Multi`: the number of cc composed of one protein and several peptides
-#' * `Multi_Multi`: the number of cc composed of several proteins and 
+#' * `Multi_Multi`: the number of cc composed of several proteins and
 #' several (shared) peptides.
-#' 
+#'
 #' @examples
 #' data(vData_ft)
-#' GetCCInfos(vData_ft[[1]]@cc)
-#' 
+#' GetCCInfos(GetSlotCc(vData_ft[[1]]))
+#'
 #' @export
-GetCCInfos <- function(cc){
-  
-  stopifnot(inherits(cc, 'list'))
-  cc.infos <- list(One_One = list(),
-                   One_Multi = list(),
-                   Multi_Multi = list())
-  
-  
-  ll.prot <- lapply(cc, function(x) {ncol(x)})
-  ll.pept <- lapply(cc, function(x) {nrow(x)})
-  ll.prot.one2one <- intersect(which(ll.prot == 1), which(ll.pept == 1))
-  ll.prot.one2multi <- intersect(which(ll.prot == 1),  which(ll.pept > 1))
-  ll.prot.multi2any <- which(ll.prot > 1)
-  
-  cc.infos[['One_One']] <- cc[ll.prot.one2one]
-  cc.infos[['One_Multi']] <- cc[ll.prot.one2multi]
-  cc.infos[['Multi_Multi']] <- cc[ll.prot.multi2any]
-  
-  cc.infos
-  
-}
+#'
+GetCCInfos <- function(cc) {
+  stopifnot(inherits(cc, "list"))
+  cc.infos <- list(
+    One_One = list(),
+    One_Multi = list(),
+    Multi_Multi = list()
+  )
 
+
+  ll.prot <- lapply(cc, function(x) {
+    ncol(x)
+  })
+  ll.pept <- lapply(cc, function(x) {
+    nrow(x)
+  })
+  ll.prot.one2one <- intersect(which(ll.prot == 1), which(ll.pept == 1))
+  ll.prot.one2multi <- intersect(which(ll.prot == 1), which(ll.pept > 1))
+  ll.prot.multi2any <- which(ll.prot > 1)
+
+  cc.infos[["One_One"]] <- cc[ll.prot.one2one]
+  cc.infos[["One_Multi"]] <- cc[ll.prot.one2multi]
+  cc.infos[["Multi_Multi"]] <- cc[ll.prot.multi2any]
+
+  cc.infos
+}

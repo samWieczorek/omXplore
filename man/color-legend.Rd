@@ -33,15 +33,21 @@ hidden or not.}
 \item{obj}{An instance of the class \code{DaparViz}.}
 }
 \value{
+A vector
+
 NA
+
+NA
+
+A shiny app
 }
 \description{
 Shows xxx based on the tags in the package 'DaparToolshed'
 }
 \examples{
-if(interactive()){
-data(vData_ft)
-colorLegend(vData_ft[[1]])
+if (interactive()) {
+  data(vData_ft)
+  colorLegend(vData_ft[[1]])
 }
 
 }

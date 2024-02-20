@@ -16,7 +16,7 @@ in the tables for numerical values. Default is 2.}
 A data.frame
 }
 \description{
-This function builds the skeleton of a dataset which can be used by the module
-format_DT. It creates additional columns to be used to style the table.
+This function builds the skeleton of a dataset which can be used by the
+module formatDT. It creates additional columns to be used to style the table.
 to colors cells.
 }

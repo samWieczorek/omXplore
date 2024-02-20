@@ -22,6 +22,13 @@ listPlotModules(location = "both")
 
 \item{location}{xxx}
 }
+\value{
+NA
+
+A vector
+
+A vector
+}
 \description{
 xxxxx
 \itemize{
@@ -32,6 +39,6 @@ xxxxx
 }
 \examples{
 listShinyApps()
-listPlotModules
+listPlotModules()
 
 }

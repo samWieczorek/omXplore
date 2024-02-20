@@ -13,13 +13,12 @@ server <- function(input, output, session) {
   data(vData_ft)
   obj <- vData_ft[[1]]
   
-  indices <- mod_plots_tracking_server("tracker", 
+  mod_plots_tracking_server("tracker", 
                                        obj = reactive({obj}))
   
-  observe({
-    print(indices())
-    
-  })
+  # observe({
+  #   print(indices())
+  # })
 }
 
 if (interactive())

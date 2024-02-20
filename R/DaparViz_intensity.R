@@ -8,14 +8,28 @@
 #' @param obj A instance of the class `DaparViz`
 #' @param track.indices xxx
 #' @param withTracking xxx
-#' 
+#' @param data Numeric matrix
+#' @param conds A `character()` of the name of conditions
+#' (one condition per sample). The number of conditions must be equal to
+#' the number of samples (number of columns) of the parameter 'data'.
+#' @param pal.name A `character(1)` which is the name of the palette from the
+#' package [RColorBrewer] from which the colors are taken. Default value
+#' is 'Set1'.
+#' @param subset A `integer()` vector of index indicating the indices
+#' of rows in the dataset to highlight
+#'
 #' @name intensity-plots
 #'
 #' @examples
-#' if(interactive()){
-#' data(vData_ft)
-#' DaparViz_intensity(vData_ft[[1]])
+#' if (interactive()) {
+#'   data(vData_ft)
+#'   DaparViz_intensity(vData_ft[[1]])
 #' }
+#'
+#' data(vData_ft)
+#' qdata <- GetSlotQdata(vData_ft[[1]])
+#' conds <- GetSlotConds(vData_ft[[1]])
+#' boxPlot(qdata, conds)
 #'
 NULL
 
@@ -25,16 +39,19 @@ NULL
 #' @importFrom stats setNames
 #' @export
 #' @rdname intensity-plots
+#' @return NA
+#'
 DaparViz_intensity_ui <- function(id) {
-    ns <- NS(id)
-    tagList(
-        shinyjs::useShinyjs(),
-        shinyjs::hidden(div(id = ns('badFormatMsg'), h3(bad_format_txt))),
-        hidden(radioButtons(ns("choosePlot"), "",
-                    choices = setNames(nm = c("violin", "box")))),
-        highchartOutput(ns("box")),
-        shinyjs::hidden(imageOutput(ns("violin")))
-        )
+  ns <- NS(id)
+  tagList(
+    shinyjs::useShinyjs(),
+    shinyjs::hidden(div(id = ns("badFormatMsg"), h3(bad_format_txt))),
+    hidden(radioButtons(ns("choosePlot"), "",
+      choices = setNames(nm = c("violin", "box"))
+    )),
+    highchartOutput(ns("box")),
+    shinyjs::hidden(imageOutput(ns("violin")))
+  )
 }
 
 
@@ -48,90 +65,111 @@ DaparViz_intensity_ui <- function(id) {
 #'
 #' @return NA
 #'
-DaparViz_intensity_server <- function(id, 
-                                    obj, 
-                                    track.indices = reactive({NULL})
-                                    ) {
-    
-    moduleServer(id, function(input, output, session) {
-        ns <- session$ns
+DaparViz_intensity_server <- function(
+    id,
+    obj,
+    track.indices = reactive({
+      NULL
+    })) {
+  moduleServer(id, function(input, output, session) {
+    ns <- session$ns
 
-        rv <- reactiveValues(data = NULL)
-        
-        observe({
-          if(inherits(obj(), "DaparViz"))
-            rv$data <- obj()
-          
-          shinyjs::toggle('badFormatMsg', condition = is.null(rv$data))
-          shinyjs::toggle('choosePlot', condition = !is.null(rv$data))
-        }, priority = 1000)
-        
-        
-        observeEvent(input$choosePlot, {
-          req(rv$data)
-          shinyjs::toggle('violin', condition = input$choosePlot == "violin")
-          shinyjs::toggle('box', condition = input$choosePlot == "box")
-        })
-        
-        output$box <- renderHighchart({
-          req(rv$data)
-            #withProgress(message = "Making plot", value = 100, {
-                boxPlot(data = rv$data@qdata, 
-                        conds = rv$data@conds, 
-                        subset = track.indices())
-                
-           # })
-          
-        })
+    rv <- reactiveValues(data = NULL)
 
-        output$violin <- renderImage({
-          req(rv$data)
-          # A temp file to save the output. It will be deleted after 
-          # renderImage sends it, because deleteFile=TRUE.
-          outfile <- tempfile(fileext = ".png")
-          # Generate a png
-          withProgress(message = "Making plot", value = 100, {
-              png(outfile)
-              pattern <- paste0("test", ".violinplot")
-              tmp <- violinPlot(data = as.matrix(rv$data@qdata), 
-                                conds = rv$data@conds, 
-                                subset = track.indices())
-              # future(createPNGFromWidget(tmp,pattern))
-              dev.off()
-          })
-          tmp
-          # Return a list
-          list(src = outfile,
-               alt = "This is alternate text")
-        },
-            deleteFile = TRUE
-        )
+    observe(
+      {
+        if (inherits(obj(), "DaparViz")) {
+          rv$data <- obj()
+        }
+
+        shinyjs::toggle("badFormatMsg", condition = is.null(rv$data))
+        shinyjs::toggle("choosePlot", condition = !is.null(rv$data))
+      },
+      priority = 1000
+    )
+
+
+    observeEvent(input$choosePlot, {
+      req(rv$data)
+      shinyjs::toggle("violin", condition = input$choosePlot == "violin")
+      shinyjs::toggle("box", condition = input$choosePlot == "box")
     })
+
+    output$box <- renderHighchart({
+      req(rv$data)
+      # withProgress(message = "Making plot", value = 100, {
+      boxPlot(
+        data = rv$data@qdata,
+        conds = rv$data@conds,
+        subset = track.indices()
+      )
+
+      # })
+    })
+
+    output$violin <- renderImage(
+      {
+        req(rv$data)
+        # A temp file to save the output. It will be deleted after
+        # renderImage sends it, because deleteFile=TRUE.
+        outfile <- tempfile(fileext = ".png")
+        # Generate a png
+        withProgress(message = "Making plot", value = 100, {
+          png(outfile)
+          pattern <- paste0("test", ".violinplot")
+          tmp <- violinPlot(
+            data = as.matrix(rv$data@qdata),
+            conds = rv$data@conds,
+            subset = track.indices()
+          )
+          # future(createPNGFromWidget(tmp,pattern))
+          dev.off()
+        })
+        tmp
+        # Return a list
+        list(
+          src = outfile,
+          alt = "This is alternate text"
+        )
+      },
+      deleteFile = TRUE
+    )
+  })
 }
 
 
 #' @import shiny
 #' @rdname intensity-plots
 #' @export
-DaparViz_intensity <- function(obj,
-                         withTracking = FALSE){
+#' @return A shiny app
+#'
+DaparViz_intensity <- function(
+    obj,
+    withTracking = FALSE) {
   ui <- fluidPage(
     tagList(
-      plots_tracking_ui('tracker'),
+      plots_tracking_ui("tracker"),
       DaparViz_intensity_ui("iplot")
     )
   )
-  
+
   server <- function(input, output, session) {
-    indices <- plots_tracking_server("tracker", 
-                                         obj = reactive({obj}))
-    
+    indices <- plots_tracking_server("tracker",
+      obj = reactive({
+        obj
+      })
+    )
+
     DaparViz_intensity_server("iplot",
-                            obj = reactive({obj}),
-                            track.indices = reactive({indices()})
+      obj = reactive({
+        obj
+      }),
+      track.indices = reactive({
+        indices()
+      })
     )
   }
-  
-  
+
+
   shinyApp(ui = ui, server = server)
 }

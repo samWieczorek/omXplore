@@ -36,13 +36,14 @@ violinPlot(data, conds, subset = NULL, pal.name)
 
 \item{withTracking}{xxx}
 
-\item{data}{An instance of the class \code{matrix}}
+\item{data}{Numeric matrix}
 
 \item{conds}{A \code{character()} of the name of conditions
 (one condition per sample). The number of conditions must be equal to
 the number of samples (number of columns) of the parameter 'data'.}
 
-\item{subset}{A vector of index indicating rows to highlight}
+\item{subset}{A \code{integer()} vector of index indicating the indices
+of rows in the dataset to highlight}
 
 \item{pal.name}{A \code{character(1)} which is the name of the palette from the
 package \link{RColorBrewer} from which the colors are taken. Default value
@@ -50,6 +51,10 @@ is 'Set1'.}
 }
 \value{
 NA
+
+NA
+
+A shiny app
 
 A boxplot
 
@@ -59,9 +64,9 @@ A violin plot
 xxxx
 }
 \examples{
-if(interactive()){
-data(vData_ft)
-DaparViz_intensity(vData_ft[[1]])
+if (interactive()) {
+  data(vData_ft)
+  DaparViz_intensity(vData_ft[[1]])
 }
 
 data(vData_ft)

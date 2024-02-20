@@ -1,5 +1,5 @@
 #' #'
-#' #' #' This function computes few values about the adjacency matrix such as 
+#' #' #' This function computes few values about the adjacency matrix such as
 #' the number of proteins that are only defined by
 #' #' #' specific peptides, shared peptides or a mixture of two.
 #' #' #'
@@ -13,11 +13,11 @@
 #' #' #' nbSpecificPeptides: the number of specific peptides in the matrix,
 #' #' #' nbSharedPeptides: the number of shared peptides in the matrix,
 #' #' #' nbProt: the number of proteins in the matrix,
-#' #' #' protOnlyUniquePep: the list of proteins only defined by specific 
+#' #' #' protOnlyUniquePep: the list of proteins only defined by specific
 #' peptides,
-#' #' #' protOnlySharedPep: the list of proteins only defined by shared 
+#' #' #' protOnlySharedPep: the list of proteins only defined by shared
 #' peptides,
-#' #' #' protMixPep: the list of proteins defined by both shared and specific 
+#' #' #' protMixPep: the list of proteins defined by both shared and specific
 #' peptides.
 #' #' #'
 #' #' #' @author Samuel Wieczorek
@@ -40,19 +40,19 @@
 #' #'   ind.unique.Pep <- which(rowSums(as.matrix(X))==1)
 #' #'
 #' #'   M.shared.Pep <- X[ind.shared.Pep,]
-#' #'   M.shared.Pep <- 
+#' #'   M.shared.Pep <-
 #' M.shared.Pep[,-which(colSums(as.matrix(M.shared.Pep))==0)]
 #' #'
 #' #'   M.unique.Pep <- X[ind.unique.Pep,]
-#' #'   M.unique.Pep <- 
+#' #'   M.unique.Pep <-
 #' M.unique.Pep[,-which(colSums(as.matrix(M.unique.Pep))==0)]
 #' #'
 #' #'
 #' #'   pep.names.shared <- colnames(M.shared.Pep)
 #' #'   pep.names.unique <- colnames(M.unique.Pep)
-#' #'   protOnlyShared <- setdiff(pep.names.shared, 
+#' #'   protOnlyShared <- setdiff(pep.names.shared,
 #' intersect(pep.names.shared, pep.names.unique))
-#' #'   protOnlyUnique <- setdiff(pep.names.unique, 
+#' #'   protOnlyUnique <- setdiff(pep.names.unique,
 #' intersect(pep.names.shared, pep.names.unique))
 #' #'   protMix <- intersect(pep.names.shared, pep.names.unique)
 #' #'
@@ -76,14 +76,14 @@
 #' #'
 #' #' @description
 #' #'
-#' #' Method to plot the disrtibution (histogram) of peptides w.r.t the 
+#' #' Method to plot the disrtibution (histogram) of peptides w.r.t the
 #' proteins with proteins and peptides
 #' #' in an adjacency matrix
 #' #'
 #' #'
 #' #' @param X An adjacency matrix.
 #' #'
-#' #' @param type A string which is the type of matrix (used to build the 
+#' #' @param type A string which is the type of matrix (used to build the
 #' plot title). Default value is 'all'.
 #' #'
 #' #' @return A histogram

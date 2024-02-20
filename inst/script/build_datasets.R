@@ -38,6 +38,6 @@ vData_ms2 <- convert2Viz(ms2)
 vData_ms1 <- convert2Viz(ms1)
 vData_ms2 <- convert2Viz(ms2)
 vData_ms <- vData_ms1
-vData_ms[['processed_1']] <- vData_ms2[[1]]
+vData_ms[["processed_1"]] <- vData_ms2[[1]]
 
-save(vData_ms, file='data/vData_ms.RData')
+save(vData_ms, file = "data/vData_ms.RData")

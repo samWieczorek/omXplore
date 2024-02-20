@@ -44,7 +44,13 @@ Imports:
     utils,
     htmlwidgets,
     vioplot,
-    graphics
+    graphics,
+    FactoMineR,
+    crayon,
+    dendextend,
+    dplyr,
+    factoextra,
+    tidyr
 Suggests: 
     knitr,
     dendextend,
@@ -91,11 +97,8 @@ Collate:
     modules.R
     palette.R
     plot_boxplot.R
-    plot_corrmatrix.R
-    plot_density.R
     plot_heatmap.R
     plot_pca.R
-    plot_variance.R
     plot_violin.R
     utils.R
     zzz.R

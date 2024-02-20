@@ -2,13 +2,13 @@
 % Please edit documentation in R/DaparViz_format_DT.R
 \name{format_DT}
 \alias{format_DT}
-\alias{DaparViz_formatDT_ui}
-\alias{DaparViz_formatDT_server}
+\alias{formatDT_ui}
+\alias{formatDT_server}
 \title{formatDT_ui and formatDT_server}
 \usage{
-DaparViz_formatDT_ui(id)
+formatDT_ui(id)
 
-DaparViz_formatDT_server(
+formatDT_server(
   id,
   data = reactive({
      NULL
@@ -36,7 +36,8 @@ DaparViz_formatDT_server(
 
 \item{data_nostyle}{xxx}
 
-\item{withDLBtns}{A boolean to indicate whether to display download buttons or not.}
+\item{withDLBtns}{A boolean to indicate whether to display download
+buttons or not.}
 
 \item{showRownames}{A boolean to indicate whether to show rownames.}
 
@@ -56,6 +57,8 @@ DaparViz_formatDT_server(
 }
 \value{
 NA
+
+NA
 }
 \description{
 A shiny Module.
@@ -66,10 +69,9 @@ If any style is given, then the dataset must be well configured (I.e. it
 must contain the correct columns )
 }
 \examples{
-if(interactive()){
-data(vData_ft)
-DaparViz_formatDT(GetSlotQdata(vData_ft[[1]]))
+if (interactive()) {
+  data(vData_ft)
+  formatDT(GetSlotQdata(vData_ft[[1]]))
 }
-
 
 }
