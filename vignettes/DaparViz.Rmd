@@ -104,13 +104,17 @@ view_dataset(vData_ft)
 It is composed of two parts :
 * a selection widget to select the dataset to show in the plots,
 * a graphical part with clickable vignettes which represent the plots 
-available. When the user clicks on one of those vignettes, the corresponding plot is showed below.
+available. When the user clicks on one of those vignettes, the corresponding 
+plot is showed below.
 
-When a plot is displayed, it shows the data corresponding to the dataset selected in the widget. If this dataset is changed, the plot update automatically to the new dataset.
+When a plot is displayed, it shows the data corresponding to the dataset 
+selected in the widget. If this dataset is changed, the plot update 
+automatically to the new dataset.
 
 
 The list of vignettes is composed of :
-* built-in shiny apps in the package `DaparViz`. See details with `listPlotsModules()`.
+* built-in shiny apps in the package `DaparViz`. See details with 
+`listPlotsModules()`.
 * external apps which are exported by other packages. For more details on the
 development of an external app, see section xxx.
 
@@ -121,7 +125,8 @@ development of an external app, see section xxx.
 
 ## Individual plots
 
-Each of the built-in plots can be run in a standalone mode rather than embedded in the main UI.
+Each of the built-in plots can be run in a standalone mode rather than embedded 
+in the main UI.
 
 It is possible simply by running its name. The list of all shiny apps which are 
 available via DaparViz can be seen using
@@ -143,8 +148,8 @@ DaparViz_density(obj)
 
 # Adding external plots
 
-DaparViz can plot builtin plots as external shiny app. For that purpose, there are 
-only two points to consider:
+DaparViz can plot builtin plots as external shiny app. For that purpose, there 
+are only two points to consider:
 * make a shiny app available in the global R environment
 * ensure that the name of the two functions `ui()` and `server()` of the app 
 respect a predefined syntax. More specifically, the name of the shiny app is 
@@ -159,9 +164,9 @@ The use of those external apps is devoted to its developer, the interface of
 DaparViz is only a shell that presents apps in a user-friendly interface.
 
 To add external app to DaparViz, please use the global function `view_dataset()`
-as follows. In the example below, one want to add the app called `extFoo1` and `extFoo2`
-from the package `DaparViz`. It is only for the example, this app contains a 
-simple plot just to demonstrate how it works
+as follows. In the example below, one want to add the app called `extFoo1` and 
+`extFoo2` from the package `DaparViz`. It is only for the example, this app 
+contains a simple plot just to demonstrate how it works
 
 ```
 library(DaparViz)
@@ -169,6 +174,11 @@ data(vData_ft)
 addons <- list(DaparViz = c("extFoo1", "extFoo2"))
 view_dataset(vData_ft, addons)
 ```
+
+
+If there are icons to display within DaparViz, the png images must be stored in
+the 'images' directory of the corresponding package.
+
 
 ## Technical point of view
 

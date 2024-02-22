@@ -52,10 +52,11 @@ addModules <- function(addons = list()) {
     f_original_name <- paste0(fun, "_", suffix)
     f_dest_name <- paste0('addon_', pkg, "_", fun, "_", suffix)
     f_fullname <- paste0(pkg, "::", f_original_name)
+    #browser()
     # require(xxx)
-    if (f_original_name %in% ls(paste0("package:", pkg))) {
+    #if (f_original_name %in% ls(paste0("package:", pkg), envir = globalenv())) {
       assign(f_dest_name, eval(parse(text = f_fullname)), envir = globalenv())
-    }
+    #}
   }
 
 

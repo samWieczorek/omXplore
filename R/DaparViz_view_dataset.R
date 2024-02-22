@@ -64,7 +64,7 @@
 #' if (interactive()) {
 #'   data(vData_ft)
 #'   addons <- list(DaparViz = c("extFoo1", "extFoo2"), 
-#'               DaparToolshed = c("metacell"))
+#'               DaparToolshed = c("mod_ds_metacell"))
 #'   addons <- list(DaparViz = c("extFoo1", "extFoo2"))
 #'   view_dataset(vData_ft, addons)
 #' }
@@ -130,6 +130,60 @@ view_dataset_server <- function(
       btns.history = NULL,
       ll.mods = NULL
     )
+    
+    
+    
+    is.addon <- function(x)
+      (length(grep('addon_', x)) == 1)
+    
+    Name2show <- function(x) {
+      # indice for builtin module
+      ind <- 2
+      # Check and update if the module is  an external one
+      if(is.addon(x))
+        ind <- 3
+      
+      unlist(strsplit(x, split='_'))[ind]
+    }
+    
+    GetPackageName <- function(x){
+      # indice for builtin module
+      ind <- 1
+      # Check and update if the module is  an external one
+      if(is.addon(x))
+        ind <- 2
+      
+      unlist(strsplit(x, split='_'))[ind]
+    }
+    
+    GetFuncName <- function(x){
+      # indice for builtin module
+      ind <- 2
+      # Check and update if the module is  an external one
+      if(is.addon(x))
+        ind <- 3
+      
+      unlist(strsplit(x, split='_'))[ind]
+    }
+    
+    FindImgSrc <- function(x) {
+      
+      # By default, search image from the images directory of the DaparViz
+      # package. This works for built-in plot modules. For external modules,
+      # then load customized resource path
+      
+      #img_path <- system.file("images", paste0(GetFuncName(x), ".png"), 
+      #package = GetPackageName(x))
+      if (!is.addon(x))
+        paste0("images/", GetFuncName(x), ".png")
+      else
+        paste0(GetPackageName(x), "_images/", GetFuncName(x), ".png")
+    }
+    
+    
+    
+    
+    
 
     observe(
       {
@@ -149,10 +203,13 @@ view_dataset_server <- function(
       priority = 1000
     )
 
+    
 
     output$ShowPlots_ui <- renderUI({
       req(c(rv$data, rv$ll.mods))
       lapply(rv$ll.mods, function(x) {
+        jqui_resizable(paste0("#", ns(paste0("window_", x)), " .modal-content"))
+        
         tagList(
           actionButton(
             ns(x),
@@ -182,6 +239,7 @@ view_dataset_server <- function(
     })
 
 
+    
     observe({
       req(rv$current.se)
       req(rv$ll.mods)
@@ -200,53 +258,7 @@ view_dataset_server <- function(
       }
     })
 
-    is.addon <- function(x)
-      (length(grep('addon_', x)) == 1)
-    
-    Name2show <- function(x) {
-      # indice for builtin module
-      ind <- 2
-      # Check and update if the module is  an external one
-      if(is.addon(x))
-        ind <- 3
-
-      unlist(strsplit(x, split='_'))[ind]
-    }
-    
-    GetPackageName <- function(x){
-      # indice for builtin module
-      ind <- 1
-      # Check and update if the module is  an external one
-      if(is.addon(x))
-        ind <- 2
-      
-      unlist(strsplit(x, split='_'))[ind]
-    }
-    
-    GetFuncName <- function(x){
-      # indice for builtin module
-      ind <- 2
-      # Check and update if the module is  an external one
-      if(is.addon(x))
-        ind <- 3
-      
-      unlist(strsplit(x, split='_'))[ind]
-    }
-    
-    FindImgSrc <- function(x) {
-
-      # By default, search image from the images directory of the DaparViz
-      # package. This works for built-in plot modules. For external modules,
-      # then load customized resource path
-
-      #img_path <- system.file("images", paste0(GetFuncName(x), ".png"), 
-                              #package = GetPackageName(x))
-        if (!is.addon(x))
-          paste0("images/", GetFuncName(x), ".png")
-        else
-         paste0(GetPackageName(x), "_images/", GetFuncName(x), ".png")
-    }
-
+   
 
     # Update current.se variable
     observeEvent(req(rv$data, input$chooseDataset), ignoreNULL = TRUE, {

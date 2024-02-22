@@ -56,6 +56,26 @@
 ##' ## -----------------------------------
 ##' ## Creating a DaparViz object manually
 ##' ## -----------------------------------
+##' 
+##' qdata <- matrix(1:30, ncol = 6, 
+##' dimnames = list(paste0('prot_', 1:5), 
+##' c(paste0('C1_R', 1:3), paste0('C2_R', 1:3))))
+##' colnames(qdata) <- c(paste0('C1_R', 1:3), paste0('C2_R', 1:3))
+##' metacell <- data.frame(matrix(rep('Missing POV', 30), ncol = 6), 
+##' row.names = paste0('prot_', 1:5))
+##' colnames(metacell) <- c(paste0('metacell_C1_R', 1:3), 
+##' paste0('metacell_C2_R', 1:3))
+##' metadata <- data.frame(protID = paste0('proteinID_', 1:5),
+##' metadata1 = paste0('meta1_', 1:5),
+##' metadata2 = paste0('meta2_', 1:5))
+##' conds <- c(rep('C1', 3), rep('C2', 3))
+##' colID <- 'protID'
+##' proteinId <- 'protID'
+##' type <- "protein"
+##' adjMat <- NULL
+##' cc <- NULL
+##' 
+##' obj <- DaparViz(qdata, metacell, metadata, colID, proteinId, type)
 ##'
 ##' @return An instance of class `DaparViz`
 ##'
