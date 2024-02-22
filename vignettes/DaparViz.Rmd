@@ -95,7 +95,7 @@ The Shiny app called view_dataset() is the main application of the package
 `DaparViz`. It can be lauched as follows:
 
 
-```{r view_dataset, fig.show='hide', message = FALSE, warning = FALSE, echo = TRUE}
+```{r view_dataset, eval=FALSE, fig.show='hide', message = FALSE, warning = FALSE, echo = TRUE}
 library(DaparViz)
 data(vData_ft)
 view_dataset(vData_ft)
@@ -132,7 +132,7 @@ listShinyApps()
 See the help page of this function fore more details.
 
 
-```{r ex_modules, fig.show='hide', message = FALSE, warning = FALSE, echo = TRUE}
+```{r ex_modules, eval = FALSE, fig.show='hide', message = FALSE, warning = FALSE, echo = TRUE}
 library(DaparViz)
 data(vData_ft)
 obj <- vData_ft[[1]]
@@ -163,16 +163,10 @@ as follows. In the example below, one want to add the app called `extFoo1` and `
 from the package `DaparViz`. It is only for the example, this app contains a 
 simple plot just to demonstrate how it works
 
-```{r addons, fig.show='hide', message = FALSE, warning = FALSE, echo = TRUE}
+```
 library(DaparViz)
 data(vData_ft)
-
-addons <- list(
-  DaparViz = list(
-    funcs = c("extFoo1", "extFoo2"),
-    imgDirPath = system.file("extdata", package = "DaparViz")
-  )
-)
+addons <- list(DaparViz = c("extFoo1", "extFoo2"))
 view_dataset(vData_ft, addons)
 ```
 
