@@ -4,7 +4,7 @@
 #' xxxxx
 #' * `listShinyApps()`: xxx
 #' * `listPlotModules()`: xxx
-#' * `addModules()`: Add shiny module
+#' * `addModules()`: Add an external shiny module to the UI of DaparViz
 #'
 #' @param location xxx
 #' @param addons A `list` in which each item is:
@@ -26,27 +26,21 @@ NULL
 #' @return NA
 #' 
 #' @examples
-#' addons <- list(DaparViz = list(funcs = c("extFoo1"), imgDirPath = ''))
+#' addons <- list(DaparViz = c("extFoo1", "extFoo2"), DaparToolshed = c("metacell"))
 #' addModules(addons)
 #'
-addModules <- function(addons) {
+addModules <- function(addons = list()) {
   
   addon.isValid <- function(addons) {
     passed <- TRUE
     passed <- passed && inherits(addons, "list")
-    
-    for (x in addons){
-      passed <- passed && inherits(x, "list")
-      passed <- passed && "funcs" %in% names(x)
-      passed <- passed && "imgDirPath" %in% names(x)
-    }
 
     passed
   }
   
   
   
-  if (is.null(addons) || !inherits(addons, "list")) {
+  if (length(addons)==0 || !inherits(addons, "list")) {
     cat('No external module was found')
     return(NULL)
   } else if (!addon.isValid(addons)){
@@ -56,26 +50,27 @@ addModules <- function(addons) {
 
   f_assign <- function(fun, pkg, suffix) {
     f_original_name <- paste0(fun, "_", suffix)
-    f_dest_name <- paste0("DaparViz_", fun, "_", suffix)
+    f_dest_name <- paste0('addon_', pkg, "_", fun, "_", suffix)
     f_fullname <- paste0(pkg, "::", f_original_name)
-    
-    if (f_original_name %in% ls(paste0("package:", pkg), envir = globalenv())) {
+    # require(xxx)
+    if (f_original_name %in% ls(paste0("package:", pkg))) {
       assign(f_dest_name, eval(parse(text = f_fullname)), envir = globalenv())
     }
   }
 
 
-  for (x in names(addons)) {
-    for (m in addons[[x]]$funcs) {
-      f_assign(m, x, "ui")
-      f_assign(m, x, "server")
+  for (pkg in names(addons)) {
+    
+    for (func in addons[[pkg]]) {
+      f_assign(func, pkg, "ui")
+      f_assign(func, pkg, "server")
     }
     
-    
+
     tryCatch({
         addResourcePath(
-        prefix = paste0(x, "_imgDir"),
-        directoryPath = addons[[x]]$imgDirPath
+        prefix = paste0(pkg, '_images'),
+        directoryPath = system.file('images', package = pkg)
         )
       },
       warning = function(w) print(w),
@@ -131,7 +126,7 @@ listPlotModules <- function(location = "both") {
 
   # Lists module in the global environment
   external <- utils::lsf.str(envir = globalenv())
-  external <- external[grep("DaparViz_", external)]
+  external <- external[grep("addon_", external)]
   external <- gsub("_server", "", external)
   external <- gsub("_ui", "", external)
   external <- unique(external)

@@ -63,8 +63,9 @@
 #' @examples
 #' if (interactive()) {
 #'   data(vData_ft)
-#'  # addon <- list(DaparToolshed = c("DaparViz_metacell"))
-#'   addons <- list(DaparViz = list(funcs = c("extFoo1"), imgDirPath = ''))
+#'   addons <- list(DaparViz = c("extFoo1", "extFoo2"), 
+#'               DaparToolshed = c("metacell"))
+#'   addons <- list(DaparViz = c("extFoo1", "extFoo2"))
 #'   view_dataset(vData_ft, addons)
 #' }
 #'
@@ -135,11 +136,12 @@ view_dataset_server <- function(
         req(obj())
         if (inherits(obj(), "list")) {
           rv$data <- obj()
-          conds <- rv$data[[1]]@conds
+          conds <- GetSlotConds(rv$data[[1]])
 
+          # Load external modules
           addModules(addons)
-          rv$ll.mods <- listPlotModules()
-          # print(rv$ll.mods)
+          
+          rv$ll.mods <- listPlotModules() 
         } else {
           shinyjs::toggle("badFormatMsg", condition = !inherits(obj(), "list"))
         }
@@ -155,7 +157,7 @@ view_dataset_server <- function(
           actionButton(
             ns(x),
             label = tagList(
-              p(gsub("DaparViz_", "", x)),
+              p(Name2show(x)),
               tags$img(src = FindImgSrc(x), height = "50px")
             ),
             style = "padding: 5px; border: none;
@@ -198,20 +200,51 @@ view_dataset_server <- function(
       }
     })
 
+    is.addon <- function(x)
+      (length(grep('addon_', x)) == 1)
+    
+    Name2show <- function(x) {
+      # indice for builtin module
+      ind <- 2
+      # Check and update if the module is  an external one
+      if(is.addon(x))
+        ind <- 3
+
+      unlist(strsplit(x, split='_'))[ind]
+    }
+    
+    GetPackageName <- function(x){
+      # indice for builtin module
+      ind <- 1
+      # Check and update if the module is  an external one
+      if(is.addon(x))
+        ind <- 2
+      
+      unlist(strsplit(x, split='_'))[ind]
+    }
+    
+    GetFuncName <- function(x){
+      # indice for builtin module
+      ind <- 2
+      # Check and update if the module is  an external one
+      if(is.addon(x))
+        ind <- 3
+      
+      unlist(strsplit(x, split='_'))[ind]
+    }
+    
     FindImgSrc <- function(x) {
+
       # By default, search image from the images directory of the DaparViz
       # package. This works for built-in plot modules. For external modules,
       # then load customized resource path
 
-
-      img_path <- system.file("images", paste0(x, ".png"), package = "DaparViz")
-      if (file.exists(img_path)) {
-        img_src <- paste0("images/", x, ".png")
-      } else {
-        img_src <- paste0("DaparViz_imgDir/", gsub("DaparViz_", "", x), ".png")
-      }
-
-      img_src
+      #img_path <- system.file("images", paste0(GetFuncName(x), ".png"), 
+                              #package = GetPackageName(x))
+        if (!is.addon(x))
+          paste0("images/", GetFuncName(x), ".png")
+        else
+         paste0(GetPackageName(x), "_images/", GetFuncName(x), ".png")
     }
 
 

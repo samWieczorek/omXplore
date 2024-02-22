@@ -53,17 +53,11 @@ Imports:
     tidyr
 Suggests: 
     knitr,
-    dendextend,
     rmarkdown,
-    crayon,
     BiocStyle,
     testthat,
     Matrix,
-    FactoMineR,
-    factoextra,
-    graph,
-    dplyr,
-    tidyr
+    graph
 biocViews: 
     Software,
     Proteomics,

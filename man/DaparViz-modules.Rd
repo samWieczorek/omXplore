@@ -41,4 +41,7 @@ xxxxx
 listShinyApps()
 listPlotModules()
 
+addons <- list(DaparViz = list(funcs = c("extFoo1"), imgDirPath = ''))
+addModules(addons)
+
 }
