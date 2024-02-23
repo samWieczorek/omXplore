@@ -68,6 +68,8 @@
 #'   addons <- list(DaparViz = c("extFoo1", "extFoo2"))
 #'   view_dataset(vData_ft, addons)
 #' }
+#' 
+#' @return NA
 #'
 NULL
 

@@ -249,7 +249,7 @@ DaparViz_pca_server <- function(
 #' @import shiny
 #' @export
 #' @rdname ds-pca
-#' @return NA
+#' @return A shiny app
 #'
 DaparViz_pca <- function(obj) {
   ui <- DaparViz_pca_ui("plot")

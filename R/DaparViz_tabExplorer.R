@@ -14,6 +14,8 @@
 #'   data(vData_ft)
 #'   DaparViz_tabExplorer(vData_ft[[1]])
 #' }
+#' 
+#' @return NA
 #'
 NULL
 

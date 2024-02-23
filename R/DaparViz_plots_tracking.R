@@ -7,7 +7,6 @@
 #' @param resetBtn A `boolean(1)` which indicates whether to show the 'Reset'
 #' button or not.
 #'
-#' @return A `list` (same structure as the parameter `params`)
 #'
 #' @examples
 #' if (interactive()) {
@@ -63,7 +62,7 @@ plots_tracking_ui <- function(id) {
 #' @export
 #' @keywords internal
 #' @import shinyjs
-#' @return NA
+#' @return A `list` (same structure as the parameter `params`)
 #'
 plots_tracking_server <- function(
     id,

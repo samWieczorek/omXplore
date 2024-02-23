@@ -1,15 +1,23 @@
-#' @title Modules functions
+#' @title Shiny modules used by `DaparViz` 
 #'
 #' @description
-#' xxxxx
-#' * `listShinyApps()`: xxx
-#' * `listPlotModules()`: xxx
-#' * `addModules()`: Add an external shiny module to the UI of DaparViz
+#' These functions are relative to external modules that can be added into 
+#' `DaparViz` UI:
+#' * `listShinyApps()`: Show the shiny modules recognized by `DaparViz` and 
+#' ready to bu integrated in the UI of the function view_dataset()
+#' * `listPlotModules()`: Show the shiny modules function names (only prefixes)
+#'  recognized by `DaparViz` and ready to use in the UI.
+#' * `addModules()`: Add external shiny module(s) to the R global environment in
+#' such a way (specific prefix renaming of the functions) that it can be
+#'  discovered by the function view_dataset() of the package `DaparViz` during 
+#'  its launch. 
 #'
-#' @param location xxx
-#' @param addons A `list` in which each item is:
-#' * is named by the name of a package
-#' * contains th set of modules to integrate
+#' @param location A `character(0)` to indicate which modules to list. Available
+#' values are: 'builtin', 'external' and 'both' (default).
+#' @param addons A `list` in which each item:
+#' * is named by the name of a package containing the modules to add,
+#' * contains the name of the shiny modules to integrate (without '_ui' nor
+#' '_server' suffixes)
 #'
 #'
 #' @name DaparViz-modules
@@ -17,6 +25,14 @@
 #' @examples
 #' listShinyApps()
 #' listPlotModules()
+#' 
+#' #####################################################
+#' # Integration of a module in the package 'mypackage'
+#' #####################################################
+#' \dontrun{
+#' addons <- list(myPackage = c("shinyMod_1", "shinyMod_2"))
+#' addModules(addons)
+#' }
 #'
 NULL
 
@@ -24,10 +40,6 @@ NULL
 #' @export
 #' @rdname DaparViz-modules
 #' @return NA
-#' 
-#' @examples
-#' addons <- list(DaparViz = c("extFoo1", "extFoo2"), DaparToolshed = c("metacell"))
-#' addModules(addons)
 #'
 addModules <- function(addons = list()) {
   
@@ -52,22 +64,16 @@ addModules <- function(addons = list()) {
     f_original_name <- paste0(fun, "_", suffix)
     f_dest_name <- paste0('addon_', pkg, "_", fun, "_", suffix)
     f_fullname <- paste0(pkg, "::", f_original_name)
-    #browser()
-    # require(xxx)
-    #if (f_original_name %in% ls(paste0("package:", pkg), envir = globalenv())) {
-      assign(f_dest_name, eval(parse(text = f_fullname)), envir = globalenv())
-    #}
+    assign(f_dest_name, eval(parse(text = f_fullname)), envir = globalenv())
   }
 
 
   for (pkg in names(addons)) {
-    
     for (func in addons[[pkg]]) {
       f_assign(func, pkg, "ui")
       f_assign(func, pkg, "server")
     }
     
-
     tryCatch({
         addResourcePath(
         prefix = paste0(pkg, '_images'),
@@ -136,10 +142,8 @@ listPlotModules <- function(location = "both") {
     external <- NULL
   }
 
-  both <- c(builtin, external)
-
   value <- switch(location,
-    both = both,
+    both = c(builtin, external),
     external = external,
     builtin = builtin
   )

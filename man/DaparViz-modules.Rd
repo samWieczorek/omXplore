@@ -5,22 +5,24 @@
 \alias{addModules}
 \alias{listShinyApps}
 \alias{listPlotModules}
-\title{Modules functions}
+\title{Shiny modules used by \code{DaparViz}}
 \usage{
-addModules(addons)
+addModules(addons = list())
 
 listShinyApps(location = "both")
 
 listPlotModules(location = "both")
 }
 \arguments{
-\item{addons}{A \code{list} in which each item is:
+\item{addons}{A \code{list} in which each item:
 \itemize{
-\item is named by the name of a package
-\item contains th set of modules to integrate
+\item is named by the name of a package containing the modules to add,
+\item contains the name of the shiny modules to integrate (without '_ui' nor
+'_server' suffixes)
 }}
 
-\item{location}{xxx}
+\item{location}{A \code{character(0)} to indicate which modules to list. Available
+values are: 'builtin', 'external' and 'both' (default).}
 }
 \value{
 NA
@@ -30,18 +32,29 @@ A vector
 A vector
 }
 \description{
-xxxxx
+These functions are relative to external modules that can be added into
+\code{DaparViz} UI:
 \itemize{
-\item \code{listShinyApps()}: xxx
-\item \code{listPlotModules()}: xxx
-\item \code{addModules()}: Add shiny module
+\item \code{listShinyApps()}: Show the shiny modules recognized by \code{DaparViz} and
+ready to bu integrated in the UI of the function view_dataset()
+\item \code{listPlotModules()}: Show the shiny modules function names (only prefixes)
+recognized by \code{DaparViz} and ready to use in the UI.
+\item \code{addModules()}: Add external shiny module(s) to the R global environment in
+such a way (specific prefix renaming of the functions) that it can be
+discovered by the function view_dataset() of the package \code{DaparViz} during
+its launch.
 }
 }
 \examples{
 listShinyApps()
 listPlotModules()
 
-addons <- list(DaparViz = list(funcs = c("extFoo1"), imgDirPath = ''))
+#####################################################
+# Integration of a module in the package 'mypackage'
+#####################################################
+\dontrun{
+addons <- list(myPackage = c("shinyMod_1", "shinyMod_2"))
 addModules(addons)
+}
 
 }

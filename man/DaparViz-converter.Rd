@@ -28,8 +28,6 @@ convert2Viz(object, ...)
 \item{...}{xxx}
 }
 \value{
-An object of class \code{DaparViz}.
-
 An instance of class \code{DaparViz}
 
 An object of class \code{DaparViz}.
@@ -48,7 +46,6 @@ to an object of class \code{DaparViz} which is the format used by functions
 in the package \code{DaparViz}.
 }
 \examples{
-
 
 # Conversion of an object of class `MSnSet`
 data(sub_Exp1_R2_pept_MSnSet)

@@ -12,7 +12,6 @@
 #' package `RColorBrewer` from which the colors are taken.
 #' Default value is 'Set1'.
 #'
-#' @return A shiny app
 #'
 #' @examples
 #' if (interactive()) {

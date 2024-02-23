@@ -21,7 +21,7 @@ DaparViz_cc(obj)
 \value{
 A shiny plot
 
-A shiny plot
+A shiny app
 
 A shiny app
 }

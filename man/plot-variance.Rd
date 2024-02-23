@@ -25,8 +25,6 @@ DaparViz_variance(obj)
 \item{pal.name}{xxx}
 }
 \value{
-A shiny app
-
 NA
 
 NA

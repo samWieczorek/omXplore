@@ -29,11 +29,9 @@ plots_tracking(obj)
 button or not.}
 }
 \value{
+NA
+
 A \code{list} (same structure as the parameter \code{params})
-
-NA
-
-NA
 
 A shiny app
 }

@@ -32,6 +32,8 @@
 #'   formatDT(GetSlotQdata(vData_ft[[1]]))
 #' }
 #'
+#' @return NA
+#' 
 NULL
 
 

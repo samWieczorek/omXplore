@@ -40,6 +40,8 @@ NA
 
 NA
 
+NA
+
 A shiny application which wraps the functions view_dataset_ui()
 and the view_dataset_server()
 }
@@ -79,8 +81,9 @@ number of missing values (NA) per lines (ie proteins) and per conditions,
 \examples{
 if (interactive()) {
   data(vData_ft)
- # addon <- list(DaparToolshed = c("DaparViz_metacell"))
-  addons <- list(DaparViz = list(funcs = c("extFoo1"), imgDirPath = ''))
+  addons <- list(DaparViz = c("extFoo1", "extFoo2"), 
+              DaparToolshed = c("mod_ds_metacell"))
+  addons <- list(DaparViz = c("extFoo1", "extFoo2"))
   view_dataset(vData_ft, addons)
 }
 

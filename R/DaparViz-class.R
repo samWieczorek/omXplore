@@ -87,6 +87,7 @@ NULL
 ##' @rdname DaparViz-class
 ##' @export DaparViz
 ##' @exportClass DaparViz
+##' @return An instance of the class `DaparViz`
 DaparViz <- setClass(
 
   "DaparViz",
@@ -157,6 +158,7 @@ DaparViz <- setClass(
 ##' @exportMethod show
 ##' @rdname DaparViz-class
 ##' @import crayon
+##' @return NA
 ##'
 setMethod(
   "show", "DaparViz",
@@ -223,6 +225,7 @@ setMethod(
 
 ##' @title Initialization method for the class `DaparViz`
 ##' @rdname DaparViz-class
+##' @return An instance of the class `DaparViz`
 ##'
 setMethod(
   "initialize", "DaparViz",
@@ -313,6 +316,7 @@ setMethod(
 ##' @rdname DaparViz-class
 ##'
 ##' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
+##' @return NA
 ##'
 setMethod("[",
   signature = c("DaparViz", "ANY", "ANY", "ANY"),

@@ -15,6 +15,8 @@
 #'   data(vData_ft)
 #'   extFoo1(vData_ft[[1]])
 #' }
+#' 
+#' @return NA
 #'
 NULL
 

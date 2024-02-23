@@ -7,10 +7,7 @@
 #'
 #' @param object An instance of class `QFeatures`.
 #'
-#' @return An object of class `DaparViz`.
-#'
 #' @examples
-#'
 #'
 #' # Conversion of an object of class `MSnSet`
 #' data(sub_Exp1_R2_pept_MSnSet)
@@ -198,74 +195,3 @@ FormatAvailables <- function() {
 }
 
 
-#' #' @title Get the class of object
-#' #' @description This function returns the class of the object passed as
-#' #' argument, or the class of its items if the object is a `list`. If the
-#' #' class is not managed by DaparViz, then return NA For a list of managed
-#' #' classes.
-#' #' see `FormatAvailables()`.
-#' #' @param ll An object.
-#' #' @rdname Convert2VizList
-#' #'
-#' CheckClass <- function(ll){
-#'   ll.class <- NULL
-#'   if (inherits(ll, 'QFeatures'))
-#'     ll.class <- 'QFeatures'
-#'   else if (inherits(ll, 'list')){
-#'     if (sum(unlist(lapply(ll,
-#'     function(x) inherits(x, 'MSnSet')))) == length(ll)
-#'              && length(names(ll)) == length(ll))
-#'       ll.class <- 'MSnSet'
-#'     else
-#'       ll.class <- 'list'
-#'     }
-#'   else if (inherits(ll, 'VizList'))
-#'     ll.class <- 'VizList'
-#'   else
-#'     ll.class <- NA
-#'   return(ll.class)
-#' }
-
-#'
-#' #' @title Convert a dataset to an instance of class `VizList`
-#' #' @description
-#' #' Actually, three types of dataset can be converted:
-#' #' * A `list` which must be formatted in the correct format. See xxx
-#' #' * A `list` of instances of class `MSnset`
-#' #' * An instance of class `QFeatures` (which is already a list)
-#' #' @param obj An instance of class `VizList`
-#' #' @rdname Convert2VizList
-#' #' @return An instance of class `VizList`
-#' #' @export
-#' convert2viz <- function(obj = NULL){
-#'
-#'   if (is.null(obj) || length(obj) == 0)
-#'     return(NULL)
-#'
-#'   ll <- NULL
-#'   stopifnot(CheckClass(obj) %in% FormatAvailables())
-#'   stopifnot(!is.na(CheckClass(obj)))
-#'
-#'   switch(CheckClass(obj),
-#'
-#'          # Nothing to do
-#'          VizList = ll <- obj,
-#'
-#'          QFeatures = ll <- Convert2VizList(obj),
-#'
-#'          MSnSet = {
-#'            ll.tmp <- NULL
-#'            for (i in 1:length(obj))
-#'              ll.tmp[[names(obj)[i]]] <- Convert2DaparViz(obj[[i]])
-#'            ll <- VizList(ll.tmp)
-#'          },
-#'
-#'          list = {
-#'            ll.tmp <- NULL
-#'            for (i in 1:length(obj))
-#'              ll.tmp[[names(obj)[i]]] <- Convert2DaparViz(obj[[i]])
-#'            ll <- VizList(ll.tmp)
-#'          }
-#'          )
-#'   return(ll)
-#'  }

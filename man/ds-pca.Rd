@@ -46,7 +46,7 @@ NA
 
 NA
 
-NA
+A shiny app
 
 The result of the function FactoMineR::PCA()
 

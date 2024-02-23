@@ -85,6 +85,8 @@ customChart <- function(
 
 #' @noRd
 #' @export
+#' @return NA
+#' 
 .initComplete <- function() {
   return(DT::JS(
     "function(settings, json) {",

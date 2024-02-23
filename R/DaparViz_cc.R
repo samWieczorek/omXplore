@@ -130,7 +130,7 @@ DaparViz_cc_ui <- function(id) {
 #' @rdname ds-cc
 #'
 #' @export
-#' @return A shiny plot
+#' @return A shiny app
 #'
 #' @import visNetwork
 #' @import highcharter
