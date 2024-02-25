@@ -28,17 +28,15 @@ NULL
 #' @return NA
 #'
 DaparViz_corrmatrix_ui <- function(id) {
-  ns <- NS(id)
-  tagList(
-    shinyjs::useShinyjs(),
-    shinyjs::hidden(div(id = ns("badFormatMsg"), h3(bad_format_txt))),
-    uiOutput(ns("showValues_ui")),
-    uiOutput(ns("rate_ui")),
-    highcharter::highchartOutput(ns("plot"),
-      width = "600px",
-      height = "500px"
+    ns <- NS(id)
+    tagList(
+        shinyjs::useShinyjs(),
+        shinyjs::hidden(div(id = ns("badFormatMsg"), h3(bad_format_txt))),
+        uiOutput(ns("showValues_ui")),
+        uiOutput(ns("rate_ui")),
+        highcharter::highchartOutput(ns("plot"),
+            width = "600px", height = "500px")
     )
-  )
 }
 
 #' @rdname corrmatrix
@@ -47,52 +45,41 @@ DaparViz_corrmatrix_ui <- function(id) {
 #'
 DaparViz_corrmatrix_server <- function(
     id,
-    obj = reactive({
-      NULL
-    }),
-    rate = reactive({
-      0.5
-    }),
-    showValues = reactive({
-      FALSE
-    })) {
-  moduleServer(id, function(input, output, session) {
-    ns <- session$ns
+    obj = reactive({ NULL}),
+    rate = reactive({0.5}),
+    showValues = reactive({FALSE})) {
+    moduleServer(id, function(input, output, session) {
+        ns <- session$ns
 
-    rv.corr <- reactiveValues(
-      data = NULL,
-      rate = NULL,
-      showValues = NULL
-    )
+        rv.corr <- reactiveValues(
+            data = NULL,
+            rate = NULL,
+           showValues = NULL
+        )
 
     observeEvent(id, {
-      rv.corr$rate <- rate()
-      rv.corr$showValues <- showValues()
+        rv.corr$rate <- rate()
+        rv.corr$showValues <- showValues()
     })
 
 
-    observe(
-      {
-        if (inherits(obj(), "DaparViz")) {
-          rv.corr$data <- obj()
-        }
+    observe({
+        if (inherits(obj(), "DaparViz")) {rv.corr$data <- obj()}
 
         shinyjs::toggle("badFormatMsg",
-          condition = !inherits(obj(), "DaparViz")
+            condition = !inherits(obj(), "DaparViz")
         )
-      },
-      priority = 1000
-    )
+      }, priority = 1000)
 
     output$rate_ui <- renderUI({
-      req(rv.corr$rate)
-      sliderInput(ns("rate"),
-        "Tune to modify the color gradient",
-        min = 0,
-        max = 1,
-        value = rv.corr$rate,
-        step = 0.01
-      )
+        req(rv.corr$rate)
+        sliderInput(ns("rate"),
+            "Tune to modify the color gradient",
+            min = 0,
+            max = 1,
+            value = rv.corr$rate,
+            step = 0.01
+        )
     })
 
 

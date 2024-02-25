@@ -533,9 +533,6 @@ setMethod("GetSlotAdjMat",
 convertMAEtype <- function(object) {
   ll <- list()
   for (i in seq_len(length(object))) {
-    cat(paste0("Processing assay ", i, "...\n"))
-
-
     args <- list(
       qdata = matrix(),
       metacell = data.frame(),

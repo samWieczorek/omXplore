@@ -8,7 +8,8 @@ Authors@R:
   c(person(given = "Samuel", 
       family = "Wieczorek",
       email = "samuel.wieczorek@cea.fr", 
-      role = c("aut","cre")),
+      role = c("aut","cre"),
+      comment = c(ORCID="...")),
   person(given = "Thomas", 
       family ="Burger",
       email = "thomas.burger@cea.fr",
@@ -21,6 +22,8 @@ Authors@R:
 Description: This package contains a collection of functions (shiny modules) 
     for the visualisation and the statistical analysis of proteomic data. These
     plots can be displayed individually or embedded in a global Shiny module.
+    Additionaly, it is possible to integrate external shimu modules to the main
+    interface of DpaarViz (function `view_dataset()`).
 License: Artistic-2.0
 Depends:
     R (>= 4.4.0), methods

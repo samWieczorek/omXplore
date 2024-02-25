@@ -28,8 +28,8 @@
 #' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
 #'
 setGeneric(
-  "convert2Viz",
-  function(object, ...) standardGeneric("convert2Viz")
+    "convert2Viz",
+    function(object, ...) standardGeneric("convert2Viz")
 )
 
 
@@ -38,12 +38,12 @@ setGeneric(
 #' @return An object of class `DaparViz`.
 #' @rdname DaparViz-converter
 setMethod("convert2Viz",
-  signature = NULL,
-  #' @title xxx
-  #' @param object An instance of class `MultiAssayExperiment`.
-  function(object) {
-    NULL
-  }
+    signature = NULL,
+    #' @title xxx
+    #' @param object An instance of class `MultiAssayExperiment`.
+    function(object) {
+        NULL
+    }
 )
 
 
@@ -52,12 +52,12 @@ setMethod("convert2Viz",
 #' @return An object of class `DaparViz`.
 #' @rdname DaparViz-converter
 setMethod("convert2Viz",
-  signature = "MultiAssayExperiment",
-  #' @title xxx
-  #' @param object An instance of class `MultiAssayExperiment`.
-  function(object) {
-    convertMAEtype(object)
-  }
+    signature = "MultiAssayExperiment",
+    #' @title xxx
+    #' @param object An instance of class `MultiAssayExperiment`.
+    function(object) {
+        convertMAEtype(object)
+    }
 )
 
 
@@ -66,12 +66,12 @@ setMethod("convert2Viz",
 #' @return An object of class `DaparViz`.
 #' @rdname DaparViz-converter
 setMethod("convert2Viz",
-  signature = "QFeatures",
-  #' @title xxx
-  #' @param object An instance of class `MultiAssayExperiment`.
-  function(object) {
-    convertMAEtype(object)
-  }
+    signature = "QFeatures",
+    #' @title xxx
+    #' @param object An instance of class `MultiAssayExperiment`.
+    function(object) {
+        convertMAEtype(object)
+    }
 )
 
 
@@ -83,51 +83,51 @@ setMethod("convert2Viz",
 #' @import PSMatch
 #'
 setMethod("convert2Viz",
-  signature = "SummarizedExperiment",
-  #' @title xxx
-  #' @param object An instance of class `MultiAssayExperiment`.
-  function(object) {
-    ll <- list()
-    args <- list(
-      qdata = GetSlotQdata(object),
-      metacell = GetSlotMetacell(object),
-      metadata = GetSlotMetadata(object),
-      colID = GetSlotColID(object),
-      proteinID = GetSlotProteinID(object),
-      conds = GetSlotConds(object),
-      type = GetSlotType(object),
-      adjMat = matrix(),
-      cc = list()
-    )
+    signature = "SummarizedExperiment",
+    #' @title xxx
+    #' @param object An instance of class `MultiAssayExperiment`.
+    function(object) {
+        ll <- list()
+        args <- list(
+            qdata = GetSlotQdata(object),
+            metacell = GetSlotMetacell(object),
+            metadata = GetSlotMetadata(object),
+            colID = GetSlotColID(object),
+            proteinID = GetSlotProteinID(object),
+            conds = GetSlotConds(object),
+            type = GetSlotType(object),
+            adjMat = matrix(),
+            cc = list()
+            )
 
 
     if (!is.null(args$metacell)) {
-      ind <- which(names(args$metadata) == "qMetacell")
-      args$metadata <- args$metadata[, -ind]
-    }
+        ind <- which(names(args$metadata) == "qMetacell")
+        args$metadata <- args$metadata[, -ind]
+        }
 
-    # Delete adjacency Matrix from whole metadata
+        # Delete adjacency Matrix from whole metadata
     if ("adjacencyMatrix" %in% names(args$metadata)) {
-      ind <- which(names(args$metadata) == "adjacencyMatrix")
-      args$metadata <- args$metadata[, -ind]
-    }
+        ind <- which(names(args$metadata) == "adjacencyMatrix")
+        args$metadata <- args$metadata[, -ind]
+        }
 
-    if (!is.null(args$proteinID) && args$proteinID != "") {
-      .args <- args$metadata[, args$proteinID]
-      args$adjMat <- PSMatch::makeAdjacencyMatrix(.args)
-      rownames(args$adjMat) <- rownames(args$metadata)
+        if (!is.null(args$proteinID) && args$proteinID != "") {
+            .args <- args$metadata[, args$proteinID]
+            args$adjMat <- PSMatch::makeAdjacencyMatrix(.args)
+            rownames(args$adjMat) <- rownames(args$metadata)
 
-      # Create the connected components
-      args$cc <- PSMatch::ConnectedComponents(args$adjMat)@adjMatrices
-    }
+            # Create the connected components
+            # args$cc <- PSMatch::ConnectedComponents(args$adjMat)@adjMatrices
+            }
 
     # Fix typos
 
-    args$metadata <- as.data.frame(args$metadata)
+        args$metadata <- as.data.frame(args$metadata)
 
-    ll[["original"]] <- do.call(DaparViz, args)
+        ll[["original"]] <- do.call(DaparViz, args)
     ll
-  }
+    }
 )
 
 
@@ -139,35 +139,35 @@ setMethod("convert2Viz",
 #' @import PSMatch
 #'
 setMethod("convert2Viz",
-  signature = "MSnSet",
-  #' @title xxx
-  #' @param object An instance of class `MSnSet`.
-  #' @param ... xxx
-  function(object, ...) {
-    args <- list(
-      qdata = GetSlotQdata(object),
-      metacell = GetSlotMetacell(object),
-      metadata = GetSlotMetadata(object),
-      colID = GetSlotColID(object),
-      proteinID = GetSlotProteinID(object),
-      conds = GetSlotConds(object),
-      type = GetSlotType(object),
-      adjMat = matrix(),
-      cc = list()
-    )
+    signature = "MSnSet",
+    #' @title xxx
+    #' @param object An instance of class `MSnSet`.
+   #' @param ... xxx
+    function(object, ...) {
+        args <- list(
+            qdata = GetSlotQdata(object),
+            metacell = GetSlotMetacell(object),
+            metadata = GetSlotMetadata(object),
+            colID = GetSlotColID(object),
+            proteinID = GetSlotProteinID(object),
+            conds = GetSlotConds(object),
+            type = GetSlotType(object),
+            adjMat = matrix(),
+            cc = list()
+            )
 
     if (args$type == "peptide") {
-      .dat <- args$metadata[, args$proteinID]
-      args$adjMat <- PSMatch::makeAdjacencyMatrix(.dat)
-      rownames(args$adjMat) <- rownames(args$metadata)
-      connectedComp <- PSMatch::ConnectedComponents(args$adjMat)
-      args$cc <- connectedComp@adjMatrices
-    }
+        .dat <- args$metadata[, args$proteinID]
+        args$adjMat <- PSMatch::makeAdjacencyMatrix(.dat)
+        rownames(args$adjMat) <- rownames(args$metadata)
+        connectedComp <- PSMatch::ConnectedComponents(args$adjMat)
+        args$cc <- connectedComp@adjMatrices
+        }
 
     ll.tmp <- list()
     ll.tmp[["original"]] <- do.call(DaparViz, args)
     ll.tmp
-  }
+    }
 )
 
 
@@ -185,13 +185,13 @@ setMethod("convert2Viz",
 #' @export
 #'
 FormatAvailables <- function() {
-  c(
+    c(
     "QFeatures",
     "MSnSet",
     "SummarizedExperiment",
     "MultiAssayExperment",
     "list"
-  )
+    )
 }
 
 

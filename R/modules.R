@@ -53,7 +53,7 @@ addModules <- function(addons = list()) {
   
   
   if (length(addons)==0 || !inherits(addons, "list")) {
-    cat('No external module was found')
+    message('No external module was found')
     return(NULL)
   } else if (!addon.isValid(addons)){
     warning('addons is not in a correct format')

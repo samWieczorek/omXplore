@@ -67,9 +67,10 @@
 #'                             column(
 #'                                 width = 6,
 #'                                 tagList(
-#'                                   highcharter::highchartOutput(ns("graphicalView_ui")),
-#'                                     uiOutput(ns("CCMultiMulti_DL_btns_ui")),
-#'                                     dataTableOutput(ns("tabularView_ui"))
+#'                                   highcharter::highchartOutput(
+#'                                   ns("graphicalView_ui")),
+#'                                   uiOutput(ns("CCMultiMulti_DL_btns_ui")),
+#'                                   dataTableOutput(ns("tabularView_ui"))
 #'                                 )
 #'                             ),
 #'                             column(
@@ -207,7 +208,7 @@
 #'             if (!is.null(input$pepInfo)) {
 #'                 data <- cbind(
 #'                     data,
-#'                     SummarizedExperiment::rowData(se())[pepLine, input$pepInfo]
+#'                     rowData(se())[pepLine, input$pepInfo]
 #'                 )
 #'                 .ind <- (1 + ncol(data) - length(input$pepInfo)):ncol(data)
 #'                 colnames(data)[.ind] <- input$pepInfo
@@ -228,7 +229,9 @@
 #'                     server = FALSE,
 #'                     columnDefs = list(
 #'                         list(
-#'                             targets = seq.int(from = (.to / 2) + 1, to = .to),
+#'                             targets = seq.int(
+#'                              from = (.to / 2) + 1, 
+#'                              to = .to),
 #'                             visible = FALSE
 #'                         )
 #'                     )
@@ -313,7 +316,8 @@
 #'
 #'             ind <- seq(ncol(se()))
 #'             data <- .getDataForExprs(se())
-#'             pepLine <- as.numeric(unlist(BuildOne2MultiTab()[line, "peptides"]))
+#'             .dat <- BuildOne2MultiTab()[line, "peptides"]
+#'             pepLine <- as.numeric(unlist(.dat))
 #'
 #'             indices <- unlist(lapply(pepLine, function(x) {
 #'                 which(rownames(data) == x)
@@ -324,7 +328,7 @@
 #'             if (!is.null(input$pepInfo)) {
 #'                 data <- cbind(
 #'                     data,
-#'                     SummarizedExperiment::rowData(se())[pepLine, input$pepInfo]
+#'                     rowData(se())[pepLine, input$pepInfo]
 #'                 )
 #'                 .ind <- (1 + ncol(data) - length(input$pepInfo)):ncol(data)
 #'                 colnames(data)[.ind] <- input$pepInfo
@@ -346,7 +350,9 @@
 #'                     server = FALSE,
 #'                     columnDefs = list(
 #'                         list(
-#'                             targets = seq.int(from = (.to / 2) + 1, to = .to),
+#'                             targets = seq.int(
+#'                                        from = (.to / 2) + 1, 
+#'                                        to = .to),
 #'                             visible = FALSE
 #'                         )
 #'                     )
@@ -373,7 +379,7 @@
 #'             req(input$searchCC == "graphical")
 #'             tooltip <- NULL
 #'             if (!is.null(input$pepInfo)) {
-#'                 tooltip <- SummarizedExperiment::rowData(se())[, input$pepInfo]
+#'                 tooltip <- rowData(se())[, input$pepInfo]
 #'                 tooltip <- as.data.frame(tooltip)
 #'                 colnames(tooltip) <- input$pepInfo
 #'             }
@@ -527,7 +533,8 @@
 #'                 specPepIndices <- intersect(rv.cc$selectedNeighbors, .ensB)
 #'                 protIndices <- intersect(rv.cc$selectedNeighbors, .ensC)
 #'             } else {
-#'                 sharedPepIndices <- which(nodes[, "group"] == "shared.peptide")
+#'                 .ensA <- which(nodes[, "group"] == "shared.peptide")
+#'                 sharedPepIndices <- .ensA
 #'                 specPepIndices <- which(nodes[, "group"] == "spec.peptide")
 #'                 protIndices <- which(nodes[, "group"] == "protein")
 #'             }
@@ -564,7 +571,8 @@
 #'
 #'             df <- data.frame(
 #'                 proteinId = unlist(rv.cc$detailedselectedNode$protLabels)
-#'                 # other = rep(NA,length(rv.cc$detailedselectedNode$protLabels))
+#'                 .dat <- rv.cc$detailedselectedNode$protLabels
+#'                 # other = rep(NA,length(.dat))
 #'             )
 #'             dt <- datatable(df,
 #'                 extensions = c("Scroller"),
@@ -606,7 +614,7 @@
 #'             if (!is.null(input$pepInfo)) {
 #'                 data <- cbind(
 #'                     data,
-#'                     SummarizedExperiment::rowData(se())[pepLine, input$pepInfo]
+#'                     rowData(se())[pepLine, input$pepInfo]
 #'                 )
 #'                 .ind <- (1 + ncol(data) - length(input$pepInfo)):ncol(data)
 #'                 colnames(data)[.ind] <- input$pepInfo
@@ -629,7 +637,9 @@
 #'                     server = FALSE,
 #'                     columnDefs = list(
 #'                         list(
-#'                             targets = seq.int(from = (.to / 2) + 1, to = .to),
+#'                             targets = seq.int(
+#'                              from = (.to / 2) + 1, 
+#'                                to = .to),
 #'                             visible = FALSE
 #'                         )
 #'                     )
@@ -668,7 +678,7 @@
 #'             if (!is.null(input$pepInfo)) {
 #'                 data <- cbind(
 #'                     data,
-#'                     SummarizedExperiment::rowData(se())[pepLine, input$pepInfo]
+#'                     rowData(se())[pepLine, input$pepInfo]
 #'                 )
 #'                 .ind <- (1 + ncol(data) - length(input$pepInfo)):ncol(data)
 #'                 colnames(data)[.ind] <- input$pepInfo
@@ -692,7 +702,9 @@
 #'                     server = FALSE,
 #'                     columnDefs = list(
 #'                         list(
-#'                             targets = seq.int(from = (.to / 2) + 1, to = .to),
+#'                             targets = seq.int(
+#'                                        from = (.to / 2) + 1, 
+#'                                        to = .to),
 #'                             visible = FALSE
 #'                         )
 #'                     )

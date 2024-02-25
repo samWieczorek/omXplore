@@ -34,24 +34,20 @@ NULL
 #' @import highcharter
 #'
 DaparViz_cc_ui <- function(id) {
-  ns <- NS(id)
-  tagList(
-    shinyjs::useShinyjs(),
-    shinyjs::hidden(
-      div(id = ns("badFormatMsg"), h3(bad_format_txt))
-    ),
-    shinyjs::hidden(
-      div(id = ns("noCCMsg"), h3("The dataset contains no CC."))
-    ),
-    shinyjs::hidden(
-      div(
-        id = ns("mainUI"),
-        tabPanel(
-          title = "",
-          value = "graphTab",
-          tabsetPanel(
-            id = "graphsPanel",
-            tabPanel(
+    ns <- NS(id)
+    tagList(
+        shinyjs::useShinyjs(),
+        shinyjs::hidden(
+          div(id = ns("badFormatMsg"), h3(bad_format_txt))
+        ),
+        shinyjs::hidden(
+            div(id = ns("noCCMsg"), h3("The dataset contains no CC."))
+        ),
+        shinyjs::hidden(
+            div(id = ns("mainUI"),
+                tabPanel(title = "", value = "graphTab",
+                    tabsetPanel(id = "graphsPanel",
+                      tabPanel(
               "One-One Connected Components",
               tagList(
                 fluidRow(
