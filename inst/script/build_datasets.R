@@ -10,8 +10,8 @@ finalSize <- 100
 
 # Build data examples with `QFeatures` datasets.
 
-data("Exp1_R25_pept", package='DaparToolshedData')
-data("Exp1_R25_prot", package='DaparToolshedData')
+data("Exp1_R25_pept", package = "DaparToolshedData")
+data("Exp1_R25_prot", package = "DaparToolshedData")
 
 ft1 <- Exp1_R25_pept[150:170]
 ft2 <- Exp1_R25_prot[1:21]
@@ -19,10 +19,10 @@ ft2 <- Exp1_R25_prot[1:21]
 vData_ft1 <- convert2Viz(ft1)
 vData_ft2 <- convert2Viz(ft2)
 vData_ft <- vData_ft1
-vData_ft[['processed_1']] <- vData_ft2[[1]]
+vData_ft[["processed_1"]] <- vData_ft2[[1]]
 
 
-save(vData_ft, file='data/vData_ft.RData')
+save(vData_ft, file = "data/vData_ft.RData")
 
 # Build data examples MSnSet datasets.
 

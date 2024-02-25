@@ -8,6 +8,9 @@
 #' xxx
 #'
 #' @keywords datasets
+#' @return An instance of the class `DaparViz`
+#' @examples
+#' data(vData_ms)
 NULL
 
 
@@ -20,6 +23,10 @@ NULL
 #' xxx
 #'
 #' @keywords datasets
+#' @return An instance of the class `DaparViz`
+#' @examples
+#' data(vData_ft)
+#' 
 NULL
 
 
@@ -40,6 +47,9 @@ NULL
 #' xxx
 #'
 #' @keywords datasets
+#' @return An instance of the class `DaparViz`
+#' @examples
+#' data(sub_Exp1_R2_prot_qf)
 NULL
 
 
@@ -52,6 +62,10 @@ NULL
 #' xxx
 #'
 #' @keywords datasets
+#' @return An instance of the class `DaparViz`
+#' @examples
+#' data(sub_Exp1_R2_pept_qf)
+#' 
 NULL
 
 
@@ -66,6 +80,9 @@ NULL
 #' xxx
 #'
 #' @keywords datasets
+#' @return An instance of the class `DaparViz`
+#' @examples
+#' data(sub_Exp1_R2_prot_MSnSet)
 NULL
 
 
@@ -78,4 +95,8 @@ NULL
 #' xxx
 #'
 #' @keywords datasets
+#' @return An instance of the class `DaparViz`
+#' @examples
+#' data(sub_Exp1_R2_pept_MSnSet)
+#' 
 NULL

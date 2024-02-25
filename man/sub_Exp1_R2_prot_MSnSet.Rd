@@ -4,11 +4,17 @@
 \name{sub_Exp1_R2_prot_MSnSet}
 \alias{sub_Exp1_R2_prot_MSnSet}
 \title{sub_Exp1_R2_prot_MSnSet dataset}
+\value{
+An instance of the class \code{DaparViz}
+}
 \description{
 xxx
 }
 \details{
 sub_Exp1_R2_prot_MSnSet dataset
+}
+\examples{
+data(sub_Exp1_R2_prot_MSnSet)
 }
 \keyword{data}
 \keyword{datasets}

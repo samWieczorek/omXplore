@@ -4,11 +4,17 @@
 \name{vData_ms}
 \alias{vData_ms}
 \title{vData_ms dataset}
+\value{
+An instance of the class \code{DaparViz}
+}
 \description{
 xxx
 }
 \details{
 vData_ms dataset
+}
+\examples{
+data(vData_ms)
 }
 \keyword{data}
 \keyword{datasets}
