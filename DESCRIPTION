@@ -3,13 +3,12 @@ Type: Package
 Title: Vizualization tools for the Differential Analysis of Proteins Abundance 
     with R
 Version: 0.99.1
-Date: 2023-10-01
 Authors@R: 
   c(person(given = "Samuel", 
       family = "Wieczorek",
       email = "samuel.wieczorek@cea.fr", 
       role = c("aut","cre"),
-      comment = c(ORCID="...")),
+      comment = c(ORCID="0000-0002-5016-1203")),
   person(given = "Thomas", 
       family ="Burger",
       email = "thomas.burger@cea.fr",

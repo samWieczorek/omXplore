@@ -52,7 +52,7 @@ The datasets contained in the experiment packages `DAPARdata` and `DaparToolshed
 
 `DaparViz` contains built-in plots but have the capability to show plots developed by other developer (as a Shiny app).
 
-```{r loadpkg, echo = TRUE}
+```
 library(DaparViz)
 ```
 
@@ -63,7 +63,7 @@ simplification of the formats it can deal with. The main data structure in the
 package `DaparViz` is a list of instances of `DaparViz` class.
 To see which data formats `DaparViz` can manage, run 
 
-```{r unknown,  message = FALSE, warning = FALSE, echo = TRUE}
+```
 library(DaparViz)
 FormatAvailables()
 ```
