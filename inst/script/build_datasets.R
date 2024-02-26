@@ -3,8 +3,6 @@
 
 
 library(DaparToolshedData)
-library(QFeatures)
-library(MSnbase)
 
 finalSize <- 100
 
@@ -22,7 +20,7 @@ vData_ft <- vData_ft1
 vData_ft[["processed_1"]] <- vData_ft2[[1]]
 
 
-save(vData_ft, file = "data/vData_ft.RData")
+save(vData_ft, file = file.path("data/vData_ft.RData"))
 
 # Build data examples MSnSet datasets.
 
@@ -40,4 +38,4 @@ vData_ms2 <- convert2Viz(ms2)
 vData_ms <- vData_ms1
 vData_ms[["processed_1"]] <- vData_ms2[[1]]
 
-save(vData_ms, file = "data/vData_ms.RData")
+save(vData_ms, file = file.path("data/vData_ms.RData"))

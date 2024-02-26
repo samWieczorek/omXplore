@@ -269,12 +269,8 @@ DaparViz_cc_server <- function(id, obj) {
 
       isolate({
         local <- (GetCCInfos(rv$data@cc))$Multi_Multi
-        n.prot <- unlist(lapply(local, function(x) {
-          ncol(x)
-        }))
-        n.pept <- unlist(lapply(local, function(x) {
-          nrow(x)
-        }))
+        n.prot <- unlist(lapply(local, function(x) {ncol(x)}))
+        n.pept <- unlist(lapply(local, function(x) {nrow(x)}))
         df <- tibble::tibble(
           x = jitter(n.pept),
           y = jitter(n.prot),
@@ -286,8 +282,6 @@ DaparViz_cc_server <- function(id, obj) {
           "function(event) {Shiny.onInputChange('",
           ns("eventPointClicked"), "', [this.index]+'_'+ [this.series.name]);}"
         ))
-
-
         plotCC <- plotCCJitter(df, clickFunction = clickFun)
       })
       plotCC
@@ -582,12 +576,8 @@ DaparViz_cc_server <- function(id, obj) {
       ll <- (GetCCInfos(rv$data@cc))$One_One
 
       df <- cbind(
-        cbind(lapply(ll, function(x) {
-          colnames(x)
-        })),
-        cbind(lapply(ll, function(x) {
-          rownames(x)
-        }))
+        cbind(lapply(ll, function(x) {colnames(x)})),
+        cbind(lapply(ll, function(x) {rownames(x)}))
       )
       colnames(df) <- c("proteins", "peptides")
       df
@@ -597,12 +587,8 @@ DaparViz_cc_server <- function(id, obj) {
       # rv$data@cc
       ll <- (GetCCInfos(rv$data@cc))$One_Multi
       df <- cbind(
-        proteins = cbind(lapply(ll, function(x) {
-          colnames(x)
-        })),
-        nPep = cbind(lapply(ll, function(x) {
-          nrow(x)
-        })),
+        proteins = cbind(lapply(ll, function(x) {colnames(x)})),
+        nPep = cbind(lapply(ll, function(x) {nrow(x)})),
         peptides = cbind(lapply(ll, function(x) {
           paste(rownames(x), collapse = ",")
         }))

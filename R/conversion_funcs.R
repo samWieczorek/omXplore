@@ -193,5 +193,3 @@ FormatAvailables <- function() {
     "list"
     )
 }
-
-

@@ -52,7 +52,7 @@ The datasets contained in the experiment packages `DAPARdata` and `DaparToolshed
 
 `DaparViz` contains built-in plots but have the capability to show plots developed by other developer (as a Shiny app).
 
-```
+```{r loagPkg, warning = FALSE, message = FALSE, echo = TRUE}
 library(DaparViz)
 ```
 
@@ -63,15 +63,13 @@ simplification of the formats it can deal with. The main data structure in the
 package `DaparViz` is a list of instances of `DaparViz` class.
 To see which data formats `DaparViz` can manage, run 
 
-```
-library(DaparViz)
-FormatAvailables()
+```{r FormatAvailables,  message = FALSE, warning = FALSE, echo = TRUE}
+DaparViz::FormatAvailables()
 ```
 
 To convert datasets to the class DaparViz-class, run
 
 ```{r convert2Viz, message = FALSE, warning = FALSE, echo = TRUE}
-library(DaparViz)
 data(sub_Exp1_R2_prot_qf)
 convert2Viz(sub_Exp1_R2_prot_qf)
 ```
@@ -96,7 +94,6 @@ The Shiny app called view_dataset() is the main application of the package
 
 
 ```{r view_dataset, eval=FALSE, fig.show='hide', message = FALSE, warning = FALSE, echo = TRUE}
-library(DaparViz)
 data(vData_ft)
 view_dataset(vData_ft)
 ```
@@ -138,7 +135,6 @@ See the help page of this function fore more details.
 
 
 ```{r ex_modules, eval = FALSE, fig.show='hide', message = FALSE, warning = FALSE, echo = TRUE}
-library(DaparViz)
 data(vData_ft)
 obj <- vData_ft[[1]]
 listPlotModules()
@@ -169,7 +165,6 @@ as follows. In the example below, one want to add the app called `extFoo1` and
 contains a simple plot just to demonstrate how it works
 
 ```
-library(DaparViz)
 data(vData_ft)
 addons <- list(DaparViz = c("extFoo1", "extFoo2"))
 view_dataset(vData_ft, addons)
