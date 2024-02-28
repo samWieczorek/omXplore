@@ -7,10 +7,10 @@
 ##'  as `MSnset`, `QFeatures`, `SummarizedExperiment` or `MultAssayExperiment`.
 ##'  It allows to use it as a generic converter.
 ##'
-##'  `DaparViz` objects are not usually created by hand but are created from
+##'  `VizData` objects are not usually created by hand but are created from
 ##'  the `VizList` which is the class accessible by the user.
 ##'
-##'  The recommended way to create `DaparViz` objects is the use the
+##'  The recommended way to create `VizData` objects is the use the
 ##' function `convert2viz()` of the class `VizList`
 ##'
 ##' @name VizList-class
@@ -39,8 +39,8 @@
 ##' @return See individual method description for the return value.
 ##'
 ##' @seealso
-##' The `DaparViz()` constructor and the `convert2Viz()`
-##' function. The *DaparViz* vignette provides an extended example.
+##' The `VizData()` constructor and the `convert2Viz()`
+##' function. The *VizData* vignette provides an extended example.
 ##'
 ##' @exportClass VizList
 ##'
@@ -48,13 +48,13 @@
 ##'
 ##' @examples
 ##' ## ------------------------
-##' ## An empty DaparViz object
+##' ## An empty VizData object
 ##' ## ------------------------
 ##'
 ##' VizList()
 ##'
 ##' ## -----------------------------------
-##' ## Creating a DaparViz object manually
+##' ## Creating a VizData object manually
 ##' ## -----------------------------------
 ##' 
 ##'
@@ -70,15 +70,15 @@ NULL
 VizList <- setClass(
   
   "VizList",
-  ##' @slot ll.daparViz A matrix containing the quantitative data
+  ##' @slot ll.VizData A matrix containing the quantitative data
 
   representation(
-    ll.daparViz = "list"
+    ll.VizData = "list"
   ),
   
   # Set the default values for the slots. (optional)
   prototype(
-    ll.daparViz = list()
+    ll.VizData = list()
   ),
   
   ##' @param object xxx
@@ -90,11 +90,11 @@ VizList <- setClass(
       errors <- c(errors, msg)
     }
     
-    test <- all(unlist(lapply(object@ll.daparViz, function(x) inherits(x, 'DaparViz')), 
+    test <- all(unlist(lapply(object@ll.VizData, function(x) inherits(x, 'VizData')), 
       use.names=FALSE))
     
     if (!test) {
-      msg <- "All the items contained in this list are not of class 'DaparViz'"
+      msg <- "All the items contained in this list are not of class 'VizData'"
       errors <- c(errors, msg)
     }
     
@@ -113,9 +113,13 @@ setMethod(
   ##' @exportMethod show
   ##'
   function(object) {
-    if(length(object@ll.daparViz) > 0)
-    show(lapply(object@ll.daparViz, function(x) x))
-    else
+    if(length(object@ll.VizData) > 0){
+      lapply(seq(length(object@ll.VizData)), 
+        function(x){
+          cat(names(object)[x], '\n')
+          show(object@ll.VizData[[x]])
+          })
+    } else
       message("Empty object")
   }
 )
@@ -129,17 +133,17 @@ setMethod(
 setMethod(
   "initialize", "VizList",
   ##' @param .Object xxx
-  ##' @param ll.daparViz xxx
+  ##' @param ll.VizData xxx
   function(
     .Object,
-    ll.daparViz = list()) {
+    ll.VizData = list()) {
 
-    if (is.null(ll.daparViz) || !inherits(ll.daparViz, "list")) {
+    if (is.null(ll.VizData) || !inherits(ll.VizData, "list")) {
       message("The parameter 'object' is not a list")
       message("Initialization with an empty class")
-      .Object@ll.daparViz <- list()
+      .Object@ll.VizData <- list()
     } else {
-      .Object@ll.daparViz <- ll.daparViz
+      .Object@ll.VizData <- ll.VizData
     }
     
     return(.Object)
@@ -154,7 +158,7 @@ setMethod(
 setMethod("[",
   signature = c("VizList", "ANY"),
   function(x, i) {
-    return(x@ll.daparViz[i])
+    return(x@ll.VizData[i])
   }
 )
 
@@ -166,7 +170,7 @@ setMethod("[",
 setMethod("[[",
   signature = c("VizList", "ANY"),
   function(x, i) {
-    return(x@ll.daparViz[[i]])
+    return(x@ll.VizData[[i]])
   }
 )
 
@@ -178,7 +182,7 @@ setMethod("[[",
 setMethod("names",
   signature = c("VizList"),
   function(x) {
-    return(names(x@ll.daparViz))
+    return(names(x@ll.VizData))
   }
 )
 
@@ -190,6 +194,6 @@ setMethod("names",
 setMethod("length",
   signature = c("VizList"),
   function(x) {
-    return(length(x@ll.daparViz))
+    return(length(x@ll.VizData))
   }
 )

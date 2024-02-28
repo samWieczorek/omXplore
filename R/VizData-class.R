@@ -1,21 +1,21 @@
-##' @title DaparViz class
+##' @title VizData class
 ##'
 ##' @description
 ##'
-##'  Conceptually, a `DaparViz` object is a standard representation of all
+##'  Conceptually, a `VizData` object is a standard representation of all
 ##'  elements from quantitative other structured data used in proteomics, such
 ##'  as `MSnset`, `QFeatures`, `SummarizedExperiment` or `MultAssayExperiment`.
 ##'  It allows to use it as a generic converter.
 ##'
-##'  `DaparViz` objects are not usually created by hand but are created from
+##'  `VizData` objects are not usually created by hand but are created from
 ##'  the `VizList` which is the class accessible by the user.
 ##'
-##'  The recommended way to create `DaparViz` objects is the use the
+##'  The recommended way to create `VizData` objects is the use the
 ##' function `convert2viz()` of the class `VizList`
 ##'
-##' @name DaparViz-class
+##' @name VizData-class
 ##'
-##' @param object An instance of the class `DaparViz`
+##' @param object An instance of the class `VizData`
 ##'
 ##' @param x An instance of class [QFeatures].
 ##'
@@ -39,22 +39,22 @@
 ##' @return See individual method description for the return value.
 ##'
 ##' @seealso
-##' The `DaparViz()` constructor and the `convert2Viz()`
-##' function. The *DaparViz* vignette provides an extended example.
+##' The `VizData()` constructor and the `convert2VizList()`
+##' function. The *VizData* vignette provides an extended example.
 ##'
-##' @exportClass DaparViz
+##' @exportClass VizData
 ##'
 ##' @author Samuel Wieczorek
 ##'
 ##' @examples
 ##' ## ------------------------
-##' ## An empty DaparViz object
+##' ## An empty VizData object
 ##' ## ------------------------
 ##'
-##' DaparViz()
+##' VizData()
 ##'
 ##' ## -----------------------------------
-##' ## Creating a DaparViz object manually
+##' ## Creating a VizData object manually
 ##' ## -----------------------------------
 ##' 
 ##' qdata <- matrix(1:30, ncol = 6, 
@@ -75,22 +75,22 @@
 ##' adjMat <- NULL
 ##' cc <- NULL
 ##' 
-##' obj <- DaparViz(qdata, metacell, metadata, colID, proteinId, type)
+##' obj <- VizData(qdata, metacell, metadata, colID, proteinId, type)
 ##'
-##' @return An instance of class `DaparViz`
+##' @return An instance of class `VizData`
 ##'
 NULL
 
 
 
 ##'
-##' @rdname DaparViz-class
-##' @export DaparViz
-##' @exportClass DaparViz
-##' @return An instance of the class `DaparViz`
-DaparViz <- setClass(
+##' @rdname VizData-class
+##' @export VizData
+##' @exportClass VizData
+##' @return An instance of the class `VizData`
+VizData <- setClass(
 
-  "DaparViz",
+  "VizData",
   ##' @slot qdata A matrix containing the quantitative data
   ##' @slot metacell A matrix of xxx
   ##' @slot metadata A matrix of xxxx
@@ -156,13 +156,13 @@ DaparViz <- setClass(
 
 
 ##' @exportMethod show
-##' @rdname DaparViz-class
+##' @rdname VizData-class
 ##' @import crayon
 ##' @return NA
 ##'
 setMethod(
-  "show", "DaparViz",
-  ##' @param object An instance of the class `DaparViz`
+  "show", "VizData",
+  ##' @param object An instance of the class `VizData`
   ##' @exportMethod show
   ##'
   function(object) {
@@ -223,12 +223,12 @@ setMethod(
 
 
 
-##' @title Initialization method for the class `DaparViz`
-##' @rdname DaparViz-class
-##' @return An instance of the class `DaparViz`
+##' @title Initialization method for the class `VizData`
+##' @rdname VizData-class
+##' @return An instance of the class `VizData`
 ##'
 setMethod(
-  "initialize", "DaparViz",
+  "initialize", "VizData",
   ##' @param .Object xxx
   ##' @param qdata xxx
   ##' @param metacell xxx
@@ -313,13 +313,13 @@ setMethod(
 )
 
 
-##' @rdname DaparViz-class
+##' @rdname VizData-class
 ##'
 ##' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
 ##' @return NA
 ##'
 setMethod("[",
-  signature = c("DaparViz", "ANY", "ANY", "ANY"),
+  signature = c("VizData", "ANY", "ANY", "ANY"),
   function(x, i, j = NA, k = NA, l = NA, ..., drop) {
     if (length(i) == 1) {
       tmp <- as.matrix(t((x@qdata)[i, ]))

@@ -2,12 +2,12 @@
 % Please edit documentation in R/convert.R
 \name{FormatAvailables}
 \alias{FormatAvailables}
-\title{Formats available in DaparViz}
+\title{Formats available in omXplore}
 \usage{
 FormatAvailables()
 }
 \value{
-A vector of classes compliant with the package DaparViz.
+A vector of classes compliant with the package omXplore
 }
 \description{
 Gives the list of classes for the datasets which be can converted by the

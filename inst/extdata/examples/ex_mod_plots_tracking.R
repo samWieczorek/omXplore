@@ -1,4 +1,4 @@
-library(DaparViz)
+library(omXplore)
 
 options(shiny.fullstacktrace = TRUE)
 

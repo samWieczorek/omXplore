@@ -5,7 +5,7 @@
 #' xxxx
 #'
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param obj An instance of the class `DaparViz`.
+#' @param obj An instance of the class `VizData`.
 #' @param pal.name It is a reactive value.
 #'
 #' @name density-plot
@@ -14,7 +14,7 @@
 #' @examples
 #' if (interactive()) {
 #'   data(vData_ft)
-#'   DaparViz_density(vData_ft[[1]])
+#'   omXplore_density(vData_ft[[1]])
 #' }
 #'
 NULL
@@ -26,7 +26,7 @@ NULL
 #' @export
 #' @return NA
 #'
-DaparViz_density_ui <- function(id) {
+omXplore_density_ui <- function(id) {
   ns <- NS(id)
   tagList(
     shinyjs::useShinyjs(),
@@ -45,7 +45,7 @@ DaparViz_density_ui <- function(id) {
 #' @export
 #' @return NA
 #'
-DaparViz_density_server <- function(
+omXplore_density_server <- function(
     id,
     obj = reactive({
       NULL
@@ -62,12 +62,12 @@ DaparViz_density_server <- function(
 
     observe(
       {
-        if (inherits(obj(), "DaparViz")) {
+        if (inherits(obj(), "VizData")) {
           rv$data <- obj()
         }
 
         shinyjs::toggle("badFormatMsg",
-          condition = !inherits(obj(), "DaparViz")
+          condition = !inherits(obj(), "VizData")
         )
       },
       priority = 1000
@@ -192,11 +192,11 @@ densityPlot <- function(
 #' @rdname density-plot
 #' @return A shiny app
 #'
-DaparViz_density <- function(obj) {
-  ui <- DaparViz_density_ui("plot")
+omXplore_density <- function(obj) {
+  ui <- omXplore_density_ui("plot")
 
   server <- function(input, output, session) {
-    DaparViz_density_server("plot", obj = reactive({
+    omXplore_density_server("plot", obj = reactive({
       obj
     }))
   }

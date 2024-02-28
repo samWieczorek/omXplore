@@ -1,8 +1,8 @@
-Package: DaparViz
+Package: omXplore
 Type: Package
-Title: Vizualization tools for the Differential Analysis of Proteins Abundance 
+Title: Vizualization tools for the Differential Analysis of 'omics' datasets 
     with R
-Version: 0.99.1
+Version: 0.99.0
 Authors@R: 
   c(person(given = "Samuel", 
       family = "Wieczorek",
@@ -67,24 +67,23 @@ biocViews:
     QualityControl
 NeedsCompilation: no
 Collate:
-    conversion_funcs.R
     convert.R
-    DaparViz-class.R
+    VizData-class.R
     VizList-class.R
-    DaparViz_cc.R
-    DaparViz_corrmatrix.R
-    DaparViz_density.R
-    DaparViz_format_DT.R
-    DaparViz_heatmap.R
-    DaparViz_intensity.R
-    DaparViz_pca.R
-    DaparViz_plots_tracking.R
-    DaparViz_tabExplorer.R
-    DaparViz_variance.R
-    DaparViz_view_dataset.R
+    omXplore_cc.R
+    omXplore_corrmatrix.R
+    omXplore_density.R
+    omXplore_format_DT.R
+    omXplore_heatmap.R
+    omXplore_intensity.R
+    omXplore_pca.R
+    omXplore_plots_tracking.R
+    omXplore_tabExplorer.R
+    omXplore_variance.R
+    omXplore_view_dataset.R
     doc-data.R
     external_apps_examples.R
-    funcs_accessors.R
+    VizData_accessors.R
     get_pep_prot_CC.R
     global.R
     Infos_adjacencyMatrix.R
@@ -103,7 +102,7 @@ RoxygenNote: 7.3.1
 Packaged: 2017-10-13 11:13:04 UTC; sw175264
 Encoding: UTF-8
 LazyData: false
-URL: https://github.com/prostarproteomics/DaparViz
-BugReports: https://github.com/prostarproteomics/DaparViz/issues
+URL: https://github.com/prostarproteomics/omXplore
+BugReports: https://github.com/prostarproteomics/omXplore/issues
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr

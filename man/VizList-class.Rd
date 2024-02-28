@@ -8,22 +8,28 @@
 \alias{initialize,VizList-method}
 \alias{[,VizList,ANY,ANY,ANY-method}
 \alias{[[,VizList,ANY,ANY-method}
+\alias{names,VizList-method}
+\alias{length,VizList-method}
 \title{VizList class}
 \usage{
 \S4method{show}{VizList}(object)
 
-\S4method{initialize}{VizList}(.Object, ll.daparViz = list())
+\S4method{initialize}{VizList}(.Object, ll.VizData = list())
 
 \S4method{[}{VizList,ANY,ANY,ANY}(x, i)
 
 \S4method{[[}{VizList,ANY,ANY}(x, i)
+
+\S4method{names}{VizList}(x)
+
+\S4method{length}{VizList}(x)
 }
 \arguments{
 \item{object}{An instance of the class \code{VizList}}
 
 \item{.Object}{xxx}
 
-\item{ll.daparViz}{xxx}
+\item{ll.VizData}{xxx}
 
 \item{x}{An instance of class \link{QFeatures}.}
 
@@ -56,6 +62,10 @@ An instance of the class \code{VizList}
 NA
 
 NA
+
+NA
+
+NA
 }
 \description{
 Conceptually, a \code{VizList} object is a standard representation of all
@@ -63,34 +73,34 @@ elements from quantitative other structured data used in proteomics, such
 as \code{MSnset}, \code{QFeatures}, \code{SummarizedExperiment} or \code{MultAssayExperiment}.
 It allows to use it as a generic converter.
 
-\code{DaparViz} objects are not usually created by hand but are created from
+\code{VizData} objects are not usually created by hand but are created from
 the \code{VizList} which is the class accessible by the user.
 
-The recommended way to create \code{DaparViz} objects is the use the
+The recommended way to create \code{VizData} objects is the use the
 function \code{convert2viz()} of the class \code{VizList}
 }
 \section{Slots}{
 
 \describe{
-\item{\code{ll.daparViz}}{A matrix containing the quantitative data}
+\item{\code{ll.VizData}}{A matrix containing the quantitative data}
 }}
 
 \examples{
 ## ------------------------
-## An empty DaparViz object
+## An empty VizData object
 ## ------------------------
 
 VizList()
 
 ## -----------------------------------
-## Creating a DaparViz object manually
+## Creating a VizData object manually
 ## -----------------------------------
 
 
 }
 \seealso{
-The \code{DaparViz()} constructor and the \code{convert2Viz()}
-function. The \emph{DaparViz} vignette provides an extended example.
+The \code{VizData()} constructor and the \code{convert2Viz()}
+function. The \emph{VizData} vignette provides an extended example.
 }
 \author{
 Samuel Wieczorek

@@ -4,7 +4,7 @@
 #' object of
 #' class \code{MSnSet}. For more information, please refer to the help
 #' of the heatmap.2 function.
-#' @name DaparViz_heatmap
+#' @name omXplore_heatmap
 #'
 #' @param x A `matrix` or `array` containing the quantitative data.
 #'
@@ -37,7 +37,7 @@ NULL
 
 
 
-#' @rdname DaparViz_heatmap
+#' @rdname omXplore_heatmap
 #' @export
 #' @return A heatmap
 #' @import stats
@@ -120,7 +120,7 @@ heatmapD <- function(
 #' @importFrom grDevices heat.colors
 #' @import graphics
 #'
-#' @rdname DaparViz_heatmap
+#' @rdname omXplore_heatmap
 #' @return A heatmap
 #'
 mv.heatmap <- function(
@@ -324,7 +324,7 @@ mv.heatmap <- function(
 
 
 
-#' @rdname DaparViz_heatmap
+#' @rdname omXplore_heatmap
 #' @export
 #' @return A heatmap
 #' @import graphics

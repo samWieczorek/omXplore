@@ -1,15 +1,15 @@
-#' @title Shiny modules used by `DaparViz` 
+#' @title Shiny modules used by `omXplore` 
 #'
 #' @description
 #' These functions are relative to external modules that can be added into 
-#' `DaparViz` UI:
-#' * `listShinyApps()`: Show the shiny modules recognized by `DaparViz` and 
+#' `omXplore` UI:
+#' * `listShinyApps()`: Show the shiny modules recognized by `omXplore` and 
 #' ready to bu integrated in the UI of the function view_dataset()
 #' * `listPlotModules()`: Show the shiny modules function names (only prefixes)
-#'  recognized by `DaparViz` and ready to use in the UI.
+#'  recognized by `omXplore` and ready to use in the UI.
 #' * `addModules()`: Add external shiny module(s) to the R global environment in
 #' such a way (specific prefix renaming of the functions) that it can be
-#'  discovered by the function view_dataset() of the package `DaparViz` during 
+#'  discovered by the function view_dataset() of the package `omXplore` during 
 #'  its launch. 
 #'
 #' @param location A `character(0)` to indicate which modules to list. Available
@@ -20,7 +20,7 @@
 #' '_server' suffixes)
 #'
 #'
-#' @name DaparViz-modules
+#' @name omXplore-modules
 #'
 #' @examples
 #' listShinyApps()
@@ -38,7 +38,7 @@ NULL
 
 
 #' @export
-#' @rdname DaparViz-modules
+#' @rdname omXplore-modules
 #' @return NA
 #'
 addModules <- function(addons = list()) {
@@ -89,7 +89,7 @@ addModules <- function(addons = list()) {
 
 
 #' @export
-#' @rdname DaparViz-modules
+#' @rdname omXplore-modules
 #' @return A vector
 #'
 listShinyApps <- function(location = "both") {
@@ -119,14 +119,14 @@ listShinyApps <- function(location = "both") {
 
 
 #' @export
-#' @rdname DaparViz-modules
+#' @rdname omXplore-modules
 #' @return A vector
 #'
 listPlotModules <- function(location = "both") {
   stopifnot(location %in% c("both", "external", "builtin"))
 
-  builtin <- ls("package:DaparViz")
-  builtin <- builtin[grep("DaparViz_", builtin)]
+  builtin <- ls("package:omXplore")
+  builtin <- builtin[grep("omXplore_", builtin)]
   builtin <- gsub("_server", "", builtin)
   builtin <- gsub("_ui", "", builtin)
   builtin <- unique(builtin)

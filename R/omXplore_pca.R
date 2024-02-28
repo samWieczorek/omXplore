@@ -13,7 +13,7 @@
 #' * `plotPCA_Ind()`:
 #'
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param obj An instance of the class `DaparViz`.
+#' @param obj An instance of the class `VizData`.
 #' @param var.scaling The dimensions to plot
 #' @param ncp A `integer(1)` which represents the umber of dimensions kept in
 #' the results.
@@ -34,7 +34,7 @@
 #'   # Replace missing values for the example
 #'   qdata <- GetSlotQdata(obj)
 #'   qdata[which(is.na(qdata))] <- 0
-#'   DaparViz_pca(obj)
+#'   omXplore_pca(obj)
 #' }
 #'
 NULL
@@ -45,7 +45,7 @@ NULL
 #' @export
 #' @return NA
 #'
-DaparViz_pca_ui <- function(id) {
+omXplore_pca_ui <- function(id) {
   ns <- NS(id)
   tagList(
     shinyjs::useShinyjs(),
@@ -66,7 +66,7 @@ DaparViz_pca_ui <- function(id) {
 #' @export
 #' @return NA
 #'
-DaparViz_pca_server <- function(
+omXplore_pca_server <- function(
     id,
     obj) {
   moduleServer(id, function(input, output, session) {
@@ -82,12 +82,12 @@ DaparViz_pca_server <- function(
 
     observe(
       {
-        is.DaparViz <- inherits(obj(), "DaparViz")
-        if (is.DaparViz) {
+        is.VizData <- inherits(obj(), "VizData")
+        if (is.VizData) {
           rv.pca$data <- as.matrix(obj()@qdata)
         }
 
-        shinyjs::toggle("badFormatMsg", condition = !is.DaparViz)
+        shinyjs::toggle("badFormatMsg", condition = !is.VizData)
       },
       priority = 1000
     )
@@ -251,11 +251,11 @@ DaparViz_pca_server <- function(
 #' @rdname ds-pca
 #' @return A shiny app
 #'
-DaparViz_pca <- function(obj) {
-  ui <- DaparViz_pca_ui("plot")
+omXplore_pca <- function(obj) {
+  ui <- omXplore_pca_ui("plot")
 
   server <- function(input, output, session) {
-    DaparViz_pca_server("plot", obj = reactive({
+    omXplore_pca_server("plot", obj = reactive({
       obj
     }))
   }

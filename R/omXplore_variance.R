@@ -16,7 +16,7 @@
 #' @examples
 #' if (interactive()) {
 #'   data(vData_ft)
-#'   DaparViz_variance(vData_ft[[1]])
+#'   omXplore_variance(vData_ft[[1]])
 #' }
 #'
 NULL
@@ -27,7 +27,7 @@ NULL
 #' @export
 #' @return NA
 #'
-DaparViz_variance_ui <- function(id) {
+omXplore_variance_ui <- function(id) {
   ns <- NS(id)
   tagList(
     shinyjs::useShinyjs(),
@@ -45,7 +45,7 @@ DaparViz_variance_ui <- function(id) {
 #' @export
 #' @return NA
 #'
-DaparViz_variance_server <- function(
+omXplore_variance_server <- function(
     id,
     obj,
     pal.name = NULL) {
@@ -56,7 +56,7 @@ DaparViz_variance_server <- function(
 
     observe(
       {
-        if (inherits(obj(), "DaparViz")) {
+        if (inherits(obj(), "VizData")) {
           rv$data <- obj()
         }
 
@@ -104,7 +104,7 @@ DaparViz_variance_server <- function(
 CVDist <- function(
     obj,
     pal.name = NULL) {
-  stopifnot(inherits(obj, "DaparViz"))
+  stopifnot(inherits(obj, "VizData"))
 
 
   if (is.null(obj@conds)) {
@@ -184,13 +184,13 @@ CVDist <- function(
 #' @export
 #' @return A shiny app
 #'
-DaparViz_variance <- function(obj) {
+omXplore_variance <- function(obj) {
   ui <- fluidPage(
-    DaparViz_variance_ui("plot")
+    omXplore_variance_ui("plot")
     )
 
   server <- function(input, output, session) {
-    DaparViz_variance_server("plot", 
+    omXplore_variance_server("plot", 
       obj = reactive({obj}))
   }
 

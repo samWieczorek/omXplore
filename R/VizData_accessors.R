@@ -130,12 +130,12 @@ setMethod("GetSlotMetadata",
   }
 )
 
-#' @param object An instance of class `DaparViz`.
+#' @param object An instance of class `VizData`.
 #' @rdname accessors
 #' @return A data.frame
 #'
 setMethod("GetSlotMetadata",
-  signature = "DaparViz",
+  signature = "VizData",
   function(object) object@metadata
 )
 
@@ -171,12 +171,12 @@ setMethod("GetSlotQdata",
   }
 )
 
-#' @param object An instance of class `DaparViz`.
+#' @param object An instance of class `VizData`.
 #' @rdname accessors
 #' @return A data.frame
 #'
 setMethod("GetSlotQdata",
-  signature = "DaparViz",
+  signature = "VizData",
   function(object) object@qdata
 )
 
@@ -201,12 +201,12 @@ setMethod("GetSlotQdata",
 
 
 
-#' @param object An instance of class `DaparViz`.
+#' @param object An instance of class `VizData`.
 #' @rdname accessors
 #' @return A data.frame
 #'
 setMethod("GetSlotMetacell",
-  signature = "DaparViz",
+  signature = "VizData",
   function(object) object@metacell
 )
 
@@ -252,12 +252,12 @@ setMethod("GetSlotMetacell",
 )
 
 
-#' @param object An instance of class `DaparViz`.
+#' @param object An instance of class `VizData`.
 #' @rdname accessors
 #' @return A character(0)
 #'
 setMethod("GetSlotColID",
-  signature = "DaparViz",
+  signature = "VizData",
   function(object) object@colID
 )
 
@@ -307,12 +307,12 @@ setMethod("GetSlotColID", signature = "MSnSet",
 )
 
 
-#' @param object An instance of class `DaparViz`.
+#' @param object An instance of class `VizData`.
 #' @rdname accessors
 #' @return A character(0)
 #'
 setMethod("GetSlotType",
-  signature = "DaparViz",
+  signature = "VizData",
   function(object) object@type
 )
 
@@ -362,12 +362,12 @@ setMethod("GetSlotType",
 )
 
 
-#' @param object An instance of class `DaparViz`.
+#' @param object An instance of class `VizData`.
 #' @rdname accessors
 #' @return A character(0)
 #'
 setMethod("GetSlotProteinID",
-  signature = "DaparViz",
+  signature = "VizData",
   function(object) object@proteinID
 )
 
@@ -416,12 +416,12 @@ setMethod("GetSlotProteinID",
 )
 
 
-#' @param object An instance of class `DaparViz`.
+#' @param object An instance of class `VizData`.
 #' @rdname accessors
 #' @return A character(0)
 #'
 setMethod("GetSlotConds",
-  signature = "DaparViz",
+  signature = "VizData",
   function(object) object@conds
 )
 
@@ -490,11 +490,11 @@ setMethod("GetSlotCc",
   function(object) NULL
 )
 
-#' @param object An instance of class `DaparViz`.
+#' @param object An instance of class `VizData`.
 #' @rdname accessors
 #' @return A character(0)
 #'
-setMethod("GetSlotCc", signature = "DaparViz",
+setMethod("GetSlotCc", signature = "VizData",
   function(object) object@cc
 )
 
@@ -508,11 +508,11 @@ setMethod("GetSlotAdjMat", signature = "ANY",
   function(object) NULL
 )
 
-#' @param object An instance of class `DaparViz`.
+#' @param object An instance of class `VizData`.
 #' @rdname accessors
 #' @return A character(0)
 #'
-setMethod("GetSlotAdjMat", signature = "DaparViz",
+setMethod("GetSlotAdjMat", signature = "VizData",
   function(object) object@adjMat
 )
 
@@ -525,7 +525,7 @@ setMethod("GetSlotAdjMat", signature = "DaparViz",
 #' @param object An object that inherits MultiAssayExperiment class
 #' (e.g. MultiAssayExperiment, QFeatures)
 #'
-#' @return An object of class DaparViz.
+#' @return An object of class VizData.
 #' @export
 #' @examples
 #' NULL

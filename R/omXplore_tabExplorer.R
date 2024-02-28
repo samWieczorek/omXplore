@@ -1,18 +1,18 @@
-#' @title Explore a list of `DaparViz` objects.
+#' @title Explore `VizData` objects.
 #'
 #' @description xxx
 #'
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param obj An instance of the class `DaparViz`
+#' @param obj An instance of the class `VizData`
 #' @param digits xxx
 #'
 #'
-#' @name DaparViz_tabExplorer
+#' @name omXplore_tabExplorer
 #'
 #' @examples
 #' if (interactive()) {
 #'   data(vData_ft)
-#'   DaparViz_tabExplorer(vData_ft[[1]])
+#'   omXplore_tabExplorer(vData_ft[[1]])
 #' }
 #' 
 #' @return NA
@@ -23,13 +23,13 @@ NULL
 
 #' @import shiny
 #' @import DT
-#' @rdname DaparViz_tabExplorer
+#' @rdname omXplore_tabExplorer
 #' @import shinyBS
 #'
 #' @export
 #' @return NA
 #'
-DaparViz_tabExplorer_ui <- function(id) {
+omXplore_tabExplorer_ui <- function(id) {
   ns <- NS(id)
 
   tagList(
@@ -65,10 +65,10 @@ DaparViz_tabExplorer_ui <- function(id) {
 #' @importFrom tibble as_tibble
 #' @importFrom stats setNames
 #'
-#' @rdname DaparViz_tabExplorer
+#' @rdname omXplore_tabExplorer
 #'
 #' @export
-DaparViz_tabExplorer_server <- function(
+omXplore_tabExplorer_server <- function(
     id,
     obj = reactive({
       NULL
@@ -83,7 +83,7 @@ DaparViz_tabExplorer_server <- function(
 
     observe(
       {
-        if (inherits(obj(), "DaparViz")) {
+        if (inherits(obj(), "VizData")) {
           rv$data <- obj()
 
           tags <- GetMetacellTags(rv$data@metacell,
@@ -258,16 +258,16 @@ DaparViz_tabExplorer_server <- function(
 }
 
 
-#' @rdname DaparViz_tabExplorer
+#' @rdname omXplore_tabExplorer
 #' @export
 #' @import shiny
 #' @return A shiny app
 #'
-DaparViz_tabExplorer <- function(obj) {
-  ui <- fluidPage(DaparViz_tabExplorer_ui("plot"))
+omXplore_tabExplorer <- function(obj) {
+  ui <- fluidPage(omXplore_tabExplorer_ui("plot"))
 
   server <- function(input, output, session) {
-    DaparViz_tabExplorer_server("plot", reactive({
+    omXplore_tabExplorer_server("plot", reactive({
       obj
     }))
   }

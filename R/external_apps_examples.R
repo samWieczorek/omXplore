@@ -7,7 +7,8 @@
 #' @name external_app
 #'
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param obj An instance of the class `DaparViz`
+#' @param obj An object of instance compliant with formats in
+#' `FormatAvailables()`.
 #'
 #'
 #' @examples
@@ -40,9 +41,7 @@ extFoo1_ui <- function(id) {
 #'
 extFoo1_server <- function(
     id,
-    obj = reactive({
-      NULL
-    })) {
+    obj = reactive({NULL})) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
@@ -53,10 +52,11 @@ extFoo1_server <- function(
     observe(
       {
         req(obj())
-        if (inherits(obj(), "DaparViz")) {
+        obj.cond <- inherits(obj(), "VizData")
+        if (obj.cond) {
           rv$data <- obj()
         } else {
-          shinyjs::toggle("badFormatMsg", condition = !inherits(obj(), "list"))
+          shinyjs::toggle("badFormatMsg", condition = !obj.cond)
         }
       },
       priority = 1000
@@ -124,10 +124,11 @@ extFoo2_server <- function(
     observe(
       {
         req(obj())
-        if (inherits(obj(), "DaparViz")) {
+        obj.cond <- inherits(obj(), "VizData")
+        if (obj.cond) {
           rv$data <- obj()
         } else {
-          shinyjs::toggle("badFormatMsg", condition = !inherits(obj(), "list"))
+          shinyjs::toggle("badFormatMsg", condition = !obj.cond)
         }
       },
       priority = 1000

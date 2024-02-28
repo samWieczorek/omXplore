@@ -36,7 +36,8 @@ extFoo2(obj)
 \arguments{
 \item{id}{A \code{character(1)} which is the id of the shiny module.}
 
-\item{obj}{An instance of the class \code{DaparViz}}
+\item{obj}{An object of instance compliant with formats in
+\code{FormatAvailables()}.}
 }
 \value{
 NA

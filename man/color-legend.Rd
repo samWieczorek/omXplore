@@ -30,7 +30,7 @@ colorLegend(obj)
 \item{hide.white}{A \code{boolean()} to indicate whether the white cells must be
 hidden or not.}
 
-\item{obj}{An instance of the class \code{DaparViz}.}
+\item{obj}{An instance of the class \code{VizData}.}
 }
 \value{
 A vector

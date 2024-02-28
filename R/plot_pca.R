@@ -32,7 +32,7 @@ wrapper_pca <- function(
     obj,
     var.scaling = TRUE,
     ncp = NULL) {
-  stopifnot(inherits(obj, "DaparViz"))
+  stopifnot(inherits(obj, "VizData"))
 
 
   if (missing(obj)) {

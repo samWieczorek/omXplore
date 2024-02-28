@@ -5,7 +5,7 @@
 #' xxxx
 #'
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param obj A instance of the class `DaparViz`
+#' @param obj A instance of the class `VizData`
 #' @param track.indices xxx
 #' @param withTracking xxx
 #' @param data Numeric matrix
@@ -23,7 +23,7 @@
 #' @examples
 #' if (interactive()) {
 #'   data(vData_ft)
-#'   DaparViz_intensity(vData_ft[[1]])
+#'   omXplore_intensity(vData_ft[[1]])
 #' }
 #'
 #' data(vData_ft)
@@ -41,7 +41,7 @@ NULL
 #' @rdname intensity-plots
 #' @return NA
 #'
-DaparViz_intensity_ui <- function(id) {
+omXplore_intensity_ui <- function(id) {
   ns <- NS(id)
   tagList(
     shinyjs::useShinyjs(),
@@ -65,7 +65,7 @@ DaparViz_intensity_ui <- function(id) {
 #'
 #' @return NA
 #'
-DaparViz_intensity_server <- function(
+omXplore_intensity_server <- function(
     id,
     obj,
     track.indices = reactive({
@@ -78,7 +78,7 @@ DaparViz_intensity_server <- function(
 
     observe(
       {
-        if (inherits(obj(), "DaparViz")) {
+        if (inherits(obj(), "VizData")) {
           rv$data <- obj()
         }
 
@@ -143,30 +143,24 @@ DaparViz_intensity_server <- function(
 #' @export
 #' @return A shiny app
 #'
-DaparViz_intensity <- function(
+omXplore_intensity <- function(
     obj,
     withTracking = FALSE) {
   ui <- fluidPage(
     tagList(
       plots_tracking_ui("tracker"),
-      DaparViz_intensity_ui("iplot")
+      omXplore_intensity_ui("iplot")
     )
   )
 
   server <- function(input, output, session) {
     indices <- plots_tracking_server("tracker",
-      obj = reactive({
-        obj
-      })
+      obj = reactive({obj})
     )
 
-    DaparViz_intensity_server("iplot",
-      obj = reactive({
-        obj
-      }),
-      track.indices = reactive({
-        indices()
-      })
+    omXplore_intensity_server("iplot",
+      obj = reactive({obj}),
+      track.indices = reactive({indices()})
     )
   }
 

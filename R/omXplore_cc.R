@@ -3,7 +3,7 @@
 #' @description  A shiny Module.
 #'
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param obj An instance of `DaparViz` class
+#' @param obj An instance of `VizData` class
 #'
 #' @keywords internal
 #'
@@ -11,7 +11,7 @@
 #' @examples
 #' if (interactive()) {
 #'   data(vData_ft)
-#'   DaparViz_cc(vData_ft[[1]])
+#'   omXplore_cc(vData_ft[[1]])
 #' }
 #'
 #' @name ds-cc
@@ -33,7 +33,7 @@ NULL
 #' @import shinyjs
 #' @import highcharter
 #'
-DaparViz_cc_ui <- function(id) {
+omXplore_cc_ui <- function(id) {
     ns <- NS(id)
     tagList(
         shinyjs::useShinyjs(),
@@ -131,7 +131,7 @@ DaparViz_cc_ui <- function(id) {
 #' @import visNetwork
 #' @import highcharter
 #'
-DaparViz_cc_server <- function(id, obj) {
+omXplore_cc_server <- function(id, obj) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
@@ -145,7 +145,7 @@ DaparViz_cc_server <- function(id, obj) {
     observeEvent(obj(),
       ignoreInit = FALSE,
       {
-        obj.valid <- inherits(obj(), "DaparViz")
+        obj.valid <- inherits(obj(), "VizData")
         cc.exists <- length(obj()@cc) > 0
 
         if (obj.valid && cc.exists) {
@@ -790,11 +790,11 @@ DaparViz_cc_server <- function(id, obj) {
 #' @export
 #' @return A shiny app
 #'
-DaparViz_cc <- function(obj) {
-  ui <- DaparViz_cc_ui("plot")
+omXplore_cc <- function(obj) {
+  ui <- omXplore_cc_ui("plot")
 
   server <- function(input, output, session) {
-    DaparViz_cc_server("plot", reactive({
+    omXplore_cc_server("plot", reactive({
       obj
     }))
   }

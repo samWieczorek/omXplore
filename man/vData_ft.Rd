@@ -5,7 +5,7 @@
 \alias{vData_ft}
 \title{vData_ft dataset}
 \value{
-An instance of the class \code{DaparViz}
+An instance of the class \code{VizList}
 }
 \description{
 xxx

@@ -1,5 +1,5 @@
 # This script aims at regenerate the datasets embedded in the package 
-# `DaparViz`.
+# `omXplore`.
 
 
 # Convert `QFeatures` datasets to VizList class

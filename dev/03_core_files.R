@@ -76,7 +76,7 @@ biocthis::use_bioc_vignette(pkg, paste("Introduction to", pkg))
 
 ## Add a Bioconductor-friendly GitHub actions workflow to check your package
 biocthis::use_bioc_github_action()
-## You will need to go to https://github.com/prostarproteomics/daparviz/settings/actions
+## You will need to go to https://github.com/prostarproteomics/omXplore/settings/actions
 ## to and enable:
 ## > Workflow permissions > Read and write permissions
 ## Then click save before you can continue with the instructions in this script.

@@ -7,7 +7,7 @@
 #' @name corrmatrix
 #'
 #' @param id A `character(1)` which is the id of the shiny module.
-#' @param obj An instance of the class `DaparViz`
+#' @param obj An instance of the class `VizData`
 #' @param rate xxx. Default value is 0.9
 #' @param showValues Default is FALSE.
 #'
@@ -16,7 +16,7 @@
 #' @examples
 #' if (interactive()) {
 #'   data(vData_ft)
-#'   DaparViz_corrmatrix(vData_ft[[1]])
+#'   omXplore_corrmatrix(vData_ft[[1]])
 #' }
 #'
 NULL
@@ -27,7 +27,7 @@ NULL
 #' @export
 #' @return NA
 #'
-DaparViz_corrmatrix_ui <- function(id) {
+omXplore_corrmatrix_ui <- function(id) {
     ns <- NS(id)
     tagList(
         shinyjs::useShinyjs(),
@@ -43,7 +43,7 @@ DaparViz_corrmatrix_ui <- function(id) {
 #' @export
 #' @return NA
 #'
-DaparViz_corrmatrix_server <- function(
+omXplore_corrmatrix_server <- function(
     id,
     obj = reactive({ NULL}),
     rate = reactive({0.5}),
@@ -64,10 +64,10 @@ DaparViz_corrmatrix_server <- function(
 
 
     observe({
-        if (inherits(obj(), "DaparViz")) {rv.corr$data <- obj()}
+        if (inherits(obj(), "VizData")) {rv.corr$data <- obj()}
 
         shinyjs::toggle("badFormatMsg",
-            condition = !inherits(obj(), "DaparViz")
+            condition = !inherits(obj(), "VizData")
         )
       }, priority = 1000)
 
@@ -233,11 +233,11 @@ corrMatrix <- function(
 #' @rdname corrmatrix
 #' @return A shiny app
 #'
-DaparViz_corrmatrix <- function(obj) {
-  ui <- DaparViz_corrmatrix_ui("plot")
+omXplore_corrmatrix <- function(obj) {
+  ui <- omXplore_corrmatrix_ui("plot")
 
   server <- function(input, output, session) {
-    DaparViz_corrmatrix_server("plot", reactive({
+    omXplore_corrmatrix_server("plot", reactive({
       obj
     }))
   }

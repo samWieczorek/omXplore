@@ -44,7 +44,7 @@
 #'
 #' @param id A `character(1)` for the 'id' of the shiny module. It must be
 #' the same as for the '*_ui' function.
-#' @param obj A list of items of the class `DaparViz`.
+#' @param obj An instance of the class `VizList`.
 #' @param addons A `list` to configure the other shiny apps to integrate.
 #' Each item correspond to one package:
 #' * the name of the slot is the name of the package
@@ -63,9 +63,9 @@
 #' @examples
 #' if (interactive()) {
 #'   data(vData_ft)
-#'   addons <- list(DaparViz = c("extFoo1", "extFoo2"), 
+#'   addons <- list(omXplore = c("extFoo1", "extFoo2"), 
 #'               DaparToolshed = c("mod_ds_metacell"))
-#'   addons <- list(DaparViz = c("extFoo1", "extFoo2"))
+#'   addons <- list(omXplore = c("extFoo1", "extFoo2"))
 #'   view_dataset(vData_ft, addons)
 #'   
 #'   
@@ -175,7 +175,7 @@ view_dataset_server <- function(
     
     FindImgSrc <- function(x) {
       
-      # By default, search image from the images directory of the DaparViz
+      # By default, search image from the images directory of the omXplore
       # package. This works for built-in plot modules. For external modules,
       # then load customized resource path
       
@@ -190,8 +190,8 @@ view_dataset_server <- function(
     observe({
       req(obj())
         
-        inherits_DaparViz <- inherits(obj(), "VizList")
-        if (inherits_DaparViz) {
+        inherits_VizList <- inherits(obj(), "VizList")
+        if (inherits_VizList) {
           rv$data <- obj()
           conds <- GetSlotConds(rv$data[1])
 
@@ -200,7 +200,7 @@ view_dataset_server <- function(
           
           rv$ll.mods <- listPlotModules() 
         } else {
-          shinyjs::toggle("badFormatMsg", condition = !inherits_DaparViz)
+          shinyjs::toggle("badFormatMsg", condition = !inherits_VizList)
         }
       },
       priority = 1000

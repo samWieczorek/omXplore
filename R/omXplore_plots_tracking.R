@@ -3,7 +3,7 @@
 #' @description This shiny module provides a tool to select
 #'
 #' @param id shiny id
-#' @param obj An instance of the class `DaparViz`
+#' @param obj An instance of the class `VizData`
 #' @param resetBtn A `boolean(1)` which indicates whether to show the 'Reset'
 #' button or not.
 #'
@@ -88,7 +88,7 @@ plots_tracking_server <- function(
 
     observe(
       {
-        if (inherits(obj(), "DaparViz")) {
+        if (inherits(obj(), "VizData")) {
           rv.track$data <- obj()
         }
 

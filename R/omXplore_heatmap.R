@@ -3,12 +3,12 @@
 #'
 #' @description
 #' This function is a wrapper to `heatmap.2()` that displays
-#' quantitative data in an object of #' class `DaparViz`. For
+#' quantitative data in an object of #' class `VizData`. For
 #' more details, see `heatmap.2()`.
 #'
 #' @param id A `character(1)` which is the id of the shiny module.
 #' @param width xxx
-#' @param obj An instance of a class `DaparViz`.
+#' @param obj An instance of a class `VizData`.
 #' @param distance The distance used by the clustering algorithm to compute
 #' the dendrogram.
 #' @param cluster the clustering algorithm used to build the dendrogram.
@@ -26,13 +26,13 @@
 #'
 #' @author Florence Combes, Samuel Wieczorek, Enor Fremy
 #'
-#' @name DaparViz_heatmap
+#' @name omXplore_heatmap
 #'
 #'
 #' @examples
 #' if (interactive()) {
 #'   data(vData_ft)
-#'   DaparViz_heatmap(vData_ft[[1]])
+#'   omXplore_heatmap(vData_ft[[1]])
 #' }
 #'
 NULL
@@ -40,11 +40,11 @@ NULL
 
 
 #' @importFrom shiny NS tagList
-#' @rdname DaparViz_heatmap
+#' @rdname omXplore_heatmap
 #' @export
 #' @return NA
 #'
-DaparViz_heatmap_ui <- function(id) {
+omXplore_heatmap_ui <- function(id) {
   ns <- NS(id)
   tagList(
     useShinyjs(),
@@ -68,18 +68,18 @@ DaparViz_heatmap_ui <- function(id) {
       )
     )),
     tags$hr(),
-    uiOutput(ns("DaparViz_PlotHeatmap"))
+    uiOutput(ns("omXplore_PlotHeatmap"))
   )
 }
 
 
 
 
-#' @rdname DaparViz_heatmap
+#' @rdname omXplore_heatmap
 #' @export
 #' @return NA
 #'
-DaparViz_heatmap_server <- function(
+omXplore_heatmap_server <- function(
     id,
     obj = reactive({
       NULL
@@ -92,18 +92,18 @@ DaparViz_heatmap_server <- function(
 
     observe(
       {
-        if (inherits(obj(), "DaparViz")) {
+        if (inherits(obj(), "VizData")) {
           rv$data <- obj()
         }
 
         shinyjs::toggle("badFormatMsg",
-          condition = !inherits(obj(), "DaparViz")
+          condition = !inherits(obj(), "VizData")
         )
         shinyjs::toggle("linkage",
-          condition = !inherits(obj(), "DaparViz")
+          condition = !inherits(obj(), "VizData")
         )
         shinyjs::toggle("distance",
-          condition = !inherits(obj(), "DaparViz")
+          condition = !inherits(obj(), "VizData")
         )
       },
       priority = 1000
@@ -114,7 +114,7 @@ DaparViz_heatmap_server <- function(
     height <- paste0(2 * width / 3, "px")
     width <- paste0(width, "px")
 
-    output$DaparViz_PlotHeatmap <- renderUI({
+    output$omXplore_PlotHeatmap <- renderUI({
       req(rv$data)
       if (nrow(rv$data@qdata) > limitHeatmap) {
         tags$p("The dataset is too large to compute the heatmap
@@ -145,17 +145,17 @@ DaparViz_heatmap_server <- function(
 
 
 #' @import shiny
-#' @rdname DaparViz_heatmap
+#' @rdname omXplore_heatmap
 #' @export
 #' @return A shiny app
 #'
-DaparViz_heatmap <- function(obj) {
+omXplore_heatmap <- function(obj) {
   ui <- fluidPage(
-    DaparViz_heatmap_ui("plot")
+    omXplore_heatmap_ui("plot")
   )
 
   server <- function(input, output, session) {
-    DaparViz_heatmap_server("plot", reactive({
+    omXplore_heatmap_server("plot", reactive({
       obj
     }))
   }

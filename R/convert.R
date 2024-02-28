@@ -46,14 +46,14 @@ convert2VizList <- function(obj){
         else
           .name <- paste0('object_', i)
         
-        convert.obj@ll.daparViz[[.name]] <- do.call(DaparViz, args)
+        convert.obj@ll.VizData[[.name]] <- do.call(VizData, args)
       }
     }
   }
   
   if (inherits(obj, 'MSnSet')) {
     args <- ExtractInfos(obj)
-    convert.obj <- VizList(list('original' = do.call(DaparViz, args)))
+    convert.obj <- VizList(list('original' = do.call(VizData, args)))
   }
   
 
@@ -68,7 +68,7 @@ convert2VizList <- function(obj){
   if (inherits(obj, 'SummarizedExperiment')){
     
     args <- ExtractInfos(obj)
-    convert.obj <- VizList(list('original' = do.call(DaparViz, args)))
+    convert.obj <- VizList(list('original' = do.call(VizData, args)))
   }
 
 
@@ -85,12 +85,12 @@ is.listOf <- function(object, obj.class)
 
 
 
-#' @title Formats available in DaparViz
+#' @title Formats available in omXplore
 #' @description
 #' Gives the list of classes for the datasets which be can converted by the
 #' function `convert2VizList()`.
 #'
-#' @return A vector of classes compliant with the package DaparViz.
+#' @return A vector of classes compliant with the package omXplore
 #' @examples
 #' FormatAvailables()
 #'
@@ -102,6 +102,7 @@ FormatAvailables <- function() {
     "MSnSet",
     "SummarizedExperiment",
     "MultiAssayExperment",
-    "list"
+    "list (of MSnSet)",
+    "list (specific format)"
   )
 }

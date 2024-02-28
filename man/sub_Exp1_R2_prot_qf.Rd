@@ -5,7 +5,7 @@
 \alias{sub_Exp1_R2_prot_qf}
 \title{sub_Exp1_R2_prot_qf dataset}
 \value{
-An instance of the class \code{DaparViz}
+An instance of the class \code{VizList}
 }
 \description{
 xxx
