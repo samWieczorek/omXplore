@@ -522,7 +522,7 @@ setMethod("GetSlotAdjMat", signature = "VizData",
 
 #' @title xxx
 #' @description xxx
-#' @param object An object that inherits MultiAssayExperiment class
+#' @param object An object that inherits `MultiAssayExperiment` class
 #' (e.g. MultiAssayExperiment, QFeatures)
 #'
 #' @return An object of class VizData.
@@ -540,7 +540,7 @@ ExtractInfos <- function(object) {
         proteinID = GetSlotProteinID(object),
         conds = GetSlotConds(object),
         type = GetSlotType(object),
-        adjMat = matrix(),
+        adjMat = NULL,
         cc = list()
       )
 

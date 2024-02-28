@@ -7,7 +7,7 @@
 ExtractInfos(object)
 }
 \arguments{
-\item{object}{An object that inherits MultiAssayExperiment class
+\item{object}{An object that inherits \code{MultiAssayExperiment} class
 (e.g. MultiAssayExperiment, QFeatures)}
 }
 \value{

@@ -2,7 +2,18 @@
 # `omXplore`.
 
 
-# Convert `QFeatures` datasets to VizList class
+
+# Convert simple QFeatures
+data("feat1", package = 'QFeatures')
+data("feat2", package = 'QFeatures')
+convert2VizList(feat1)
+convert2VizList(feat2)
+
+
+
+
+
+# Convert enriched `QFeatures` datasets to VizList class
 data("Exp1_R2_pept", package = 'DaparToolshedData')
 data("Exp1_R2_prot", package = 'DaparToolshedData')
 convert2VizList(Exp1_R2_pept)
@@ -35,3 +46,41 @@ convert2VizList(ll.msnset)
 
 
 # Convert formated list to VizList class
+
+buildToyDataset <- function(prefix){
+qdata <- matrix(1:30, ncol = 6, 
+  dimnames = list(paste0('prot_', 1:5), 
+    c(paste0('C1_R', 1:3), paste0('C2_R', 1:3))))
+colnames(qdata) <- c(paste0(prefix, '_C1_R', 1:3), paste0(prefix, '_C2_R', 1:3))
+metacell <- data.frame(matrix(rep('Missing POV', 30), ncol = 6), 
+row.names = paste0('prot_', 1:5))
+colnames(metacell) <- c(paste0(prefix, '_metacell_C1_R', 1:3), 
+paste0(prefix, '_metacell_C2_R', 1:3))
+metadata <- data.frame(protID = paste0('proteinID_', 1:5),
+metadata1 = paste0('meta1_', 1:5),
+metadata2 = paste0('meta2_', 1:5))
+conds <- c(rep('C1', 3), rep('C2', 3))
+colID <- 'protID'
+proteinID <- 'protID'
+type <- "protein"
+adjMat <- NULL
+cc <- NULL
+
+
+VizData(qdata = qdata,
+  metadata = metadata,
+  metacell = metacell,
+  conds = conds,
+  colID = colID,
+  proteinID = proteinID,
+  type = type,
+  adjMat = adjMat,
+  cc = cc)
+}
+
+data1 <- buildToyDataset('data1')
+data2 <- buildToyDataset('data2')
+
+data <- convert2VizList(list(data1, data2))
+
+

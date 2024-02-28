@@ -35,6 +35,7 @@ Imports:
     MultiAssayExperiment,
     shinyBS,
     shinyjs,
+    shinyjqui,
     DT,
     RColorBrewer,
     gplots,
@@ -81,7 +82,6 @@ Collate:
     omXplore_tabExplorer.R
     omXplore_variance.R
     omXplore_view_dataset.R
-    doc-data.R
     external_apps_examples.R
     VizData_accessors.R
     get_pep_prot_CC.R

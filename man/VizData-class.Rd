@@ -13,7 +13,7 @@
 
 \S4method{initialize}{VizData}(
   .Object,
-  qdata = data.frame(),
+  qdata = matrix(),
   metacell = data.frame(),
   metadata = data.frame(),
   colID = "",
@@ -151,7 +151,7 @@ obj <- VizData(qdata, metacell, metadata, colID, proteinId, type)
 }
 \seealso{
 The \code{VizData()} constructor and the \code{convert2VizList()}
-function. The \emph{VizData} vignette provides an extended example.
+function. The \emph{omXplore} vignette provides an extended example.
 }
 \author{
 Samuel Wieczorek

@@ -89,11 +89,8 @@ VizList <- setClass(
       msg <- "The object is not a list"
       errors <- c(errors, msg)
     }
-    
-    test <- all(unlist(lapply(object@ll.VizData, function(x) inherits(x, 'VizData')), 
-      use.names=FALSE))
-    
-    if (!test) {
+
+    if (!is.listOf(obj, 'VizData')) {
       msg <- "All the items contained in this list are not of class 'VizData'"
       errors <- c(errors, msg)
     }
@@ -117,7 +114,7 @@ setMethod(
       lapply(seq(length(object@ll.VizData)), 
         function(x){
           cat(names(object)[x], '\n')
-          show(object@ll.VizData[[x]])
+          showVizData(object@ll.VizData[[x]])
           })
     } else
       message("Empty object")

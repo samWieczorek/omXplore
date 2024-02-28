@@ -35,19 +35,30 @@ convert2VizList <- function(obj){
   
   # Convert a list of MSnSet
   if (inherits(obj, 'list')){
-    if (is.listOf(obj, 'MSnSet') ||
-        is.listOf(obj, 'SummarizedExperiment')){
+    if (is.listOf(obj, 'MSnSet') || is.listOf(obj, 'SummarizedExperiment')){
       convert.obj <- VizList()
       for (i in seq(length(obj))){
         args <- ExtractInfos(obj[[i]])
         
         if(!is.null(names(obj)[i]))
-        .name <- names(obj)[i]
+          .name <- names(obj)[i]
         else
           .name <- paste0('object_', i)
         
         convert.obj@ll.VizData[[.name]] <- do.call(VizData, args)
       }
+    }
+    
+    if (is.listOf(obj, 'VizData')){
+      convert.obj <- VizList()
+      for (i in seq(length(obj))){
+        if(!is.null(names(obj)[i]))
+          .name <- names(obj)[i]
+        else
+          .name <- paste0('object_', i)
+        
+        convert.obj@ll.VizData[[.name]] <- obj[[i]]
+        }
     }
   }
   
@@ -57,16 +68,23 @@ convert2VizList <- function(obj){
   }
   
 
-  if (inherits(obj, 'MultiAssayExperiment') ||
-      inherits(obj, 'QFeatures')){
-    
-    convert.obj <- convertMAEtype(obj)
+  if (inherits(obj, 'MultiAssayExperiment') || inherits(obj, 'QFeatures')){
+    convert.obj <- VizList()
+    for (i in seq(length(obj))){
+      args <- ExtractInfos(obj[[i]])
+      
+      if(!is.null(names(obj)[i]))
+        .name <- names(obj)[i]
+      else
+        .name <- paste0('object_', i)
+      
+      convert.obj@ll.VizData[[.name]] <- do.call(VizData, args)
+    }
   }
 
 
   
   if (inherits(obj, 'SummarizedExperiment')){
-    
     args <- ExtractInfos(obj)
     convert.obj <- VizList(list('original' = do.call(VizData, args)))
   }

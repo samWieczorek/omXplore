@@ -40,7 +40,7 @@
 ##'
 ##' @seealso
 ##' The `VizData()` constructor and the `convert2VizList()`
-##' function. The *VizData* vignette provides an extended example.
+##' function. The *omXplore* vignette provides an extended example.
 ##'
 ##' @exportClass VizData
 ##'
@@ -89,7 +89,6 @@ NULL
 ##' @exportClass VizData
 ##' @return An instance of the class `VizData`
 VizData <- setClass(
-
   "VizData",
   ##' @slot qdata A matrix containing the quantitative data
   ##' @slot metacell A matrix of xxx
@@ -166,58 +165,59 @@ setMethod(
   ##' @exportMethod show
   ##'
   function(object) {
-    cat(crayon::green(paste0(
-      "\tdim(qdata): ",
-      dim(object@qdata)[1], " x ",
-      dim(object@qdata)[2], "\n"
-    )))
-
-    cat(crayon::green(paste0(
-      "\tdim(metacell): ",
-      dim(object@metacell)[1], " x ",
-      dim(object@metacell)[2], "\n"
-    )))
-
-    cat(crayon::green("\tconds: "))
-    cat(crayon::green(object@conds))
-    cat(crayon::green("\n"))
-
-    cat(crayon::green("\ttype: "))
-    cat(crayon::green(object@type))
-    cat(crayon::green("\n"))
-
-    cat(crayon::green("\tcolID: "))
-    cat(crayon::green(object@colID))
-    cat(crayon::green("\n"))
-
-    cat(crayon::green("\tproteinID: "))
-    cat(crayon::green(object@proteinID))
-    cat(crayon::green("\n"))
-
-    cat(crayon::green("\tDimensions of adjacency matriX: "))
-    cat(crayon::green(paste0(
-      dim(object@adjMat)[1], " x ",
-      dim(object@adjMat)[2]
-    )))
-    cat(crayon::green("\n"))
-
-    cat(crayon::green("\tNumber of connected components: "))
-    cat(crayon::green(length(object@cc)))
-    cat(crayon::green("\n"))
-
-    if (length(object@cc) > 0) {
-      cc.infos <- GetCCInfos(object@cc)
-      # cat(crayon::green('\t\tDetails:\n'))
-      cat(crayon::green("\t\tOne -> One: "))
-      cat(crayon::green(length(cc.infos$One_One)))
-      cat(crayon::green("\n"))
-      cat(crayon::green("\t\tOne -> Multi: "))
-      cat(crayon::green(length(cc.infos$One_Multi)))
-      cat(crayon::green("\n"))
-      cat(crayon::green("\t\tMulti -> Multi: "))
-      cat(crayon::green(length(cc.infos$Multi_Multi)))
-      cat(crayon::green("\n"))
-    }
+    showVizData(object)
+    # cat(crayon::green(paste0(
+    #   "\tdim(qdata): ",
+    #   dim(object@qdata)[1], " x ",
+    #   dim(object@qdata)[2], "\n"
+    # )))
+    # 
+    # cat(crayon::green(paste0(
+    #   "\tdim(metacell): ",
+    #   dim(object@metacell)[1], " x ",
+    #   dim(object@metacell)[2], "\n"
+    # )))
+    # 
+    # cat(crayon::green("\tconds: "))
+    # cat(crayon::green(object@conds))
+    # cat(crayon::green("\n"))
+    # 
+    # cat(crayon::green("\ttype: "))
+    # cat(crayon::green(object@type))
+    # cat(crayon::green("\n"))
+    # 
+    # cat(crayon::green("\tcolID: "))
+    # cat(crayon::green(object@colID))
+    # cat(crayon::green("\n"))
+    # 
+    # cat(crayon::green("\tproteinID: "))
+    # cat(crayon::green(object@proteinID))
+    # cat(crayon::green("\n"))
+    # 
+    # cat(crayon::green("\tDimensions of adjacency matriX: "))
+    # cat(crayon::green(paste0(
+    #   dim(object@adjMat)[1], " x ",
+    #   dim(object@adjMat)[2]
+    # )))
+    # cat(crayon::green("\n"))
+    # 
+    # cat(crayon::green("\tNumber of connected components: "))
+    # cat(crayon::green(length(object@cc)))
+    # cat(crayon::green("\n"))
+    # 
+    # if (length(object@cc) > 0) {
+    #   cc.infos <- GetCCInfos(object@cc)
+    #   # cat(crayon::green('\t\tDetails:\n'))
+    #   cat(crayon::green("\t\tOne -> One: "))
+    #   cat(crayon::green(length(cc.infos$One_One)))
+    #   cat(crayon::green("\n"))
+    #   cat(crayon::green("\t\tOne -> Multi: "))
+    #   cat(crayon::green(length(cc.infos$One_Multi)))
+    #   cat(crayon::green("\n"))
+    #   cat(crayon::green("\t\tMulti -> Multi: "))
+    #   cat(crayon::green(length(cc.infos$Multi_Multi)))
+    #   cat(crayon::green("\n"))
+    #}
   }
 )
 
@@ -241,7 +241,7 @@ setMethod(
   ##' @param cc xxx
   function(
       .Object,
-      qdata = data.frame(),
+      qdata = matrix(),
       metacell = data.frame(),
       metadata = data.frame(),
       colID = "",
@@ -250,9 +250,10 @@ setMethod(
       type = "",
       adjMat = data.frame(),
       cc = list()) {
-    # browser()
+ 
 
     if (is.null(qdata) || !inherits(qdata, "matrix")) {
+      message('qdata must be a matrix')
       .Object@qdata <- matrix()
     } else {
       .Object@qdata <- qdata
@@ -348,3 +349,71 @@ setMethod("[",
     return(x)
   }
 )
+
+
+
+
+
+#' @title xxx
+#' @description
+#' xxxxx
+#' 
+#' @param object An instance of the class `VizData`
+#' @export
+#' 
+showVizData <- function(object) {
+  stopifnot(inherits(object, 'VizData'))
+  
+  cat(crayon::green(paste0(
+    "\tdim(qdata): ",
+    dim(object@qdata)[1], " x ",
+    dim(object@qdata)[2], "\n"
+  )))
+  
+  cat(crayon::green(paste0(
+    "\tdim(metacell): ",
+    dim(object@metacell)[1], " x ",
+    dim(object@metacell)[2], "\n"
+  )))
+  
+  cat(crayon::green("\tconds: "))
+  cat(crayon::green(object@conds))
+  cat(crayon::green("\n"))
+  
+  cat(crayon::green("\ttype: "))
+  cat(crayon::green(object@type))
+  cat(crayon::green("\n"))
+  
+  cat(crayon::green("\tcolID: "))
+  cat(crayon::green(object@colID))
+  cat(crayon::green("\n"))
+  
+  cat(crayon::green("\tproteinID: "))
+  cat(crayon::green(object@proteinID))
+  cat(crayon::green("\n"))
+  
+  cat(crayon::green("\tDimensions of adjacency matriX: "))
+  cat(crayon::green(paste0(
+    dim(object@adjMat)[1], " x ",
+    dim(object@adjMat)[2]
+  )))
+  cat(crayon::green("\n"))
+  
+  cat(crayon::green("\tNumber of connected components: "))
+  cat(crayon::green(length(object@cc)))
+  cat(crayon::green("\n"))
+  
+  if (length(object@cc) > 0) {
+    cc.infos <- GetCCInfos(object@cc)
+    # cat(crayon::green('\t\tDetails:\n'))
+    cat(crayon::green("\t\tOne -> One: "))
+    cat(crayon::green(length(cc.infos$One_One)))
+    cat(crayon::green("\n"))
+    cat(crayon::green("\t\tOne -> Multi: "))
+    cat(crayon::green(length(cc.infos$One_Multi)))
+    cat(crayon::green("\n"))
+    cat(crayon::green("\t\tMulti -> Multi: "))
+    cat(crayon::green(length(cc.infos$Multi_Multi)))
+    cat(crayon::green("\n"))
+  }
+}

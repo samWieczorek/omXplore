@@ -70,8 +70,8 @@ DaparViz::FormatAvailables()
 To convert datasets to the class DaparViz-class, run
 
 ```{r convert2Viz, message = FALSE, warning = FALSE, echo = TRUE}
-data(sub_Exp1_R2_prot_qf)
-convert2Viz(sub_Exp1_R2_prot_qf)
+#data(sub_Exp1_R2_prot_qf)
+#convert2VizList(sub_Exp1_R2_prot_qf)
 ```
 
 
@@ -119,8 +119,8 @@ The Shiny app called view_dataset() is the main application of the package
 
 
 ```{r view_dataset, eval=FALSE, fig.show='hide', message = FALSE, warning = FALSE, echo = TRUE}
-data(vData_ft)
-view_dataset(vData_ft)
+#data(vData_ft)
+#view_dataset(vData_ft)
 ```
 
 It is composed of two parts :
@@ -160,11 +160,11 @@ See the help page of this function fore more details.
 
 
 ```{r ex_modules, eval = FALSE, fig.show='hide', message = FALSE, warning = FALSE, echo = TRUE}
-data(vData_ft)
-obj <- vData_ft[[1]]
-listPlotModules()
-DaparViz_pca(obj)
-DaparViz_density(obj)
+#data(vData_ft)
+#obj <- vData_ft[[1]]
+#listPlotModules()
+#DaparViz_pca(obj)
+#DaparViz_density(obj)
 ```
 
 # Adding external plots
@@ -190,9 +190,9 @@ as follows. In the example below, one want to add the app called `extFoo1` and
 contains a simple plot just to demonstrate how it works
 
 ```
-data(vData_ft)
-addons <- list(DaparViz = c("extFoo1", "extFoo2"))
-view_dataset(vData_ft, addons)
+#data(vData_ft)
+#addons <- list(DaparViz = c("extFoo1", "extFoo2"))
+#view_dataset(vData_ft, addons)
 ```
 
 
