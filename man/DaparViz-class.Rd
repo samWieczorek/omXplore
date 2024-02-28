@@ -102,7 +102,7 @@ function \code{convert2viz()} of the class \code{VizList}
 
 \item{\code{metadata}}{A matrix of xxxx}
 
-\item{\code{colID}}{The name of the colum which contains the ids of each row.}
+\item{\code{colID}}{The name of the column which contains the ids of each row.}
 
 \item{\code{proteinID}}{The name of the column in the metadata which represent the
 (unique) id of the protein}

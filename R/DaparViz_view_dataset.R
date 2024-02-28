@@ -67,6 +67,10 @@
 #'               DaparToolshed = c("mod_ds_metacell"))
 #'   addons <- list(DaparViz = c("extFoo1", "extFoo2"))
 #'   view_dataset(vData_ft, addons)
+#'   
+#'   
+#'   data(sub_Exp1_R2_prot_MSnSet)
+#'   view_dataset(sub_Exp1_R2_prot_MSnSet)
 #' }
 #' 
 #' @return NA
@@ -111,6 +115,7 @@ view_dataset_ui <- function(id) {
 #' @importFrom shinyjs show hide hidden
 #' @import shiny
 #' @import shinyBS
+#' @import shinyjqui
 #'
 #' @rdname ds-view
 #' @export
@@ -118,7 +123,7 @@ view_dataset_ui <- function(id) {
 #'
 view_dataset_server <- function(
     id,
-    obj = NULL,
+    obj = reactive({NULL}),
     addons = list(),
     width = 40,
     height = 40) {
@@ -182,24 +187,20 @@ view_dataset_server <- function(
         paste0(GetPackageName(x), "_images/", GetFuncName(x), ".png")
     }
     
-    
-    
-    
-    
-
-    observe(
-      {
-        req(obj())
-        if (inherits(obj(), "list")) {
+    observe({
+      req(obj())
+        
+        inherits_DaparViz <- inherits(obj(), "VizList")
+        if (inherits_DaparViz) {
           rv$data <- obj()
-          conds <- GetSlotConds(rv$data[[1]])
+          conds <- GetSlotConds(rv$data[1])
 
           # Load external modules
           addModules(addons)
           
           rv$ll.mods <- listPlotModules() 
         } else {
-          shinyjs::toggle("badFormatMsg", condition = !inherits(obj(), "list"))
+          shinyjs::toggle("badFormatMsg", condition = !inherits_DaparViz)
         }
       },
       priority = 1000
@@ -303,15 +304,17 @@ view_dataset_server <- function(
 view_dataset <- function(
     obj = NULL,
     addons = NULL) {
+  
+  if (!inherits(obj, "VizList"))
+    obj <- convert2VizList(obj)
+  
   ui <- fluidPage(
     view_dataset_ui("dataset")
   )
 
   server <- function(input, output, session) {
     view_dataset_server("dataset",
-      obj = reactive({
-        obj
-      }),
+      obj = reactive({obj}),
       addons = addons
     )
   }

@@ -2,40 +2,36 @@
 # `DaparViz`.
 
 
-library(DaparToolshedData)
-
-finalSize <- 100
-
-# Build data examples with `QFeatures` datasets.
-
-data("Exp1_R25_pept", package = "DaparToolshedData")
-data("Exp1_R25_prot", package = "DaparToolshedData")
-
-ft1 <- Exp1_R25_pept[150:170]
-ft2 <- Exp1_R25_prot[1:21]
-
-vData_ft1 <- convert2Viz(ft1)
-vData_ft2 <- convert2Viz(ft2)
-vData_ft <- vData_ft1
-vData_ft[["processed_1"]] <- vData_ft2[[1]]
+# Convert `QFeatures` datasets to VizList class
+data("Exp1_R2_pept", package = 'DaparToolshedData')
+data("Exp1_R2_prot", package = 'DaparToolshedData')
+convert2VizList(Exp1_R2_pept)
+convert2VizList(Exp1_R2_prot)
 
 
-save(vData_ft, file = file.path("data/vData_ft.RData"))
+# Convert `MSnSet` datasets to VizList class
+data("Exp1_R2_pept", package = 'DAPARdata')
+data("Exp1_R2_prot", package = 'DAPARdata')
+convert2VizList(Exp1_R2_pept)
+convert2VizList(Exp1_R2_prot)
 
-# Build data examples MSnSet datasets.
 
-data("Exp1_R2_pept_MSnSet")
-data("Exp1_R2_prot_MSnSet")
+# Build data examples from a named list of MSnSet datasets
+ll.msnset <- list(original1 = Exp1_R2_pept,
+  original2 = Exp1_R2_prot)
+convert2VizList(ll.msnset)
 
-ms1 <- Exp1_R25_pept[150:170]
-ms2 <- Exp1_R25_prot[1:21]
 
-vData_ms1 <- convert2Viz(ms1)
-vData_ms2 <- convert2Viz(ms2)
+# Build data examples from an unnamed list of MSnSet datasets
+ll.msnset <- list(Exp1_R2_pept, Exp1_R2_prot)
+convert2VizList(ll.msnset)
 
-vData_ms1 <- convert2Viz(ms1)
-vData_ms2 <- convert2Viz(ms2)
-vData_ms <- vData_ms1
-vData_ms[["processed_1"]] <- vData_ms2[[1]]
 
-save(vData_ms, file = file.path("data/vData_ms.RData"))
+# Convert `SummarizedExperiment` datasets to VizList class
+
+
+
+# Convert `MultiAssayExperiment` datasets to VizList class
+
+
+# Convert formated list to VizList class

@@ -68,7 +68,9 @@ biocViews:
 NeedsCompilation: no
 Collate:
     conversion_funcs.R
+    convert.R
     DaparViz-class.R
+    VizList-class.R
     DaparViz_cc.R
     DaparViz_corrmatrix.R
     DaparViz_density.R

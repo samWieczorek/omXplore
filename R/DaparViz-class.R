@@ -94,7 +94,7 @@ DaparViz <- setClass(
   ##' @slot qdata A matrix containing the quantitative data
   ##' @slot metacell A matrix of xxx
   ##' @slot metadata A matrix of xxxx
-  ##' @slot colID The name of the colum which contains the ids of each row.
+  ##' @slot colID The name of the column which contains the ids of each row.
   ##' @slot proteinID The name of the column in the metadata which represent the
   ##' (unique) id of the protein
   ##' @slot conds A vector of the names of the condition of each sample

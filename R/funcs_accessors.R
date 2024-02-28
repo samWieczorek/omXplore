@@ -271,16 +271,16 @@ setMethod("GetSlotColID",
 setMethod("GetSlotColID",
   signature = "SummarizedExperiment",
   function(object) {
+    colID <- ""
     tryCatch(
       {
         colID <- SummarizedExperiment::metadata(object)$idcol
         if (is.null(colID)) colID <- ""
-
-        colID
       },
       warning = function(w) "",
       error = function(e) ""
     )
+    return(colID)
   }
 )
 
@@ -289,9 +289,9 @@ setMethod("GetSlotColID",
 #' @rdname accessors
 #' @return A character(0)
 #'
-setMethod("GetSlotColID",
-  signature = "MSnSet",
+setMethod("GetSlotColID", signature = "MSnSet",
   function(object) {
+    colID <- ""
     tryCatch(
       {
         colID <- object@experimentData@other$keyId
@@ -302,6 +302,7 @@ setMethod("GetSlotColID",
       warning = function(w) "",
       error = function(e) ""
     )
+    return(colID)
   }
 )
 
@@ -324,6 +325,7 @@ setMethod("GetSlotType",
 setMethod("GetSlotType",
   signature = "SummarizedExperiment",
   function(object) {
+    type <- ""
     tryCatch(
       {
         type <- SummarizedExperiment::metadata(object)$typeDataset
@@ -334,6 +336,7 @@ setMethod("GetSlotType",
       warning = function(w) "",
       error = function(e) ""
     )
+    return(type)
   }
 )
 
@@ -345,16 +348,16 @@ setMethod("GetSlotType",
 setMethod("GetSlotType",
   signature = "MSnSet",
   function(object) {
+    type <- ""
     tryCatch(
       {
         type <- object@experimentData@other$typeOfData
         if (is.null(type)) type <- ""
-
-        type
       },
       warning = function(w) "",
       error = function(e) ""
     )
+    return(type)
   }
 )
 
@@ -378,16 +381,16 @@ setMethod("GetSlotProteinID",
 setMethod("GetSlotProteinID",
   signature = "SummarizedExperiment",
   function(object) {
+    proteinID <- ""
     tryCatch(
       {
         proteinID <- SummarizedExperiment::metadata(object)$parentProtId
         if (is.null(proteinID)) proteinID <- ""
-
-        proteinID
       },
       warning = function(w) "",
       error = function(e) ""
     )
+    return(proteinID)
   }
 )
 
@@ -399,16 +402,16 @@ setMethod("GetSlotProteinID",
 setMethod("GetSlotProteinID",
   signature = "MSnSet",
   function(object) {
+    proteinID <- ""
     tryCatch(
       {
         proteinID <- object@experimentData@other$proteinId
         if (is.null(proteinID)) proteinID <- ""
-
-        proteinID
       },
       warning = function(w) "",
       error = function(e) ""
     )
+    return(proteinID)
   }
 )
 
@@ -432,16 +435,16 @@ setMethod("GetSlotConds",
 setMethod("GetSlotConds",
   signature = "MultiAssayExperiment",
   function(object) {
+    conds <- ""
     tryCatch(
       {
         conds <- SummarizedExperiment::colData(object)$Condition
         if (is.null(conds)) conds <- ""
-
-        conds
       },
       warning = function(w) "",
       error = function(e) ""
     )
+    return(conds)
   }
 )
 
@@ -464,16 +467,16 @@ setMethod("GetSlotConds",
 setMethod("GetSlotConds",
   signature = "MSnSet",
   function(object) {
+    conds <- ""
     tryCatch(
       {
         conds <- MSnbase::pData(object)$Condition
         if (is.null(conds)) conds <- ""
-
-        conds
       },
       warning = function(w) "",
       error = function(e) ""
     )
+    return(conds)
   }
 )
 
@@ -491,8 +494,7 @@ setMethod("GetSlotCc",
 #' @rdname accessors
 #' @return A character(0)
 #'
-setMethod("GetSlotCc",
-  signature = "DaparViz",
+setMethod("GetSlotCc", signature = "DaparViz",
   function(object) object@cc
 )
 
@@ -502,8 +504,7 @@ setMethod("GetSlotCc",
 #' @rdname accessors
 #' @return A character(0)
 #'
-setMethod("GetSlotAdjMat",
-  signature = "ANY",
+setMethod("GetSlotAdjMat", signature = "ANY",
   function(object) NULL
 )
 
@@ -511,8 +512,7 @@ setMethod("GetSlotAdjMat",
 #' @rdname accessors
 #' @return A character(0)
 #'
-setMethod("GetSlotAdjMat",
-  signature = "DaparViz",
+setMethod("GetSlotAdjMat", signature = "DaparViz",
   function(object) object@adjMat
 )
 
@@ -526,66 +526,48 @@ setMethod("GetSlotAdjMat",
 #' (e.g. MultiAssayExperiment, QFeatures)
 #'
 #' @return An object of class DaparViz.
-#'
+#' @export
 #' @examples
 #' NULL
 #'
-convertMAEtype <- function(object) {
-  ll <- list()
-  for (i in seq_len(length(object))) {
+ExtractInfos <- function(object) {
+  
     args <- list(
-      qdata = matrix(),
-      metacell = data.frame(),
-      metadata = data.frame(),
-      colID = "",
-      proteinID = "",
-      conds = "",
-      type = "",
-      adjMat = matrix(),
-      cc = list()
-    )
-
-
-    if (inherits(object[[i]], "SummarizedExperiment")) {
-      args <- list(
-        qdata = GetSlotQdata(object[[i]]),
-        metacell = GetSlotMetacell(object[[i]]),
-        metadata = GetSlotMetadata(object[[i]]),
-        colID = GetSlotColID(object[[i]]),
-        proteinID = GetSlotProteinID(object[[i]]),
-        conds = GetSlotConds(object[[i]]),
-        type = GetSlotType(object[[i]]),
+        qdata = GetSlotQdata(object),
+        metacell = GetSlotMetacell(object),
+        metadata = GetSlotMetadata(object),
+        colID = GetSlotColID(object),
+        proteinID = GetSlotProteinID(object),
+        conds = GetSlotConds(object),
+        type = GetSlotType(object),
         adjMat = matrix(),
         cc = list()
       )
 
-      if (!is.null(args$metacell)) {
-        ind <- which(names(args$metadata) == "qMetacell")
-        args$metadata <- args$metadata[, -ind]
+      if (!is.null(colnames(args$metacell))) {
+        ind <- match(colnames(args$metacell), colnames(args$metadata))
+          args$metadata <- args$metadata[, -ind]
       }
 
       # Delete adjacency Matrix from whole metadata
       if ("adjacencyMatrix" %in% names(args$metadata)) {
         .ind <- which(names(args$metadata) == "adjacencyMatrix")
-        args$metadata <- args$metadata[, -.ind]
-      }
-
-      if (!is.null(args$proteinID) && args$proteinID != "") {
+        args$adjMat <- args$metadata[, "adjacencyMatrix"]
+         args$metadata <- args$metadata[, -.ind]
+      } else if (!is.null(args$proteinID) && args$proteinID != "") {
         .arg <- args$metadata[, args$proteinID]
         args$adjMat <- PSMatch::makeAdjacencyMatrix(.arg)
         rownames(args$adjMat) <- rownames(args$metadata)
-
-        # Create the connected components
-        args$cc <- PSMatch::ConnectedComponents(args$adjMat)@adjMatrices
       }
 
+        if(!is.null(args$adjMat)){
+          # Create the connected components
+          args$cc <- PSMatch::ConnectedComponents(args$adjMat)@adjMatrices
+        }
+
       # Fix typos
-
       args$metadata <- as.data.frame(args$metadata)
-    }
 
 
-    ll[[names(object)[i]]] <- do.call(DaparViz, args)
-  }
-  return(ll)
+  return(args)
 }

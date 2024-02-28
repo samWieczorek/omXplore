@@ -1,4 +1,36 @@
-#' @title Customised contextual menu of highcharts plots
+
+#' 
+#' #' @title xxx
+#' #' @description xxx
+#' #' 
+#' #' @param object xxx
+#' #' 
+#' #' @return A boolean
+#' #' @name DaparViz-class
+#' #'
+#' #' @examples
+#' #' data(vData_ft)
+#' #' is.ListOfDaparViz(vData_ft)
+#' #' 
+#' #' @export
+#' #' 
+#' is.ListOfDaparViz <- function(object){
+#'   
+#'   passed <- TRUE
+#'   passed <- passed && inherits(object, 'list')
+#'   passed <- passed && 
+#'     all(unlist(lapply(object, function(x) inherits(x, 'DaparViz')), 
+#'       use.names=FALSE))
+#'   
+#'   return(passed)
+#' }
+
+
+
+
+
+
+#' #' @title Customised contextual menu of highcharts plots
 #'
 #' @param hc A highcharter object
 #' @param fname The filename under which the plot has to be saved

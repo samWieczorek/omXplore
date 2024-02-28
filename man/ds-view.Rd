@@ -9,7 +9,15 @@
 \usage{
 view_dataset_ui(id)
 
-view_dataset_server(id, obj = NULL, addons = list(), width = 40, height = 40)
+view_dataset_server(
+  id,
+  obj = reactive({
+     NULL
+ }),
+  addons = list(),
+  width = 40,
+  height = 40
+)
 
 view_dataset(obj = NULL, addons = NULL)
 }
@@ -85,6 +93,10 @@ if (interactive()) {
               DaparToolshed = c("mod_ds_metacell"))
   addons <- list(DaparViz = c("extFoo1", "extFoo2"))
   view_dataset(vData_ft, addons)
+  
+  
+  data(sub_Exp1_R2_prot_MSnSet)
+  view_dataset(sub_Exp1_R2_prot_MSnSet)
 }
 
 if (interactive()) {

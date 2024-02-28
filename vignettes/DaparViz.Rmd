@@ -74,6 +74,31 @@ data(sub_Exp1_R2_prot_qf)
 convert2Viz(sub_Exp1_R2_prot_qf)
 ```
 
+
+## DaparViz class
+
+The internal data structures in DaparViz reproduce the same logics as for
+the class MultiAssayExperiment. For simplicity and genericity, it is not
+an derivated classes but new classes but using common ideas.
+Thus, DpaarViz consist in two classes:
+
+* the class DaparViz which contains. This class is similar to the class 
+'SummarizedExperiment'
+
+
+* the class VizList which contains a list of instances of DaparViz classes. This class is similar to the class 'MultiAssayExperiment'.
+
+
+
+The slots of the class 'DaparViz' are:
+* xxx
+* xxx
+* xxx
+* xxx
+* xxx
+* xxx
+* xxx
+
 However, all the plots functions in `DaparViz` integrate a convert feature 
 so as to pass directly datasets in other format to the plot functions. They
 also have a check function to ensure that the parameters are in the correct
