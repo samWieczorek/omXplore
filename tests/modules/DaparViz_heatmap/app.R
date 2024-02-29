@@ -1,4 +1,4 @@
-library(DaparViz)
+library(omXplore)
 
 data(vData_ft)
-DaparViz_heatmap(vData_ft[[1]])
+omXplore_heatmap(vData_ft[[1]])

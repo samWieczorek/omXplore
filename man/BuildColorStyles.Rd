@@ -7,7 +7,7 @@
 BuildColorStyles(type)
 }
 \arguments{
-\item{type}{An instance of the class \code{DaparViz}}
+\item{type}{The type od dataset}
 }
 \value{
 A list

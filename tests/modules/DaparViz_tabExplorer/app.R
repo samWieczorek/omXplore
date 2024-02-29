@@ -1,3 +1,3 @@
-library(DaparViz)
+library(omXplore)
 data(vData_ft)
-DaparViz_tabExplorer(vData_ft[[1]])
+omXplore_tabExplorer(vData_ft[[1]])

@@ -1,7 +1,7 @@
-#' @title Accessors functions
-#' @description xxx
+#' @title Accessors functions for class `VizData`
+#' @description Functions to access the slots of the class `VizData`.
 #' @return See individual method description for the return value.
-#' @param object An object of
+#' @param object An object of class `VizData`
 #' @param ... xxxx description
 #' @name accessors
 #'
@@ -15,15 +15,14 @@
 #' ## -----------------------------------
 #' ## Accessing slots from a MSnSet dataset
 #' ## -----------------------------------
-#' data(sub_Exp1_R2_prot_MSnSet)
-#' obj <- sub_Exp1_R2_prot_MSnSet
-#' metadata <- GetSlotMetadata(obj)
-#' qdata <- GetSlotQdata(obj)
-#' metacell <- GetSlotMetacell(obj)
-#' id <- GetSlotColID(obj)
-#' type <- GetSlotType(obj)
-#' proteinID <- GetSlotProteinID(obj)
-#' conds <- GetSlotConds(obj)
+#' toydata <- build_VizData_example()
+#' metadata <- GetSlotMetadata(toydata)
+#' qdata <- GetSlotQdata(toydata)
+#' metacell <- GetSlotMetacell(toydata)
+#' id <- GetSlotColID(toydata)
+#' type <- GetSlotType(toydata)
+#' proteinID <- GetSlotProteinID(toydata)
+#' conds <- GetSlotConds(toydata)
 #'
 NULL
 
@@ -93,42 +92,7 @@ setGeneric(
   function(object, ...) standardGeneric("GetSlotCc")
 )
 
-#' @param object An instance of class `SummarizedExperiment`.
-#' @rdname accessors
-#' @import QFeatures
-#' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
-#' @return A data.frame containing the metadata of the dataset
-#'
-setMethod("GetSlotMetadata",
-  signature = "SummarizedExperiment",
-  function(object) {
-    tryCatch(
-      {
-        SummarizedExperiment::rowData(object)
-      },
-      warning = function(w) NULL,
-      error = function(e) NULL
-    )
-  }
-)
 
-#' @param object An instance of class `MSnSet`.
-#' @rdname accessors
-#' @import MSnbase
-#' @return A data.frame
-#'
-setMethod("GetSlotMetadata",
-  signature = "MSnSet",
-  function(object) {
-    tryCatch(
-      {
-        MSnbase::fData(object)
-      },
-      warning = function(w) NULL,
-      error = function(e) NULL
-    )
-  }
-)
 
 #' @param object An instance of class `VizData`.
 #' @rdname accessors
@@ -139,37 +103,7 @@ setMethod("GetSlotMetadata",
   function(object) object@metadata
 )
 
-#' @param object An instance of class `SummarizedExperiment`.
-#' @rdname accessors
-#' @import QFeatures
-#' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
-#' @return A data.frame
-#'
-setMethod("GetSlotQdata",
-  signature = "ANY",
-  function(object) {
-    NULL
-  }
-)
 
-#' @param object An instance of class `SummarizedExperiment`.
-#' @rdname accessors
-#' @import QFeatures
-#' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
-#' @return A data.frame
-#'
-setMethod("GetSlotQdata",
-  signature = "SummarizedExperiment",
-  function(object) {
-    tryCatch(
-      {
-        SummarizedExperiment::assay(object)
-      },
-      warning = function(w) NULL,
-      error = function(e) NULL
-    )
-  }
-)
 
 #' @param object An instance of class `VizData`.
 #' @rdname accessors
@@ -178,24 +112,6 @@ setMethod("GetSlotQdata",
 setMethod("GetSlotQdata",
   signature = "VizData",
   function(object) object@qdata
-)
-
-#' @param object An instance of class `MSnSet`.
-#' @rdname accessors
-#' @import MSnbase
-#' @return A data.frame
-#'
-setMethod("GetSlotQdata",
-  signature = "MSnSet",
-  function(object) {
-    tryCatch(
-      {
-        MSnbase::exprs(object)
-      },
-      warning = function(w) NULL,
-      error = function(e) NULL
-    )
-  }
 )
 
 
@@ -212,45 +128,6 @@ setMethod("GetSlotMetacell",
 
 
 
-#' @param object An instance of class `SummarizedExperiment`.
-#' @rdname accessors
-#' @import QFeatures
-#' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
-#' @return A data.frame
-#'
-setMethod("GetSlotMetacell",
-  signature = "SummarizedExperiment",
-  function(object) {
-    tryCatch(
-      {
-        (SummarizedExperiment::rowData(object))$qMetacell
-      },
-      warning = function(w) NULL,
-      error = function(e) NULL
-    )
-  }
-)
-
-#' @param object An instance of class `MSnSet`.
-#' @rdname accessors
-#' @import MSnbase
-#' @return A data.frame
-#'
-setMethod("GetSlotMetacell",
-  signature = "MSnSet",
-  function(object) {
-    tryCatch(
-      {
-        # if ('names_metacell' %in% names(object@experimentData@other))
-        .names <- object@experimentData@other$names_metacell
-        MSnbase::fData(object)[, .names]
-      },
-      warning = function(w) NULL,
-      error = function(e) NULL
-    )
-  }
-)
-
 
 #' @param object An instance of class `VizData`.
 #' @rdname accessors
@@ -262,49 +139,6 @@ setMethod("GetSlotColID",
 )
 
 
-#' @param object An instance of class `SummarizedExperiment`.
-#' @rdname accessors
-#' @import QFeatures
-#' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
-#' @return A character(0)
-#'
-setMethod("GetSlotColID",
-  signature = "SummarizedExperiment",
-  function(object) {
-    colID <- ""
-    tryCatch(
-      {
-        colID <- SummarizedExperiment::metadata(object)$idcol
-        if (is.null(colID)) colID <- ""
-      },
-      warning = function(w) "",
-      error = function(e) ""
-    )
-    return(colID)
-  }
-)
-
-#' @param object An instance of class `MSnSet`.
-#' @import MSnbase
-#' @rdname accessors
-#' @return A character(0)
-#'
-setMethod("GetSlotColID", signature = "MSnSet",
-  function(object) {
-    colID <- ""
-    tryCatch(
-      {
-        colID <- object@experimentData@other$keyId
-        if (is.null(colID)) colID <- ""
-
-        colID
-      },
-      warning = function(w) "",
-      error = function(e) ""
-    )
-    return(colID)
-  }
-)
 
 
 #' @param object An instance of class `VizData`.
@@ -317,49 +151,7 @@ setMethod("GetSlotType",
 )
 
 
-#' @param object An instance of class `SummarizedExperiment`.
-#' @rdname accessors
-#' @import SummarizedExperiment
-#' @return A character(0)
-#'
-setMethod("GetSlotType",
-  signature = "SummarizedExperiment",
-  function(object) {
-    type <- ""
-    tryCatch(
-      {
-        type <- SummarizedExperiment::metadata(object)$typeDataset
-        if (is.null(type)) type <- ""
 
-        type
-      },
-      warning = function(w) "",
-      error = function(e) ""
-    )
-    return(type)
-  }
-)
-
-#' @param object An instance of class `MSnSet`.
-#' @import MSnbase
-#' @rdname accessors
-#' @return A character(0)
-#'
-setMethod("GetSlotType",
-  signature = "MSnSet",
-  function(object) {
-    type <- ""
-    tryCatch(
-      {
-        type <- object@experimentData@other$typeOfData
-        if (is.null(type)) type <- ""
-      },
-      warning = function(w) "",
-      error = function(e) ""
-    )
-    return(type)
-  }
-)
 
 
 #' @param object An instance of class `VizData`.
@@ -372,49 +164,6 @@ setMethod("GetSlotProteinID",
 )
 
 
-#' @param object An instance of class `SummarizedExperiment`.
-#' @rdname accessors
-#' @import QFeatures
-#' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
-#' @return A character(0)
-#'
-setMethod("GetSlotProteinID",
-  signature = "SummarizedExperiment",
-  function(object) {
-    proteinID <- ""
-    tryCatch(
-      {
-        proteinID <- SummarizedExperiment::metadata(object)$parentProtId
-        if (is.null(proteinID)) proteinID <- ""
-      },
-      warning = function(w) "",
-      error = function(e) ""
-    )
-    return(proteinID)
-  }
-)
-
-#' @param object An instance of class `MSnSet`.
-#' @import MSnbase
-#' @rdname accessors
-#' @return A character(0)
-#'
-setMethod("GetSlotProteinID",
-  signature = "MSnSet",
-  function(object) {
-    proteinID <- ""
-    tryCatch(
-      {
-        proteinID <- object@experimentData@other$proteinId
-        if (is.null(proteinID)) proteinID <- ""
-      },
-      warning = function(w) "",
-      error = function(e) ""
-    )
-    return(proteinID)
-  }
-)
-
 
 #' @param object An instance of class `VizData`.
 #' @rdname accessors
@@ -425,60 +174,6 @@ setMethod("GetSlotConds",
   function(object) object@conds
 )
 
-
-#' @param object An instance of class `MultiAssayExperiment`.
-#' @rdname accessors
-#' @import MultiAssayExperiment
-#' @importFrom PSMatch makeAdjacencyMatrix ConnectedComponents
-#' @return A character(0)
-#'
-setMethod("GetSlotConds",
-  signature = "MultiAssayExperiment",
-  function(object) {
-    conds <- ""
-    tryCatch(
-      {
-        conds <- SummarizedExperiment::colData(object)$Condition
-        if (is.null(conds)) conds <- ""
-      },
-      warning = function(w) "",
-      error = function(e) ""
-    )
-    return(conds)
-  }
-)
-
-#' @param object An instance of class `SummarizedExperiment`.
-#' @rdname accessors
-#' @return A character(0)
-#'
-setMethod("GetSlotConds",
-  signature = "ANY",
-  function(object) {
-    ""
-  }
-)
-
-#' @param object An instance of class `MSnSet`.
-#' @rdname accessors
-#' @import MSnbase
-#' @return A character(0)
-#'
-setMethod("GetSlotConds",
-  signature = "MSnSet",
-  function(object) {
-    conds <- ""
-    tryCatch(
-      {
-        conds <- MSnbase::pData(object)$Condition
-        if (is.null(conds)) conds <- ""
-      },
-      warning = function(w) "",
-      error = function(e) ""
-    )
-    return(conds)
-  }
-)
 
 
 #' @param object An instance of class `ANY`.
@@ -520,54 +215,56 @@ setMethod("GetSlotAdjMat", signature = "VizData",
 
 
 
-#' @title xxx
-#' @description xxx
-#' @param object An object that inherits `MultiAssayExperiment` class
-#' (e.g. MultiAssayExperiment, QFeatures)
-#'
-#' @return An object of class VizData.
-#' @export
-#' @examples
-#' NULL
-#'
-ExtractInfos <- function(object) {
-  
-    args <- list(
-        qdata = GetSlotQdata(object),
-        metacell = GetSlotMetacell(object),
-        metadata = GetSlotMetadata(object),
-        colID = GetSlotColID(object),
-        proteinID = GetSlotProteinID(object),
-        conds = GetSlotConds(object),
-        type = GetSlotType(object),
-        adjMat = NULL,
-        cc = list()
-      )
-
-      if (!is.null(colnames(args$metacell))) {
-        ind <- match(colnames(args$metacell), colnames(args$metadata))
-          args$metadata <- args$metadata[, -ind]
-      }
-
-      # Delete adjacency Matrix from whole metadata
-      if ("adjacencyMatrix" %in% names(args$metadata)) {
-        .ind <- which(names(args$metadata) == "adjacencyMatrix")
-        args$adjMat <- args$metadata[, "adjacencyMatrix"]
-         args$metadata <- args$metadata[, -.ind]
-      } else if (!is.null(args$proteinID) && args$proteinID != "") {
-        .arg <- args$metadata[, args$proteinID]
-        args$adjMat <- PSMatch::makeAdjacencyMatrix(.arg)
-        rownames(args$adjMat) <- rownames(args$metadata)
-      }
-
-        if(!is.null(args$adjMat)){
-          # Create the connected components
-          args$cc <- PSMatch::ConnectedComponents(args$adjMat)@adjMatrices
-        }
-
-      # Fix typos
-      args$metadata <- as.data.frame(args$metadata)
-
-
-  return(args)
-}
+#' #' @title xxx
+#' #' @description xxx
+#' #' @param object An object that inherits `MultiAssayExperiment` class
+#' #' (e.g. MultiAssayExperiment, QFeatures)
+#' #'
+#' #' @return An object of class VizData.
+#' #' @export
+#' #' @examples
+#' #' NULL
+#' #'
+#' ExtractInfos <- function(object) {
+#'   
+#'     args <- list(
+#'         qdata = GetSlotQdata(object),
+#'         metacell = GetSlotMetacell(object),
+#'         metadata = GetSlotMetadata(object),
+#'         colID = GetSlotColID(object),
+#'         proteinID = GetSlotProteinID(object),
+#'         conds = GetSlotConds(object),
+#'         type = GetSlotType(object),
+#'         adjMat = NULL,
+#'         cc = list()
+#'       )
+#' 
+#'     if (!is.null(colnames(args$metacell))){
+#'       cols2delete <- which(colnames(args$metacell) == colnames(args$metadata))
+#'       if (length(cols2delete) > 0) {
+#'           args$metadata <- args$metadata[, -cols2delete]
+#'       }
+#'     }
+#' 
+#'       # Delete adjacency Matrix from whole metadata
+#'       if ("adjacencyMatrix" %in% names(args$metadata)) {
+#'         .ind <- which(names(args$metadata) == "adjacencyMatrix")
+#'         args$adjMat <- args$metadata[, "adjacencyMatrix"]
+#'          args$metadata <- args$metadata[, -.ind]
+#'       } else if (!is.null(args$proteinID) && args$proteinID != "") {
+#'         .arg <- args$metadata[, args$proteinID]
+#'         args$adjMat <- PSMatch::makeAdjacencyMatrix(.arg)
+#'         rownames(args$adjMat) <- rownames(args$metadata)
+#'       }
+#' 
+#'         if(!is.null(args$adjMat)){
+#'           # Create the connected components
+#'           args$cc <- PSMatch::ConnectedComponents(args$adjMat)@adjMatrices
+#'         }
+#' 
+#'       # Fix typos
+#'       args$metadata <- as.data.frame(args$metadata)
+#' 
+#' 
+#'   return(args)
+#' }

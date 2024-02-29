@@ -2,31 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{customExportMenu}
 \alias{customExportMenu}
-\title{#' @title xxx
-#' @description xxx
-#'
-#' @param object xxx
-#'
-#' @return A boolean
-#' @name DaparViz-class
-#'
-#' @examples
-#' data(vData_ft)
-#' is.ListOfDaparViz(vData_ft)
-#'
-#' @export
-#'
-is.ListOfDaparViz <- function(object){
-
-passed <- TRUE
-passed <- passed && inherits(object, 'list')
-passed <- passed &&
-all(unlist(lapply(object, function(x) inherits(x, 'DaparViz')),
-use.names=FALSE))
-
-return(passed)
-}
-#' @title Customised contextual menu of highcharts plots}
+\title{#' @title Customised contextual menu of highcharts plots}
 \usage{
 customExportMenu(hc, fname)
 }
@@ -39,30 +15,6 @@ customExportMenu(hc, fname)
 A contextual menu for highcharts plots
 }
 \description{
-#' @title xxx
-#' @description xxx
-#'
-#' @param object xxx
-#'
-#' @return A boolean
-#' @name DaparViz-class
-#'
-#' @examples
-#' data(vData_ft)
-#' is.ListOfDaparViz(vData_ft)
-#'
-#' @export
-#'
-is.ListOfDaparViz <- function(object){
-
-passed <- TRUE
-passed <- passed && inherits(object, 'list')
-passed <- passed &&
-all(unlist(lapply(object, function(x) inherits(x, 'DaparViz')),
-use.names=FALSE))
-
-return(passed)
-}
 #' @title Customised contextual menu of highcharts plots
 }
 \examples{

@@ -1,3 +1,3 @@
 library(testthat)
 
-test_check("DaparViz")
+test_check("omXplore")

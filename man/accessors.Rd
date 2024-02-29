@@ -18,34 +18,18 @@
 \alias{GetSlotConds}
 \alias{GetSlotType}
 \alias{GetSlotAdjMat}
-\alias{GetSlotMetadata,SummarizedExperiment-method}
-\alias{GetSlotMetadata,MSnSet-method}
 \alias{GetSlotMetadata,VizData-method}
-\alias{GetSlotQdata,ANY-method}
-\alias{GetSlotQdata,SummarizedExperiment-method}
 \alias{GetSlotQdata,VizData-method}
-\alias{GetSlotQdata,MSnSet-method}
 \alias{GetSlotMetacell,VizData-method}
-\alias{GetSlotMetacell,SummarizedExperiment-method}
-\alias{GetSlotMetacell,MSnSet-method}
 \alias{GetSlotColID,VizData-method}
-\alias{GetSlotColID,SummarizedExperiment-method}
-\alias{GetSlotColID,MSnSet-method}
 \alias{GetSlotType,VizData-method}
-\alias{GetSlotType,SummarizedExperiment-method}
-\alias{GetSlotType,MSnSet-method}
 \alias{GetSlotProteinID,VizData-method}
-\alias{GetSlotProteinID,SummarizedExperiment-method}
-\alias{GetSlotProteinID,MSnSet-method}
 \alias{GetSlotConds,VizData-method}
-\alias{GetSlotConds,MultiAssayExperiment-method}
-\alias{GetSlotConds,ANY-method}
-\alias{GetSlotConds,MSnSet-method}
 \alias{GetSlotCc,ANY-method}
 \alias{GetSlotCc,VizData-method}
 \alias{GetSlotAdjMat,ANY-method}
 \alias{GetSlotAdjMat,VizData-method}
-\title{Accessors functions}
+\title{Accessors functions for class \code{VizData}}
 \usage{
 GetSlotMetadata(object, ...)
 
@@ -65,51 +49,19 @@ GetSlotAdjMat(object, ...)
 
 GetSlotCc(object, ...)
 
-\S4method{GetSlotMetadata}{SummarizedExperiment}(object)
-
-\S4method{GetSlotMetadata}{MSnSet}(object)
-
 \S4method{GetSlotMetadata}{VizData}(object)
-
-\S4method{GetSlotQdata}{ANY}(object)
-
-\S4method{GetSlotQdata}{SummarizedExperiment}(object)
 
 \S4method{GetSlotQdata}{VizData}(object)
 
-\S4method{GetSlotQdata}{MSnSet}(object)
-
 \S4method{GetSlotMetacell}{VizData}(object)
-
-\S4method{GetSlotMetacell}{SummarizedExperiment}(object)
-
-\S4method{GetSlotMetacell}{MSnSet}(object)
 
 \S4method{GetSlotColID}{VizData}(object)
 
-\S4method{GetSlotColID}{SummarizedExperiment}(object)
-
-\S4method{GetSlotColID}{MSnSet}(object)
-
 \S4method{GetSlotType}{VizData}(object)
-
-\S4method{GetSlotType}{SummarizedExperiment}(object)
-
-\S4method{GetSlotType}{MSnSet}(object)
 
 \S4method{GetSlotProteinID}{VizData}(object)
 
-\S4method{GetSlotProteinID}{SummarizedExperiment}(object)
-
-\S4method{GetSlotProteinID}{MSnSet}(object)
-
 \S4method{GetSlotConds}{VizData}(object)
-
-\S4method{GetSlotConds}{MultiAssayExperiment}(object)
-
-\S4method{GetSlotConds}{ANY}(object)
-
-\S4method{GetSlotConds}{MSnSet}(object)
 
 \S4method{GetSlotCc}{ANY}(object)
 
@@ -129,43 +81,11 @@ See individual method description for the return value.
 
 If exists, the slot value requested.
 
-A data.frame containing the metadata of the dataset
-
 A data.frame
 
 A data.frame
 
 A data.frame
-
-A data.frame
-
-A data.frame
-
-A data.frame
-
-A data.frame
-
-A data.frame
-
-A data.frame
-
-A character(0)
-
-A character(0)
-
-A character(0)
-
-A character(0)
-
-A character(0)
-
-A character(0)
-
-A character(0)
-
-A character(0)
-
-A character(0)
 
 A character(0)
 
@@ -184,21 +104,20 @@ A character(0)
 A character(0)
 }
 \description{
-xxx
+Functions to access the slots of the class \code{VizData}.
 }
 \examples{
 
 ## -----------------------------------
 ## Accessing slots from a MSnSet dataset
 ## -----------------------------------
-data(sub_Exp1_R2_prot_MSnSet)
-obj <- sub_Exp1_R2_prot_MSnSet
-metadata <- GetSlotMetadata(obj)
-qdata <- GetSlotQdata(obj)
-metacell <- GetSlotMetacell(obj)
-id <- GetSlotColID(obj)
-type <- GetSlotType(obj)
-proteinID <- GetSlotProteinID(obj)
-conds <- GetSlotConds(obj)
+toydata <- build_VizData_example()
+metadata <- GetSlotMetadata(toydata)
+qdata <- GetSlotQdata(toydata)
+metacell <- GetSlotMetacell(toydata)
+id <- GetSlotColID(toydata)
+type <- GetSlotType(toydata)
+proteinID <- GetSlotProteinID(toydata)
+conds <- GetSlotConds(toydata)
 
 }

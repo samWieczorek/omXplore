@@ -1,3 +1,3 @@
-library(DaparViz)
+library(omXplore)
 data(vData_ft)
-DaparViz_variance(vData_ft[[1]])
+omXplore_variance(vData_ft[[1]])

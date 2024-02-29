@@ -1,34 +1,4 @@
 
-#' 
-#' #' @title xxx
-#' #' @description xxx
-#' #' 
-#' #' @param object xxx
-#' #' 
-#' #' @return A boolean
-#' #' @name DaparViz-class
-#' #'
-#' #' @examples
-#' #' data(vData_ft)
-#' #' is.ListOfDaparViz(vData_ft)
-#' #' 
-#' #' @export
-#' #' 
-#' is.ListOfDaparViz <- function(object){
-#'   
-#'   passed <- TRUE
-#'   passed <- passed && inherits(object, 'list')
-#'   passed <- passed && 
-#'     all(unlist(lapply(object, function(x) inherits(x, 'DaparViz')), 
-#'       use.names=FALSE))
-#'   
-#'   return(passed)
-#' }
-
-
-
-
-
 
 #' #' @title Customised contextual menu of highcharts plots
 #'
@@ -176,7 +146,7 @@ FormatDataForDT <- function(
 #' @description
 #' xxxx
 #'
-#' @param type An instance of the class `DaparViz`
+#' @param type The type od dataset
 #'
 #' @export
 #'

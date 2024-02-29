@@ -143,8 +143,8 @@ conds <- c(rep('C1', 3), rep('C2', 3))
 colID <- 'protID'
 proteinId <- 'protID'
 type <- "protein"
-adjMat <- NULL
-cc <- NULL
+adjMat <- matrix()
+cc <- list()
 
 obj <- VizData(qdata, metacell, metadata, colID, proteinId, type)
 

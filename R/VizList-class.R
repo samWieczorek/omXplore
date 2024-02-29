@@ -135,14 +135,30 @@ setMethod(
     .Object,
     ll.VizData = list()) {
 
-    if (is.null(ll.VizData) || !inherits(ll.VizData, "list")) {
+    .Object@ll.VizData <- list()
+    
+    if (is.null(ll.VizData)){
+      message("The parameter 'object' is NULL")
+      message("Initialization with an empty class")
+    } else if (!inherits(ll.VizData, "list")){
       message("The parameter 'object' is not a list")
       message("Initialization with an empty class")
-      .Object@ll.VizData <- list()
-    } else {
-      .Object@ll.VizData <- ll.VizData
-    }
-    
+    } else if (is.listOf(ll.VizData, 'VizData')){
+      message("The parameter 'object' is not a list of VizData objects")
+      message("Initialization with an empty class")
+      } else if (!inherits(ll.VizData, "VizData")){
+        message("The parameter 'object' is not a VizData object")
+        message("Initialization with an empty class")
+        } else {
+          if (inherits(ll.VizData, "VizData"))
+            .Object@ll.VizData <- list(ll.VizData)
+          else if (is.listOf(ll.VizData, 'VizData'))
+            .Object@ll.VizData <- ll.VizData
+          else if (inherits(ll.VizData, "list") && 
+              is.listOf(ll.VizData, "list"))
+            .Object <- convert2VizList(ll.VizData)
+          }
+
     return(.Object)
   }
 )
